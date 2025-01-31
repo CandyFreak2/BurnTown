@@ -8,12 +8,17 @@ public class PlayerMovement : MonoBehaviour
     public float maxSpeed = 5.0f;
     [SerializeField] Transform mainCamera;
     [SerializeField] Transform orientation;
-    Vector3[] deltaArray = new Vector3[30];
-    Vector3 deltaAvg;
-    int deltaIndex = 0;
     [SerializeField] Transform playerObj;
     [SerializeField] float rotSpeed = 7.0f;
 
+    //rotation
+    Vector3[] deltaArray = new Vector3[25];
+    Vector3 deltaAvg;
+    int deltaIndex = 0;
+
+    //movement
+    public Vector3 moveDirection = Vector3.zero;
+    
     PlayerInputHandeler input;
     Rigidbody rb;
     CharacterController charCtrl;
@@ -23,9 +28,10 @@ public class PlayerMovement : MonoBehaviour
     [SerializeField] LayerMask groundMask;
     [SerializeField] bool isGrounded;
 
-    [Header("Drag")]
+    [Header("Rb properties")]
+    [SerializeField] float Mass = 1.0f;
     [SerializeField] float Drag = 5.0f;
-    [SerializeField] float AirDrag = 7.0f;
+    //[SerializeField] float AirDrag = 7.0f;
 
     private void Awake()
     {
@@ -38,13 +44,14 @@ public class PlayerMovement : MonoBehaviour
         input = GetComponent<PlayerInputHandeler>();
         rb = GetComponent<Rigidbody>();
         charCtrl = GetComponent<CharacterController>();
+
+        rb.mass = Mass;
     }
 
     private void Update()
     {
         if (GameManager.TimeScale != 0)
         {
-            AverageDelta();
 
             CheckGround();
             RotatePlayer();
@@ -57,6 +64,7 @@ public class PlayerMovement : MonoBehaviour
     {
         if (GameManager.TimeScale != 0)
         {
+            AverageDelta();
             MovePlayer();
         }
     }
@@ -70,7 +78,7 @@ public class PlayerMovement : MonoBehaviour
         if(deltaIndex >= deltaArray.Length)
             deltaIndex = 0;
 
-        //average out all the delta pointers over 30 frames
+        //average out all the delta pointers over 25 fixed frames
         foreach(Vector3 delta in deltaArray)
             deltaAvg += delta;
         deltaAvg /= deltaArray.Length;
@@ -93,11 +101,13 @@ public class PlayerMovement : MonoBehaviour
 
     public void MovePlayer()
     {
-        Vector3 moveDirection = input.MoveDirection * MoveSpeed;
-        
+        moveDirection.x = input.MoveDirection.x * MoveSpeed;
+        moveDirection.z = input.MoveDirection.y * MoveSpeed;
+
         if (isGrounded)
         {
-            rb.AddForce(moveDirection.normalized * MoveSpeed * 10f, ForceMode.Force);
+            rb.AddForce(moveDirection * MoveSpeed * 10f * Time.fixedDeltaTime, ForceMode.Impulse);
+            //charCtrl.Move(moveDirection * MoveSpeed * Time.fixedDeltaTime);
         }
         else
         {

@@ -14,8 +14,12 @@ public class PlayerInputHandeler : MonoBehaviour
     {
         inputSystem = new InputSystem_Actions();
 
+        //get input and leave it hanging
         inputSystem.Player.Move.performed += ctx => moveDirection = ctx.ReadValue<Vector2>();
         inputSystem.Player.Look.performed += ctx => lookDelta = ctx.ReadValue<Vector2>();
+
+        //clear input
+        inputSystem.Player.Move.canceled += ctx => moveDirection = ctx.ReadValue<Vector2>();
     }
 
     private void OnEnable() //restarts controls when needed
