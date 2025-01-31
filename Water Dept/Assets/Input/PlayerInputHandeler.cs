@@ -1,0 +1,35 @@
+using UnityEditor.ShaderGraph;
+using UnityEngine;
+
+public class PlayerInputHandeler : MonoBehaviour
+{
+    InputSystem_Actions inputSystem;
+
+    public Vector2 MoveDirection { get { return moveDirection; } }
+    Vector2 moveDirection;
+    public Vector2 LookDelta { get { return lookDelta; } }
+    Vector2 lookDelta;
+
+    private void Awake()
+    {
+        inputSystem = new InputSystem_Actions();
+
+        inputSystem.Player.Move.performed += ctx => moveDirection = ctx.ReadValue<Vector2>();
+        inputSystem.Player.Look.performed += ctx => lookDelta = ctx.ReadValue<Vector2>();
+    }
+
+    private void OnEnable() //restarts controls when needed
+    {
+        inputSystem.Enable();
+    }
+
+    private void OnDisable() //prevents controls running in editor and making junk
+    {
+        inputSystem.Disable();
+
+        moveDirection = Vector2.zero;
+        lookDelta = Vector2.zero;
+    }
+
+
+}
