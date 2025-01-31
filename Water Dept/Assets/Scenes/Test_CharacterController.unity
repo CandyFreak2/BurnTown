@@ -491,7 +491,6 @@ GameObject:
   - component: {fileID: 812014191}
   - component: {fileID: 812014190}
   - component: {fileID: 812014189}
-  - component: {fileID: 812014194}
   - component: {fileID: 812014193}
   - component: {fileID: 812014192}
   m_Layer: 0
@@ -545,7 +544,7 @@ CapsuleCollider:
   m_LayerOverridePriority: 0
   m_IsTrigger: 0
   m_ProvidesContacts: 0
-  m_Enabled: 0
+  m_Enabled: 1
   serializedVersion: 2
   m_Radius: 0.5
   m_Height: 2
@@ -594,6 +593,7 @@ MonoBehaviour:
     serializedVersion: 2
     m_Bits: 8
   isGrounded: 0
+  Mass: 1
   Drag: 5
 --- !u!114 &812014193
 MonoBehaviour:
@@ -607,31 +607,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: d9bddd44fb3a5ec48bf6ce694c9ac958, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
---- !u!143 &812014194
-CharacterController:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 812014187}
-  m_Material: {fileID: 0}
-  m_IncludeLayers:
-    serializedVersion: 2
-    m_Bits: 0
-  m_ExcludeLayers:
-    serializedVersion: 2
-    m_Bits: 0
-  m_LayerOverridePriority: 0
-  m_ProvidesContacts: 0
-  m_Enabled: 1
-  serializedVersion: 3
-  m_Height: 2
-  m_Radius: 0.5
-  m_SlopeLimit: 45
-  m_StepOffset: 0.3
-  m_SkinWidth: 0.08
-  m_MinMoveDistance: 0.001
-  m_Center: {x: 0, y: 1, z: 0}
 --- !u!1 &951034588
 GameObject:
   m_ObjectHideFlags: 0
