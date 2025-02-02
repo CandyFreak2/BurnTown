@@ -4,90 +4,45 @@ using UnityEngine;
 
 public class FreeCameraController : MonoBehaviour
 {
-    public float movementSpeed = 10f;
-    public float rotationSpeed = 5f;
-
-    private Vector3 movementDirection;
-    private float horizontalRotation;
-    private float verticalRotation;
-    private bool isRotating;
-
-    void Update()
+    public static FreeCameraController Singleton
     {
-        //HandleMovementInput();
-        HandleRotationInput();
-
-        //MoveCamera();
-        RotateCamera();
-    }
-
-    void HandleMovementInput()
-    {
-        movementDirection = Vector3.zero;
-
-        if (Input.GetKey(KeyCode.W))
+        get => mSingleton;
+        set
         {
-            movementDirection += transform.forward;
-        }
-        if (Input.GetKey(KeyCode.S))
-        {
-            movementDirection -= transform.forward;
-        }
-        if (Input.GetKey(KeyCode.A))
-        {
-            movementDirection -= transform.right;
-        }
-        if (Input.GetKey(KeyCode.D))
-        {
-            movementDirection += transform.right;
-        }
-        if (Input.GetKey(KeyCode.Q))
-        {
-            movementDirection -= transform.up;
-        }
-        if (Input.GetKey(KeyCode.E))
-        {
-            movementDirection += transform.up;
-        }
-        if (Input.GetKey(KeyCode.LeftShift))
-        {
-            movementSpeed = 50f;
-        }
-        else
-        {
-            movementSpeed = 10f;
+            if (value == null)
+                mSingleton = null;
+            else if (mSingleton == null)
+                mSingleton = value;
+            else if (mSingleton != value)
+            {
+                Destroy(value);
+                Debug.LogError($"There should only ever be one instance of {nameof(FreeCameraController)}!");
+            }
         }
     }
+    private static FreeCameraController mSingleton;
 
-    void HandleRotationInput()
+    private Transform target;
+
+    private void Awake()
     {
-        if (Input.GetMouseButtonDown(1))
-        {
-            isRotating = true;
-        }
-        if (Input.GetMouseButtonUp(1))
-        {
-            isRotating = false;
-        }
-
-        if (isRotating)
-        {
-            horizontalRotation = Input.GetAxis("Mouse X") * rotationSpeed;
-            verticalRotation = -Input.GetAxis("Mouse Y") * rotationSpeed;
-        }
+        Singleton = this;
     }
 
-    void MoveCamera()
+    private void OnDestroy()
     {
-        transform.position += movementDirection * movementSpeed * Time.deltaTime;
+        if (Singleton == this)
+            Singleton = null;
     }
 
-    void RotateCamera()
+    private void LateUpdate()
     {
-        if (isRotating)
-        {
-            transform.Rotate(Vector3.up, horizontalRotation, Space.World);
-            transform.Rotate(Vector3.right, verticalRotation, Space.Self);
-        }
+        if (target != null)
+            transform.SetPositionAndRotation(target.position, target.rotation);
+    }
+
+    public void SetTarget(Transform newTarget)
+    {
+        target = newTarget;
     }
 }

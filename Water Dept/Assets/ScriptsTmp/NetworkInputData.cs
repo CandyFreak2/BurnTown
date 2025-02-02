@@ -1,15 +1,19 @@
 using Fusion;
 using UnityEngine;
 
+public enum InputButton
+{
+    Jump,
+}
+
 public struct NetworkInputData : INetworkInput
 {
     public const byte MOUSEBUTTON0 = 1;
 
     // Movement
-    public Vector3 direction;
+    public Vector2 direction;
     public NetworkButtons buttons;
 
     // Camera
-    public float horizontalRotation;
-    public float verticalRotation;
+    public Vector2 lookDelta;
 }

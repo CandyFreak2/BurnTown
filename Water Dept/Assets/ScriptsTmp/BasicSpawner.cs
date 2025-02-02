@@ -36,30 +36,30 @@ public class BasicSpawner : MonoBehaviour, INetworkRunnerCallbacks
     }
     public void OnInput(NetworkRunner runner, NetworkInput input) 
     {
-        if (runner.LocalPlayer == null)
-            return;
+        //if (runner.LocalPlayer == null)
+        //    return;
 
-        var data = new NetworkInputData();
+        //var data = new NetworkInputData();
 
-        if (Input.GetKey(KeyCode.W))
-            data.direction += Vector3.forward;
+        //if (Input.GetKey(KeyCode.W))
+        //    data.direction += Vector2.forward;
 
-        if (Input.GetKey(KeyCode.S))
-            data.direction += Vector3.back;
+        //if (Input.GetKey(KeyCode.S))
+        //    data.direction += Vector3.back;
 
-        if (Input.GetKey(KeyCode.A))
-            data.direction += Vector3.left;
+        //if (Input.GetKey(KeyCode.A))
+        //    data.direction += Vector3.left;
 
-        if (Input.GetKey(KeyCode.D))
-            data.direction += Vector3.right;
+        //if (Input.GetKey(KeyCode.D))
+        //    data.direction += Vector3.right;
 
-        data.horizontalRotation = Input.GetAxis("Mouse X") * 5;
-        data.verticalRotation = -Input.GetAxis("Mouse Y") * 5;
+        //data.horizontalRotation = Input.GetAxis("Mouse X") * 5;
+        //data.verticalRotation = -Input.GetAxis("Mouse Y") * 5;
 
-        data.buttons.Set(NetworkInputData.MOUSEBUTTON0, mouseButton0);
-        mouseButton0 = false;
+        //data.buttons.Set(NetworkInputData.MOUSEBUTTON0, mouseButton0);
+        //mouseButton0 = false;
 
-        input.Set(data);
+        //input.Set(data);
     }
     public void OnInputMissing(NetworkRunner runner, PlayerRef player, NetworkInput input) { }
     public void OnShutdown(NetworkRunner runner, ShutdownReason shutdownReason) { }
