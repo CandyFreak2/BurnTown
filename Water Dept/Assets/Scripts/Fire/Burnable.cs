@@ -26,10 +26,14 @@ public class Burnable : MonoBehaviour
     //temp vars for testing
     float timer = 0.0f;
 
+    // Jerry Coding
+    private Material colorShader;
+
     private void Start()
     {
         //used for tracking percentages
         fuelRemaining = startFuel;
+        colorShader = GetComponent<MeshRenderer>().sharedMaterial;
         gameObject.GetComponent<Renderer>().material.color = Color.green;
     }
 
@@ -55,7 +59,9 @@ public class Burnable : MonoBehaviour
     private void handeColorLerp()
     {
         //lerp between start and end color based on % of fuel remaining
-        gameObject.GetComponent<Renderer>().material.color = Color.Lerp(endColor, startColor, (fuelRemaining / startFuel));
+        //gameObject.GetComponent<Renderer>().material.color = Color.Lerp(endColor, startColor, (fuelRemaining / startFuel));
+        colorShader.SetColor("_Color", Color.Lerp(endColor, startColor, (fuelRemaining / startFuel)));
+        colorShader.SetFloat("_PerspectiveAmount", timer);
     }
 
     //WIP
@@ -117,11 +123,11 @@ public class Burnable : MonoBehaviour
             }
         }
     }
-    int result = 0;
+
     //handles damage/burn, goes through fire resistance first
     private void fireDamage(Burnable obj)
     {
-        result = Random.Range(0, 2);
+        int result = Random.Range(0, 2);
         if (obj.lockoutTimer <= 0.0f)
         {
             if (obj.fireResistance > 0)
