@@ -1,15 +1,20 @@
+using Fusion;
+using Fusion.Sockets;
 using System;
+using System.Collections.Generic;
 using UnityEditor.ShaderGraph;
 using UnityEngine;
+using UnityEngine.InputSystem;
 
-public class PlayerInputHandeler : MonoBehaviour
+public class PlayerInputHandeler : SimulationBehaviour, IBeforeUpdate, INetworkRunnerCallbacks
 {
     InputSystem_Actions inputSystem;
 
     Vector2 moveDirection;
     Vector2 lookDelta;
 
-    public PlayerInputAction input = new PlayerInputAction();
+    public PlayerInputAction accumulatedInput = new PlayerInputAction();
+    private bool resetInput = false;
     public Action<PlayerInputAction> onInputSignal;
 
     private void Awake()
@@ -39,18 +44,115 @@ public class PlayerInputHandeler : MonoBehaviour
 
     private void Start()
     {
-        onInputSignal?.Invoke(new PlayerInputAction(input));
+        onInputSignal?.Invoke(new PlayerInputAction(accumulatedInput));
     }
 
     private void Update()
     {
-        //load inputs into the package
-        input.MoveDirection = moveDirection;
+        ////load inputs into the package
+        //accumulatedInput.MoveDirection = moveDirection;
         
-        if(lookDelta.magnitude > 0) 
-            input.LookDelta = lookDelta;
+        //if(lookDelta.magnitude > 0)
+        //    accumulatedInput.LookDelta = lookDelta;
 
-        //send out a copy of this frame's input to all listeners?
-        onInputSignal?.Invoke(new PlayerInputAction(input));
+        ////send out a copy of this frame's input to all listeners?
+        //onInputSignal?.Invoke(new PlayerInputAction(accumulatedInput));
     }
+
+    // Networking functions
+    void IBeforeUpdate.BeforeUpdate()
+    {
+        if (resetInput)
+        {
+            resetInput = false;
+            accumulatedInput = default;
+        }
+
+        //Keyboard keyboard = Keyboard.current;
+        //
+        // Change cursor lock state if enter or esc pressed
+        //if (keyboard != null && (keyboard.enterKey.wasPressedThisFrame || keyboard.numpadEnterKey.wasPressedThisFrame || keyboard.escapeKey.wasPressedThisFrame))
+        //{
+        //    if (Cursor.lockState == CursorLockMode.Locked)
+        //    {
+        //        Cursor.lockState = CursorLockMode.None;
+        //        Cursor.visible = true;
+        //    }
+        //    else
+        //    {
+        //        Cursor.lockState = CursorLockMode.Locked;
+        //        Cursor.visible = false;
+        //    }
+        //}
+
+        //load inputs into the package
+        accumulatedInput.MoveDirection += moveDirection;
+
+        if (lookDelta.magnitude > 0)
+            accumulatedInput.LookDelta += lookDelta;
+    }
+
+    void INetworkRunnerCallbacks.OnInput(NetworkRunner runner, NetworkInput input)
+    {
+        // Send package to server
+        accumulatedInput.MoveDirection.Normalize();
+        input.Set(accumulatedInput);
+        resetInput = true;
+
+        //We have to reset the look delta immediately because we don't want mouse input being reused if another tick is executed during this same frame
+        accumulatedInput.LookDelta = default;
+    }
+
+    void INetworkRunnerCallbacks.OnPlayerJoined(NetworkRunner runner, PlayerRef player)
+    {
+        //if (player == runner.LocalPlayer)
+        //{
+        //    Cursor.lockState = CursorLockMode.Locked;
+        //    Cursor.visible = false;
+        //}
+    }
+
+    void INetworkRunnerCallbacks.OnConnectedToServer(NetworkRunner runner) { }
+
+    void INetworkRunnerCallbacks.OnConnectFailed(NetworkRunner runner, NetAddress remoteAddress, NetConnectFailedReason reason) { }
+
+    void INetworkRunnerCallbacks.OnConnectRequest(NetworkRunner runner, NetworkRunnerCallbackArgs.ConnectRequest request, byte[] token) { }
+
+    void INetworkRunnerCallbacks.OnCustomAuthenticationResponse(NetworkRunner runner, Dictionary<string, object> data) { }
+
+    void INetworkRunnerCallbacks.OnDisconnectedFromServer(NetworkRunner runner, NetDisconnectReason reason) { }
+
+    void INetworkRunnerCallbacks.OnHostMigration(NetworkRunner runner, HostMigrationToken hostMigrationToken) { }
+
+    void INetworkRunnerCallbacks.OnInputMissing(NetworkRunner runner, PlayerRef player, NetworkInput input) { }
+
+    void INetworkRunnerCallbacks.OnObjectEnterAOI(NetworkRunner runner, NetworkObject obj, PlayerRef player) { }
+
+    void INetworkRunnerCallbacks.OnObjectExitAOI(NetworkRunner runner, NetworkObject obj, PlayerRef player) { }
+
+    void INetworkRunnerCallbacks.OnPlayerLeft(NetworkRunner runner, PlayerRef player) { }
+
+    void INetworkRunnerCallbacks.OnReliableDataProgress(NetworkRunner runner, PlayerRef player, ReliableKey key, float progress) { }
+
+    void INetworkRunnerCallbacks.OnReliableDataReceived(NetworkRunner runner, PlayerRef player, ReliableKey key, ArraySegment<byte> data) { }
+
+    void INetworkRunnerCallbacks.OnSceneLoadDone(NetworkRunner runner) { }
+
+    void INetworkRunnerCallbacks.OnSceneLoadStart(NetworkRunner runner) { }
+
+    void INetworkRunnerCallbacks.OnSessionListUpdated(NetworkRunner runner, List<SessionInfo> sessionList) { }
+
+    async void INetworkRunnerCallbacks.OnShutdown(NetworkRunner runner, ShutdownReason shutdownReason)
+    {
+        Cursor.lockState = CursorLockMode.None;
+        Cursor.visible = true;
+
+        //if (shutdownReason == ShutdownReason.DisconnectedByPluginLogic)
+        //{
+        //    await FindFirstObjectByType<MenuConnectionBehaviour>(FindObjectsInactive.Include).DisconnectAsync(ConnectFailReason.Disconnect);
+        //    FindFirstObjectByType<FusionMenuUIGameplay>(FindObjectsInactive.Include).Controller.Show<FusionMenuUIMain>();
+        //}
+    }
+
+    void INetworkRunnerCallbacks.OnUserSimulationMessage(NetworkRunner runner, SimulationMessagePtr message) { }
 }

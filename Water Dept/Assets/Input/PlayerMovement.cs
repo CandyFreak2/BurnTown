@@ -1,6 +1,8 @@
 using UnityEngine;
+using Fusion;
+using Fusion.Addons.SimpleKCC;
 
-public class PlayerMovement : MonoBehaviour
+public class PlayerMovement : NetworkBehaviour
 {
     [Header("Movement")]
     public float MoveSpeed = 5.0f;
@@ -9,6 +11,7 @@ public class PlayerMovement : MonoBehaviour
     [SerializeField] Transform mainCamera;
     [SerializeField] Transform orientation;
     [SerializeField] Transform playerObj;
+    [SerializeField] Transform camTarget;
     [SerializeField] float rotSpeed = 7.0f;
 
     //rotation
@@ -21,8 +24,9 @@ public class PlayerMovement : MonoBehaviour
     
     PlayerInputHandeler input;
     PlayerInputAction action;
-    Rigidbody rb;
+    [SerializeField] Rigidbody rb;
     CharacterController charCtrl;
+    [SerializeField] SimpleKCC kcc;
 
     [Header("Ground Check")]
     [SerializeField] Transform groundCheck;
@@ -45,10 +49,20 @@ public class PlayerMovement : MonoBehaviour
         input = GetComponent<PlayerInputHandeler>();
         input.onInputSignal += RecieveInput;
 
-        rb = GetComponent<Rigidbody>();
+        //rb = GetComponent<Rigidbody>();
         charCtrl = GetComponent<CharacterController>();
 
         rb.mass = Mass;
+    }
+
+    public override void Spawned()
+    {
+        kcc.SetGravity(Physics.gravity.y);
+
+        if (HasInputAuthority)
+        {
+            FreeCameraController.Singleton.SetTarget(camTarget);
+        }
     }
 
     void RecieveInput(PlayerInputAction action)
@@ -73,6 +87,20 @@ public class PlayerMovement : MonoBehaviour
         if (GameManager.TimeScale != 0)
         {
             AverageDelta();
+            //MovePlayer();
+        }
+    }
+
+    public override void FixedUpdateNetwork()
+    {
+        if (GetInput(out PlayerInputAction input))
+        {
+            action = input;
+
+            CheckGround();
+            RotatePlayer();
+            CapSpeed();
+
             MovePlayer();
         }
     }
@@ -94,7 +122,7 @@ public class PlayerMovement : MonoBehaviour
 
     public void RotatePlayer()
     {
-        Vector3 camDir = mainCamera.forward;
+        Vector3 camDir = camTarget.forward;
         camDir.y = 0;
         float viewDir = Vector3.Angle(Vector3.forward, camDir);
         orientation.forward = deltaAvg.normalized;
@@ -108,12 +136,19 @@ public class PlayerMovement : MonoBehaviour
 
     public void MovePlayer()
     {
-        moveDirection.x = action.MoveDirection.x * MoveSpeed;
-        moveDirection.z = action.MoveDirection.y * MoveSpeed;
+        moveDirection.x = action.MoveDirection.x;
+        moveDirection.z = action.MoveDirection.y;
+
+        moveDirection = kcc.TransformRotation * moveDirection;
+
+        kcc.Move(Vector3.zero, 0.0f);
 
         if (isGrounded)
         {
-            rb.AddForce(moveDirection * MoveSpeed * 10f * Time.fixedDeltaTime, ForceMode.Impulse);
+            Debug.Log(moveDirection);
+            moveDirection.y = 0.0f;
+            kcc.Move(action.MoveDirection.normalized * MoveSpeed, 0.0f);
+            //rb.AddForce(moveDirection * MoveSpeed * 10f * Time.fixedDeltaTime, ForceMode.Impulse);
             //charCtrl.Move(moveDirection * MoveSpeed * Time.fixedDeltaTime);
         }
         else
