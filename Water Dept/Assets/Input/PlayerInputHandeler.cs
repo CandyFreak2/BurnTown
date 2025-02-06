@@ -1,3 +1,4 @@
+using System;
 using UnityEditor.ShaderGraph;
 using UnityEngine;
 
@@ -5,10 +6,11 @@ public class PlayerInputHandeler : MonoBehaviour
 {
     InputSystem_Actions inputSystem;
 
-    public Vector2 MoveDirection { get { return moveDirection; } }
     Vector2 moveDirection;
-    public Vector2 LookDelta { get { return lookDelta; } }
     Vector2 lookDelta;
+
+    public PlayerInputAction input = new PlayerInputAction();
+    public Action<PlayerInputAction> onInputSignal;
 
     private void Awake()
     {
@@ -35,5 +37,20 @@ public class PlayerInputHandeler : MonoBehaviour
         lookDelta = Vector2.zero;
     }
 
+    private void Start()
+    {
+        onInputSignal?.Invoke(new PlayerInputAction(input));
+    }
 
+    private void Update()
+    {
+        //load inputs into the package
+        input.MoveDirection = moveDirection;
+        
+        if(lookDelta.magnitude > 0) 
+            input.LookDelta = lookDelta;
+
+        //send out a copy of this frame's input to all listeners?
+        onInputSignal?.Invoke(new PlayerInputAction(input));
+    }
 }

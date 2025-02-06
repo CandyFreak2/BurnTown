@@ -20,6 +20,7 @@ public class PlayerMovement : MonoBehaviour
     public Vector3 moveDirection = Vector3.zero;
     
     PlayerInputHandeler input;
+    PlayerInputAction action;
     Rigidbody rb;
     CharacterController charCtrl;
 
@@ -42,23 +43,30 @@ public class PlayerMovement : MonoBehaviour
     private void Start()
     {
         input = GetComponent<PlayerInputHandeler>();
+        input.onInputSignal += RecieveInput;
+
         rb = GetComponent<Rigidbody>();
         charCtrl = GetComponent<CharacterController>();
 
         rb.mass = Mass;
     }
 
-    private void Update()
+    void RecieveInput(PlayerInputAction action)
+    {
+        this.action = action;
+        CheckGround();
+        RotatePlayer();
+        CapSpeed();
+    }
+
+    /*private void Update()
     {
         if (GameManager.TimeScale != 0)
         {
 
-            CheckGround();
-            RotatePlayer();
             
-            CapSpeed();
         }
-    }
+    }*/
 
     private void FixedUpdate()
     {
@@ -71,8 +79,8 @@ public class PlayerMovement : MonoBehaviour
 
     void AverageDelta()
     {
-        deltaArray[deltaIndex].x = input.LookDelta.x;
-        deltaArray[deltaIndex].z = input.LookDelta.y;
+        deltaArray[deltaIndex].x = action.LookDelta.x;
+        deltaArray[deltaIndex].z = action.LookDelta.y;
         deltaIndex++;
 
         if(deltaIndex >= deltaArray.Length)
@@ -92,17 +100,16 @@ public class PlayerMovement : MonoBehaviour
         orientation.forward = deltaAvg.normalized;
         orientation.Rotate(0, viewDir, 0);
 
-        if (input.LookDelta != Vector2.zero)
+        if (action.LookDelta != Vector2.zero)
         {
             playerObj.forward = Vector3.Lerp(playerObj.forward, orientation.forward.normalized, Time.deltaTime * rotSpeed);
         }
-
     }
 
     public void MovePlayer()
     {
-        moveDirection.x = input.MoveDirection.x * MoveSpeed;
-        moveDirection.z = input.MoveDirection.y * MoveSpeed;
+        moveDirection.x = action.MoveDirection.x * MoveSpeed;
+        moveDirection.z = action.MoveDirection.y * MoveSpeed;
 
         if (isGrounded)
         {
