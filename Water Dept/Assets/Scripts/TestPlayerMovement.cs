@@ -8,6 +8,7 @@ public class TestPlayerMovement : MonoBehaviour
     GameObject fireHose;
     public bool isHolding = false;
     Rigidbody rb;
+    public float rotationSpeed = 100f;
 
     private void Start()
     {
@@ -28,6 +29,11 @@ public class TestPlayerMovement : MonoBehaviour
         if (isHolding)
         {
             LockHosePosition();
+            
+            if (Input.GetKeyDown(KeyCode.RightShift))
+            {
+                HoseAiming();
+            }
         }
 
         if (Input.GetKeyDown(KeyCode.Mouse0) && isHolding == true)
@@ -41,6 +47,8 @@ public class TestPlayerMovement : MonoBehaviour
         {
             //stops spraying water after half a second
             fireHose.GetComponent<FireHouse>().StartCoroutine(fireHose.GetComponent<FireHouse>().StopSprayingWater());
+            //stop force
+            StopWaterForce();
         }
 
         if (Input.GetKeyDown(KeyCode.E) && isHolding)
@@ -67,7 +75,8 @@ public class TestPlayerMovement : MonoBehaviour
                 Debug.Log("Grabbed Hose");
                 isHolding = true;
             fireHose.GetComponent<Rigidbody>().constraints = RigidbodyConstraints.FreezeAll;
-                fireHose.transform.position = hand.transform.position; 
+      
+            fireHose.transform.position = hand.transform.position; 
                 fireHose.transform.SetParent(hand.transform, true); 
             
         }
@@ -81,5 +90,27 @@ public class TestPlayerMovement : MonoBehaviour
     void WaterForce()
     {
         rb.AddForce(-transform.forward * fireHose.GetComponent<FireHouse>().waterForce, ForceMode.Impulse);
+    }
+
+    void StopWaterForce()
+    {
+        rb.linearVelocity = Vector3.zero;
+    }
+
+    void HoseAiming()
+    {
+        float horizontalAim = 0f;
+        float verticalAim = 0f;
+
+        if (Input.GetKey(KeyCode.J)) horizontalAim = -1f;
+        if (Input.GetKey(KeyCode.L)) horizontalAim = 1f;
+        if (Input.GetKey(KeyCode.I)) verticalAim = 1f;
+        if (Input.GetKey(KeyCode.K)) verticalAim = -1f;
+
+        transform.Rotate(0f,horizontalAim * rotationSpeed * Time.deltaTime, 0f);
+
+        Vector3 currentRotation = transform.eulerAngles;
+        float newVerticalRotation = Mathf.Clamp(currentRotation.x - verticalAim * rotationSpeed * Time.deltaTime, -80f, 80f);
+        transform.rotation = Quaternion.Euler(newVerticalRotation, currentRotation.y, currentRotation.z);
     }
 }
