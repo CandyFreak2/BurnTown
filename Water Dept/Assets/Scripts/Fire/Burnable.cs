@@ -8,16 +8,20 @@ public class Burnable : MonoBehaviour
     //NOT IMPLEMENTED YET, JUST CONCEPT TEST
     
     [SerializeField] protected float startFuel = 10.0f;
-    [SerializeField] protected float fuelRemaining;
+    private float fuelRemaining;
     [SerializeField] protected float spreadRate = 3.0f;
     [SerializeField] protected float spreadRadius = 10.0f;
     [SerializeField] protected float fireResistance = 3.0f;
 
     [SerializeField] protected bool isBurning = true;
 
+    //prevents multiple fire sources from damaging an object separately
+    private float lockoutTimer = 0.0f;
+    private const float LOCKOUT_MAX_TIME = 3.0f;
+
     //lerp burn colors
-    public Color startColor = Color.green;
-    public Color endColor = Color.red;
+    private Color startColor = Color.yellow;
+    private Color endColor = Color.red;
 
     //temp vars for testing
     float timer = 0.0f;
@@ -26,6 +30,7 @@ public class Burnable : MonoBehaviour
     {
         //used for tracking percentages
         fuelRemaining = startFuel;
+        gameObject.GetComponent<Renderer>().material.color = Color.green;
     }
 
     private void Update()
@@ -36,8 +41,11 @@ public class Burnable : MonoBehaviour
     //does all functions related to burning of objects
     private void handeFire()
     {
-        handeColorLerp();
-
+        if(isBurning )
+        {
+            handeColorLerp();
+        }
+        
         //SpreadFire();
 
         handleBurn();
@@ -73,22 +81,27 @@ public class Burnable : MonoBehaviour
     {
         //temp
         timer += Time.deltaTime;
-        
+
         if (isBurning && fuelRemaining > 0)
         {
             fuelRemaining -= Time.deltaTime;
 
-            if(timer > spreadRate)
+            if (timer > spreadRate)
             {
                 tempSpread();
                 timer = 0.0f;
             }
-            
+
         }
         else if (fuelRemaining < 0)
         {
             Debug.Log("Object Destroyed");
             Destroy(gameObject);
+        }
+        else if (!isBurning)
+        {
+            //runs lockout timer down
+            lockoutTimer -= Time.deltaTime;
         }
     }
 
@@ -103,29 +116,33 @@ public class Burnable : MonoBehaviour
                 fireDamage(obj.GetComponent<Burnable>());
             }
         }
-
-        ////spherecast here---
-        //if (Physics.SphereCast(gameObject.transform.position, spreadRadius, transform.forward, out RaycastHit hit, 0))
-        //{
-        //    Debug.Log(hit);
-        //    fireDamage(hit.collider.gameObject.GetComponent<Burnable>());
-        //}
-        //else
-        //{
-        //    Debug.Log("none");
-        //}
     }
-
+    int result = 0;
     //handles damage/burn, goes through fire resistance first
     private void fireDamage(Burnable obj)
     {
-        if (obj.fireResistance > 0)
+        result = Random.Range(0, 2);
+        if (obj.lockoutTimer <= 0.0f)
         {
-            obj.fireResistance--;
+            if (obj.fireResistance > 0)
+            {
+                obj.fireResistance--;
+                //resets an objects lockout timer to X
+                obj.lockoutTimer = LOCKOUT_MAX_TIME;
+            }
+            else
+            {
+                Debug.Log(result);
+                if (result >= 1)
+                {
+                    obj.isBurning = true;
+                }
+                else
+                {
+                    obj.fireResistance++;
+                }
+            }
         }
-        else
-        {
-            obj.isBurning = true;
-        }
+        
     }
 }
