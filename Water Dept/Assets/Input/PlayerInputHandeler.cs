@@ -2,9 +2,7 @@ using Fusion;
 using Fusion.Sockets;
 using System;
 using System.Collections.Generic;
-using UnityEditor.ShaderGraph;
 using UnityEngine;
-using UnityEngine.InputSystem;
 
 public class PlayerInputHandeler : SimulationBehaviour, IBeforeUpdate, INetworkRunnerCallbacks
 {
