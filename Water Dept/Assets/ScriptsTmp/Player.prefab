@@ -111,7 +111,7 @@ Rigidbody:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 3029772528895407285}
   serializedVersion: 4
-  m_Mass: 20
+  m_Mass: 1
   m_Drag: 0.1
   m_AngularDrag: 0
   m_CenterOfMass: {x: 0, y: 0, z: 0}
@@ -159,7 +159,7 @@ MonoBehaviour:
   maxSpeed: 5
   mainCamera: {fileID: 0}
   orientation: {fileID: 8537246583243309382}
-  playerObj: {fileID: 5779141458447338188}
+  playerObj: {fileID: 7423437995744765384}
   camTarget: {fileID: 736681648829432328}
   rotSpeed: 7
   moveDirection: {x: 0, y: 0, z: 0}
@@ -214,7 +214,7 @@ MonoBehaviour:
     ColliderLayer: 6
     CollisionLayerMask:
       serializedVersion: 2
-      m_Bits: 65
+      m_Bits: 73
     ProxyInterpolationMode: 0
     MaxPenetrationSteps: 8
     CCDRadiusMultiplier: 0.75

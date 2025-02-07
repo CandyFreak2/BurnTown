@@ -73,15 +73,6 @@ public class PlayerMovement : NetworkBehaviour
         CapSpeed();
     }
 
-    /*private void Update()
-    {
-        if (GameManager.TimeScale != 0)
-        {
-
-            
-        }
-    }*/
-
     private void FixedUpdate()
     {
         if (GameManager.TimeScale != 0)
@@ -93,6 +84,7 @@ public class PlayerMovement : NetworkBehaviour
 
     public override void FixedUpdateNetwork()
     {
+        // gets input from server
         if (GetInput(out PlayerInputAction input))
         {
             action = input;
@@ -136,24 +128,19 @@ public class PlayerMovement : NetworkBehaviour
 
     public void MovePlayer()
     {
-        moveDirection.x = action.MoveDirection.x;
-        moveDirection.z = action.MoveDirection.y;
+        moveDirection = kcc.TransformRotation * new Vector3(action.MoveDirection.x, 0.0f, action.MoveDirection.y);
 
-        moveDirection = kcc.TransformRotation * moveDirection;
-
-        kcc.Move(Vector3.zero, 0.0f);
+        
 
         if (isGrounded)
         {
             Debug.Log(moveDirection);
-            moveDirection.y = 0.0f;
-            kcc.Move(action.MoveDirection.normalized * MoveSpeed, 0.0f);
-            //rb.AddForce(moveDirection * MoveSpeed * 10f * Time.fixedDeltaTime, ForceMode.Impulse);
-            //charCtrl.Move(moveDirection * MoveSpeed * Time.fixedDeltaTime);
+            kcc.Move(moveDirection * MoveSpeed);
         }
         else
         {
-            //rb.AddForce(moveDirection.normalized * AirMoveSpeed * 10f, ForceMode.Force);
+            //Simulate gravity if isn't grounded
+            kcc.Move(action.MoveDirection.normalized * AirMoveSpeed);
         }
     }
 

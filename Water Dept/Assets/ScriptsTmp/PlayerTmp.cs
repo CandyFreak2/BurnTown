@@ -17,8 +17,7 @@ public class PlayerTmp : NetworkBehaviour
 
     [Networked] private NetworkButtons previousButtons { get; set; }
     
-    [SerializeField]
-    Ball ballPrefab;
+    [SerializeField] Ball ballPrefab;
     [Networked] private TickTimer ballDelay { get; set; }
 
     public override void Spawned()
