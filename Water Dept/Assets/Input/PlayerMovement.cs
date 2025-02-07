@@ -134,7 +134,6 @@ public class PlayerMovement : NetworkBehaviour
 
         if (isGrounded)
         {
-            Debug.Log(moveDirection);
             kcc.Move(moveDirection * MoveSpeed);
         }
         else

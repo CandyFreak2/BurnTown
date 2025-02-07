@@ -13,6 +13,7 @@ GameObject:
   - component: {fileID: 2316312355434839343}
   - component: {fileID: 5368835669324599030}
   - component: {fileID: 443610500241077065}
+  - component: {fileID: 4730850548071176791}
   m_Layer: 0
   m_Name: eTree
   m_TagString: Untagged
@@ -30,7 +31,7 @@ Transform:
   serializedVersion: 2
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
   m_LocalPosition: {x: 16.44, y: 0, z: 11.6}
-  m_LocalScale: {x: 0.6, y: 3, z: 0.6}
+  m_LocalScale: {x: 1.0421373, y: 1.1693428, z: 1.0421373}
   m_ConstrainProportionsScale: 0
   m_Children: []
   m_Father: {fileID: 0}
@@ -126,3 +127,22 @@ MonoBehaviour:
   spreadRadius: 3
   fireResistance: 1
   isBurning: 0
+--- !u!114 &4730850548071176791
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 453698788867256445}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: -1552182283, guid: e725a070cec140c4caffb81624c8c787, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  SortKey: 3789059213
+  ObjectInterest: 1
+  Flags: 262145
+  NestedObjects: []
+  NetworkedBehaviours:
+  - {fileID: 443610500241077065}
+  ForceRemoteRenderTimeframe: 0

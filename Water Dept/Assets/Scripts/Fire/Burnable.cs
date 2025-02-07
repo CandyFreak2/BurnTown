@@ -1,8 +1,9 @@
+using Fusion;
 using System.Collections;
 using UnityEngine;
 using UnityEngine.Splines.Interpolators;
 
-public class Burnable : MonoBehaviour
+public class Burnable : NetworkBehaviour
 {
     //SYSTEM HALF DESIGNED FOR POLYMORPHISM
     //NOT IMPLEMENTED YET, JUST CONCEPT TEST
@@ -14,6 +15,7 @@ public class Burnable : MonoBehaviour
     [SerializeField] protected float fireResistance = 3.0f;
 
     [SerializeField] protected bool isBurning = true;
+    private bool isSpawned = false;
 
     //prevents multiple fire sources from damaging an object separately
     private float lockoutTimer = 0.0f;
@@ -26,6 +28,11 @@ public class Burnable : MonoBehaviour
     //temp vars for testing
     float timer = 0.0f;
 
+    public override void Spawned()
+    {
+        isSpawned = true;
+    }
+
     private void Start()
     {
         //used for tracking percentages
@@ -35,7 +42,10 @@ public class Burnable : MonoBehaviour
 
     private void Update()
     {
-        handeFire();
+        if (isSpawned)
+        {
+            handeFire();
+        }
     }
 
     //does all functions related to burning of objects
