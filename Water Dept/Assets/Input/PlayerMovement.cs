@@ -8,24 +8,17 @@ public class PlayerMovement : NetworkBehaviour
     public float MoveSpeed = 5.0f;
     public float AirMoveSpeed = 3.0f;
     public float maxSpeed = 5.0f;
-    [SerializeField] Transform mainCamera;
     [SerializeField] Transform orientation;
     [SerializeField] Transform playerObj;
     [SerializeField] Transform camTarget;
     [SerializeField] float rotSpeed = 7.0f;
 
-    //rotation
-    Vector3[] deltaArray = new Vector3[25];
-    Vector3 deltaAvg;
-    int deltaIndex = 0;
-
-    //movement
+    //movement input
     public Vector3 moveDirection = Vector3.zero;
     
     PlayerInputHandeler input;
     PlayerInputAction action;
     [SerializeField] Rigidbody rb;
-    CharacterController charCtrl;
     [SerializeField] SimpleKCC kcc;
 
     [Header("Ground Check")]
@@ -38,20 +31,10 @@ public class PlayerMovement : NetworkBehaviour
     [SerializeField] float Drag = 5.0f;
     //[SerializeField] float AirDrag = 7.0f;
 
-    private void Awake()
-    {
-        for(int i = 0; i < deltaArray.Length; i++)
-            deltaArray[i] = Vector3.zero;
-    }
-
     private void Start()
     {
         input = GetComponent<PlayerInputHandeler>();
-        input.onInputSignal += RecieveInput;
-
-        //rb = GetComponent<Rigidbody>();
-        charCtrl = GetComponent<CharacterController>();
-
+        //input.onInputSignal += RecieveInput;
         rb.mass = Mass;
     }
 
@@ -65,6 +48,7 @@ public class PlayerMovement : NetworkBehaviour
         }
     }
 
+    //overridden by FixedUpdateNetwork
     void RecieveInput(PlayerInputAction action)
     {
         this.action = action;
@@ -77,7 +61,6 @@ public class PlayerMovement : NetworkBehaviour
     {
         if (GameManager.TimeScale != 0)
         {
-            AverageDelta();
             //MovePlayer();
         }
     }
@@ -97,50 +80,33 @@ public class PlayerMovement : NetworkBehaviour
         }
     }
 
-    void AverageDelta()
-    {
-        deltaArray[deltaIndex].x = action.LookDelta.x;
-        deltaArray[deltaIndex].z = action.LookDelta.y;
-        deltaIndex++;
-
-        if(deltaIndex >= deltaArray.Length)
-            deltaIndex = 0;
-
-        //average out all the delta pointers over 25 fixed frames
-        foreach(Vector3 delta in deltaArray)
-            deltaAvg += delta;
-        deltaAvg /= deltaArray.Length;
-    }
-
     public void RotatePlayer()
     {
+        //skip rotate if the player has no input
+        if (action.LookDelta == Vector2.zero)
+            return;
+
+        //get camera view direction
         Vector3 camDir = camTarget.forward;
         camDir.y = 0;
         float viewDir = Vector3.Angle(Vector3.forward, camDir);
-        orientation.forward = deltaAvg.normalized;
+
+        //set the orientation to where the player is inputing to look
+        orientation.forward = ToVector3(action.LookDelta).normalized;
         orientation.Rotate(0, viewDir, 0);
 
-        if (action.LookDelta != Vector2.zero)
-        {
-            playerObj.forward = Vector3.Lerp(playerObj.forward, orientation.forward.normalized, Time.deltaTime * rotSpeed);
-        }
+        //Rotate the player towards the orientations direction
+        playerObj.forward = Vector3.Lerp(playerObj.forward, orientation.forward.normalized, Time.deltaTime * rotSpeed);
     }
 
     public void MovePlayer()
     {
         moveDirection = kcc.TransformRotation * new Vector3(action.MoveDirection.x, 0.0f, action.MoveDirection.y);
 
-        
-
         if (isGrounded)
-        {
             kcc.Move(moveDirection * MoveSpeed);
-        }
         else
-        {
-            //Simulate gravity if isn't grounded
-            kcc.Move(action.MoveDirection.normalized * AirMoveSpeed);
-        }
+            kcc.Move(action.MoveDirection.normalized * AirMoveSpeed); //Simulate gravity if isn't grounded
     }
 
     public bool CheckGround()
@@ -148,13 +114,9 @@ public class PlayerMovement : NetworkBehaviour
         isGrounded = Physics.CheckSphere(groundCheck.position, 0.7f, groundMask);
 
         if (isGrounded)
-        {
             rb.linearDamping = Drag;
-        }
         else
-        {
             rb.linearDamping = 0;
-        }
 
         return isGrounded;
     }
@@ -171,4 +133,8 @@ public class PlayerMovement : NetworkBehaviour
         }
     }
 
+    Vector3 ToVector3(Vector2 input)
+    {
+        return new Vector3(input.x, 0, input.y);
+    }
 }
