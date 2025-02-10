@@ -1,5 +1,6 @@
 using System;
 using UnityEngine;
+using UnityEngine.InputSystem;
 
 public class PlayerInputHandeler : MonoBehaviour
 {
@@ -51,5 +52,9 @@ public class PlayerInputHandeler : MonoBehaviour
 
         //send out a copy of this frame's input to all listeners?
         onInputSignal?.Invoke(new PlayerInputAction(input));
+    }
+
+    public void OnPlayerMove() {
+        Debug.Log(inputSystem.Player.Move.inProgress);
     }
 }
