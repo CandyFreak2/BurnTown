@@ -1,18 +1,34 @@
+using System.ComponentModel;
 using UnityEngine;
 
 public class DroneSpawn : MonoBehaviour {
+    
+    public enum DroneSpawnType {
+        PLAYER, 
+        LOCATION
+    };
+
+    public DroneSpawnType spawnType = DroneSpawnType.PLAYER;
+    public GameObject dronePrefab;
     public int numOfDrones = 10;
     public float minRadius = 15f, maxRadius = 25f;
     public float minHeight = 0.5f, spawnHeight = 1.0f;
-    public GameObject dronePrefab;
+
+    [Tooltip("Is only used when SpawnType is LOCATION")]
+    public Transform spawnLocation;
+
 
     private GameObject[] players;
+    private Vector3 averagePos;
 
     // Grabs all players and spawns drones around the average position 
     public void Awake() {
-        players = GameObject.FindGameObjectsWithTag("Player");
-
-        Vector3 averagePos = GetAveragePlayerPos();
+        if (spawnType == DroneSpawnType.PLAYER) {
+            players = GameObject.FindGameObjectsWithTag("Player");
+            averagePos = GetAveragePlayerPos();
+        } else if (spawnType == DroneSpawnType.LOCATION) {
+            averagePos = spawnLocation.position;
+        }
 
         for (int i = 0; i < numOfDrones; i++) {
             Vector3 spawnPos = GetSpawnablePos(averagePos);
