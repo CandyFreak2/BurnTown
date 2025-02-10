@@ -43,7 +43,7 @@ public class PlayerTmp : NetworkBehaviour
             moveDirection = kcc.TransformRotation * new Vector3(input.direction.x, 0.0f, input.direction.y);
             jump = 0.0f;
 
-            if (input.buttons.WasPressed(previousButtons, InputButton.Jump) && kcc.IsGrounded)
+            if (input.buttons.WasPressed(previousButtons, InputButtonTmp.Jump) && kcc.IsGrounded)
             {
                 jump = jumpImpulse;
             }

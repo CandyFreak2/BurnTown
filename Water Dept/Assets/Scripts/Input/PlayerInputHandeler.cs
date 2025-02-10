@@ -3,6 +3,7 @@ using Fusion.Sockets;
 using System;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.InputSystem;
 
 public class PlayerInputHandeler : SimulationBehaviour, IBeforeUpdate, INetworkRunnerCallbacks
 {
@@ -66,8 +67,12 @@ public class PlayerInputHandeler : SimulationBehaviour, IBeforeUpdate, INetworkR
             accumulatedInput = default;
         }
 
-        //Keyboard keyboard = Keyboard.current;
-        //
+        // Add buttons
+        NetworkButtons buttons = default;
+        Keyboard keyboard = Keyboard.current;
+
+        buttons.Set(InputButton.Interact, keyboard.eKey.isPressed);
+
         // Change cursor lock state if enter or esc pressed
         //if (keyboard != null && (keyboard.enterKey.wasPressedThisFrame || keyboard.numpadEnterKey.wasPressedThisFrame || keyboard.escapeKey.wasPressedThisFrame))
         //{
@@ -88,6 +93,8 @@ public class PlayerInputHandeler : SimulationBehaviour, IBeforeUpdate, INetworkR
 
         if (lookDelta.magnitude > 0)
             accumulatedInput.LookDelta += lookDelta;
+
+        accumulatedInput.Buttons = new NetworkButtons(accumulatedInput.Buttons.Bits | buttons.Bits);
     }
 
     void INetworkRunnerCallbacks.OnInput(NetworkRunner runner, NetworkInput input)

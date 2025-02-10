@@ -15,7 +15,13 @@ public class PlayerMovement : NetworkBehaviour
 
     //movement input
     public Vector3 moveDirection = Vector3.zero;
-    
+    [Networked] private NetworkButtons previousButtons { get; set; }
+
+    // Hose data
+    public Transform hand;
+    private GameObject fireHose;
+    public bool isHolding = false; //public for pickup collider
+
     PlayerInputHandeler input;
     PlayerInputAction action;
     [SerializeField] Rigidbody rb;
@@ -77,6 +83,9 @@ public class PlayerMovement : NetworkBehaviour
             CapSpeed();
 
             MovePlayer();
+            HandleInteraction();
+
+            previousButtons = action.Buttons;
         }
     }
 
@@ -109,6 +118,21 @@ public class PlayerMovement : NetworkBehaviour
             kcc.Move(action.MoveDirection.normalized * AirMoveSpeed); //Simulate gravity if isn't grounded
     }
 
+    private void HandleInteraction()
+    {
+        if (action.Buttons.WasPressed(previousButtons, InputButton.Interact) && isHolding)
+        {
+            Debug.Log("Dropped Hose");
+            if (fireHose != null)
+            {
+                fireHose.transform.SetParent(null, true);
+                fireHose.GetComponent<Rigidbody>().constraints = RigidbodyConstraints.None;
+                fireHose = null;
+                isHolding = false;
+            }
+        }
+    }
+
     public bool CheckGround()
     {
         isGrounded = Physics.CheckSphere(groundCheck.position, 0.7f, groundMask);
@@ -136,5 +160,17 @@ public class PlayerMovement : NetworkBehaviour
     Vector3 ToVector3(Vector2 input)
     {
         return new Vector3(input.x, 0, input.y);
+    }
+
+    public void PickUpHose(GameObject _hose)
+    {
+        fireHose = _hose.gameObject;
+
+        Debug.Log("Grabbed Hose");
+        isHolding = true;
+        fireHose.GetComponent<Rigidbody>().constraints = RigidbodyConstraints.FreezeAll;
+
+        fireHose.transform.position = hand.position;
+        fireHose.transform.SetParent(hand.transform, true);
     }
 }

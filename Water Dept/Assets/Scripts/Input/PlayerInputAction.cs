@@ -1,6 +1,11 @@
 using Fusion;
 using UnityEngine;
 
+public enum InputButton
+{
+    Interact,
+}
+
 public struct PlayerInputAction : INetworkInput
 {
     public Vector2 MoveDirection;
