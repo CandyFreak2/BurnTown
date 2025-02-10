@@ -917,6 +917,36 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: e984cb564bc19e647aa0d1affc1fbccd, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  IsCloseToTruck:
+    m_PersistentCalls:
+      m_Calls:
+      - m_Target: {fileID: 1279709197}
+        m_TargetAssemblyTypeName: Firetruck, Assembly-CSharp
+        m_MethodName: IsPlayerCloseToTruck
+        m_Mode: 1
+        m_Arguments:
+          m_ObjectArgument: {fileID: 0}
+          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+          m_IntArgument: 0
+          m_FloatArgument: 0
+          m_StringArgument: 
+          m_BoolArgument: 0
+        m_CallState: 2
+  OnLeavingTruck:
+    m_PersistentCalls:
+      m_Calls:
+      - m_Target: {fileID: 0}
+        m_TargetAssemblyTypeName: 
+        m_MethodName: 
+        m_Mode: 0
+        m_Arguments:
+          m_ObjectArgument: {fileID: 0}
+          m_ObjectArgumentAssemblyTypeName: 
+          m_IntArgument: 0
+          m_FloatArgument: 0
+          m_StringArgument: 
+          m_BoolArgument: 0
+        m_CallState: 2
 --- !u!65 &1279709198
 BoxCollider:
   m_ObjectHideFlags: 0
@@ -936,7 +966,7 @@ BoxCollider:
   m_ProvidesContacts: 0
   m_Enabled: 1
   serializedVersion: 3
-  m_Size: {x: 1, y: 1, z: 1}
+  m_Size: {x: 1.2, y: 1, z: 1.2}
   m_Center: {x: 0, y: 0, z: 0}
 --- !u!23 &1279709199
 MeshRenderer:
@@ -1087,7 +1117,7 @@ BoxCollider:
   m_Enabled: 1
   serializedVersion: 3
   m_Size: {x: 2, y: 1, z: 2}
-  m_Center: {x: 0, y: 0, z: 0}
+  m_Center: {x: 0, y: 0.01, z: 0}
 --- !u!114 &1680062223
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -1115,6 +1145,9 @@ MonoBehaviour:
           m_StringArgument: 
           m_BoolArgument: 0
         m_CallState: 2
+  OnLeavingTruck:
+    m_PersistentCalls:
+      m_Calls: []
 --- !u!1 &1758295250
 GameObject:
   m_ObjectHideFlags: 0
