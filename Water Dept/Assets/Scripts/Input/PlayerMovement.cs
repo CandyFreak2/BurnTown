@@ -132,7 +132,7 @@ public class PlayerMovement : NetworkBehaviour
             if (fireHose != null)
             {
                 fireHose.transform.SetParent(null, true);
-                fireHose.GetComponent<Rigidbody>().constraints = RigidbodyConstraints.None;
+                //fireHose.GetComponent<Rigidbody>().constraints = RigidbodyConstraints.None;
                 fireHose = null;
                 isHolding = false;
             }
