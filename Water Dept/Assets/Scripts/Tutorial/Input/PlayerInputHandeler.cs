@@ -1,6 +1,5 @@
 using System;
 using UnityEngine;
-using UnityEngine.InputSystem;
 
 public class PlayerInputHandeler : MonoBehaviour
 {
@@ -54,7 +53,8 @@ public class PlayerInputHandeler : MonoBehaviour
         onInputSignal?.Invoke(new PlayerInputAction(input));
     }
 
-    public void OnPlayerMove() {
-        Debug.Log(inputSystem.Player.Move.inProgress);
-    }
+    public bool IsPlayerMovingUp { get { return inputSystem.Player.Move.ReadValue<Vector2>().y > 0; } }
+    public bool IsPlayerMovingDown { get { return inputSystem.Player.Move.ReadValue<Vector2>().y < 0; } }
+    public bool IsPlayerMovingLeft { get { return inputSystem.Player.Move.ReadValue<Vector2>().x < 0; } }
+    public bool IsPlayerMovingRight { get { return inputSystem.Player.Move.ReadValue<Vector2>().x > 0; } }
 }
