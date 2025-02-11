@@ -9,6 +9,6 @@ public class TutorialEvents : ScriptableObject {
 
 [Serializable]
 public class Tutorials {
-    [TextArea(5, 5)]
+    [TextArea(2, 5)]
     public string title, description;
 }

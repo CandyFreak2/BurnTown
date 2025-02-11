@@ -1,7 +1,4 @@
-using NUnit.Framework;
-using System;
 using TMPro;
-using Unity.VisualScripting;
 using UnityEngine;
 using UnityEngine.Events;
 
@@ -16,13 +13,20 @@ public class TutorialListener : MonoBehaviour {
 
     public UnityEvent OnPlayerMove, OnPlayerLook;
 
-    private void Awake() {
+    private void Update() {
         titleText.text = tutorialEvents.tutorials[currentTutorial].title;
         descriptionText.text = tutorialEvents.tutorials[currentTutorial].description;
+
+        // Testing Purposes
+        if (Input.GetKeyUp(KeyCode.J) && currentTutorial != tutorialEvents.tutorials.Count - 1) {
+            NextTutorial();
+        }
+
+        if (Input.GetKeyUp(KeyCode.K) && currentTutorial != 0) {
+            PreviousTutorial();
+        }
     }
 
-    //private void Update() {
-    //    OnPlayerMove?.Invoke();
-    //}
-
+    public void NextTutorial() { currentTutorial++; }
+    public void PreviousTutorial() { currentTutorial--; }
 }
