@@ -77,6 +77,7 @@ public class PlayerMovement : NetworkBehaviour
             CapSpeed();
 
             MovePlayer();
+
         }
     }
 
