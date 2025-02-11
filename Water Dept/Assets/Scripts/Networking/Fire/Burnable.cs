@@ -2,18 +2,21 @@ using Fusion;
 using System.Collections;
 using UnityEngine;
 using UnityEngine.Splines.Interpolators;
+using static Fusion.NetworkBehaviour;
 
 public class Burnable : NetworkBehaviour
 {
     //SYSTEM HALF DESIGNED FOR POLYMORPHISM
     //NOT IMPLEMENTED YET, JUST CONCEPT TEST
-    
+
     [SerializeField] protected float startFuel = 10.0f;
     private float fuelRemaining;
     [SerializeField] protected float spreadRate = 3.0f;
     [SerializeField] protected float spreadRadius = 10.0f;
     [SerializeField] protected float fireResistance = 3.0f;
 
+    //networked vars are communicated and updated by networkbehaviors
+    [Networked] protected bool nIsBurning { get; set; }
     [SerializeField] protected bool isBurning = true;
     private bool isSpawned = false;
 
@@ -30,6 +33,7 @@ public class Burnable : NetworkBehaviour
 
     public override void Spawned()
     {
+        nIsBurning = isBurning;
         isSpawned = true;
     }
 
@@ -45,13 +49,15 @@ public class Burnable : NetworkBehaviour
         if (isSpawned)
         {
             handeFire();
+            isBurning = nIsBurning;
         }
+
     }
 
     //does all functions related to burning of objects
     private void handeFire()
     {
-        if(isBurning )
+        if(nIsBurning)
         {
             handeColorLerp();
         }
@@ -68,23 +74,6 @@ public class Burnable : NetworkBehaviour
         gameObject.GetComponent<Renderer>().material.color = Color.Lerp(endColor, startColor, (fuelRemaining / startFuel));
     }
 
-    //WIP
-    IEnumerator SpreadFire()
-    {
-        yield return null;
-
-        //spherecast here---
-        if (Physics.SphereCast(gameObject.transform.position, spreadRadius, transform.forward, out RaycastHit hit, 10))
-        {
-            Debug.Log(hit);
-        }
-        else
-        {
-            Debug.Log("none");
-        }
-        
-    }
-
     // Checks if burning object is on fire and burns it and spreads fire
     //Destroys object if no more fuel
     private void handleBurn()
@@ -92,7 +81,7 @@ public class Burnable : NetworkBehaviour
         //temp
         timer += Time.deltaTime;
 
-        if (isBurning && fuelRemaining > 0)
+        if (nIsBurning && fuelRemaining > 0)
         {
             fuelRemaining -= Time.deltaTime;
 
@@ -108,10 +97,17 @@ public class Burnable : NetworkBehaviour
             Debug.Log("Object Destroyed");
             Destroy(gameObject);
         }
-        else if (!isBurning)
+        else if (!nIsBurning)
         {
             //runs lockout timer down
             lockoutTimer -= Time.deltaTime;
+
+            //placeholder for updating req
+            if (gameObject.GetComponent<Renderer>().material.color != Color.green)
+            {
+                gameObject.GetComponent<Renderer>().material.color = Color.green;
+            }
+            
         }
     }
 
@@ -127,11 +123,10 @@ public class Burnable : NetworkBehaviour
             }
         }
     }
-    int result = 0;
     //handles damage/burn, goes through fire resistance first
     private void fireDamage(Burnable obj)
     {
-        result = Random.Range(0, 2);
+        int result = Random.Range(0, 2);
         if (obj.lockoutTimer <= 0.0f)
         {
             if (obj.fireResistance > 0)
@@ -142,17 +137,18 @@ public class Burnable : NetworkBehaviour
             }
             else
             {
-                Debug.Log(result);
                 if (result >= 1)
                 {
-                    obj.isBurning = true;
+                    obj.nIsBurning = true;
                 }
                 else
                 {
                     obj.fireResistance++;
+
                 }
+
             }
         }
-        
+
     }
 }
