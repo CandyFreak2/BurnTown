@@ -85,6 +85,12 @@ public class PlayerMovement : NetworkBehaviour
             MovePlayer();
             HandleInteraction();
 
+            if (fireHose != null)
+            {
+                fireHose.transform.position = hand.position;
+                fireHose.transform.rotation = hand.rotation;
+            }
+
             previousButtons = action.Buttons;
         }
     }
@@ -168,9 +174,10 @@ public class PlayerMovement : NetworkBehaviour
 
         Debug.Log("Grabbed Hose");
         isHolding = true;
-        fireHose.GetComponent<Rigidbody>().constraints = RigidbodyConstraints.FreezeAll;
+        //fireHose.GetComponent<Rigidbody>().constraints = RigidbodyConstraints.FreezeAll;
 
         fireHose.transform.position = hand.position;
-        fireHose.transform.SetParent(hand.transform, true);
+        fireHose.transform.rotation = hand.rotation;
+        fireHose.transform.SetParent(hand.transform);
     }
 }

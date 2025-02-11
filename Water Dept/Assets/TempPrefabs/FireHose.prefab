@@ -121,6 +121,7 @@ GameObject:
   - component: {fileID: 1002961816487231613}
   - component: {fileID: 2107730186189465194}
   - component: {fileID: 3669420279406267141}
+  - component: {fileID: 3432334790476556191}
   m_Layer: 0
   m_Name: FireHose
   m_TagString: Untagged
@@ -274,12 +275,30 @@ MonoBehaviour:
   midPoint: {fileID: 0}
   endPoint: {fileID: 0}
   linePoints: 10
-  stiffness: 350
+  stiffness: 1
   damping: 15
-  ropeLength: 6.2
+  ropeLength: 15.44
   ropeWidth: 0.4
   midPointWeight: 1
   midPointPosition: 0.5
+--- !u!114 &3432334790476556191
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 5953924477471692778}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: -1552182283, guid: e725a070cec140c4caffb81624c8c787, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  SortKey: 343863646
+  ObjectInterest: 1
+  Flags: 262145
+  NestedObjects: []
+  NetworkedBehaviours: []
+  ForceRemoteRenderTimeframe: 0
 --- !u!1 &7041200510704412517
 GameObject:
   m_ObjectHideFlags: 0
@@ -291,9 +310,9 @@ GameObject:
   - component: {fileID: 5862058596566558257}
   - component: {fileID: 8594985762779740481}
   - component: {fileID: 6369645312878321145}
-  - component: {fileID: 4676131760797749475}
   - component: {fileID: 6476461276353358375}
   - component: {fileID: 8446142621494410555}
+  - component: {fileID: 4320407376955172609}
   m_Layer: 0
   m_Name: HoseHead
   m_TagString: FireHoseHead
@@ -370,29 +389,6 @@ MeshRenderer:
   m_SortingLayer: 0
   m_SortingOrder: 0
   m_AdditionalVertexStreams: {fileID: 0}
---- !u!136 &4676131760797749475
-CapsuleCollider:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 7041200510704412517}
-  m_Material: {fileID: 0}
-  m_IncludeLayers:
-    serializedVersion: 2
-    m_Bits: 0
-  m_ExcludeLayers:
-    serializedVersion: 2
-    m_Bits: 0
-  m_LayerOverridePriority: 0
-  m_IsTrigger: 0
-  m_ProvidesContacts: 1
-  m_Enabled: 1
-  serializedVersion: 2
-  m_Radius: 0.5000001
-  m_Height: 2
-  m_Direction: 1
-  m_Center: {x: 0.000000059604645, y: 0, z: -0.00000008940697}
 --- !u!54 &6476461276353358375
 Rigidbody:
   m_ObjectHideFlags: 0
@@ -434,3 +430,24 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   water: {fileID: 2728231644651137783}
   waterForce: 25
+--- !u!135 &4320407376955172609
+SphereCollider:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 7041200510704412517}
+  m_Material: {fileID: 0}
+  m_IncludeLayers:
+    serializedVersion: 2
+    m_Bits: 0
+  m_ExcludeLayers:
+    serializedVersion: 2
+    m_Bits: 0
+  m_LayerOverridePriority: 0
+  m_IsTrigger: 0
+  m_ProvidesContacts: 0
+  m_Enabled: 1
+  serializedVersion: 3
+  m_Radius: 1.0000007
+  m_Center: {x: 0.00000005960467, y: -8.338809e-14, z: -0.00000008940699}
