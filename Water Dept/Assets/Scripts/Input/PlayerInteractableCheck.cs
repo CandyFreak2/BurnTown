@@ -16,21 +16,21 @@ public class PlayerInteractableCheck : MonoBehaviour
         
     }
 
-    private void OnTriggerEnter(Collider other)
-    {
-        Debug.Log("Yo u triggered");
-        if (!playerController.isHolding && other.gameObject.tag == "FireHoseHead")
-        {
-            playerController.PickUpHose(other.gameObject);
-        }
-    }
+    //private void OnTriggerEnter(Collider other)
+    //{
+    //    Debug.Log("Yo u triggered");
+    //    if (!playerController.isHolding && other.gameObject.tag == "FireHoseHead")
+    //    {
+    //        playerController.PickUpHose(other.gameObject);
+    //    }
+    //}
 
     private void OnCollisionEnter(Collision collision)
     {
         Debug.Log("Yo u collided");
         if (!playerController.isHolding && collision.gameObject.tag == "FireHoseHead")
         {
-            playerController.PickUpHose(collision.gameObject.transform.parent.gameObject);
+            playerController.PickUpHose(collision.gameObject.transform.parent.gameObject, collision.gameObject);
         }
     }
 }

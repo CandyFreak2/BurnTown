@@ -19,7 +19,7 @@ public class PlayerMovement : NetworkBehaviour
 
     // Hose data
     public Transform hand;
-    private GameObject fireHose;
+    private GameObject fireHoseParent, fireHoseHead;
     public bool isHolding = false; //public for pickup collider
 
     PlayerInputHandeler input;
@@ -85,10 +85,13 @@ public class PlayerMovement : NetworkBehaviour
             MovePlayer();
             HandleInteraction();
 
-            if (fireHose != null)
+            if (fireHoseParent != null)
             {
-                fireHose.transform.position = hand.position;
-                fireHose.transform.rotation = hand.rotation;
+                fireHoseParent.transform.position = hand.position;
+                fireHoseParent.transform.rotation = hand.rotation;
+
+                fireHoseHead.transform.localPosition = Vector3.zero;
+                fireHoseHead.transform.localRotation = Quaternion.identity;
             }
 
             previousButtons = action.Buttons;
@@ -129,11 +132,14 @@ public class PlayerMovement : NetworkBehaviour
         if (action.Buttons.WasPressed(previousButtons, InputButton.Interact) && isHolding)
         {
             Debug.Log("Dropped Hose");
-            if (fireHose != null)
+            if (fireHoseParent != null)
             {
-                fireHose.transform.SetParent(null, true);
-                //fireHose.GetComponent<Rigidbody>().constraints = RigidbodyConstraints.None;
-                fireHose = null;
+                fireHoseParent.transform.SetParent(null, true);
+                fireHoseHead.GetComponent<Rigidbody>().constraints = RigidbodyConstraints.None;
+                fireHoseHead.GetComponent<Rigidbody>().isKinematic = false;
+
+                fireHoseParent = null;
+                fireHoseHead = null;
                 isHolding = false;
             }
         }
@@ -168,16 +174,18 @@ public class PlayerMovement : NetworkBehaviour
         return new Vector3(input.x, 0, input.y);
     }
 
-    public void PickUpHose(GameObject _hose)
+    public void PickUpHose(GameObject _hoseParent, GameObject _hoseHead)
     {
-        fireHose = _hose.gameObject;
+        fireHoseParent = _hoseParent.gameObject;
+        fireHoseHead = _hoseHead.gameObject;
 
         Debug.Log("Grabbed Hose");
         isHolding = true;
-        //fireHose.GetComponent<Rigidbody>().constraints = RigidbodyConstraints.FreezeAll;
-
-        fireHose.transform.position = hand.position;
-        fireHose.transform.rotation = hand.rotation;
-        fireHose.transform.SetParent(hand.transform);
+        fireHoseHead.GetComponent<Rigidbody>().constraints = RigidbodyConstraints.FreezeAll;
+        fireHoseHead.GetComponent<Rigidbody>().isKinematic = true;
+        
+        fireHoseParent.transform.position = hand.position;
+        fireHoseParent.transform.rotation = hand.rotation;
+        fireHoseParent.transform.SetParent(hand.transform);
     }
 }
