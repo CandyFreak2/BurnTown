@@ -6,6 +6,11 @@ public class Firetruck : MonoBehaviour {
     public UnityEvent OnLeavingTruck;
 
     private bool isPlayerNearby;
+    private FiretruckDetection nearbyRadiusDetection;
+
+    private void Awake() {
+        nearbyRadiusDetection = GetComponentInChildren<FiretruckDetection>();
+    }
 
     public void OnTriggerEnter(Collider other) {
         if (other.CompareTag("Player")) {
@@ -22,4 +27,5 @@ public class Firetruck : MonoBehaviour {
     }
 
     public bool IsPlayerNearby() { return isPlayerNearby; }
+    public bool IsPlayerInLargerRadius() { return nearbyRadiusDetection.HasPlayerNearby(); }
 }
