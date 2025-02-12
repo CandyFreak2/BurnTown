@@ -20,9 +20,9 @@ public class PlayerMovement : NetworkBehaviour
     // Hose data
     public Transform hand;
     private GameObject fireHoseParent, fireHoseHead;
-    public bool isHolding = false; //public for pickup collider
+    [Networked] public bool isHolding { get; set; } //public for pickup collider
 
-    PlayerInputHandeler input;
+PlayerInputHandeler input;
     PlayerInputAction action;
     [SerializeField] Rigidbody rb;
     [SerializeField] SimpleKCC kcc;
@@ -52,6 +52,8 @@ public class PlayerMovement : NetworkBehaviour
         {
             FreeCameraController.Singleton.SetTarget(camTarget);
         }
+
+        isHolding = false;
     }
 
     //overridden by FixedUpdateNetwork
@@ -85,14 +87,14 @@ public class PlayerMovement : NetworkBehaviour
             MovePlayer();
             HandleInteraction();
 
-            if (fireHoseParent != null)
-            {
-                fireHoseParent.transform.position = hand.position;
-                fireHoseParent.transform.rotation = hand.rotation;
+            //if (fireHoseParent != null)
+            //{
+            //    fireHoseParent.transform.position = hand.position;
+            //    fireHoseParent.transform.rotation = hand.rotation;
 
-                fireHoseHead.transform.localPosition = Vector3.zero;
-                fireHoseHead.transform.localRotation = Quaternion.identity;
-            }
+            //    fireHoseHead.transform.localPosition = Vector3.zero;
+            //    fireHoseHead.transform.localRotation = Quaternion.identity;
+            //}
 
             previousButtons = action.Buttons;
         }
@@ -129,7 +131,7 @@ public class PlayerMovement : NetworkBehaviour
 
     private void HandleInteraction()
     {
-        if (!HasStateAuthority)
+        if (!HasInputAuthority)
             return;
 
         //Drop hose
@@ -199,8 +201,15 @@ public class PlayerMovement : NetworkBehaviour
 
     public void PickUpHose(GameObject _hoseParent, GameObject _hoseHead)
     {
-        if (!HasStateAuthority)
+        if (!HasInputAuthority)
             return;
+
+        // Request state authority
+        NetworkObject hoseNetworkObject = _hoseParent.GetComponent<NetworkObject>();
+        if (hoseNetworkObject != null )
+        {
+            hoseNetworkObject.RequestStateAuthority(); //should work cus AllowStateAuthorityOverride is true on hose
+        }
 
         fireHoseParent = _hoseParent.gameObject;
         fireHoseHead = _hoseHead.gameObject;
@@ -209,9 +218,18 @@ public class PlayerMovement : NetworkBehaviour
         isHolding = true;
         fireHoseHead.GetComponent<Rigidbody>().constraints = RigidbodyConstraints.FreezeAll;
         fireHoseHead.GetComponent<Rigidbody>().isKinematic = true;
-        
-        fireHoseParent.transform.position = hand.position;
-        fireHoseParent.transform.rotation = hand.rotation;
-        fireHoseParent.transform.SetParent(hand.transform);
+
+        RPC_SetHosePosition(hand.transform.position, hand.transform.rotation);
+    }
+
+    [Rpc(RpcSources.InputAuthority, RpcTargets.All)]
+    public void RPC_SetHosePosition(Vector3 _position, Quaternion _rotation)
+    {
+        if (fireHoseParent != null)
+        {
+            fireHoseParent.transform.position = _position;
+            fireHoseParent.transform.rotation = _rotation;
+            fireHoseParent.transform.SetParent(hand);
+        }
     }
 }
