@@ -70,8 +70,10 @@ public class PlayerInputHandeler : SimulationBehaviour, IBeforeUpdate, INetworkR
         // Add buttons
         NetworkButtons buttons = default;
         Keyboard keyboard = Keyboard.current;
-
         buttons.Set(InputButton.Interact, keyboard.eKey.isPressed);
+
+        Mouse mouse = Mouse.current;
+        buttons.Set(InputButton.Shoot, mouse.leftButton.isPressed);
 
         // Change cursor lock state if enter or esc pressed
         //if (keyboard != null && (keyboard.enterKey.wasPressedThisFrame || keyboard.numpadEnterKey.wasPressedThisFrame || keyboard.escapeKey.wasPressedThisFrame))

@@ -129,6 +129,7 @@ public class PlayerMovement : NetworkBehaviour
 
     private void HandleInteraction()
     {
+        //Drop hose
         if (action.Buttons.WasPressed(previousButtons, InputButton.Interact) && isHolding)
         {
             Debug.Log("Dropped Hose");
@@ -137,10 +138,29 @@ public class PlayerMovement : NetworkBehaviour
                 fireHoseParent.transform.SetParent(null, true);
                 fireHoseHead.GetComponent<Rigidbody>().constraints = RigidbodyConstraints.None;
                 fireHoseHead.GetComponent<Rigidbody>().isKinematic = false;
+                fireHoseHead.GetComponent<FireHouse>().DropHose();
 
                 fireHoseParent = null;
                 fireHoseHead = null;
                 isHolding = false;
+            }
+        }
+
+        // Fire hose
+        if (action.Buttons.WasPressed(previousButtons, InputButton.Shoot) && isHolding)
+        {
+            if (fireHoseHead != null)
+            {
+                fireHoseHead.GetComponent<FireHouse>().Spray();
+            }
+        }
+
+        // Stop firing hose
+        if (action.Buttons.WasReleased(previousButtons, InputButton.Shoot) && isHolding)
+        {
+            if (fireHoseHead != null)
+            {
+                fireHoseHead.GetComponent<FireHouse>().StartCoroutine(fireHoseHead.GetComponent<FireHouse>().StopSpraying());
             }
         }
     }
