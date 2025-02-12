@@ -5052,12 +5052,6 @@ PrefabInstance:
     m_AddedGameObjects: []
     m_AddedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 3603ab1891742bb4581f408a10c4321c, type: 3}
---- !u!135 &155609228 stripped
-SphereCollider:
-  m_CorrespondingSourceObject: {fileID: 4320407376955172609, guid: fa27aca4b8e13dc448c41e74e7c0b108,
-    type: 3}
-  m_PrefabInstance: {fileID: 1479839608}
-  m_PrefabAsset: {fileID: 0}
 --- !u!1001 &156046085
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -38765,21 +38759,6 @@ PrefabInstance:
       propertyPath: m_Name
       value: FireHose
       objectReference: {fileID: 0}
-    - target: {fileID: 6476461276353358375, guid: fa27aca4b8e13dc448c41e74e7c0b108,
-        type: 3}
-      propertyPath: m_Drag
-      value: 0.8
-      objectReference: {fileID: 0}
-    - target: {fileID: 6476461276353358375, guid: fa27aca4b8e13dc448c41e74e7c0b108,
-        type: 3}
-      propertyPath: m_UseGravity
-      value: 1
-      objectReference: {fileID: 0}
-    - target: {fileID: 8446142621494410555, guid: fa27aca4b8e13dc448c41e74e7c0b108,
-        type: 3}
-      propertyPath: interactCollider
-      value: 
-      objectReference: {fileID: 155609228}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
     m_AddedGameObjects: []

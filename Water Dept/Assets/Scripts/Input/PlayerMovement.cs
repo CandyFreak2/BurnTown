@@ -19,10 +19,12 @@ public class PlayerMovement : NetworkBehaviour
 
     // Hose data
     public Transform hand;
-    private GameObject fireHoseParent, fireHoseHead;
-    public bool isHolding = false; //public for pickup collider
+    private GameObject fireHoseParent;
+    private GameObject fireHoseHead;
+    [Networked] public NetworkBool isHolding { get; set; } //public for pickup collider
+    [Networked] private NetworkId heldHoseId {  get; set; }
 
-    PlayerInputHandeler input;
+PlayerInputHandeler input;
     PlayerInputAction action;
     [SerializeField] Rigidbody rb;
     [SerializeField] SimpleKCC kcc;
@@ -52,6 +54,8 @@ public class PlayerMovement : NetworkBehaviour
         {
             FreeCameraController.Singleton.SetTarget(camTarget);
         }
+
+        isHolding = false;
     }
 
     //overridden by FixedUpdateNetwork
@@ -61,14 +65,6 @@ public class PlayerMovement : NetworkBehaviour
         CheckGround();
         RotatePlayer();
         CapSpeed();
-    }
-
-    private void FixedUpdate()
-    {
-        if (GameManager.TimeScale != 0)
-        {
-            //MovePlayer();
-        }
     }
 
     public override void FixedUpdateNetwork()
@@ -84,15 +80,6 @@ public class PlayerMovement : NetworkBehaviour
 
             MovePlayer();
             HandleInteraction();
-
-            if (fireHoseParent != null)
-            {
-                fireHoseParent.transform.position = hand.position;
-                fireHoseParent.transform.rotation = hand.rotation;
-
-                fireHoseHead.transform.localPosition = Vector3.zero;
-                fireHoseHead.transform.localRotation = Quaternion.identity;
-            }
 
             previousButtons = action.Buttons;
         }
@@ -129,23 +116,12 @@ public class PlayerMovement : NetworkBehaviour
 
     private void HandleInteraction()
     {
-        if (!HasStateAuthority)
-            return;
-
         //Drop hose
         if (action.Buttons.WasPressed(previousButtons, InputButton.Interact) && isHolding)
         {
-            Debug.Log("Dropped Hose");
-            if (fireHoseParent != null)
+            if (HasInputAuthority || HasStateAuthority && fireHoseParent != null)
             {
-                fireHoseParent.transform.SetParent(null, true);
-                fireHoseHead.GetComponent<Rigidbody>().constraints = RigidbodyConstraints.None;
-                fireHoseHead.GetComponent<Rigidbody>().isKinematic = false;
-                fireHoseHead.GetComponent<FireHouse>().DropHose();
-
-                fireHoseParent = null;
-                fireHoseHead = null;
-                isHolding = false;
+                RPC_RequestDropHose(Object.Id, fireHoseParent.GetComponent<NetworkObject>().Id);
             }
         }
 
@@ -166,6 +142,12 @@ public class PlayerMovement : NetworkBehaviour
                 fireHoseHead.GetComponent<FireHouse>().StartCoroutine(fireHoseHead.GetComponent<FireHouse>().StopSpraying());
             }
         }
+
+        //// Update position of hose if hose is held and has input or state authority
+        //if (isHolding && fireHoseParent != null && (HasStateAuthority || HasInputAuthority))
+        //{
+        //    //RPC_SetHosePosition(hand.position, hand.rotation);
+        //}
     }
 
     public bool CheckGround()
@@ -199,19 +181,107 @@ public class PlayerMovement : NetworkBehaviour
 
     public void PickUpHose(GameObject _hoseParent, GameObject _hoseHead)
     {
-        if (!HasStateAuthority)
-            return;
-
+        // Update local data
         fireHoseParent = _hoseParent.gameObject;
         fireHoseHead = _hoseHead.gameObject;
 
-        Debug.Log("Grabbed Hose");
         isHolding = true;
         fireHoseHead.GetComponent<Rigidbody>().constraints = RigidbodyConstraints.FreezeAll;
         fireHoseHead.GetComponent<Rigidbody>().isKinematic = true;
-        
-        fireHoseParent.transform.position = hand.position;
-        fireHoseParent.transform.rotation = hand.rotation;
-        fireHoseParent.transform.SetParent(hand.transform);
+
+        // Update server data
+        RPC_RequestPickUpHose(Object.Id, _hoseParent.GetComponent<NetworkObject>().Id);
     }
+
+    // Asks server very nicely if client can pick up hose
+    [Rpc(RpcSources.All, RpcTargets.StateAuthority)] // Only run by host
+    public void RPC_RequestPickUpHose(NetworkId _playerId, NetworkId _hoseId)
+    {
+        // Player that is picking up hose and hose objects
+        PlayerMovement player = Runner.FindObject(_playerId).GetComponent<PlayerMovement>();
+        GameObject hoseParent = Runner.FindObject(_hoseId).gameObject;
+
+        // Give player that is picking up hose input authority over hose
+        hoseParent.GetComponent<NetworkObject>().AssignInputAuthority(player.Object.InputAuthority);
+
+        // Pick up hose
+        player.isHolding = true;
+        player.heldHoseId = _hoseId;
+        player.fireHoseParent = hoseParent;
+        player.fireHoseHead = hoseParent.transform.GetChild(0).gameObject;
+
+        player.fireHoseHead.GetComponent<Rigidbody>().constraints = RigidbodyConstraints.FreezeAll;
+        player.fireHoseHead.GetComponent<Rigidbody>().isKinematic = true;
+
+        RPC_SetHosePosition(player.hand.position, player.hand.rotation, _playerId);
+    }
+
+    // Sync position with all clients
+    [Rpc(RpcSources.StateAuthority, RpcTargets.All)]
+    public void RPC_SetHosePosition(Vector3 _position, Quaternion _rotation, NetworkId _playerId)
+    {
+        NetworkObject hoseParent = Runner.FindObject(heldHoseId);
+        if (hoseParent != null)
+        {
+            hoseParent.transform.position = _position;
+            hoseParent.transform.rotation = _rotation;
+            hoseParent.transform.SetParent(hand);
+
+            hoseParent.transform.GetChild(0).transform.localPosition = Vector3.zero;
+            hoseParent.transform.GetChild(0).transform.localRotation = Quaternion.identity;
+        }
+    }
+
+    // Asks server very nicely if client can drop hose
+    [Rpc(RpcSources.All, RpcTargets.StateAuthority)]
+    public void RPC_RequestDropHose(NetworkId _playerId, NetworkId _hoseId)
+    {
+        if (!isHolding || fireHoseParent == null)
+            return;
+
+        //Player that is dropping hose and hose objects
+        PlayerMovement player = Runner.FindObject(_playerId).GetComponent<PlayerMovement>();
+        GameObject hoseParent = Runner.FindObject(_hoseId).gameObject;
+        GameObject hoseHead = hoseParent.transform.GetChild(0).gameObject;
+
+        // Remove input authority
+        hoseParent.GetComponent<NetworkObject>().RemoveInputAuthority();
+
+        // Drop hose
+        player.isHolding = false;
+        hoseParent.transform.SetParent(null);
+        hoseHead.GetComponent<Rigidbody>().constraints = RigidbodyConstraints.None;
+        hoseHead.GetComponent<Rigidbody>().isKinematic = false;
+        hoseHead.GetComponent<FireHouse>().DropHose();
+        if (isHolding) //Update local data. This works somehow?
+        {
+            isHolding = false;
+            fireHoseHead.GetComponent<Rigidbody>().constraints = RigidbodyConstraints.None;
+            fireHoseHead.GetComponent<Rigidbody>().isKinematic = false;
+            fireHoseHead.GetComponent<FireHouse>().DropHose();
+
+            // Clear references
+            fireHoseParent.transform.SetParent(null);
+            fireHoseParent = null;
+            fireHoseHead = null;
+            heldHoseId = default;
+        }
+
+        RPC_DropHose(hoseParent.transform.position, hoseParent.transform.rotation);
+    }
+
+    // Sync position with all clients after dropping
+    [Rpc(RpcSources.StateAuthority, RpcTargets.All)]
+    public void RPC_DropHose(Vector3 _position, Quaternion _rotation)
+    {
+        NetworkObject hoseParent = Runner.FindObject(heldHoseId);
+
+        if (hoseParent != null)
+        {
+            hoseParent.transform.position = _position;
+            hoseParent.transform.rotation = _rotation;
+            hoseParent.transform.SetParent(null);
+        }
+    }
+
 }
