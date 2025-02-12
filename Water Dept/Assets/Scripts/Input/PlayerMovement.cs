@@ -129,6 +129,9 @@ public class PlayerMovement : NetworkBehaviour
 
     private void HandleInteraction()
     {
+        if (!HasStateAuthority)
+            return;
+
         //Drop hose
         if (action.Buttons.WasPressed(previousButtons, InputButton.Interact) && isHolding)
         {
@@ -196,6 +199,9 @@ public class PlayerMovement : NetworkBehaviour
 
     public void PickUpHose(GameObject _hoseParent, GameObject _hoseHead)
     {
+        if (!HasStateAuthority)
+            return;
+
         fireHoseParent = _hoseParent.gameObject;
         fireHoseHead = _hoseHead.gameObject;
 
