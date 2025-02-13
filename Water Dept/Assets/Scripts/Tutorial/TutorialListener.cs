@@ -7,7 +7,7 @@ public class TutorialListener : MonoBehaviour {
 
     public TutorialEvents tutorialEvents;
     public TextMeshProUGUI titleText, descriptionText;
-    public PlayerInputHandeler handler;
+    public TPlayerInputHandeler handler;
 
     private int currentTutorial = 0;
     private bool hasMovedUp, hasMovedDown, hasMovedLeft, hasMovedRight;

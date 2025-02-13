@@ -326,8 +326,8 @@ GameObject:
   - component: {fileID: 4498768068730230287}
   - component: {fileID: 962280920562899762}
   - component: {fileID: 6071492348941175798}
-  - component: {fileID: 5984560911519448873}
-  - component: {fileID: 5006089572835781395}
+  - component: {fileID: 1430401273335654782}
+  - component: {fileID: 4373392173853891853}
   m_Layer: 0
   m_Name: TPlayer
   m_TagString: Player
@@ -403,7 +403,7 @@ Rigidbody:
   m_Interpolate: 0
   m_Constraints: 80
   m_CollisionDetection: 0
---- !u!114 &5984560911519448873
+--- !u!114 &1430401273335654782
 MonoBehaviour:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
@@ -412,19 +412,7 @@ MonoBehaviour:
   m_GameObject: {fileID: 7894503316278525394}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: d9bddd44fb3a5ec48bf6ce694c9ac958, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
---- !u!114 &5006089572835781395
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 7894503316278525394}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 3ed3411f3e8339a4db5bef0283d1e872, type: 3}
+  m_Script: {fileID: 11500000, guid: 29c21f0cf0fa30f49a5c83e0c87260d0, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
   MoveSpeed: 5
@@ -442,6 +430,18 @@ MonoBehaviour:
   isGrounded: 0
   Mass: 1
   Drag: 5
+--- !u!114 &4373392173853891853
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 7894503316278525394}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 3086ff7ae950ac24eafeb1bb71eee1e3, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
 --- !u!1 &9043255713623188088
 GameObject:
   m_ObjectHideFlags: 0
