@@ -24,7 +24,7 @@ public class PlayerMovement : NetworkBehaviour
     [Networked] public NetworkBool isHolding { get; set; } //public for pickup collider
     [Networked] private NetworkId heldHoseId {  get; set; }
 
-PlayerInputHandeler input;
+    PlayerInputHandeler input;
     PlayerInputAction action;
     [SerializeField] Rigidbody rb;
     [SerializeField] SimpleKCC kcc;
