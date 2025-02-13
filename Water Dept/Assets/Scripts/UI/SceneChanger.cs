@@ -3,13 +3,13 @@ using UnityEngine;
 using UnityEngine.SceneManagement;
 
 public class SceneChanger : MonoBehaviour {
-    [SerializeField] private SceneAsset tutorialScene, lobbyScene;
+    [SerializeField] private string tutorialScene, lobbyScene;
    
     public void PlayTutorial() {
-        SceneManager.LoadScene(tutorialScene.name);
+        SceneManager.LoadScene(tutorialScene);
     }
 
     public void PlayLobby() {
-        SceneManager.LoadScene(lobbyScene.name);
+        SceneManager.LoadScene(lobbyScene);
     }
 }

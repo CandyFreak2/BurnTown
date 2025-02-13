@@ -38,6 +38,8 @@ public class PlayerMovement : MonoBehaviour
     {
         for(int i = 0; i < deltaArray.Length; i++)
             deltaArray[i] = Vector3.zero;
+
+        mainCamera = Camera.main.transform;
     }
 
     private void Start()
