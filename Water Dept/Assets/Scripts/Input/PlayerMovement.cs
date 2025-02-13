@@ -119,9 +119,9 @@ public class PlayerMovement : NetworkBehaviour
         //Drop hose
         if (action.Buttons.WasPressed(previousButtons, InputButton.Interact) && isHolding)
         {
-            if (HasInputAuthority || HasStateAuthority && fireHoseParent != null)
+            if (/*HasInputAuthority || HasStateAuthority &&*/ fireHoseParent != null)
             {
-                RPC_RequestDropHose(Object.Id, fireHoseParent.GetComponent<NetworkObject>().Id);
+                DropHose();
             }
         }
 
@@ -197,6 +197,25 @@ public class PlayerMovement : NetworkBehaviour
         RPC_RequestPickUpHose(Object.Id, _hoseParent.GetComponent<NetworkObject>().Id);
     }
 
+    private void DropHose()
+    {
+        RPC_RequestDropHose(Object.Id, fireHoseParent.GetComponent<NetworkObject>().Id);
+
+        if (isHolding) //Update local data. This works somehow?
+        {
+            isHolding = false;
+            fireHoseHead.GetComponent<Rigidbody>().constraints = RigidbodyConstraints.None;
+            fireHoseHead.GetComponent<Rigidbody>().isKinematic = false;
+            fireHoseHead.GetComponent<FireHouse>().DropHose();
+
+            // Clear references
+            fireHoseParent.transform.SetParent(null);
+            fireHoseParent = null;
+            fireHoseHead = null;
+            heldHoseId = default;
+        }
+    }
+
     // Asks server very nicely if client can pick up hose
     [Rpc(RpcSources.All, RpcTargets.StateAuthority)] // Only run by host
     public void RPC_RequestPickUpHose(NetworkId _playerId, NetworkId _hoseId)
@@ -257,19 +276,6 @@ public class PlayerMovement : NetworkBehaviour
         hoseHead.GetComponent<Rigidbody>().constraints = RigidbodyConstraints.None;
         hoseHead.GetComponent<Rigidbody>().isKinematic = false;
         hoseHead.GetComponent<FireHouse>().DropHose();
-        if (isHolding) //Update local data. This works somehow?
-        {
-            isHolding = false;
-            fireHoseHead.GetComponent<Rigidbody>().constraints = RigidbodyConstraints.None;
-            fireHoseHead.GetComponent<Rigidbody>().isKinematic = false;
-            fireHoseHead.GetComponent<FireHouse>().DropHose();
-
-            // Clear references
-            fireHoseParent.transform.SetParent(null);
-            fireHoseParent = null;
-            fireHoseHead = null;
-            heldHoseId = default;
-        }
 
         RPC_DropHose(hoseParent.transform.position, hoseParent.transform.rotation);
     }
