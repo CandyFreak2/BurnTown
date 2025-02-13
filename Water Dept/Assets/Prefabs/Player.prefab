@@ -30,7 +30,6 @@ Transform:
   m_ConstrainProportionsScale: 0
   m_Children:
   - {fileID: 2951688486790897123}
-  - {fileID: 7528096688258589411}
   m_Father: {fileID: 5779141458447338188}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1 &2376498362145933745
@@ -88,12 +87,12 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 2629661651301253585}
   serializedVersion: 2
-  m_LocalRotation: {x: -0.7071068, y: 0, z: 0, w: 0.7071068}
-  m_LocalPosition: {x: 1.48, y: 0.87, z: 0}
+  m_LocalRotation: {x: -0.7071068, y: -0, z: -0, w: 0.7071068}
+  m_LocalPosition: {x: 1.48, y: -0.13, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []
-  m_Father: {fileID: 8537246583243309382}
+  m_Father: {fileID: 7423437995744765384}
   m_LocalEulerAnglesHint: {x: -90, y: 0, z: 0}
 --- !u!1 &3029772528895407285
 GameObject:
@@ -193,10 +192,11 @@ MonoBehaviour:
   orientation: {fileID: 8537246583243309382}
   playerObj: {fileID: 7423437995744765384}
   camTarget: {fileID: 736681648829432328}
-  rotSpeed: 7
+  rotSpeed: 20
   moveDirection: {x: 0, y: 0, z: 0}
   hand: {fileID: 7528096688258589411}
-  isHolding: 0
+  _isHolding:
+    _value: 0
   rb: {fileID: 6338638400722076882}
   kcc: {fileID: 1538818724924762789}
   groundCheck: {fileID: 3946907390898007895}
@@ -420,6 +420,7 @@ Transform:
   m_ConstrainProportionsScale: 0
   m_Children:
   - {fileID: 5089567539207061466}
+  - {fileID: 7528096688258589411}
   m_Father: {fileID: 5779141458447338188}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!33 &616905588316537877

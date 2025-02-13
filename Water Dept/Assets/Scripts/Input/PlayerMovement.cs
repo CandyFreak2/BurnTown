@@ -128,18 +128,22 @@ public class PlayerMovement : NetworkBehaviour
         // Fire hose
         if (action.Buttons.WasPressed(previousButtons, InputButton.Shoot) && isHolding)
         {
+            Debug.Log("On");
             if (fireHoseHead != null)
             {
                 fireHoseHead.GetComponent<FireHouse>().Spray();
+                
             }
         }
 
         // Stop firing hose
         if (action.Buttons.WasReleased(previousButtons, InputButton.Shoot) && isHolding)
         {
+            Debug.Log("Off");
             if (fireHoseHead != null)
             {
                 fireHoseHead.GetComponent<FireHouse>().StartCoroutine(fireHoseHead.GetComponent<FireHouse>().StopSpraying());
+                
             }
         }
 
