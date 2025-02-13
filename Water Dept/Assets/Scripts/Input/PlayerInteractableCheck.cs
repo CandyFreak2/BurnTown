@@ -1,3 +1,4 @@
+using Fusion;
 using UnityEngine;
 
 public class PlayerInteractableCheck : MonoBehaviour
