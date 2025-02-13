@@ -1,5 +1,12 @@
 using Fusion;
+using System;
 using UnityEngine;
+
+public enum InputButton
+{
+    Interact, 
+    Shoot
+}
 
 public struct PlayerInputAction : INetworkInput
 {
