@@ -26,6 +26,7 @@ public class PlayerInputHandeler : SimulationBehaviour, IBeforeUpdate, INetworkR
 
         //clear input
         inputSystem.Player.Move.canceled += ctx => moveDirection = ctx.ReadValue<Vector2>();
+        //inputSystem.Player.Jump.started += spaghetti => accumulatedInput.onInteractStarted?.Invoke();
     }
 
     private void OnEnable() //restarts controls when needed
