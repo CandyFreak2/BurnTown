@@ -88,11 +88,11 @@ Transform:
   m_GameObject: {fileID: 2629661651301253585}
   serializedVersion: 2
   m_LocalRotation: {x: -0.7071068, y: -0, z: -0, w: 0.7071068}
-  m_LocalPosition: {x: 1.48, y: -0.13, z: 0}
+  m_LocalPosition: {x: 1.48, y: 1.59, z: -0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []
-  m_Father: {fileID: 7423437995744765384}
+  m_Father: {fileID: 8537246583243309382}
   m_LocalEulerAnglesHint: {x: -90, y: 0, z: 0}
 --- !u!1 &3029772528895407285
 GameObject:
@@ -133,6 +133,7 @@ Transform:
   - {fileID: 3946907390898007895}
   - {fileID: 8537246583243309382}
   - {fileID: 736681648829432328}
+  - {fileID: 7423437995744765384}
   m_Father: {fileID: 0}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!54 &6338638400722076882
@@ -192,7 +193,7 @@ MonoBehaviour:
   orientation: {fileID: 8537246583243309382}
   playerObj: {fileID: 4517202452052124613}
   camTarget: {fileID: 736681648829432328}
-  rotSpeed: 20
+  rotSpeed: 30
   moveDirection: {x: 0, y: 0, z: 0}
   hand: {fileID: 7528096688258589411}
   _isHolding:
@@ -325,7 +326,7 @@ MeshRenderer:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 3348894177522433908}
-  m_Enabled: 1
+  m_Enabled: 0
   m_CastShadows: 1
   m_ReceiveShadows: 1
   m_DynamicOccludee: 1
@@ -420,7 +421,6 @@ Transform:
   m_ConstrainProportionsScale: 0
   m_Children:
   - {fileID: 5089567539207061466}
-  - {fileID: 7528096688258589411}
   m_Father: {fileID: 5779141458447338188}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!33 &616905588316537877
@@ -438,7 +438,7 @@ MeshRenderer:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 6539176836625966791}
-  m_Enabled: 1
+  m_Enabled: 0
   m_CastShadows: 1
   m_ReceiveShadows: 1
   m_DynamicOccludee: 1
@@ -552,17 +552,17 @@ PrefabInstance:
     - target: {fileID: -8679921383154817045, guid: b4d36515d0a49f34cb400860d3f855d6,
         type: 3}
       propertyPath: m_LocalScale.x
-      value: 20
+      value: 14.300001
       objectReference: {fileID: 0}
     - target: {fileID: -8679921383154817045, guid: b4d36515d0a49f34cb400860d3f855d6,
         type: 3}
       propertyPath: m_LocalScale.y
-      value: 20
+      value: 14.300001
       objectReference: {fileID: 0}
     - target: {fileID: -8679921383154817045, guid: b4d36515d0a49f34cb400860d3f855d6,
         type: 3}
       propertyPath: m_LocalScale.z
-      value: 20
+      value: 14.300001
       objectReference: {fileID: 0}
     - target: {fileID: -8679921383154817045, guid: b4d36515d0a49f34cb400860d3f855d6,
         type: 3}
