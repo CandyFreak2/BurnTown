@@ -1,3 +1,4 @@
+using ExitGames.Client.Photon.StructWrapping;
 using Fusion;
 using Fusion.Sockets;
 using System;
@@ -11,6 +12,9 @@ public class PlayerInputHandeler : SimulationBehaviour, IBeforeUpdate, INetworkR
 
     Vector2 moveDirection;
     Vector2 lookDelta;
+    float interactPress;
+    float shootPress;
+    
 
     public PlayerInputAction accumulatedInput = new PlayerInputAction();
     private bool resetInput = false;
@@ -23,6 +27,12 @@ public class PlayerInputHandeler : SimulationBehaviour, IBeforeUpdate, INetworkR
         //get input and leave it hanging
         inputSystem.Player.Move.performed += ctx => moveDirection = ctx.ReadValue<Vector2>();
         inputSystem.Player.Look.performed += ctx => lookDelta = ctx.ReadValue<Vector2>();
+
+        //interact
+        inputSystem.Player.Interact.started += ctx => interactPress = ctx.ReadValue<float>();
+        
+        //shoot
+        inputSystem.Player.Attack.performed += ctx => shootPress = ctx.ReadValue<float>();
 
         //clear input
         inputSystem.Player.Move.canceled += ctx => moveDirection = ctx.ReadValue<Vector2>();
@@ -51,7 +61,7 @@ public class PlayerInputHandeler : SimulationBehaviour, IBeforeUpdate, INetworkR
     {
         ////load inputs into the package
         //accumulatedInput.MoveDirection = moveDirection;
-        
+
         //if(lookDelta.magnitude > 0)
         //    accumulatedInput.LookDelta = lookDelta;
 
@@ -70,11 +80,15 @@ public class PlayerInputHandeler : SimulationBehaviour, IBeforeUpdate, INetworkR
 
         // Add buttons
         NetworkButtons buttons = default;
-        Keyboard keyboard = Keyboard.current;
-        buttons.Set(InputButton.Interact, keyboard.eKey.isPressed);
 
-        Mouse mouse = Mouse.current;
-        buttons.Set(InputButton.Shoot, mouse.leftButton.isPressed);
+        bool interactDown = (interactPress > 0.0f);
+
+        buttons.Set(InputButton.Interact, interactDown);
+
+        // shootpress returns 0, attack.readvalue returns 1
+        bool shootDown = (inputSystem.Player.Attack.ReadValue<float>() > 0.0f);
+
+        buttons.Set(InputButton.Shoot, shootDown);
 
         // Change cursor lock state if enter or esc pressed
         //if (keyboard != null && (keyboard.enterKey.wasPressedThisFrame || keyboard.numpadEnterKey.wasPressedThisFrame || keyboard.escapeKey.wasPressedThisFrame))

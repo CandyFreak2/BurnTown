@@ -151,4 +151,14 @@ public class Burnable : NetworkBehaviour
         }
 
     }
+
+    private void OnTriggerEnter(Collider other)
+    {
+        if(other.tag == "Flame")
+        {
+            nIsBurning = true;
+        }
+    }
+
+
 }
