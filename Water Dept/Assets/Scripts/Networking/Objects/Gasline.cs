@@ -1,4 +1,5 @@
 using System;
+using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
@@ -8,6 +9,7 @@ public class Gasline : MonoBehaviour {
     public class GaslinePoints {
         public GameObject location;
         public float speed;
+        public float delay;
         public bool canOutput = false;
     }
 
@@ -25,17 +27,6 @@ public class Gasline : MonoBehaviour {
         }
     }
 
-    public void HandleGaslineMovement() {
-        HandleSpawn();
-
-        if (canMove) {
-            if (HasReachedEndPoint()) {
-                MoveToNextPoint();
-            }
-            MoveTowardsEndPoint();
-        }
-    }
-
     public void HandleSpawn() {
         if (!canSpawnVisual) {
             flameVisual = Instantiate(flamePrefab, points[currentIndex].location.transform.position, Quaternion.identity);
@@ -43,27 +34,31 @@ public class Gasline : MonoBehaviour {
         canSpawnVisual = true;
     }
 
-    private bool HasReachedEndPoint() {
-        float distance = Vector3.Distance(flameVisual.transform.position, points[currentIndex].location.transform.position);
-        return distance < 0.02f;
-    }
+    public void HandleGaslineMovement() {
+        HandleSpawn();
+        if (canMove) {
+            float distance = Vector3.Distance(flameVisual.transform.position, points[currentIndex].location.transform.position);
+            if (distance < 0.02f) {
+                if (currentIndex != points.Count - 1) {
+                    currentIndex++;
+                }
+            }
+            flameVisual.transform.position = Vector3.MoveTowards(flameVisual.transform.position, GetPointPosition(currentIndex), GetPointSpeed(currentIndex));
+            //StartCoroutine(DelayFire(GetPointDelay(currentIndex)));
+        }
 
-    private void MoveToNextPoint() {
-        if (currentIndex != points.Count - 1) {
-            currentIndex++;
+        if (flameVisual.transform.position == GetPointPosition(currentIndex) && GetPointOutput(currentIndex)) {
+            Debug.Log("Pop");
         }
     }
 
-    void MoveTowardsEndPoint() {
-        flameVisual.transform.position = Vector3.MoveTowards(flameVisual.transform.position, 
-            GetPointPosition(currentIndex), GetPointSpeed(currentIndex) * Time.deltaTime);
+    IEnumerator DelayFire(float delay) {
+        // rewrite to support delay
+        yield return new WaitForSeconds(delay);
     }
 
-    private Vector3 GetPointPosition(int index) {
-        return points[index].location.transform.position;
-    }
-
-    private float GetPointSpeed(int index) {
-        return points[index].speed;
-    }
+    private Vector3 GetPointPosition(int index) { return points[index].location.transform.position; }
+    private bool GetPointOutput(int index) { return points[index].canOutput; }
+    private float GetPointDelay(int index) { return points[index].delay * Time.deltaTime; }
+    private float GetPointSpeed(int index) { return points[index].speed * Time.deltaTime; }
 }
