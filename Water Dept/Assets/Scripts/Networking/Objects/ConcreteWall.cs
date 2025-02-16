@@ -13,6 +13,7 @@ public class ConcreteWall : MonoBehaviour {
     public GameObject ExplosionObject { get => explosionObject; set => explosionObject = value; }
 
     private void Update() {
+        // Temporary Triggers until barrel implementation
         if (Input.GetKeyDown(KeyCode.X)) {
             Explode();
         }
