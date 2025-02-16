@@ -39,14 +39,14 @@ public class TestPlayerMovement : MonoBehaviour
         if (Input.GetKeyDown(KeyCode.Mouse0) && isHolding == true)
         {
             //sprays water
-            fireHose.GetComponent<FireHouse>().SprayWater();
+            fireHose.GetComponent<FireHouse>().Spray();
             //apply backward force
             WaterForce();
         }
         else if (Input.GetKeyUp(KeyCode.Mouse0) && isHolding == true)
         {
             //stops spraying water after half a second
-            fireHose.GetComponent<FireHouse>().StartCoroutine(fireHose.GetComponent<FireHouse>().StopSprayingWater());
+            fireHose.GetComponent<FireHouse>().StartCoroutine(fireHose.GetComponent<FireHouse>().StopSpraying());
             //stop force
             StopWaterForce();
         }

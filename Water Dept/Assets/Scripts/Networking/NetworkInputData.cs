@@ -1,7 +1,7 @@
 using Fusion;
 using UnityEngine;
 
-public enum InputButton
+public enum InputButtonTmp
 {
     Jump,
 }
