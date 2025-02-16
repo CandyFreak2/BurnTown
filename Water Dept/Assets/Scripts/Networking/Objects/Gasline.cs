@@ -13,7 +13,6 @@ public class Gasline : MonoBehaviour {
 
     public List<GaslinePoints> points;
     public int currentIndex = 0;
-    public int endPoint;
     public bool wasLit = false, canMove = false; 
     public GameObject flamePrefab;
 
@@ -50,14 +49,14 @@ public class Gasline : MonoBehaviour {
     }
 
     private void MoveToNextPoint() {
-        currentIndex++;
-        if (currentIndex >= points.Count) {
-            currentIndex = 0;
+        if (currentIndex != points.Count - 1) {
+            currentIndex++;
         }
     }
 
     void MoveTowardsEndPoint() {
-        flameVisual.transform.position = Vector3.MoveTowards(flameVisual.transform.position, GetPointPosition(currentIndex), GetPointSpeed(currentIndex) * Time.deltaTime);
+        flameVisual.transform.position = Vector3.MoveTowards(flameVisual.transform.position, 
+            GetPointPosition(currentIndex), GetPointSpeed(currentIndex) * Time.deltaTime);
     }
 
     private Vector3 GetPointPosition(int index) {
