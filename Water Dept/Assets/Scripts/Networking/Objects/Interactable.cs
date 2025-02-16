@@ -23,7 +23,7 @@ public class Interactable : NetworkBehaviour
 
     public override void Spawned()
     {
-        if (HasStateAuthority)
+        if (/*HasStateAuthority*/ true)
         {
             isPickedUp = false;
             carrierId = default;
@@ -32,7 +32,7 @@ public class Interactable : NetworkBehaviour
 
     public override void FixedUpdateNetwork()
     {
-        if (isPickedUp && HasStateAuthority)
+        if (isPickedUp /*&& HasStateAuthority*/)
         {
             NetworkObject carrier = Runner.FindObject(carrierId);
 
@@ -42,12 +42,16 @@ public class Interactable : NetworkBehaviour
                 transform.position = carrier.transform.position + carrier.transform.TransformDirection(holdOffset);
                 transform.rotation = carrier.transform.rotation;
             }
+            else // drop if disconnects
+            {
+                Drop();
+            }
         }
     }
 
     public void PickUp(NetworkId _playerId)
     {
-        if (HasStateAuthority && !isPickedUp)
+        if (/*HasStateAuthority &&*/ !isPickedUp)
         {
             isPickedUp = true;
             carrierId = _playerId;
@@ -61,7 +65,7 @@ public class Interactable : NetworkBehaviour
 
     public void Drop()
     {
-        if (HasStateAuthority && isPickedUp)
+        if (/*HasStateAuthority &&*/ isPickedUp)
         {
             Debug.Log("try Drop in interactable :)");
             isPickedUp = false;

@@ -121,7 +121,7 @@ public class PlayerMovement : NetworkBehaviour
         if (action.Buttons.WasPressed(previousButtons, InputButton.Interact) && IsHolding())
         {
             Debug.Log("Droppin my shi outside");
-            RPC_RequestDrop();
+            RPC_RequestDrop(Object.Id);
         }
 
         // Fire hose
@@ -137,12 +137,6 @@ public class PlayerMovement : NetworkBehaviour
             Debug.Log("Off");
             carriedObject.gameObject.GetComponent<FireHouse>().StartCoroutine(carriedObject.gameObject.GetComponent<FireHouse>().StopSpraying());
         }
-
-        //// Update position of hose if hose is held and has input or state authority
-        //if (isHolding && fireHoseParent != null && (HasStateAuthority || HasInputAuthority))
-        //{
-        //    //RPC_SetHosePosition(hand.position, hand.rotation);
-        //}
     }
 
     public bool CheckGround()
@@ -288,34 +282,51 @@ public class PlayerMovement : NetworkBehaviour
     public void PickUpObject(Interactable _object)
     {
         if (_object != null && _object.CanBePickedUp())
-        {
-            RPC_RequestPickUp(_object.Object.Id);
+        {            
+            RPC_RequestPickUp(_object.Object.Id, Object.Id);
         }
     }
 
     // Asks server very nicely if client can pick up object
-    [Rpc(RpcSources.InputAuthority, RpcTargets.StateAuthority)] // Only run by host
-    public void RPC_RequestPickUp(NetworkId _objectId)
+    [Rpc(RpcSources.All, RpcTargets.All)] // Only run by host
+    public void RPC_RequestPickUp(NetworkId _objectId, NetworkId _playerId)
     {
-       Interactable interactable = Runner.FindObject(_objectId).GetComponent<Interactable>();
+        Interactable interactable = Runner.FindObject(_objectId).GetComponent<Interactable>();
+        PlayerMovement player = Runner.FindObject(_playerId).GetComponent<PlayerMovement>();
 
         if (interactable != null && interactable.CanBePickedUp())
         {
+            Debug.Log("try pick up");
+            interactable.GetComponent<NetworkObject>().AssignInputAuthority(player.Object.InputAuthority);
             interactable.PickUp(Object.Id);
-            carriedObject = interactable;
+            player.carriedObject = interactable;
+
+            if (carriedObject == null)
+            {
+                carriedObject = interactable;
+            }
         }
     }
 
     // Asks server very nicely if client can drop object
-    [Rpc(RpcSources.InputAuthority, RpcTargets.StateAuthority)] // Only run by host
-    public void RPC_RequestDrop()
+    [Rpc(RpcSources.All, RpcTargets.All)] // Only run by host
+    public void RPC_RequestDrop(NetworkId _playerId)
     {
-        if (IsHolding() && carriedObject.GetCarrierId() == Object.Id)
+        PlayerMovement player = Runner.FindObject(_playerId).GetComponent<PlayerMovement>();
+
+        if (player.IsHolding() && player.carriedObject.GetCarrierId() == _playerId)
         {
             Debug.Log("Droppin my shi");
-            carriedObject.Drop();
-            carriedObject.gameObject.GetComponent<FireHouse>().DropHose();
-            carriedObject = null;
+            player.carriedObject.Drop();
+            player.carriedObject.gameObject.GetComponent<FireHouse>().DropHose();
+            player.carriedObject = null;
+
+            if (carriedObject != null)
+            {
+                carriedObject.Drop();
+                carriedObject.gameObject.GetComponent<FireHouse>().DropHose();
+                carriedObject = null;
+            }
         }
     }
 

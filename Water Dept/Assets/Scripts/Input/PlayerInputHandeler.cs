@@ -81,7 +81,7 @@ public class PlayerInputHandeler : SimulationBehaviour, IBeforeUpdate, INetworkR
         // Add buttons
         NetworkButtons buttons = default;
 
-        bool interactDown = (interactPress > 0.0f);
+        bool interactDown = (inputSystem.Player.Interact.ReadValue<float>() > 0.0f);
 
         buttons.Set(InputButton.Interact, interactDown);
 
