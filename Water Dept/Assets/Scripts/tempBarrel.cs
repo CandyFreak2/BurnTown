@@ -1,6 +1,8 @@
 using Unity.VisualScripting;
 using UnityEditor.Rendering;
+using UnityEditor.SearchService;
 using UnityEngine;
+using static UnityEngine.ParticleSystem;
 
 public class tempBarrel : MonoBehaviour
 {
@@ -11,19 +13,15 @@ public class tempBarrel : MonoBehaviour
     private GameObject schematic;
 
     public const int PLACE_DISTANCE = 3;
-    
-    // Start is called once before the first execution of Update after the MonoBehaviour is created
-    void Start()
-    {
-        
-    }
+
+    public GameObject testBarrel;
 
     // Update is called once per frame
     void Update()
     {
         if (Input.GetKeyDown(KeyCode.Q))
         {
-            if(isSchemOut)
+            if (isSchemOut)
             {
                 isSchemOut = false;
                 Destroy(schematic);
@@ -33,15 +31,24 @@ public class tempBarrel : MonoBehaviour
                 isSchemOut = true;
                 schematic = Instantiate(placeholderPrefab);
             }
-            
+
         }
 
-        if(Input.GetKeyDown(KeyCode.E) && isSchemOut)
+        if (Input.GetKeyDown(KeyCode.E) && isSchemOut)
         {
             placeBarrel();
         }
 
-        if(isSchemOut)
+        if (Input.GetKeyDown(KeyCode.F) && isSchemOut)
+        {
+            GameObject bar = Instantiate(barrelPrefab);
+            bar.transform.position = (gameObject.GetComponent<Transform>().transform.position) +
+                gameObject.GetComponent<Transform>().transform.forward * PLACE_DISTANCE;
+            snapPosition(bar);
+            bar.GetComponent<BarrelInfo>().isThrown = true;
+        }
+
+        if (isSchemOut)
         {
             schemBarrel();
         }
@@ -50,9 +57,9 @@ public class tempBarrel : MonoBehaviour
     private void schemBarrel()
     {
         isSchemOut = true;
-        if(isSchemOut)
+        if (isSchemOut)
         {
-            schematic.transform.position = (gameObject.GetComponent<Transform>().transform.position) +
+            schematic.transform.position = (gameObject.GetComponent<Transform>().transform.position) + 
                 gameObject.GetComponent<Transform>().transform.forward * PLACE_DISTANCE;
         }
 
@@ -62,7 +69,6 @@ public class tempBarrel : MonoBehaviour
 
     private void placeBarrel()
     {
-        
         GameObject bar = Instantiate(barrelPrefab);
         bar.transform.position = (gameObject.GetComponent<Transform>().transform.position) +
                 gameObject.GetComponent<Transform>().transform.forward * PLACE_DISTANCE;
@@ -70,15 +76,28 @@ public class tempBarrel : MonoBehaviour
         snapPosition(bar);
     }
 
+    //assigns a barrels position to snap to the ground and/or a barrel nearby
     private void snapPosition(GameObject obj)
     {
         RaycastHit hit;
 
         if (Physics.Raycast(obj.transform.position + new Vector3(0, 100f, 0), Vector3.down, out hit))
         {
-            float dist = Vector3.Distance(obj.transform.position, hit.point);
-            obj.transform.position -= Vector3.up * dist - new Vector3(0, 0.5f, 0);
+            if (hit.collider.GetComponent<BarrelInfo>() == null)
+            {
+                float dist = Vector3.Distance(obj.transform.position, hit.point);
+                obj.transform.position -= Vector3.up * dist - new Vector3(0, 0.5f, 0);
+            }
+            else if(hit.collider.GetComponent<BarrelInfo>() != null)
+            {
+                obj.transform.position = hit.collider.transform.position + new Vector3(0, 1.0f, 0);
 
+                if(obj.GetComponent<BarrelInfo>() != null)
+                {
+                    obj.GetComponent<BarrelInfo>().tail = hit.collider.gameObject;
+                    hit.collider.gameObject.GetComponent<BarrelInfo>().head = obj.gameObject;
+                }
+            }
         }
     }
 
