@@ -3,11 +3,13 @@ using Fusion;
 
 public class Interactable : NetworkBehaviour
 {
-    [Networked]
-    private NetworkBool isPickedUp { get; set; }
+    private bool isSpawned;
 
     [Networked]
-    private NetworkId carrierId { get; set; }
+    public NetworkBool isPickedUp { get; set; }
+
+    [Networked]
+    public NetworkId carrierId { get; set; }
 
     private Rigidbody rb;
     private Collider interactableCollider;
@@ -17,6 +19,7 @@ public class Interactable : NetworkBehaviour
 
     private void Awake()
     {
+        isSpawned = false;
         rb = GetComponent<Rigidbody>();
         interactableCollider = GetComponent<Collider>();
     }
@@ -25,25 +28,29 @@ public class Interactable : NetworkBehaviour
     {
         if (/*HasStateAuthority*/ true)
         {
+            isSpawned = true;
             isPickedUp = false;
             carrierId = default;
         }
     }
 
-    public override void FixedUpdateNetwork()
+    private void FixedUpdate()
     {
-        if (isPickedUp /*&& HasStateAuthority*/)
+        if (isSpawned && isPickedUp /*&& HasStateAuthority*/)
         {
             NetworkObject carrier = Runner.FindObject(carrierId);
 
             // Update position of interactable to player
             if (carrier != null)
             {
-                transform.position = carrier.transform.position + carrier.transform.TransformDirection(holdOffset);
-                transform.rotation = carrier.transform.rotation;
+                Transform handtransform = carrier.transform.GetChild(0);
+
+                transform.position = handtransform.position + handtransform.TransformDirection(holdOffset);
+                transform.rotation = handtransform.rotation;
             }
             else // drop if disconnects
             {
+                Debug.Log("Drop but not want to");
                 Drop();
             }
         }
@@ -67,7 +74,6 @@ public class Interactable : NetworkBehaviour
     {
         if (/*HasStateAuthority &&*/ isPickedUp)
         {
-            Debug.Log("try Drop in interactable :)");
             isPickedUp = false;
             carrierId = default;
 

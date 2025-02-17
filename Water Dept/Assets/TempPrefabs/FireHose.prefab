@@ -299,7 +299,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   SortKey: 343863646
   ObjectInterest: 1
-  Flags: 786433
+  Flags: 262145
   NestedObjects: []
   NetworkedBehaviours:
   - {fileID: 5997422084245149722}
@@ -317,6 +317,10 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 448471b91d9a6cc4bbdb69ea7b4a35f3, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  _isPickedUp:
+    _value: 0
+  _carrierId:
+    Raw: 0
   holdOffset: {x: 1, y: 0.5, z: 0}
 --- !u!54 &3656389120166898570
 Rigidbody:
@@ -378,7 +382,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: a26a382d4f5c955439a0bdfacba15869, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  water: {fileID: 2728231644651137783}
+  flame: {fileID: 2728231644651137783}
   waterForce: 25
   flamethrower: {fileID: 6700870194366174231}
 --- !u!1 &7041200510704412517
