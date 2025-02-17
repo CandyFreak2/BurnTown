@@ -95,7 +95,9 @@ public class Burnable : NetworkBehaviour
         else if (fuelRemaining < 0)
         {
             Debug.Log("Object Destroyed");
-            Destroy(gameObject);
+            //Destroy(gameObject);
+            //Runner.Despawn(Object);
+            gameObject.SetActive(false);
         }
         else if (!nIsBurning)
         {
@@ -160,5 +162,9 @@ public class Burnable : NetworkBehaviour
         }
     }
 
-
+    // Checks if burn progress is below certain amount
+    public bool GetDisabled(float _disabledPercent)
+    {
+        return _disabledPercent > fuelRemaining / startFuel;
+    }
 }
