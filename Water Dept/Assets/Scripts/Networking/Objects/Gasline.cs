@@ -40,11 +40,10 @@ public class Gasline : MonoBehaviour {
             float distance = Vector3.Distance(flameVisual.transform.position, points[currentIndex].location.transform.position);
             if (distance < 0.02f) {
                 if (currentIndex != points.Count - 1) {
-                    currentIndex++;
+                    StartCoroutine(DelayBeforeNextMove(GetPointDelay(currentIndex)));
                 }
             }
             flameVisual.transform.position = Vector3.MoveTowards(flameVisual.transform.position, GetPointPosition(currentIndex), GetPointSpeed(currentIndex));
-            //StartCoroutine(DelayFire(GetPointDelay(currentIndex)));
         }
 
         if (flameVisual.transform.position == GetPointPosition(currentIndex) && GetPointOutput(currentIndex)) {
@@ -52,13 +51,15 @@ public class Gasline : MonoBehaviour {
         }
     }
 
-    IEnumerator DelayFire(float delay) {
-        // rewrite to support delay
+    IEnumerator DelayBeforeNextMove(float delay) {
+        canMove = false;
         yield return new WaitForSeconds(delay);
+        currentIndex++;
+        canMove = true;
     }
 
     private Vector3 GetPointPosition(int index) { return points[index].location.transform.position; }
     private bool GetPointOutput(int index) { return points[index].canOutput; }
-    private float GetPointDelay(int index) { return points[index].delay * Time.deltaTime; }
+    private float GetPointDelay(int index) { return points[index].delay; }
     private float GetPointSpeed(int index) { return points[index].speed * Time.deltaTime; }
 }
