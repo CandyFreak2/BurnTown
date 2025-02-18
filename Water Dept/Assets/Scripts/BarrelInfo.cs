@@ -8,12 +8,17 @@ public class BarrelInfo : MonoBehaviour
     public GameObject tail = null;
     public GameObject head = null;
 
+    [SerializeField] private ParticleSystem pixelBoom;
+
     public float delay = 0.5f;
 
     public bool isThrown = false;
+    private bool isAirborne;
     [SerializeField] private float throwForce = 450;
 
     public bool isExploded = false;
+
+    float timer;
 
     public void explode()
     {
@@ -36,25 +41,31 @@ public class BarrelInfo : MonoBehaviour
         {
             gameObject.GetComponent<Rigidbody>().AddForce((transform.forward + new Vector3(0,1,0)) * throwForce);
             isThrown = false;
+            isAirborne = true;
+        }
+        if(isAirborne)
+        {
+            timer += Time.deltaTime;
+            //if we want them to stack after throw
+
+            RaycastHit hit;
+
+            if (Physics.Raycast(transform.position, Vector3.down, out hit, 0.55f) && timer > 0.5f)
+            {
+                if (hit.collider.gameObject.tag == "ground")
+                {
+                    explode();
+                }
+            }
         }
 
-        //if we want them to stack after throw
-
-        //RaycastHit hit;
-
-        //if (Physics.Raycast(transform.position, Vector3.down, out hit, 0.55f) && timer >= 0.4f)
-        //{
-        //    if (hit.collider.gameObject.tag == "ground")
-        //    {
-        //        isThrown = false;
-        //    }
-        //}
     }
 
     IEnumerator boom()
     {
-        gameObject.GetComponent<MeshRenderer>().material.color = Color.red;
+        pixelBoom.Play();
         Destroy(gameObject.GetComponent<Rigidbody>());
+        Destroy(gameObject.GetComponent<MeshRenderer>());
         //play explosion
         yield return new WaitForSeconds(delay);
         if (head != null)
