@@ -21,10 +21,13 @@ public class tempBarrel : MonoBehaviour
         //queue schematic if barrel is nearby
         if (Input.GetKeyDown(KeyCode.Q))
         {
-            if(PickupBarrel())
+            if(!isSchemOut)
             {
-                isSchemOut = true;
-                schematic = Instantiate(placeholderPrefab);
+                if(PickupBarrel())
+                {
+                    isSchemOut = true;
+                    schematic = Instantiate(placeholderPrefab);
+                }
             }
         }
 
@@ -44,7 +47,6 @@ public class tempBarrel : MonoBehaviour
             GameObject bar = Instantiate(barrelPrefab);
             bar.transform.position = (gameObject.GetComponent<Transform>().transform.position) +
                 gameObject.GetComponent<Transform>().transform.forward * placeDistance;
-            SnapPosition(bar);
             bar.GetComponent<BarrelInfo>().isThrown = true;
 
             if (isSchemOut)
