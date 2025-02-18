@@ -152,18 +152,18 @@ MonoBehaviour:
   - location: {fileID: 1782709131}
     speed: 1
     delay: 0
-    canPop: 1
-    popDirection: {x: 90, y: 0, z: 0}
+    canPop: 0
+    popDirection: {x: 0, y: 0, z: 0}
   - location: {fileID: 1444976072}
     speed: 3
     delay: 5
-    canPop: 0
-    popDirection: {x: 0, y: 25, z: 0}
+    canPop: 1
+    popDirection: {x: 0, y: 90, z: 0}
   - location: {fileID: 1058551140}
     speed: 5
     delay: 0
-    canPop: 0
-    popDirection: {x: 0, y: 0, z: 25}
+    canPop: 1
+    popDirection: {x: 180, y: 180, z: 180}
   currentIndex: 0
   wasLit: 1
   canMove: 0

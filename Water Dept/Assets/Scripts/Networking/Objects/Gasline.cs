@@ -21,10 +21,17 @@ public class Gasline : MonoBehaviour {
     public GameObject firePrefab;
 
     private GameObject flameVisual, fireVisual;
-    private bool canSpawnFlame = false, canSpawnFire = false;
+    private bool canSpawnFlame = false;
+
+    // Keeps track of which points have had fireVisual spawned
+    private bool[] fireSpawned;
 
     // Tolerance is used incase points and flameVisual don't 100% line up and counteracts floating point precision 
     private const float tolerance = 0.1f;
+
+    public void Start() {
+        fireSpawned = new bool[points.Count];
+    }
 
     public void Update() {
         if (wasLit) {
@@ -55,8 +62,8 @@ public class Gasline : MonoBehaviour {
             Vector3 popDirection = GetPopDirection(currentIndex);
             Vector3 spawnPosition = GetPointPosition(currentIndex);
 
-            if (popDirection != Vector3.zero) {
-                HandleSpawn(ref canSpawnFire, ref fireVisual, firePrefab, spawnPosition, Quaternion.LookRotation(popDirection));
+            if (popDirection != Vector3.zero && !fireSpawned[currentIndex]) {
+                HandleSpawn(ref fireSpawned[currentIndex], ref fireVisual, firePrefab, spawnPosition, Quaternion.LookRotation(popDirection));
 
                 if (fireVisual != null) {
                     fireVisual.transform.rotation = Quaternion.LookRotation(popDirection);
