@@ -1,5 +1,7 @@
 using NUnit.Framework.Internal;
 using System.Collections;
+using System.Data;
+using System.Linq;
 using System.Threading;
 using UnityEngine;
 
@@ -13,32 +15,36 @@ public class BarrelInfo : MonoBehaviour
     public float delay = 0.5f;
 
     public bool isThrown = false;
-    private bool isAirborne;
+    
     [SerializeField] private float throwForce = 450;
 
+    [SerializeField] public float explosionRadius = 5.0f;
+    [SerializeField] public float explosionForce = 10.0f;
     public bool isExploded = false;
 
-    float timer;
+    private bool isAirborne;
+    private float timer;
 
-    public void explode()
+    public void Explode()
     {
-        StartCoroutine(boom());
+        StartCoroutine(ChainExplode());
     }
 
     private void Update()
     {
-        throwBarrel();
+        ThrowBarrel();
 
         if(isExploded)
         {
-            StartCoroutine(boom());
+            StartCoroutine(ChainExplode());
         }
     }
 
-    private void throwBarrel()
+    private void ThrowBarrel()
     {
         if(isThrown)
         {
+            gameObject.AddComponent<Rigidbody>();
             gameObject.GetComponent<Rigidbody>().AddForce((transform.forward + new Vector3(0,1,0)) * throwForce);
             isThrown = false;
             isAirborne = true;
@@ -54,33 +60,56 @@ public class BarrelInfo : MonoBehaviour
             {
                 if (hit.collider.gameObject.tag == "ground")
                 {
-                    explode();
+                    Explode();
                 }
             }
         }
 
     }
 
-    IEnumerator boom()
+    IEnumerator ChainExplode()
     {
-        pixelBoom.Play();
-        Destroy(gameObject.GetComponent<Rigidbody>());
-        Destroy(gameObject.GetComponent<MeshRenderer>());
-        //play explosion
+        ExplosionTriggers();
+
         yield return new WaitForSeconds(delay);
+
         if (head != null)
         {
             head.GetComponent<BarrelInfo>().tail = null;
-            head.GetComponent<BarrelInfo>().explode();
+            head.GetComponent<BarrelInfo>().Explode();
         }
         if (tail != null)
         {
             tail.GetComponent<BarrelInfo>().head = null;
-            tail.GetComponent<BarrelInfo>().explode();
+            tail.GetComponent<BarrelInfo>().Explode();
         }
+
         yield return new WaitForSeconds(delay);
+
         Destroy(gameObject);
     }
 
+    private void ExplosionTriggers()
+    {
+        pixelBoom.Play();
+
+        if (gameObject.GetComponent<Rigidbody>() != null)
+        {
+            Destroy(gameObject.GetComponent<Rigidbody>());
+        }
+        Destroy(gameObject.GetComponent<MeshRenderer>());
+
+        Collider[] colliders = Physics.OverlapSphere(gameObject.transform.position, explosionRadius);
+        foreach (Collider hit in colliders)
+        {
+            Rigidbody rb = hit.GetComponent<Rigidbody>();
+
+            if (rb != null)
+            {
+                rb.AddExplosionForce(explosionForce, gameObject.transform.position, explosionRadius, 3.0f);
+                Debug.Log("push");
+            }
+        }
+    }
 }
 
