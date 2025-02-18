@@ -4,18 +4,30 @@ using Fusion;
 
 public class FireHouse : NetworkBehaviour
 {
-    [SerializeField] GameObject water;
+    [SerializeField] GameObject flame;
+    [Networked] public NetworkBool isShooting { get; set; }
     [SerializeField] public float waterForce = 10f;
-   
+
+    [SerializeField] private ParticleSystem flamethrower;
+
+    public override void Spawned()
+    {
+        isShooting = false;
+    }
+
     public void Spray()
     {
-        water.SetActive(true);
+        flame.SetActive(true);
+        RPC_ShootFire(Object.Id);
+        isShooting = true;
     }
 
     public IEnumerator StopSpraying()
     {
         yield return new WaitForSeconds(0.5f);
-        water.SetActive(false);
+        flame.SetActive(false);
+        RPC_StopFire(Object.Id);
+        isShooting = false;
     }
 
     public void DropHose()
@@ -28,5 +40,29 @@ public class FireHouse : NetworkBehaviour
     private void ReactivateHose()
     {
         gameObject.tag = "FireHoseHead";
+    }
+
+    // Tell everyone to burn shit
+    [Rpc(RpcSources.All, RpcTargets.All)] // Run by everyone
+    public void RPC_ShootFire(NetworkId _hoseId)
+    {
+        FireHouse firehose = Runner.FindObject(_hoseId).GetComponent<FireHouse>();
+
+        if (firehose != null)
+        {
+            firehose.flamethrower.Play();
+        }
+    }
+
+    // Tell everyone to stop burning shit
+    [Rpc(RpcSources.All, RpcTargets.All)] // Run by everyone
+    public void RPC_StopFire(NetworkId _hoseId)
+    {
+        FireHouse firehose = Runner.FindObject(_hoseId).GetComponent<FireHouse>();
+
+        if (firehose != null)
+        {
+            firehose.flamethrower.Stop();
+        }
     }
 }

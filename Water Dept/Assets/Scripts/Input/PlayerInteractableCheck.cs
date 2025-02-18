@@ -7,9 +7,9 @@ public class PlayerInteractableCheck : MonoBehaviour
 
     private void OnCollisionEnter(Collision collision)
     {
-        if (!playerController.isHolding && collision.gameObject.tag == "FireHoseHead")
+        if (!playerController.IsHolding() && collision.gameObject.tag == "FireHoseHead")
         {
-            playerController.PickUpHose(collision.gameObject.transform.parent.gameObject, collision.gameObject);
+            playerController.PickUpObject(collision.gameObject.GetComponent<Interactable>());
         }
     }
 }
