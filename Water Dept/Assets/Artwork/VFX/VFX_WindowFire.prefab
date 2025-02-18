@@ -3637,7 +3637,8 @@ ParticleSystem:
     multiplyColliderForceByParticleSize: 0
     multiplyColliderForceByParticleSpeed: 0
     multiplyColliderForceByCollisionAngle: 1
-    m_Planes: []
+    m_Planes:
+    - {fileID: 0}
     m_Dampen:
       serializedVersion: 2
       minMaxState: 0
@@ -10296,7 +10297,7 @@ ParticleSystem:
     gravityModifier:
       serializedVersion: 2
       minMaxState: 0
-      scalar: 0
+      scalar: -0.2
       minScalar: 0
       maxCurve:
         serializedVersion: 2
@@ -10680,7 +10681,7 @@ ParticleSystem:
           inWeight: 0
           outWeight: 0
         - serializedVersion: 3
-          time: 0.40100992
+          time: 0.5420011
           value: 1
           inSlope: 0
           outSlope: 0
@@ -10690,12 +10691,12 @@ ParticleSystem:
           outWeight: 0.33333334
         - serializedVersion: 3
           time: 1
-          value: 0.23300761
-          inSlope: -0.2525074
-          outSlope: -0.2525074
+          value: 0.33980387
+          inSlope: -3.70147
+          outSlope: -3.70147
           tangentMode: 0
           weightedMode: 0
-          inWeight: 0.70610654
+          inWeight: 0.25771433
           outWeight: 0
         m_PreInfinity: 2
         m_PostInfinity: 2
@@ -11185,7 +11186,7 @@ ParticleSystem:
     flipU: 0
     flipV: 0
   VelocityModule:
-    enabled: 1
+    enabled: 0
     x:
       serializedVersion: 2
       minMaxState: 1
