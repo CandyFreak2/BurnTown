@@ -29,6 +29,7 @@ public class Gasline : MonoBehaviour {
     // Tolerance is used incase points and flameVisual don't 100% line up and counteracts floating point precision 
     private const float tolerance = 0.1f;
 
+    // Initalizes fireSpawned array with dynamic amount, ie the length of the points list
     public void Start() {
         fireSpawned = new bool[points.Count];
     }
@@ -39,6 +40,7 @@ public class Gasline : MonoBehaviour {
         }
     }
 
+    // Helper function for initalizating prefabs but allows reference to objects for usage
     public void HandleSpawn(ref bool canSpawn, ref GameObject visual, GameObject prefab, Vector3 pos, Quaternion rot) {
         if (!canSpawn) {
             visual = Instantiate(prefab, pos, rot);
@@ -46,22 +48,27 @@ public class Gasline : MonoBehaviour {
         canSpawn = true;
     }
 
+    // Function that handles gasline movement
     public void HandleGaslineMovement() {
         HandleSpawn(ref canSpawnFlame, ref flameVisual, flamePrefab, points[currentIndex].location.transform.position, Quaternion.identity);
         if (canMove) {
             float distance = Vector3.Distance(flameVisual.transform.position, points[currentIndex].location.transform.position);
             if (distance < 0.02f) {
+                // If the currentIndex has not reached the end, allow delays to occur when at points
                 if (currentIndex != points.Count - 1) {
                     StartCoroutine(DelayBeforeNextMove(GetPointDelay(currentIndex)));
                 }
             }
+            // Moves the flameVisual based on Vec3 Math and indexes of the points list
             flameVisual.transform.position = Vector3.MoveTowards(flameVisual.transform.position, GetPointPosition(currentIndex), GetPointSpeed(currentIndex));
         }
 
+        // Flame Visual - If flame is on gasline point, the valve can pop and within general radius of the location of points
         if (flameVisual.GetComponent<GaslineSpark>().GetIsOnGaslinePoint() && CanIndexPop(currentIndex) && Vector3.Distance(flameVisual.transform.position, GetPointPosition(currentIndex)) < tolerance) {
             Vector3 popDirection = GetPopDirection(currentIndex);
             Vector3 spawnPosition = GetPointPosition(currentIndex);
 
+            // Calculates the direction of the fire visual prefab and applies it to the rotation
             if (popDirection != Vector3.zero && !fireSpawned[currentIndex]) {
                 HandleSpawn(ref fireSpawned[currentIndex], ref fireVisual, firePrefab, spawnPosition, Quaternion.LookRotation(popDirection));
 
@@ -69,7 +76,10 @@ public class Gasline : MonoBehaviour {
                     fireVisual.transform.rotation = Quaternion.LookRotation(popDirection);
                 }
 
-                fireVisual.GetComponent<ParticleSystem>().Play();
+                // Plays VFX prefab
+                ParticleSystem fireVisualVFX = fireVisual.GetComponent<ParticleSystem>();
+                fireVisualVFX.Play();
+                StartCoroutine(TurnOffFireVFX(fireVisualVFX.main.duration, fireVisualVFX));
             }
         }
     }
@@ -79,6 +89,11 @@ public class Gasline : MonoBehaviour {
         yield return new WaitForSeconds(delay);
         currentIndex++;
         canMove = true;
+    }
+
+    IEnumerator TurnOffFireVFX(float delay, ParticleSystem vfx) {
+        yield return new WaitForSeconds(delay);
+        vfx.Stop();
     }
 
     private Vector3 GetPointPosition(int index) { return points[index].location.transform.position; }
