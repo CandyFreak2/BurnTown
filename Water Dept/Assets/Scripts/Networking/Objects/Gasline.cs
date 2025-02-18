@@ -7,19 +7,24 @@ public class Gasline : MonoBehaviour {
 
     [Serializable]
     public class GaslinePoints {
-        public GameObject location;
-        public float speed;
-        public float delay;
-        public bool canOutput = false;
+        [Tooltip("Location of Point")] public GameObject location;
+        [Tooltip("Movement Speed of Flame Visual")] public float speed;
+        [Tooltip("Once visual reaches point, will delay in seconds")] public float delay;
+        [Tooltip("T - Allows gas to pass through\nF - Blocks Gas")] public bool canPop = false;
+        [Tooltip("Ignore if canPop is false")] public Vector3 popDirection = Vector3.zero;
     }
 
     public List<GaslinePoints> points;
     public int currentIndex = 0;
     public bool wasLit = false, canMove = false; 
     public GameObject flamePrefab;
+    public GameObject firePrefab;
 
-    private GameObject flameVisual;
-    private bool canSpawnVisual = false; 
+    private GameObject flameVisual, fireVisual;
+    private bool canSpawnFlame = false, canSpawnFire = false;
+
+    // Tolerance is used incase points and flameVisual don't 100% line up and counteracts floating point precision 
+    private const float tolerance = 0.1f;
 
     public void Update() {
         if (wasLit) {
@@ -27,15 +32,15 @@ public class Gasline : MonoBehaviour {
         }
     }
 
-    public void HandleSpawn() {
-        if (!canSpawnVisual) {
-            flameVisual = Instantiate(flamePrefab, points[currentIndex].location.transform.position, Quaternion.identity);
+    public void HandleSpawn(ref bool canSpawn, ref GameObject visual, GameObject prefab, Vector3 pos, Quaternion rot) {
+        if (!canSpawn) {
+            visual = Instantiate(prefab, pos, rot);
         }
-        canSpawnVisual = true;
+        canSpawn = true;
     }
 
     public void HandleGaslineMovement() {
-        HandleSpawn();
+        HandleSpawn(ref canSpawnFlame, ref flameVisual, flamePrefab, points[currentIndex].location.transform.position, Quaternion.identity);
         if (canMove) {
             float distance = Vector3.Distance(flameVisual.transform.position, points[currentIndex].location.transform.position);
             if (distance < 0.02f) {
@@ -46,8 +51,19 @@ public class Gasline : MonoBehaviour {
             flameVisual.transform.position = Vector3.MoveTowards(flameVisual.transform.position, GetPointPosition(currentIndex), GetPointSpeed(currentIndex));
         }
 
-        if (flameVisual.transform.position == GetPointPosition(currentIndex) && GetPointOutput(currentIndex)) {
-            Debug.Log("Pop");
+        if (flameVisual.GetComponent<GaslineSpark>().GetIsOnGaslinePoint() && CanIndexPop(currentIndex) && Vector3.Distance(flameVisual.transform.position, GetPointPosition(currentIndex)) < tolerance) {
+            Vector3 popDirection = GetPopDirection(currentIndex);
+            Vector3 spawnPosition = GetPointPosition(currentIndex);
+
+            if (popDirection != Vector3.zero) {
+                HandleSpawn(ref canSpawnFire, ref fireVisual, firePrefab, spawnPosition, Quaternion.LookRotation(popDirection));
+
+                if (fireVisual != null) {
+                    fireVisual.transform.rotation = Quaternion.LookRotation(popDirection);
+                }
+
+                fireVisual.GetComponent<ParticleSystem>().Play();
+            }
         }
     }
 
@@ -59,7 +75,8 @@ public class Gasline : MonoBehaviour {
     }
 
     private Vector3 GetPointPosition(int index) { return points[index].location.transform.position; }
-    private bool GetPointOutput(int index) { return points[index].canOutput; }
+    private Vector3 GetPopDirection(int index) { return points[index].popDirection; }
+    private bool CanIndexPop(int index) { return points[index].canPop; }
     private float GetPointDelay(int index) { return points[index].delay; }
     private float GetPointSpeed(int index) { return points[index].speed * Time.deltaTime; }
 }
