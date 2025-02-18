@@ -38,7 +38,10 @@ public class BarrelInfo : MonoBehaviour
 
     public void Explode()
     {
-        StartCoroutine(ChainExplode());
+        if(!isExploded)
+        {
+            StartCoroutine(ChainExplode());
+        }
     }
 
     //Throws barrel with throwForce and explodes when it hits ground
@@ -88,7 +91,7 @@ public class BarrelInfo : MonoBehaviour
             tail.GetComponent<BarrelInfo>().Explode();
         }
 
-        pixelBoom.transform.parent = null;
+        //pixelBoom.transform.parent = null;
 
         yield return new WaitForSeconds(delay);
 
