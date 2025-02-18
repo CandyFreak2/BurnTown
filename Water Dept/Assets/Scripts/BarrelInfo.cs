@@ -71,6 +71,8 @@ public class BarrelInfo : MonoBehaviour
     //explodes current barrel and then linked barrels with delay
     IEnumerator ChainExplode()
     {
+        isExploded = false;
+
         ExplosionTriggers();
 
         yield return new WaitForSeconds(delay);
@@ -86,8 +88,11 @@ public class BarrelInfo : MonoBehaviour
             tail.GetComponent<BarrelInfo>().Explode();
         }
 
+        pixelBoom.transform.parent = null;
+
         yield return new WaitForSeconds(delay);
 
+        Destroy(pixelBoom, pixelBoom.main.duration);
         Destroy(gameObject);
     }
 
@@ -103,6 +108,7 @@ public class BarrelInfo : MonoBehaviour
     {
         //play anim
         pixelBoom.Play();
+        Debug.Log("Particle Spawned");
 
         //dereference components to prevent stack overf;pw
         if (gameObject.GetComponent<Rigidbody>() != null)
