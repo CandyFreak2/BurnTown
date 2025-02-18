@@ -14,9 +14,14 @@ public class Gasline : MonoBehaviour {
         [Tooltip("Ignore if canPop is false")] public Vector3 popDirection = new(0, 90, 0);
     }
 
+    [Header("Gasline Points")]
     public List<GaslinePoints> points;
+
+    [Header("Controls")]
     public int currentIndex = 0;
     public bool wasLit = false, canMove = false; 
+
+    [Header("Prefabs")]
     public GameObject flamePrefab;
     public GameObject firePrefab;
 
@@ -79,11 +84,14 @@ public class Gasline : MonoBehaviour {
                 // Plays VFX prefab
                 ParticleSystem fireVisualVFX = fireVisual.GetComponent<ParticleSystem>();
                 fireVisualVFX.Play();
+
+                // Stops VFX after duration is reached
                 StartCoroutine(TurnOffFireVFX(fireVisualVFX.main.duration, fireVisualVFX));
             }
         }
     }
 
+    // Stops FlameVisual movement, starts delay, increments currentIndex and re-enables movement
     IEnumerator DelayBeforeNextMove(float delay) {
         canMove = false;
         yield return new WaitForSeconds(delay);
@@ -91,11 +99,13 @@ public class Gasline : MonoBehaviour {
         canMove = true;
     }
 
+    // Turns off fireVFX
     IEnumerator TurnOffFireVFX(float delay, ParticleSystem vfx) {
         yield return new WaitForSeconds(delay);
         vfx.Stop();
     }
 
+    // Helper Functions
     private Vector3 GetPointPosition(int index) { return points[index].location.transform.position; }
     private Vector3 GetPopDirection(int index) { return points[index].popDirection; }
     private bool CanIndexPop(int index) { return points[index].canPop; }
