@@ -11,7 +11,7 @@ public class Gasline : MonoBehaviour {
         [Tooltip("Movement Speed of Flame Visual")] public float speed;
         [Tooltip("Once visual reaches point, will delay in seconds")] public float delay;
         [Tooltip("T - Allows gas to pass through\nF - Blocks Gas")] public bool canPop = false;
-        [Tooltip("Ignore if canPop is false")] public Vector3 popDirection = Vector3.zero;
+        [Tooltip("Ignore if canPop is false")] public Vector3 popDirection = new(0, 90, 0);
     }
 
     public List<GaslinePoints> points;
