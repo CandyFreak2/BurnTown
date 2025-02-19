@@ -23,6 +23,7 @@ public class BarrelInfo : MonoBehaviour
     [SerializeField] public float explosionForce = 10.0f;
     public bool isExploded = false;
 
+    private const int THROW_EXPLOSION_RADIUS = 1;
     private bool isAirborne;
     private float timer;
 
@@ -58,15 +59,18 @@ public class BarrelInfo : MonoBehaviour
         {
             timer += Time.deltaTime;
 
-            RaycastHit hit;
-
-            if (Physics.Raycast(transform.position, Vector3.down, out hit, 0.55f) && timer > 0.5f)
+            //if collides with something mid air, blow up
+            Collider[] colliders = Physics.OverlapSphere(gameObject.transform.position, THROW_EXPLOSION_RADIUS);
+            foreach (Collider hit in colliders)
             {
-                if (hit.collider.gameObject.tag == "ground")
+                if (hit != gameObject.GetComponent<Collider>() && timer > 0.2f)
                 {
                     Explode();
+                    isAirborne = false;
+                    isExploded = true;
                 }
             }
+
         }
 
     }
