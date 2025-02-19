@@ -56,7 +56,7 @@ public class Gasline : MonoBehaviour {
     // Function that handles gasline movement
     public void HandleGaslineMovement() {
         HandleSpawn(ref canSpawnFlame, ref flameVisual, flamePrefab, points[currentIndex].location.transform.position, Quaternion.identity);
-        flameVisual.GetComponentInChildren<ParticleSystem>().Play();
+
         if (canMove) {
             float distance = Vector3.Distance(flameVisual.transform.position, points[currentIndex].location.transform.position);
             if (distance < 0.02f) {
@@ -70,7 +70,7 @@ public class Gasline : MonoBehaviour {
         }
 
         // Flame Visual - If flame is on gasline point, the valve can pop and within general radius of the location of points
-        if (flameVisual.GetComponent<GaslineSpark>().GetIsOnGaslinePoint() && CanIndexPop(currentIndex) && Vector3.Distance(flameVisual.transform.position, GetPointPosition(currentIndex)) < tolerance) {
+        if (flameVisual.GetComponent<GaslineSpark>().GetIsOnGaslinePoint() && CanIndexPop(currentIndex) && (Vector3.Distance(flameVisual.transform.position, GetPointPosition(currentIndex)) < tolerance)) {
             Vector3 popDirection = GetPopDirection(currentIndex);
             Vector3 spawnPosition = GetPointPosition(currentIndex);
 
