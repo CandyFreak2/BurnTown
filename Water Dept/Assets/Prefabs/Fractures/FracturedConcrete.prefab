@@ -11,8 +11,8 @@ GameObject:
   - component: {fileID: 6250076664263017331}
   - component: {fileID: 7750993178223960543}
   - component: {fileID: 7584674718102020118}
-  - component: {fileID: 6861712803296573382}
   - component: {fileID: 1582360555960399877}
+  - component: {fileID: 6516748035026858085}
   m_Layer: 0
   m_Name: Fracture
   m_TagString: Untagged
@@ -88,7 +88,28 @@ MeshRenderer:
   m_SortingLayer: 0
   m_SortingOrder: 0
   m_AdditionalVertexStreams: {fileID: 0}
---- !u!54 &6861712803296573382
+--- !u!65 &1582360555960399877
+BoxCollider:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 433340806696997994}
+  m_Material: {fileID: 0}
+  m_IncludeLayers:
+    serializedVersion: 2
+    m_Bits: 0
+  m_ExcludeLayers:
+    serializedVersion: 2
+    m_Bits: 0
+  m_LayerOverridePriority: 0
+  m_IsTrigger: 0
+  m_ProvidesContacts: 0
+  m_Enabled: 1
+  serializedVersion: 3
+  m_Size: {x: 0.020000005, y: 0.052724473, z: 0.048346687}
+  m_Center: {x: -0.0019722702, y: 0.00013426412, z: 0.004620443}
+--- !u!54 &6516748035026858085
 Rigidbody:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
@@ -115,27 +136,6 @@ Rigidbody:
   m_Interpolate: 0
   m_Constraints: 0
   m_CollisionDetection: 0
---- !u!65 &1582360555960399877
-BoxCollider:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 433340806696997994}
-  m_Material: {fileID: 0}
-  m_IncludeLayers:
-    serializedVersion: 2
-    m_Bits: 0
-  m_ExcludeLayers:
-    serializedVersion: 2
-    m_Bits: 0
-  m_LayerOverridePriority: 0
-  m_IsTrigger: 0
-  m_ProvidesContacts: 0
-  m_Enabled: 1
-  serializedVersion: 3
-  m_Size: {x: 0.020000005, y: 0.052724473, z: 0.048346687}
-  m_Center: {x: -0.0019722702, y: 0.00013426412, z: 0.004620443}
 --- !u!1 &2928375487457687012
 GameObject:
   m_ObjectHideFlags: 0
@@ -147,8 +147,8 @@ GameObject:
   - component: {fileID: 4336021243901745930}
   - component: {fileID: 8089259073285736260}
   - component: {fileID: 2457108687658074351}
-  - component: {fileID: 6949431425968819255}
   - component: {fileID: 1409282378537967355}
+  - component: {fileID: 4551127912512542241}
   m_Layer: 0
   m_Name: Fracture02
   m_TagString: Untagged
@@ -224,7 +224,28 @@ MeshRenderer:
   m_SortingLayer: 0
   m_SortingOrder: 0
   m_AdditionalVertexStreams: {fileID: 0}
---- !u!54 &6949431425968819255
+--- !u!65 &1409282378537967355
+BoxCollider:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 2928375487457687012}
+  m_Material: {fileID: 0}
+  m_IncludeLayers:
+    serializedVersion: 2
+    m_Bits: 0
+  m_ExcludeLayers:
+    serializedVersion: 2
+    m_Bits: 0
+  m_LayerOverridePriority: 0
+  m_IsTrigger: 0
+  m_ProvidesContacts: 0
+  m_Enabled: 1
+  serializedVersion: 3
+  m_Size: {x: 0.01619858, y: 0.006700139, z: 0.01793934}
+  m_Center: {x: -0.004049643, y: -0.0016749913, z: 0.003547317}
+--- !u!54 &4551127912512542241
 Rigidbody:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
@@ -251,27 +272,6 @@ Rigidbody:
   m_Interpolate: 0
   m_Constraints: 0
   m_CollisionDetection: 0
---- !u!65 &1409282378537967355
-BoxCollider:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 2928375487457687012}
-  m_Material: {fileID: 0}
-  m_IncludeLayers:
-    serializedVersion: 2
-    m_Bits: 0
-  m_ExcludeLayers:
-    serializedVersion: 2
-    m_Bits: 0
-  m_LayerOverridePriority: 0
-  m_IsTrigger: 0
-  m_ProvidesContacts: 0
-  m_Enabled: 1
-  serializedVersion: 3
-  m_Size: {x: 0.01619858, y: 0.006700139, z: 0.01793934}
-  m_Center: {x: -0.004049643, y: -0.0016749913, z: 0.003547317}
 --- !u!1 &3355133927725474911
 GameObject:
   m_ObjectHideFlags: 0
@@ -283,8 +283,8 @@ GameObject:
   - component: {fileID: 3303283423179573408}
   - component: {fileID: 7336278343603118079}
   - component: {fileID: 993358442615804391}
-  - component: {fileID: 6803854434757385757}
   - component: {fileID: 5421781704472841775}
+  - component: {fileID: 1260168984076594364}
   m_Layer: 0
   m_Name: Fracture05
   m_TagString: Untagged
@@ -360,7 +360,28 @@ MeshRenderer:
   m_SortingLayer: 0
   m_SortingOrder: 0
   m_AdditionalVertexStreams: {fileID: 0}
---- !u!54 &6803854434757385757
+--- !u!65 &5421781704472841775
+BoxCollider:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 3355133927725474911}
+  m_Material: {fileID: 0}
+  m_IncludeLayers:
+    serializedVersion: 2
+    m_Bits: 0
+  m_ExcludeLayers:
+    serializedVersion: 2
+    m_Bits: 0
+  m_LayerOverridePriority: 0
+  m_IsTrigger: 0
+  m_ProvidesContacts: 0
+  m_Enabled: 1
+  serializedVersion: 3
+  m_Size: {x: 0.020000005, y: 0.050689872, z: 0.03588609}
+  m_Center: {x: 0.0020742684, y: -0.0045398604, z: 0.0024499404}
+--- !u!54 &1260168984076594364
 Rigidbody:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
@@ -387,27 +408,6 @@ Rigidbody:
   m_Interpolate: 0
   m_Constraints: 0
   m_CollisionDetection: 0
---- !u!65 &5421781704472841775
-BoxCollider:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 3355133927725474911}
-  m_Material: {fileID: 0}
-  m_IncludeLayers:
-    serializedVersion: 2
-    m_Bits: 0
-  m_ExcludeLayers:
-    serializedVersion: 2
-    m_Bits: 0
-  m_LayerOverridePriority: 0
-  m_IsTrigger: 0
-  m_ProvidesContacts: 0
-  m_Enabled: 1
-  serializedVersion: 3
-  m_Size: {x: 0.020000005, y: 0.050689872, z: 0.03588609}
-  m_Center: {x: 0.0020742684, y: -0.0045398604, z: 0.0024499404}
 --- !u!1 &6076152707950587393
 GameObject:
   m_ObjectHideFlags: 0
@@ -419,8 +419,8 @@ GameObject:
   - component: {fileID: 6061752674815954613}
   - component: {fileID: 1656886183511326332}
   - component: {fileID: 1338635450995671677}
-  - component: {fileID: 3362921001368698625}
   - component: {fileID: 8530200043324034727}
+  - component: {fileID: 6221620570033615790}
   m_Layer: 0
   m_Name: Fracture01
   m_TagString: Untagged
@@ -496,7 +496,28 @@ MeshRenderer:
   m_SortingLayer: 0
   m_SortingOrder: 0
   m_AdditionalVertexStreams: {fileID: 0}
---- !u!54 &3362921001368698625
+--- !u!65 &8530200043324034727
+BoxCollider:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 6076152707950587393}
+  m_Material: {fileID: 0}
+  m_IncludeLayers:
+    serializedVersion: 2
+    m_Bits: 0
+  m_ExcludeLayers:
+    serializedVersion: 2
+    m_Bits: 0
+  m_LayerOverridePriority: 0
+  m_IsTrigger: 0
+  m_ProvidesContacts: 0
+  m_Enabled: 1
+  serializedVersion: 3
+  m_Size: {x: 0.017956225, y: 0.02932762, z: 0.052631434}
+  m_Center: {x: -0.0052838223, y: -0.0006128899, z: -0.0042542852}
+--- !u!54 &6221620570033615790
 Rigidbody:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
@@ -523,27 +544,6 @@ Rigidbody:
   m_Interpolate: 0
   m_Constraints: 0
   m_CollisionDetection: 0
---- !u!65 &8530200043324034727
-BoxCollider:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 6076152707950587393}
-  m_Material: {fileID: 0}
-  m_IncludeLayers:
-    serializedVersion: 2
-    m_Bits: 0
-  m_ExcludeLayers:
-    serializedVersion: 2
-    m_Bits: 0
-  m_LayerOverridePriority: 0
-  m_IsTrigger: 0
-  m_ProvidesContacts: 0
-  m_Enabled: 1
-  serializedVersion: 3
-  m_Size: {x: 0.017956225, y: 0.02932762, z: 0.052631434}
-  m_Center: {x: -0.0052838223, y: -0.0006128899, z: -0.0042542852}
 --- !u!1 &6678362030396365423
 GameObject:
   m_ObjectHideFlags: 0
@@ -593,8 +593,8 @@ GameObject:
   - component: {fileID: 3165092973180670921}
   - component: {fileID: 6567133082425422700}
   - component: {fileID: 33479078775982099}
-  - component: {fileID: 3106993762041988028}
   - component: {fileID: 2578020913005564831}
+  - component: {fileID: 2380247068427649478}
   m_Layer: 0
   m_Name: Fracture04
   m_TagString: Untagged
@@ -670,7 +670,28 @@ MeshRenderer:
   m_SortingLayer: 0
   m_SortingOrder: 0
   m_AdditionalVertexStreams: {fileID: 0}
---- !u!54 &3106993762041988028
+--- !u!65 &2578020913005564831
+BoxCollider:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 8459664598059539804}
+  m_Material: {fileID: 0}
+  m_IncludeLayers:
+    serializedVersion: 2
+    m_Bits: 0
+  m_ExcludeLayers:
+    serializedVersion: 2
+    m_Bits: 0
+  m_LayerOverridePriority: 0
+  m_IsTrigger: 0
+  m_ProvidesContacts: 0
+  m_Enabled: 1
+  serializedVersion: 3
+  m_Size: {x: 0.020000005, y: 0.06329348, z: 0.05617587}
+  m_Center: {x: -0.0008447166, y: -0.0065990128, z: 0.0062059164}
+--- !u!54 &2380247068427649478
 Rigidbody:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
@@ -697,27 +718,6 @@ Rigidbody:
   m_Interpolate: 0
   m_Constraints: 0
   m_CollisionDetection: 0
---- !u!65 &2578020913005564831
-BoxCollider:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 8459664598059539804}
-  m_Material: {fileID: 0}
-  m_IncludeLayers:
-    serializedVersion: 2
-    m_Bits: 0
-  m_ExcludeLayers:
-    serializedVersion: 2
-    m_Bits: 0
-  m_LayerOverridePriority: 0
-  m_IsTrigger: 0
-  m_ProvidesContacts: 0
-  m_Enabled: 1
-  serializedVersion: 3
-  m_Size: {x: 0.020000005, y: 0.06329348, z: 0.05617587}
-  m_Center: {x: -0.0008447166, y: -0.0065990128, z: 0.0062059164}
 --- !u!1 &8755176199309008821
 GameObject:
   m_ObjectHideFlags: 0
@@ -729,8 +729,8 @@ GameObject:
   - component: {fileID: 9056374961664712199}
   - component: {fileID: 1472450916243553776}
   - component: {fileID: 5207346130195843531}
-  - component: {fileID: 2475556772453822156}
   - component: {fileID: 6823410163869764751}
+  - component: {fileID: 6018986063652762290}
   m_Layer: 0
   m_Name: Fracture03
   m_TagString: Untagged
@@ -806,7 +806,28 @@ MeshRenderer:
   m_SortingLayer: 0
   m_SortingOrder: 0
   m_AdditionalVertexStreams: {fileID: 0}
---- !u!54 &2475556772453822156
+--- !u!65 &6823410163869764751
+BoxCollider:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 8755176199309008821}
+  m_Material: {fileID: 0}
+  m_IncludeLayers:
+    serializedVersion: 2
+    m_Bits: 0
+  m_ExcludeLayers:
+    serializedVersion: 2
+    m_Bits: 0
+  m_LayerOverridePriority: 0
+  m_IsTrigger: 0
+  m_ProvidesContacts: 0
+  m_Enabled: 1
+  serializedVersion: 3
+  m_Size: {x: 0.020000005, y: 0.052282803, z: 0.05259655}
+  m_Center: {x: 0.0009455095, y: -0.0013367785, z: -0.0044218292}
+--- !u!54 &6018986063652762290
 Rigidbody:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
@@ -833,27 +854,6 @@ Rigidbody:
   m_Interpolate: 0
   m_Constraints: 0
   m_CollisionDetection: 0
---- !u!65 &6823410163869764751
-BoxCollider:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 8755176199309008821}
-  m_Material: {fileID: 0}
-  m_IncludeLayers:
-    serializedVersion: 2
-    m_Bits: 0
-  m_ExcludeLayers:
-    serializedVersion: 2
-    m_Bits: 0
-  m_LayerOverridePriority: 0
-  m_IsTrigger: 0
-  m_ProvidesContacts: 0
-  m_Enabled: 1
-  serializedVersion: 3
-  m_Size: {x: 0.020000005, y: 0.052282803, z: 0.05259655}
-  m_Center: {x: 0.0009455095, y: -0.0013367785, z: -0.0044218292}
 --- !u!1 &9084629279925046382
 GameObject:
   m_ObjectHideFlags: 0
@@ -865,8 +865,8 @@ GameObject:
   - component: {fileID: 2262609651066317667}
   - component: {fileID: 5079746577573047629}
   - component: {fileID: 1939047392595599831}
-  - component: {fileID: 4553090739816295657}
   - component: {fileID: 3104779664446551644}
+  - component: {fileID: 5729308432039963182}
   m_Layer: 0
   m_Name: Fracture06
   m_TagString: Untagged
@@ -942,7 +942,28 @@ MeshRenderer:
   m_SortingLayer: 0
   m_SortingOrder: 0
   m_AdditionalVertexStreams: {fileID: 0}
---- !u!54 &4553090739816295657
+--- !u!65 &3104779664446551644
+BoxCollider:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 9084629279925046382}
+  m_Material: {fileID: 0}
+  m_IncludeLayers:
+    serializedVersion: 2
+    m_Bits: 0
+  m_ExcludeLayers:
+    serializedVersion: 2
+    m_Bits: 0
+  m_LayerOverridePriority: 0
+  m_IsTrigger: 0
+  m_ProvidesContacts: 0
+  m_Enabled: 1
+  serializedVersion: 3
+  m_Size: {x: 0.020000005, y: 0.055414, z: 0.029067941}
+  m_Center: {x: 9.313237e-10, y: 0.0021557026, z: -0.004296843}
+--- !u!54 &5729308432039963182
 Rigidbody:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
@@ -969,24 +990,3 @@ Rigidbody:
   m_Interpolate: 0
   m_Constraints: 0
   m_CollisionDetection: 0
---- !u!65 &3104779664446551644
-BoxCollider:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 9084629279925046382}
-  m_Material: {fileID: 0}
-  m_IncludeLayers:
-    serializedVersion: 2
-    m_Bits: 0
-  m_ExcludeLayers:
-    serializedVersion: 2
-    m_Bits: 0
-  m_LayerOverridePriority: 0
-  m_IsTrigger: 0
-  m_ProvidesContacts: 0
-  m_Enabled: 1
-  serializedVersion: 3
-  m_Size: {x: 0.020000005, y: 0.055414, z: 0.029067941}
-  m_Center: {x: 9.313237e-10, y: 0.0021557026, z: -0.004296843}

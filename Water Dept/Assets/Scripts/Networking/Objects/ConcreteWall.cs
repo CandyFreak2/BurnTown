@@ -3,7 +3,6 @@ using UnityEngine;
 
 public class ConcreteWall : MonoBehaviour {
     public GameObject originalWall, fractureWall, explosionEffect;
-    public float explosiveForce = 50f;
     public float explosionRadius, fragScale;
     public float shrinkTime, modelDestroyTime, explosionTime;
 
@@ -12,18 +11,14 @@ public class ConcreteWall : MonoBehaviour {
     public GameObject FracturedObject { get => fracturedObject; set => fracturedObject = value; }
     public GameObject ExplosionObject { get => explosionObject; set => explosionObject = value; }
 
-    private void Update() {
+     private void Update() {
         // Temporary Triggers until barrel implementation
         if (Input.GetKeyDown(KeyCode.X)) {
-            Explode();
-        }
-
-        if (Input.GetKeyDown(KeyCode.R)) {
-            Reset();
+            Explode(10);
         }
     }
 
-    public void Explode() {
+    public void Explode(float explosiveForce) {
         if (originalWall != null) {
             originalWall.SetActive(false);
 
