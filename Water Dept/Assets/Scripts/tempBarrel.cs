@@ -10,6 +10,7 @@ public class tempBarrel : MonoBehaviour
     [SerializeField] private GameObject barrelPrefab;
 
     private bool isSchemOut = false;
+    private bool isThrowing = false;
     private GameObject schematic;
 
     [Tooltip("Distance barrel is placed from player")]
@@ -44,16 +45,23 @@ public class tempBarrel : MonoBehaviour
         //Creates a barrel and throws it
         if (Input.GetKeyDown(KeyCode.F) && isSchemOut)
         {
+            isThrowing = true;
+
             GameObject bar = Instantiate(barrelPrefab);
             bar.transform.position = (gameObject.GetComponent<Transform>().transform.position) +
                 gameObject.GetComponent<Transform>().transform.forward * placeDistance;
             bar.GetComponent<BarrelInfo>().isThrown = true;
+
+            SnapPosition(bar);
 
             if (isSchemOut)
             {
                 isSchemOut = false;
                 Destroy(schematic);
             }
+
+            //prevents player from throwign on stacks
+            isThrowing = false;
         }
 
         if (isSchemOut)
@@ -113,7 +121,7 @@ public class tempBarrel : MonoBehaviour
                 obj.transform.position -= Vector3.up * dist - new Vector3(0, 0.5f, 0);
             }
             //if its a barrel, snaps position to on top of the barrel
-            else if(hit.collider.GetComponent<BarrelInfo>() != null)
+            else if(hit.collider.GetComponent<BarrelInfo>() != null && !isThrowing)
             {
                 obj.transform.position = hit.collider.transform.position + new Vector3(0, 1.0f, 0);
 
