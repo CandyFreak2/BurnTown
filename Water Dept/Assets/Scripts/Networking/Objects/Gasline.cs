@@ -11,7 +11,7 @@ public class Gasline : MonoBehaviour {
         [Tooltip("Movement Speed of Flame Visual")] public float speed;
         [Tooltip("Once visual reaches point, will delay in seconds")] public float delay;
         [Tooltip("T - Allows gas to pass through\nF - Blocks Gas")] public bool canPop = false;
-        [Tooltip("DO NOT TOUCH")] public bool canStart = false;
+        [Tooltip("Enable for the starting index")] public bool canStart = false;
         [Tooltip("Ignore if canPop is false")] public Vector3 popDirection = new(0, 90, 0);
     }
 
@@ -41,10 +41,9 @@ public class Gasline : MonoBehaviour {
     private GaslinePoint[] gaslinePoints;
 
     // Initalizes fireSpawned array with dynamic amount, ie the length of the points list
-    public void Awake() {
+    public void Start() {
         fireSpawned = new bool[points.Count];
         gaslinePoints = GetComponentsInChildren<GaslinePoint>();
-        points[startIndex].canStart = true;
     }
 
     public void Update() {
@@ -78,7 +77,9 @@ public class Gasline : MonoBehaviour {
                 }
             }
             // Moves the flameVisual based on Vec3 Math and indexes of the points list
-            flameVisual.transform.position = Vector3.MoveTowards(flameVisual.transform.position, GetPointPosition(currentIndex), GetPointSpeed(currentIndex));
+            Vector3 direction = Vector3.MoveTowards(flameVisual.transform.position, GetPointPosition(currentIndex), GetPointSpeed(currentIndex));
+            flameVisual.transform.forward = (direction - flameVisual.transform.position).normalized;
+            flameVisual.transform.position = direction;
         }
 
         HandlePointFire();
@@ -128,6 +129,7 @@ public class Gasline : MonoBehaviour {
     IEnumerator TurnOffFireVFX(float delay, ParticleSystem vfx) {
         yield return new WaitForSeconds(delay);
         vfx.Stop();
+        Destroy(vfx.gameObject);
     }
 
     // Helper Functions
