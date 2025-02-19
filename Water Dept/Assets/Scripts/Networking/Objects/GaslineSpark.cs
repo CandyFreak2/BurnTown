@@ -15,5 +15,6 @@ public class GaslineSpark : MonoBehaviour {
         }
     }
 
+    
     public bool GetIsOnGaslinePoint() => isOnGaslinePoint;
 }

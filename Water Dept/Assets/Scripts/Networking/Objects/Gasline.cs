@@ -11,6 +11,7 @@ public class Gasline : MonoBehaviour {
         [Tooltip("Movement Speed of Flame Visual")] public float speed;
         [Tooltip("Once visual reaches point, will delay in seconds")] public float delay;
         [Tooltip("T - Allows gas to pass through\nF - Blocks Gas")] public bool canPop = false;
+        [Tooltip("DO NOT TOUCH")] public bool canStart = false;
         [Tooltip("Ignore if canPop is false")] public Vector3 popDirection = new(0, 90, 0);
     }
 
@@ -19,6 +20,7 @@ public class Gasline : MonoBehaviour {
 
     [Header("Controls")]
     public int currentIndex = 0;
+    public int startIndex = 0;
     public bool wasLit = false, canMove = false; 
 
     [Header("Prefabs")]
@@ -27,6 +29,7 @@ public class Gasline : MonoBehaviour {
 
     private GameObject flameVisual, fireVisual;
     private bool canSpawnFlame = false;
+    private bool wasSpawned = false;
 
     // Keeps track of which points have had fireVisual spawned
     private bool[] fireSpawned;
@@ -34,12 +37,21 @@ public class Gasline : MonoBehaviour {
     // Tolerance is used incase points and flameVisual don't 100% line up and counteracts floating point precision 
     private const float tolerance = 0.1f;
 
+    // Grabs all gasline points
+    private GaslinePoint[] gaslinePoints;
+
     // Initalizes fireSpawned array with dynamic amount, ie the length of the points list
-    public void Start() {
+    public void Awake() {
         fireSpawned = new bool[points.Count];
+        gaslinePoints = GetComponentsInChildren<GaslinePoint>();
+        points[startIndex].canStart = true;
     }
 
     public void Update() {
+        if (!wasSpawned) {
+            StartFireSpread(startIndex); 
+        }
+
         if (wasLit) {
             HandleGaslineMovement();
         }
@@ -69,6 +81,10 @@ public class Gasline : MonoBehaviour {
             flameVisual.transform.position = Vector3.MoveTowards(flameVisual.transform.position, GetPointPosition(currentIndex), GetPointSpeed(currentIndex));
         }
 
+        HandlePointFire();
+    }
+
+    public void HandlePointFire() {
         // Flame Visual - If flame is on gasline point, the valve can pop and within general radius of the location of points
         if (flameVisual.GetComponent<GaslineSpark>().GetIsOnGaslinePoint() && CanIndexPop(currentIndex) && (Vector3.Distance(flameVisual.transform.position, GetPointPosition(currentIndex)) < tolerance)) {
             Vector3 popDirection = GetPopDirection(currentIndex);
@@ -89,6 +105,14 @@ public class Gasline : MonoBehaviour {
                 // Stops VFX after duration is reached
                 StartCoroutine(TurnOffFireVFX(fireVisualVFX.main.duration, fireVisualVFX));
             }
+        }
+    }
+
+    public void StartFireSpread(int index) {
+        if (gaslinePoints[index].GetIsOnFire() && points[index].canStart) {
+            wasLit = true;
+            canMove = true;
+            wasSpawned = true;
         }
     }
 

@@ -153,19 +153,23 @@ MonoBehaviour:
     speed: 1
     delay: 0
     canPop: 0
+    canStart: 0
     popDirection: {x: 0, y: 0, z: 0}
   - location: {fileID: 1444976072}
     speed: 3
     delay: 5
     canPop: 1
+    canStart: 0
     popDirection: {x: 0, y: 90, z: 0}
   - location: {fileID: 1058551140}
     speed: 5
     delay: 0
     canPop: 1
+    canStart: 0
     popDirection: {x: 180, y: 180, z: 180}
   currentIndex: 0
-  wasLit: 1
+  startIndex: 0
+  wasLit: 0
   canMove: 0
   flamePrefab: {fileID: 5174873677586650576, guid: 93d4d2c292b331c4388f56ab2e0760f6,
     type: 3}
@@ -202,6 +206,7 @@ GameObject:
   - component: {fileID: 1058551142}
   - component: {fileID: 1058551141}
   - component: {fileID: 1058551145}
+  - component: {fileID: 1058551146}
   m_Layer: 0
   m_Name: Sphere (2)
   m_TagString: GaslinePoint
@@ -292,7 +297,7 @@ Transform:
   m_GameObject: {fileID: 1058551140}
   serializedVersion: 2
   m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
-  m_LocalPosition: {x: -0.41, y: 2.04, z: 5.42}
+  m_LocalPosition: {x: -0.41, y: 2.04, z: 15.25}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []
@@ -325,6 +330,19 @@ Rigidbody:
   m_Interpolate: 0
   m_Constraints: 0
   m_CollisionDetection: 0
+--- !u!114 &1058551146
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1058551140}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 19df876141b6aac4babc8c254ae15233, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  isOnFire: 0
 --- !u!1 &1099933593
 GameObject:
   m_ObjectHideFlags: 0
@@ -475,6 +493,7 @@ GameObject:
   - component: {fileID: 1444976074}
   - component: {fileID: 1444976073}
   - component: {fileID: 1444976077}
+  - component: {fileID: 1444976078}
   m_Layer: 0
   m_Name: Sphere (1)
   m_TagString: GaslinePoint
@@ -565,7 +584,7 @@ Transform:
   m_GameObject: {fileID: 1444976072}
   serializedVersion: 2
   m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
-  m_LocalPosition: {x: -3.33, y: 2.04, z: -4.22}
+  m_LocalPosition: {x: -3.33, y: 2.04, z: -13.38}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []
@@ -598,6 +617,19 @@ Rigidbody:
   m_Interpolate: 0
   m_Constraints: 0
   m_CollisionDetection: 0
+--- !u!114 &1444976078
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1444976072}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 19df876141b6aac4babc8c254ae15233, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  isOnFire: 0
 --- !u!1 &1523480377
 GameObject:
   m_ObjectHideFlags: 0
@@ -702,7 +734,7 @@ Transform:
   serializedVersion: 2
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
   m_LocalPosition: {x: 0, y: 0, z: 0}
-  m_LocalScale: {x: 2, y: 1, z: 2}
+  m_LocalScale: {x: 2, y: 1, z: 4}
   m_ConstrainProportionsScale: 0
   m_Children: []
   m_Father: {fileID: 0}
@@ -720,6 +752,7 @@ GameObject:
   - component: {fileID: 1782709133}
   - component: {fileID: 1782709132}
   - component: {fileID: 1782709136}
+  - component: {fileID: 1782709137}
   m_Layer: 0
   m_Name: Sphere
   m_TagString: GaslinePoint
@@ -810,7 +843,7 @@ Transform:
   m_GameObject: {fileID: 1782709131}
   serializedVersion: 2
   m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
-  m_LocalPosition: {x: 8.45, y: 2.04, z: -7.87}
+  m_LocalPosition: {x: 13.91, y: 2.04, z: -7.87}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []
@@ -843,6 +876,19 @@ Rigidbody:
   m_Interpolate: 0
   m_Constraints: 0
   m_CollisionDetection: 0
+--- !u!114 &1782709137
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1782709131}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 19df876141b6aac4babc8c254ae15233, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  isOnFire: 0
 --- !u!1 &2108447600
 GameObject:
   m_ObjectHideFlags: 0
