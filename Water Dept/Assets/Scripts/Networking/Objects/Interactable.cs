@@ -6,10 +6,10 @@ public class Interactable : NetworkBehaviour
     private bool isSpawned;
 
     [Networked]
-    public NetworkBool isPickedUp { get; set; }
+    private NetworkBool isPickedUp { get; set; }
 
     [Networked]
-    public NetworkId carrierId { get; set; }
+    private NetworkId carrierId { get; set; }
 
     private Rigidbody rb;
     private Collider interactableCollider;

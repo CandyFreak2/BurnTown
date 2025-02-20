@@ -23,7 +23,7 @@ public class PlayerMovement : NetworkBehaviour
     //private GameObject fireHoseHead;
     //[Networked] public NetworkBool isHolding { get; set; } //public for pickup collider
     //[Networked] private NetworkId heldHoseId {  get; set; }
-    [Networked] public Interactable carriedObject { get; set; }
+    [Networked] private Interactable carriedObject { get; set; }
 
     PlayerInputHandeler input;
     PlayerInputAction action;
@@ -124,14 +124,12 @@ public class PlayerMovement : NetworkBehaviour
         // Fire hose
         if (action.Buttons.WasPressed(previousButtons, InputButton.Shoot) && IsHolding())
         {
-            Debug.Log("on");
             carriedObject.gameObject.GetComponent<FireHouse>().Spray();
         }
 
         // Stop firing hose
         if (action.Buttons.WasReleased(previousButtons, InputButton.Shoot) && IsHolding())
         {
-            Debug.Log("off");
             carriedObject.gameObject.GetComponent<FireHouse>().StartCoroutine(carriedObject.gameObject.GetComponent<FireHouse>().StopSpraying());
         }
     }

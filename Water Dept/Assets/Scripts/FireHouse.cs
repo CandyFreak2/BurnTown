@@ -5,7 +5,7 @@ using Fusion;
 public class FireHouse : NetworkBehaviour
 {
     [SerializeField] GameObject flame;
-    [Networked] public NetworkBool isShooting { get; set; }
+    [Networked] private NetworkBool isShooting { get; set; }
     [SerializeField] public float waterForce = 10f;
 
     [SerializeField] private ParticleSystem flamethrower;
