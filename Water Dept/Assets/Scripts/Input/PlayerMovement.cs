@@ -74,10 +74,10 @@ public class PlayerMovement : NetworkBehaviour
             action = input;
 
             CheckGround();
-            RotatePlayer();
             CapSpeed();
 
             MovePlayer();
+            RotatePlayer();
             HandleInteraction();
 
             previousButtons = action.Buttons;
@@ -86,21 +86,28 @@ public class PlayerMovement : NetworkBehaviour
 
     public void RotatePlayer()
     {
-        //skip rotate if the player has no input
-        if (action.LookDelta == Vector2.zero)
-            return;
-
         //get camera view direction
         Vector3 camDir = camTarget.forward;
         camDir.y = 0;
         float viewDir = Vector3.Angle(Vector3.forward, camDir);
 
-        //set the orientation to where the player is inputing to look
-        orientation.forward = ToVector3(action.LookDelta).normalized;
-        orientation.Rotate(0, viewDir, 0);
+        //skip rotate if the player has no input
+        if (action.LookDelta == Vector2.zero)
+        {
+            if(moveDirection !=  Vector3.zero)
+            {
+                orientation.forward = moveDirection;
+            }
+        }
+        else
+        {
+            //set the orientation to where the player is inputing to look
+            orientation.forward = ToVector3(action.LookDelta).normalized;
+            orientation.Rotate(0, viewDir, 0);
+        }
 
         //Rotate the player towards the orientations direction
-        playerObj.forward = Vector3.Lerp(playerObj.forward, orientation.forward.normalized, Time.deltaTime * rotSpeed);
+        playerObj.forward = Vector3.Slerp(playerObj.forward, orientation.forward.normalized, Time.fixedDeltaTime * rotSpeed);
     }
 
     public void MovePlayer()

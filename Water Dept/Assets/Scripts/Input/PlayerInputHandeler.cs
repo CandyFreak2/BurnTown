@@ -26,7 +26,9 @@ public class PlayerInputHandeler : SimulationBehaviour, IBeforeUpdate, INetworkR
 
         //get input and leave it hanging
         inputSystem.Player.Move.performed += ctx => moveDirection = ctx.ReadValue<Vector2>();
+        inputSystem.Player.Move.canceled += ctx => moveDirection = ctx.ReadValue<Vector2>();
         inputSystem.Player.Look.performed += ctx => lookDelta = ctx.ReadValue<Vector2>();
+        inputSystem.Player.Look.canceled += ctx => lookDelta = ctx.ReadValue<Vector2>();
 
         //interact
         inputSystem.Player.Interact.started += ctx => interactPress = ctx.ReadValue<float>();
@@ -108,8 +110,8 @@ public class PlayerInputHandeler : SimulationBehaviour, IBeforeUpdate, INetworkR
         //load inputs into the package
         accumulatedInput.MoveDirection += moveDirection;
 
-        if (lookDelta.magnitude > 0)
-            accumulatedInput.LookDelta += lookDelta;
+        //if (lookDelta.magnitude > 0)
+            accumulatedInput.LookDelta = lookDelta;
 
         accumulatedInput.Buttons = new NetworkButtons(accumulatedInput.Buttons.Bits | buttons.Bits);
     }
