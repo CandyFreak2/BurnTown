@@ -12,11 +12,12 @@ GameObject:
   - component: {fileID: 3065597779720781236}
   - component: {fileID: 6616012625910489278}
   - component: {fileID: 8006097637334632744}
-  - component: {fileID: 6017591092908145897}
   - component: {fileID: 6741218830040709599}
+  - component: {fileID: 6017591092908145897}
+  - component: {fileID: 7070302226826673100}
   m_Layer: 0
   m_Name: WoodWall
-  m_TagString: Flame
+  m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -110,19 +111,6 @@ BoxCollider:
   serializedVersion: 3
   m_Size: {x: 1, y: 1, z: 1}
   m_Center: {x: 0, y: 0, z: 0}
---- !u!114 &6017591092908145897
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 3389213166802151147}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: fd59cc16d73f31e48a5e82845f275f9c, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  burnTime: 5
 --- !u!54 &6741218830040709599
 Rigidbody:
   m_ObjectHideFlags: 0
@@ -150,3 +138,36 @@ Rigidbody:
   m_Interpolate: 0
   m_Constraints: 0
   m_CollisionDetection: 0
+--- !u!114 &6017591092908145897
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 3389213166802151147}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: fd59cc16d73f31e48a5e82845f275f9c, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  burnTime: 5
+  isBurning: 0
+--- !u!114 &7070302226826673100
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 3389213166802151147}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: -1552182283, guid: e725a070cec140c4caffb81624c8c787, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  SortKey: 3939340004
+  ObjectInterest: 1
+  Flags: 262145
+  NestedObjects: []
+  NetworkedBehaviours:
+  - {fileID: 6017591092908145897}
+  ForceRemoteRenderTimeframe: 0

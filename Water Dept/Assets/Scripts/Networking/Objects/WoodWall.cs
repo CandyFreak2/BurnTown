@@ -1,9 +1,14 @@
+using Fusion;
 using System.Collections;
 using UnityEngine;
 
-public class WoodWall : MonoBehaviour {
+public class WoodWall : NetworkBehaviour {
     public float burnTime = 5f;
-    private bool isBurning = false;
+
+    //Network Vars vars are communicated and updated by networkbehaviors
+    [Networked] protected bool nIsBurning { get; set; }
+    [SerializeField] protected bool isBurning = false;
+    private bool isSpawned = false;
 
     // Lerp burn colors
     private Color woodColor;
@@ -12,12 +17,17 @@ public class WoodWall : MonoBehaviour {
 
     private float timer = 0f;
 
+    public override void Spawned() {
+        nIsBurning = isBurning;
+        isSpawned = true;
+    }
+
     private void Awake() {
         woodColor = GetComponent<MeshRenderer>().material.color;
     }
 
     private void Update() {
-        if (isBurning) {
+        if (nIsBurning && isSpawned) {
             timer += Time.deltaTime;
             gameObject.GetComponent<MeshRenderer>().material.color = Color.Lerp(endColor * woodColor, startColor * woodColor, burnTime - timer);
             StartCoroutine(BurnWall(gameObject, burnTime));
@@ -31,7 +41,7 @@ public class WoodWall : MonoBehaviour {
 
     private void OnTriggerEnter(Collider other) {
         if (other.CompareTag("Flame")) {
-            isBurning = true;
+            nIsBurning = true;
         }
     }
 }
