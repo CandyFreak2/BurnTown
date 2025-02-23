@@ -16,7 +16,7 @@ public class Burnable : NetworkBehaviour
     [SerializeField] protected float fireResistance = 3.0f;
 
     //networked vars are communicated and updated by networkbehaviors
-    [Networked] protected bool nIsBurning { get; set; }
+    [Networked] public bool nIsBurning { get; set; }
     [SerializeField] protected bool isBurning = true;
     private bool isSpawned = false;
 

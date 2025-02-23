@@ -1,9 +1,10 @@
+using Fusion;
 using System;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-public class Gasline : MonoBehaviour {
+public class Gasline : NetworkBehaviour {
 
     [Serializable]
     public class GaslinePoints {
@@ -19,9 +20,11 @@ public class Gasline : MonoBehaviour {
     public List<GaslinePoints> points;
 
     [Header("Controls")]
+    [Networked] public bool wasLit { get; set; }
+    [Networked] public bool canMove { get; set; }
     public int currentIndex = 0;
     public int startIndex = 0;
-    public bool wasLit = false, canMove = false; 
+    [SerializeField] public Burnable endGoal;
 
     [Header("Prefabs")]
     public GameObject flamePrefab;
@@ -40,6 +43,13 @@ public class Gasline : MonoBehaviour {
     // Grabs all gasline points
     private GaslinePoint[] gaslinePoints;
 
+    // Network
+    private bool isSpawned = false;
+
+    public override void Spawned() {
+        isSpawned = true;
+    }
+
     // Initalizes fireSpawned array with dynamic amount, ie the length of the points list
     public void Start() {
         fireSpawned = new bool[points.Count];
@@ -47,12 +57,14 @@ public class Gasline : MonoBehaviour {
     }
 
     public void Update() {
-        if (!wasSpawned) {
-            StartFireSpread(startIndex); 
-        }
+        if (isSpawned) {
+            if (!wasSpawned) {
+                StartFireSpread(startIndex); 
+            }
 
-        if (wasLit) {
-            HandleGaslineMovement();
+            if (wasLit) {
+                HandleGaslineMovement();
+            }
         }
     }
 
@@ -103,6 +115,12 @@ public class Gasline : MonoBehaviour {
                 ParticleSystem fireVisualVFX = fireVisual.GetComponent<ParticleSystem>();
                 fireVisualVFX.Play();
 
+                // Handles enabling burning
+                if (currentIndex == 2) {
+                    endGoal.nIsBurning = true;
+                    Debug.Log(endGoal.nIsBurning);
+                }
+
                 // Stops VFX after duration is reached
                 StartCoroutine(TurnOffFireVFX(fireVisualVFX.main.duration, fireVisualVFX));
             }
@@ -138,4 +156,5 @@ public class Gasline : MonoBehaviour {
     private bool CanIndexPop(int index) { return points[index].canPop; }
     private float GetPointDelay(int index) { return points[index].delay; }
     private float GetPointSpeed(int index) { return points[index].speed * Time.deltaTime; }
+    private int GetPointLength () { return points.Count - 1; }
 }
