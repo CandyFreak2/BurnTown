@@ -9,7 +9,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 8537246583243309382}
-  m_Layer: 0
+  m_Layer: 6
   m_Name: Orientation
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -42,7 +42,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 736681648829432328}
-  m_Layer: 0
+  m_Layer: 6
   m_Name: CamTarget
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -73,7 +73,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 7528096688258589411}
-  m_Layer: 0
+  m_Layer: 6
   m_Name: Hand
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -109,8 +109,7 @@ GameObject:
   - component: {fileID: 5214953744532743937}
   - component: {fileID: 2376758521203680051}
   - component: {fileID: 1538818724924762789}
-  - component: {fileID: 4480353024424979239}
-  m_Layer: 0
+  m_Layer: 6
   m_Name: Player
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -262,19 +261,6 @@ MonoBehaviour:
     StepRequireGroundTarget: 0
     SnapDistance: 0.25
     SnapSpeed: 4
---- !u!114 &4480353024424979239
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 3029772528895407285}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: c4a91c48045111e46b9d6065a24c0913, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  playerController: {fileID: 5214953744532743937}
 --- !u!1 &3348894177522433908
 GameObject:
   m_ObjectHideFlags: 0
@@ -287,7 +273,7 @@ GameObject:
   - component: {fileID: 8186754365480485472}
   - component: {fileID: 1228123265398043406}
   - component: {fileID: 5114287666113447924}
-  m_Layer: 0
+  m_Layer: 6
   m_Name: Cylinder
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -397,8 +383,7 @@ GameObject:
   - component: {fileID: 616905588316537877}
   - component: {fileID: 9118419852472743927}
   - component: {fileID: 1975245345958394594}
-  - component: {fileID: 3216472873600205563}
-  m_Layer: 0
+  m_Layer: 6
   m_Name: Body
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -495,19 +480,6 @@ BoxCollider:
   serializedVersion: 3
   m_Size: {x: 2, y: 2, z: 2}
   m_Center: {x: 0, y: 0, z: 0}
---- !u!114 &3216472873600205563
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 6539176836625966791}
-  m_Enabled: 0
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: c4a91c48045111e46b9d6065a24c0913, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  playerController: {fileID: 5214953744532743937}
 --- !u!1 &7621550371935733915
 GameObject:
   m_ObjectHideFlags: 0
@@ -517,7 +489,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 3946907390898007895}
-  m_Layer: 0
+  m_Layer: 6
   m_Name: GroundCheckPos
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -551,7 +523,7 @@ GameObject:
   - component: {fileID: 8159904942231420067}
   - component: {fileID: 7091175050942362179}
   - component: {fileID: 4672696045393469847}
-  m_Layer: 0
+  m_Layer: 6
   m_Name: d
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -725,10 +697,40 @@ PrefabInstance:
       propertyPath: m_ConstrainProportionsScale
       value: 1
       objectReference: {fileID: 0}
+    - target: {fileID: -7071820054109768973, guid: b4d36515d0a49f34cb400860d3f855d6,
+        type: 3}
+      propertyPath: m_Layer
+      value: 6
+      objectReference: {fileID: 0}
+    - target: {fileID: -932862847250553940, guid: b4d36515d0a49f34cb400860d3f855d6,
+        type: 3}
+      propertyPath: m_Layer
+      value: 6
+      objectReference: {fileID: 0}
     - target: {fileID: 919132149155446097, guid: b4d36515d0a49f34cb400860d3f855d6,
         type: 3}
       propertyPath: m_Name
       value: New_character_geo
+      objectReference: {fileID: 0}
+    - target: {fileID: 919132149155446097, guid: b4d36515d0a49f34cb400860d3f855d6,
+        type: 3}
+      propertyPath: m_Layer
+      value: 6
+      objectReference: {fileID: 0}
+    - target: {fileID: 1001246258593123434, guid: b4d36515d0a49f34cb400860d3f855d6,
+        type: 3}
+      propertyPath: m_Layer
+      value: 6
+      objectReference: {fileID: 0}
+    - target: {fileID: 3488145904852771955, guid: b4d36515d0a49f34cb400860d3f855d6,
+        type: 3}
+      propertyPath: m_Layer
+      value: 6
+      objectReference: {fileID: 0}
+    - target: {fileID: 7374969769253122592, guid: b4d36515d0a49f34cb400860d3f855d6,
+        type: 3}
+      propertyPath: m_Layer
+      value: 6
       objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects: []

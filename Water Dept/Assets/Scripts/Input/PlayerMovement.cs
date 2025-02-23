@@ -23,7 +23,7 @@ public class PlayerMovement : NetworkBehaviour
     //private GameObject fireHoseHead;
     //[Networked] public NetworkBool isHolding { get; set; } //public for pickup collider
     //[Networked] private NetworkId heldHoseId {  get; set; }
-    [Networked] private Interactable carriedObject { get; set; }
+    [Networked] public Interactable carriedObject { get; set; }
 
     PlayerInputHandeler input;
     PlayerInputAction action;
@@ -122,8 +122,24 @@ public class PlayerMovement : NetworkBehaviour
 
     private void HandleInteraction()
     {
+        //Pickup hose
+        if (action.Buttons.WasPressed(previousButtons, InputButton.Interact) && !IsHolding())
+        {
+            Collider[] interactableObjects = Physics.OverlapSphere(transform.position, 3.5f);
+
+            foreach (Collider collider in interactableObjects)
+            {
+                // First object in list that is a flamethrower gets picked up
+                if (collider.gameObject.tag == "FireHoseHead")
+                {
+                    PickUpObject(collider.gameObject.GetComponent<Interactable>());
+                    break;
+                }
+            }
+        }
+
         //Drop hose
-        if (action.Buttons.WasPressed(previousButtons, InputButton.Interact) && IsHolding())
+        if (action.Buttons.WasPressed(previousButtons, InputButton.Drop) && IsHolding())
         {
             RPC_RequestDrop(Object.Id);
         }
@@ -131,13 +147,19 @@ public class PlayerMovement : NetworkBehaviour
         // Fire hose
         if (action.Buttons.WasPressed(previousButtons, InputButton.Shoot) && IsHolding())
         {
-            carriedObject.gameObject.GetComponent<FireHouse>().Spray();
+            if (carriedObject.interactableType == InteractableType.Flamethrower)
+            {
+                carriedObject.gameObject.GetComponent<FireHouse>().Spray();
+            }
         }
 
         // Stop firing hose
         if (action.Buttons.WasReleased(previousButtons, InputButton.Shoot) && IsHolding())
         {
-            carriedObject.gameObject.GetComponent<FireHouse>().StartCoroutine(carriedObject.gameObject.GetComponent<FireHouse>().StopSpraying());
+            if (carriedObject.interactableType == InteractableType.Flamethrower)
+            {
+                carriedObject.gameObject.GetComponent<FireHouse>().StartCoroutine(carriedObject.gameObject.GetComponent<FireHouse>().StopSpraying());
+            }
         }
     }
 
@@ -199,11 +221,13 @@ public class PlayerMovement : NetworkBehaviour
     public void RPC_RequestDrop(NetworkId _playerId)
     {
         PlayerMovement player = Runner.FindObject(_playerId).GetComponent<PlayerMovement>();
-
         if (player.IsHolding() && player.carriedObject.GetCarrierId() == _playerId)
         {
             player.carriedObject.Drop();
-            player.carriedObject.gameObject.GetComponent<FireHouse>().DropHose();
+            if (player.carriedObject.interactableType == InteractableType.Flamethrower)
+            {
+                player.carriedObject.gameObject.GetComponent<FireHouse>().StartCoroutine(carriedObject.gameObject.GetComponent<FireHouse>().StopSpraying());
+            }
             player.carriedObject.gameObject.GetComponent<NetworkObject>().RemoveInputAuthority();
             player.carriedObject = null;
         }

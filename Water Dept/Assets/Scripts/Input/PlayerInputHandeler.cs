@@ -13,6 +13,7 @@ public class PlayerInputHandeler : SimulationBehaviour, IBeforeUpdate, INetworkR
     Vector2 moveDirection;
     Vector2 lookDelta;
     float interactPress;
+    float dropPress;
     float shootPress;
     
 
@@ -32,6 +33,9 @@ public class PlayerInputHandeler : SimulationBehaviour, IBeforeUpdate, INetworkR
 
         //interact
         inputSystem.Player.Interact.started += ctx => interactPress = ctx.ReadValue<float>();
+
+        // Drop
+        inputSystem.Player.Crouch.started += ctx => dropPress = ctx.ReadValue<float>();
         
         //shoot
         inputSystem.Player.Attack.performed += ctx => shootPress = ctx.ReadValue<float>();
@@ -84,12 +88,13 @@ public class PlayerInputHandeler : SimulationBehaviour, IBeforeUpdate, INetworkR
         NetworkButtons buttons = default;
 
         bool interactDown = (inputSystem.Player.Interact.ReadValue<float>() > 0.0f);
-
         buttons.Set(InputButton.Interact, interactDown);
+
+        bool dropDown = (inputSystem.Player.Crouch.ReadValue<float>() > 0.0f);
+        buttons.Set(InputButton.Drop, dropDown);
 
         // shootpress returns 0, attack.readvalue returns 1
         bool shootDown = (inputSystem.Player.Attack.ReadValue<float>() > 0.0f);
-
         buttons.Set(InputButton.Shoot, shootDown);
 
         // Change cursor lock state if enter or esc pressed
