@@ -27,7 +27,14 @@ public class WoodWall : NetworkBehaviour {
     }
 
     private void Update() {
-        if (nIsBurning && isSpawned) {
+        if (isSpawned) {
+            HandleBurn();
+        }
+    }
+
+    private void HandleBurn() {
+        if (nIsBurning) {
+            isBurning = nIsBurning;
             timer += Time.deltaTime;
             gameObject.GetComponent<MeshRenderer>().material.color = Color.Lerp(endColor * woodColor, startColor * woodColor, burnTime - timer);
             StartCoroutine(BurnWall(gameObject, burnTime));
