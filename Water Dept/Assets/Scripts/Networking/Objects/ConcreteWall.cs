@@ -17,15 +17,8 @@ public class ConcreteWall : NetworkBehaviour {
         isSpawned = true;
     }
 
-    private void Update() {
-        // Temporary Triggers until barrel implementation
-        if (isSpawned) {
-            StartCoroutine(TestExplosion(45));
-        }
-    }
-
     public void Explode() {
-        if (Object.HasStateAuthority) {
+        if (Object.HasStateAuthority && isSpawned) {
             Runner.Despawn(Object);
         }
     }
@@ -78,11 +71,6 @@ public class ConcreteWall : NetworkBehaviour {
                 yield return new WaitForSeconds(0.05f);
             }
         }
-    }
-
-    IEnumerator TestExplosion(float delay) {
-        yield return new WaitForSeconds(delay);
-        Explode();
     }
 
     private Vector3 FloatToVec3(float value) {

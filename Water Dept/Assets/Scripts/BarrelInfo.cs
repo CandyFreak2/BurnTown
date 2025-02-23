@@ -116,7 +116,8 @@ public class BarrelInfo : MonoBehaviour {
 
             if (rb != null) {
                 if (rb.gameObject.CompareTag("DestructibleObject")) {
-                    rb.gameObject.transform.parent.GetComponent<ConcreteWall>().Explode(explosionForce);
+                    rb.gameObject.transform.parent.GetComponent<ConcreteWall>().Explode();
+                    //rb.gameObject.transform.parent.GetComponent<ConcreteWall>().Explode(explosionForce);
                 }
                 rb.AddExplosionForce(explosionForce, gameObject.transform.position, explosionRadius, 3.0f);
             }
