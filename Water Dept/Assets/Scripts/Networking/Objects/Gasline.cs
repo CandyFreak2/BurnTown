@@ -2,6 +2,7 @@ using Fusion;
 using System;
 using System.Collections;
 using System.Collections.Generic;
+using Unity.VisualScripting;
 using UnityEngine;
 using UnityEngine.UIElements;
 
@@ -91,11 +92,12 @@ public class Gasline : NetworkBehaviour {
                 flameVisual.transform.forward = (direction - flameVisual.transform.position).normalized;
                 flameVisual.transform.position = direction;
             }
-            HandlePointFire2();
+            RPC_HandlePointFire();
         }
     }
 
-    public void HandlePointFire2() {
+    //[Rpc(RpcSources.StateAuthority, RpcTargets.All)]
+    public void RPC_HandlePointFire() {
         // Flame Visual - If flame is on gasline point, the valve can pop and within general radius of the location of points
         if (flameVisual.GetComponent<GaslineSpark>().isOnGaslinePoint && CanIndexPop(currentIndex) && (Vector3.Distance(flameVisual.transform.position, GetPointPosition(currentIndex)) < tolerance)) {
             Vector3 popDirection = GetPopDirection(currentIndex);
@@ -118,45 +120,11 @@ public class Gasline : NetworkBehaviour {
 
                 // Stops VFX after duration is reached
                 StartCoroutine(TurnOffFireVFX(fireVisualVFX.main.duration, fireVisualVFX));
-            }
-        }
-    }
 
-    public void HandlePointFire() {
-        if (flameVisual.GetComponent<GaslineSpark>().isOnGaslinePoint) {
-            if (CanIndexPop(currentIndex) && Vector3.Distance(flameVisual.transform.position, GetPointPosition(currentIndex)) < tolerance) {
-                Vector3 popDirection = GetPopDirection(currentIndex);
-                Vector3 spawnPosition = GetPointPosition(currentIndex);
-
-                if (popDirection != Vector3.zero && !fireSpawned[currentIndex]) {
-                    fireSpawned[currentIndex] = true;
-                    RpcHandleFireSpawn(spawnPosition, popDirection, currentIndex);
+                // Handles enabling burning
+                if (currentIndex == GetPointLength()) {
+                    endGoal.nIsBurning = true;
                 }
-            }
-        }
-    }
-
-    [Rpc(RpcSources.StateAuthority, RpcTargets.All)]
-    public void RpcHandleFireSpawn(Vector3 position, Vector3 direction, int index) {
-        if (!fireSpawned[index]) {
-            fireVisual = Runner.Spawn(firePrefab, position, Quaternion.LookRotation(direction));
-            fireSpawned[index] = true;
-        }
-
-        if (fireVisual != null) {
-            fireVisual.transform.rotation = Quaternion.LookRotation(direction);
-
-            // Plays VFX prefab
-            ParticleSystem fireVisualVFX = fireVisual.GetComponent<ParticleSystem>();
-            fireVisualVFX.Play();
-
-            // Stops VFX after duration is reached
-            StartCoroutine(TurnOffFireVFX(fireVisualVFX.main.duration, fireVisualVFX));
-
-            // Handles enabling burning
-            if (currentIndex == 2) {
-                endGoal.nIsBurning = true;
-                Debug.Log(endGoal.nIsBurning);
             }
         }
     }
