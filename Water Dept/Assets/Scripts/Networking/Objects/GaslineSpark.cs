@@ -2,7 +2,7 @@ using Fusion;
 using UnityEngine;
 
 public class GaslineSpark : NetworkBehaviour {
-    [Networked] public bool isOnGaslinePoint { get; set; }
+    [Networked] public NetworkBool isOnGaslinePoint { get; set; }
 
     // Network
     private bool isSpawned = false;
@@ -22,7 +22,4 @@ public class GaslineSpark : NetworkBehaviour {
             isOnGaslinePoint = false;
         }
     }
-
-    
-    public bool GetIsOnGaslinePoint() => isOnGaslinePoint;
 }

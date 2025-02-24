@@ -3,6 +3,8 @@ using System;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using static UnityEditor.PlayerSettings;
+using static UnityEngine.Rendering.DebugUI.Table;
 
 public class Gasline : NetworkBehaviour {
 
@@ -22,8 +24,8 @@ public class Gasline : NetworkBehaviour {
     [Header("Controls")]
     [Networked] public bool wasLit { get; set; }
     [Networked] public bool canMove { get; set; }
-    public int currentIndex = 0;
-    public int startIndex = 0;
+    [Networked] public int currentIndex { get; set; }
+    [Networked] public int startIndex { get; set; }
     [SerializeField] public Burnable endGoal;
 
     [Header("Prefabs")]
@@ -31,8 +33,8 @@ public class Gasline : NetworkBehaviour {
     public GameObject firePrefab;
 
     private GameObject flameVisual, fireVisual;
-    private bool canSpawnFlame = false;
-    private bool wasSpawned = false;
+    [Networked] private NetworkBool canSpawnFlame { get; set; }
+    [Networked] private NetworkBool wasSpawned { get; set; }
 
     // Keeps track of which points have had fireVisual spawned
     private bool[] fireSpawned;
@@ -46,18 +48,15 @@ public class Gasline : NetworkBehaviour {
     // Network
     private bool isSpawned = false;
 
+    // Initalizes fireSpawned array with dynamic amount, ie the length of the points list
     public override void Spawned() {
         isSpawned = true;
-    }
-
-    // Initalizes fireSpawned array with dynamic amount, ie the length of the points list
-    public void Start() {
         fireSpawned = new bool[points.Count];
         gaslinePoints = GetComponentsInChildren<GaslinePoint>();
     }
 
-    public void Update() {
-        if (isSpawned) {
+    public override void FixedUpdateNetwork() {
+        if (isSpawned && Object.HasStateAuthority) {
             if (!wasSpawned) {
                 StartFireSpread(startIndex); 
             }
@@ -69,60 +68,81 @@ public class Gasline : NetworkBehaviour {
     }
 
     // Helper function for initalizating prefabs but allows reference to objects for usage
-    public void HandleSpawn(ref bool canSpawn, ref GameObject visual, GameObject prefab, Vector3 pos, Quaternion rot) {
+    public void HandleSpawn(bool canSpawn, ref GameObject visual, GameObject prefab, Vector3 pos, Quaternion rot) {
         if (!canSpawn) {
             visual = Instantiate(prefab, pos, rot);
+            Runner.Spawn(visual);
+
         }
         canSpawn = true;
     }
 
     // Function that handles gasline movement
     public void HandleGaslineMovement() {
-        HandleSpawn(ref canSpawnFlame, ref flameVisual, flamePrefab, points[currentIndex].location.transform.position, Quaternion.identity);
+        if (!canSpawnFlame) {
+            flameVisual = Instantiate(flamePrefab, points[currentIndex].location.transform.position, Quaternion.identity);
+            Runner.Spawn(flameVisual);
 
-        if (canMove) {
-            float distance = Vector3.Distance(flameVisual.transform.position, points[currentIndex].location.transform.position);
-            if (distance < 0.02f) {
-                // If the currentIndex has not reached the end, allow delays to occur when at points
-                if (currentIndex != points.Count - 1) {
-                    StartCoroutine(DelayBeforeNextMove(GetPointDelay(currentIndex)));
-                }
-            }
-            // Moves the flameVisual based on Vec3 Math and indexes of the points list
-            Vector3 direction = Vector3.MoveTowards(flameVisual.transform.position, GetPointPosition(currentIndex), GetPointSpeed(currentIndex));
-            flameVisual.transform.forward = (direction - flameVisual.transform.position).normalized;
-            flameVisual.transform.position = direction;
         }
+        canSpawnFlame = true;
+        //HandleSpawn(canSpawnFlame, ref flameVisual, flamePrefab, points[currentIndex].location.transform.position, Quaternion.identity);
 
-        HandlePointFire();
+        if (flameVisual != null) {
+            if (canMove) {
+                float distance = Vector3.Distance(flameVisual.transform.position, points[currentIndex].location.transform.position);
+                if (distance < 0.02f) {
+                    // If the currentIndex has not reached the end, allow delays to occur when at points
+                    if (currentIndex != points.Count - 1) {
+                        StartCoroutine(DelayBeforeNextMove(GetPointDelay(currentIndex)));
+                    }
+                }
+                // Moves the flameVisual based on Vec3 Math and indexes of the points list
+                Vector3 direction = Vector3.MoveTowards(flameVisual.transform.position, GetPointPosition(currentIndex), GetPointSpeed(currentIndex));
+                flameVisual.transform.forward = (direction - flameVisual.transform.position).normalized;
+                flameVisual.transform.position = direction;
+            }
+
+            HandlePointFire();
+        }
     }
 
     public void HandlePointFire() {
-        // Flame Visual - If flame is on gasline point, the valve can pop and within general radius of the location of points
-        if (flameVisual.GetComponent<GaslineSpark>().GetIsOnGaslinePoint() && CanIndexPop(currentIndex) && (Vector3.Distance(flameVisual.transform.position, GetPointPosition(currentIndex)) < tolerance)) {
+        if (flameVisual.GetComponent<GaslineSpark>().isOnGaslinePoint && CanIndexPop(currentIndex) && Vector3.Distance(flameVisual.transform.position, GetPointPosition(currentIndex)) < tolerance) {
             Vector3 popDirection = GetPopDirection(currentIndex);
             Vector3 spawnPosition = GetPointPosition(currentIndex);
 
-            // Calculates the direction of the fire visual prefab and applies it to the rotation
             if (popDirection != Vector3.zero && !fireSpawned[currentIndex]) {
-                HandleSpawn(ref fireSpawned[currentIndex], ref fireVisual, firePrefab, spawnPosition, Quaternion.LookRotation(popDirection));
+                fireSpawned[currentIndex] = true;
+                RpcHandleFireSpawn(spawnPosition, popDirection, currentIndex);
+            }
+        }   
+    }
 
-                if (fireVisual != null) {
-                    fireVisual.transform.rotation = Quaternion.LookRotation(popDirection);
-                }
+    [Rpc(RpcSources.StateAuthority, RpcTargets.All)]
+    public void RpcHandleFireSpawn(Vector3 position, Vector3 direction, int index) {
+        if (!fireSpawned[index]) {
+            fireVisual = Instantiate(firePrefab, position, Quaternion.LookRotation(direction));
+            Runner.Spawn(flameVisual);
 
-                // Plays VFX prefab
-                ParticleSystem fireVisualVFX = fireVisual.GetComponent<ParticleSystem>();
-                fireVisualVFX.Play();
+        }
+        fireSpawned[index] = true;
+        
+        //HandleSpawn(fireSpawned[index], ref fireVisual, firePrefab, position, Quaternion.LookRotation(direction));
 
-                // Handles enabling burning
-                if (currentIndex == 2) {
-                    endGoal.nIsBurning = true;
-                    Debug.Log(endGoal.nIsBurning);
-                }
+        if (fireVisual != null) {
+            fireVisual.transform.rotation = Quaternion.LookRotation(direction);
 
-                // Stops VFX after duration is reached
-                StartCoroutine(TurnOffFireVFX(fireVisualVFX.main.duration, fireVisualVFX));
+            // Plays VFX prefab
+            ParticleSystem fireVisualVFX = fireVisual.GetComponent<ParticleSystem>();
+            fireVisualVFX.Play();
+
+            // Stops VFX after duration is reached
+            StartCoroutine(TurnOffFireVFX(fireVisualVFX.main.duration, fireVisualVFX));
+
+            // Handles enabling burning
+            if (currentIndex == GetPointLength()) {
+                endGoal.nIsBurning = true;
+                Debug.Log(endGoal.nIsBurning);
             }
         }
     }
@@ -147,7 +167,8 @@ public class Gasline : NetworkBehaviour {
     IEnumerator TurnOffFireVFX(float delay, ParticleSystem vfx) {
         yield return new WaitForSeconds(delay);
         vfx.Stop();
-        Destroy(vfx.gameObject);
+        Runner.Despawn(vfx.transform.parent.GetComponent<NetworkObject>());
+       
     }
 
     // Helper Functions

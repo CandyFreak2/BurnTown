@@ -14,6 +14,7 @@ GameObject:
   - component: {fileID: 3665193885490354032}
   - component: {fileID: 6755536090206378292}
   - component: {fileID: 5008828413849787568}
+  - component: {fileID: 9020599918749242177}
   m_Layer: 0
   m_Name: Sphere (2)
   m_TagString: GaslinePoint
@@ -135,7 +136,7 @@ Rigidbody:
   m_UseGravity: 0
   m_IsKinematic: 0
   m_Interpolate: 0
-  m_Constraints: 0
+  m_Constraints: 126
   m_CollisionDetection: 0
 --- !u!114 &5008828413849787568
 MonoBehaviour:
@@ -149,7 +150,26 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 19df876141b6aac4babc8c254ae15233, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  isOnFire: 0
+  _isOnFire: 0
+--- !u!114 &9020599918749242177
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 645874714092690397}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: -1552182283, guid: e725a070cec140c4caffb81624c8c787, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  SortKey: 470883125
+  ObjectInterest: 1
+  Flags: 262145
+  NestedObjects: []
+  NetworkedBehaviours:
+  - {fileID: 5008828413849787568}
+  ForceRemoteRenderTimeframe: 0
 --- !u!1 &4228165534111034315
 GameObject:
   m_ObjectHideFlags: 0
@@ -164,6 +184,7 @@ GameObject:
   - component: {fileID: 8919662237908173685}
   - component: {fileID: 5574333700966758396}
   - component: {fileID: 4209179148399205937}
+  - component: {fileID: 3861447882259504122}
   m_Layer: 0
   m_Name: Sphere
   m_TagString: GaslinePoint
@@ -285,7 +306,7 @@ Rigidbody:
   m_UseGravity: 0
   m_IsKinematic: 0
   m_Interpolate: 0
-  m_Constraints: 0
+  m_Constraints: 126
   m_CollisionDetection: 0
 --- !u!114 &4209179148399205937
 MonoBehaviour:
@@ -299,7 +320,26 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 19df876141b6aac4babc8c254ae15233, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  isOnFire: 0
+  _isOnFire: 0
+--- !u!114 &3861447882259504122
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 4228165534111034315}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: -1552182283, guid: e725a070cec140c4caffb81624c8c787, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  SortKey: 1522213409
+  ObjectInterest: 1
+  Flags: 1
+  NestedObjects: []
+  NetworkedBehaviours:
+  - {fileID: 4209179148399205937}
+  ForceRemoteRenderTimeframe: 0
 --- !u!1 &5362460887575588938
 GameObject:
   m_ObjectHideFlags: 0
@@ -310,6 +350,7 @@ GameObject:
   m_Component:
   - component: {fileID: 3440121727738044881}
   - component: {fileID: 961710666475029248}
+  - component: {fileID: 3375185424649369374}
   m_Layer: 0
   m_Name: Gasline
   m_TagString: Untagged
@@ -366,14 +407,37 @@ MonoBehaviour:
     canPop: 1
     canStart: 0
     popDirection: {x: 180, y: 180, z: 180}
+  _wasLit: 0
+  _canMove: 0
   currentIndex: 0
   startIndex: 0
-  wasLit: 0
-  canMove: 0
+  endGoal: {fileID: 0}
   flamePrefab: {fileID: 5174873677586650576, guid: 93d4d2c292b331c4388f56ab2e0760f6,
     type: 3}
   firePrefab: {fileID: 5618987330610968688, guid: 9197ffb9db992c24980766c319632b11,
     type: 3}
+--- !u!114 &3375185424649369374
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 5362460887575588938}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: -1552182283, guid: e725a070cec140c4caffb81624c8c787, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  SortKey: 4254606366
+  ObjectInterest: 1
+  Flags: 262145
+  NestedObjects:
+  - {fileID: 3861447882259504122}
+  - {fileID: 5370643854536701865}
+  - {fileID: 9020599918749242177}
+  NetworkedBehaviours:
+  - {fileID: 961710666475029248}
+  ForceRemoteRenderTimeframe: 0
 --- !u!1 &5563673379937541755
 GameObject:
   m_ObjectHideFlags: 0
@@ -388,6 +452,7 @@ GameObject:
   - component: {fileID: 4727704015797042590}
   - component: {fileID: 8217861185128397}
   - component: {fileID: 5193227828192276576}
+  - component: {fileID: 5370643854536701865}
   m_Layer: 0
   m_Name: Sphere (1)
   m_TagString: GaslinePoint
@@ -509,7 +574,7 @@ Rigidbody:
   m_UseGravity: 0
   m_IsKinematic: 0
   m_Interpolate: 0
-  m_Constraints: 0
+  m_Constraints: 126
   m_CollisionDetection: 0
 --- !u!114 &5193227828192276576
 MonoBehaviour:
@@ -523,4 +588,23 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 19df876141b6aac4babc8c254ae15233, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  isOnFire: 0
+  _isOnFire: 0
+--- !u!114 &5370643854536701865
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 5563673379937541755}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: -1552182283, guid: e725a070cec140c4caffb81624c8c787, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  SortKey: 1393569193
+  ObjectInterest: 1
+  Flags: 262145
+  NestedObjects: []
+  NetworkedBehaviours:
+  - {fileID: 5193227828192276576}
+  ForceRemoteRenderTimeframe: 0
