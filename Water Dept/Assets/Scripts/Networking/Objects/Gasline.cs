@@ -3,8 +3,6 @@ using System;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
-using static UnityEditor.PlayerSettings;
-using static UnityEngine.Rendering.DebugUI.Table;
 
 public class Gasline : NetworkBehaviour {
 
@@ -32,7 +30,7 @@ public class Gasline : NetworkBehaviour {
     public GameObject flamePrefab;
     public GameObject firePrefab;
 
-    private GameObject flameVisual, fireVisual;
+    private NetworkObject flameVisual, fireVisual;
     [Networked] private NetworkBool canSpawnFlame { get; set; }
     [Networked] private NetworkBool wasSpawned { get; set; }
 
@@ -58,7 +56,7 @@ public class Gasline : NetworkBehaviour {
     public override void FixedUpdateNetwork() {
         if (isSpawned && Object.HasStateAuthority) {
             if (!wasSpawned) {
-                StartFireSpread(startIndex); 
+                StartFireSpread(startIndex);
             }
 
             if (wasLit) {
@@ -67,25 +65,16 @@ public class Gasline : NetworkBehaviour {
         }
     }
 
-    // Helper function for initalizating prefabs but allows reference to objects for usage
-    public void HandleSpawn(bool canSpawn, ref GameObject visual, GameObject prefab, Vector3 pos, Quaternion rot) {
-        if (!canSpawn) {
-            visual = Instantiate(prefab, pos, rot);
-            Runner.Spawn(visual);
-
+    public void SpawnFlameVisual() {
+        if (flameVisual == null && !canSpawnFlame) {
+            flameVisual = Runner.Spawn(flamePrefab, points[currentIndex].location.transform.position, Quaternion.identity);
+            canSpawnFlame = true;
         }
-        canSpawn = true;
     }
 
     // Function that handles gasline movement
     public void HandleGaslineMovement() {
-        if (!canSpawnFlame) {
-            flameVisual = Instantiate(flamePrefab, points[currentIndex].location.transform.position, Quaternion.identity);
-            Runner.Spawn(flameVisual);
-
-        }
-        canSpawnFlame = true;
-        //HandleSpawn(canSpawnFlame, ref flameVisual, flamePrefab, points[currentIndex].location.transform.position, Quaternion.identity);
+        SpawnFlameVisual();
 
         if (flameVisual != null) {
             if (canMove) {
@@ -101,9 +90,8 @@ public class Gasline : NetworkBehaviour {
                 flameVisual.transform.forward = (direction - flameVisual.transform.position).normalized;
                 flameVisual.transform.position = direction;
             }
-
-            HandlePointFire();
         }
+        HandlePointFire();
     }
 
     public void HandlePointFire() {
@@ -115,19 +103,15 @@ public class Gasline : NetworkBehaviour {
                 fireSpawned[currentIndex] = true;
                 RpcHandleFireSpawn(spawnPosition, popDirection, currentIndex);
             }
-        }   
+        }
     }
 
     [Rpc(RpcSources.StateAuthority, RpcTargets.All)]
     public void RpcHandleFireSpawn(Vector3 position, Vector3 direction, int index) {
-        if (!fireSpawned[index]) {
-            fireVisual = Instantiate(firePrefab, position, Quaternion.LookRotation(direction));
-            Runner.Spawn(flameVisual);
-
+        if (!fireSpawned[index] && fireVisual == null) {
+            fireVisual = Runner.Spawn(firePrefab, position, Quaternion.LookRotation(direction));
+            fireSpawned[index] = true;
         }
-        fireSpawned[index] = true;
-        
-        //HandleSpawn(fireSpawned[index], ref fireVisual, firePrefab, position, Quaternion.LookRotation(direction));
 
         if (fireVisual != null) {
             fireVisual.transform.rotation = Quaternion.LookRotation(direction);
@@ -140,7 +124,7 @@ public class Gasline : NetworkBehaviour {
             StartCoroutine(TurnOffFireVFX(fireVisualVFX.main.duration, fireVisualVFX));
 
             // Handles enabling burning
-            if (currentIndex == GetPointLength()) {
+            if (currentIndex == 2) {
                 endGoal.nIsBurning = true;
                 Debug.Log(endGoal.nIsBurning);
             }
@@ -177,5 +161,5 @@ public class Gasline : NetworkBehaviour {
     private bool CanIndexPop(int index) { return points[index].canPop; }
     private float GetPointDelay(int index) { return points[index].delay; }
     private float GetPointSpeed(int index) { return points[index].speed * Time.deltaTime; }
-    private int GetPointLength () { return points.Count - 1; }
+    private int GetPointLength() { return points.Count - 1; }
 }
