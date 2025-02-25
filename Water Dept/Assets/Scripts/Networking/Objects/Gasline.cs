@@ -22,11 +22,11 @@ public class Gasline : NetworkBehaviour {
     public List<GaslinePoints> points;
 
     [Header("Controls")]
-    [Networked] public bool wasLit { get; set; }
-    [Networked] public bool canMove { get; set; }
-    [Networked] public int currentIndex { get; set; }
-    [Networked] public int startIndex { get; set; }
-    [SerializeField] public Burnable endGoal;
+    [Networked] private bool wasLit { get; set; }
+    [Networked] private bool canMove { get; set; }
+    [Networked] private int currentIndex { get; set; }
+    [Networked] private int startIndex { get; set; }
+    [SerializeField] private Burnable[] endGoals;
 
     [Header("Prefabs")]
     public GameObject flamePrefab;
@@ -123,7 +123,9 @@ public class Gasline : NetworkBehaviour {
 
                 // Handles enabling burning
                 if (currentIndex == GetPointLength()) {
-                    endGoal.nIsBurning = true;
+                    foreach (Burnable b in endGoals) {
+                        b.nIsBurning = true;
+                    }
                 }
             }
         }
