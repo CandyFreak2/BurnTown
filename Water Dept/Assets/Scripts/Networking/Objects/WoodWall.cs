@@ -43,7 +43,7 @@ public class WoodWall : NetworkBehaviour {
 
     IEnumerator BurnWall(GameObject wall, float delay) {
         yield return new WaitForSeconds(delay);
-        Destroy(wall);
+        Runner.Despawn(wall.GetComponent<NetworkObject>());
     }
 
     private void OnTriggerEnter(Collider other) {
