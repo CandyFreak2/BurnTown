@@ -1,6 +1,12 @@
 using UnityEngine;
 using Fusion;
 
+public enum InteractableType
+{
+    Flamethrower,
+    Barrel
+}
+
 public class Interactable : NetworkBehaviour
 {
     private bool isSpawned;
@@ -16,6 +22,9 @@ public class Interactable : NetworkBehaviour
 
     [SerializeField]
     private Vector3 holdOffset = new Vector3(1.0f, 0.5f, 0.0f);
+
+    [SerializeField]
+    public InteractableType interactableType;
 
     private void Awake()
     {
