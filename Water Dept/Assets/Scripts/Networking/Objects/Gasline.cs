@@ -66,9 +66,9 @@ public class Gasline : NetworkBehaviour {
             }
         }
     }
-
+    
     public void SpawnFlameVisual() {
-    if (flameVisual == null && !canSpawnFlame) {
+    if (flameVisual == null && !canSpawnFlame && HasStateAuthority) {
         flameVisual = Runner.Spawn(flamePrefab, points[currentIndex].location.transform.position, Quaternion.identity);
         canSpawnFlame = true;
     }
