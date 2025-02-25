@@ -33,7 +33,16 @@ public class PauseMenu : MonoBehaviour {
     }
 
     public void Disconnect() {
-        //runner.Disconnect(localPlayer);
+        if (runner.IsClient) {
+            SceneManager.LoadScene(0);
+            runner.Shutdown();
+        }
+
+        if (runner.IsServer) {
+            runner.UnloadScene(SceneRef.FromIndex(SceneManager.GetActiveScene().buildIndex));
+            SceneManager.LoadScene(0);
+            runner.Shutdown();
+        }
     }
 
     public void Quit() {

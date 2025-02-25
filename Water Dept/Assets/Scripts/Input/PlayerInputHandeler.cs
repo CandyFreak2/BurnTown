@@ -27,6 +27,7 @@ public class PlayerInputHandeler : SimulationBehaviour, IBeforeUpdate, INetworkR
 
     private void Awake() {
         playerInputSystem = new InputSystem_Actions();
+        UIInputSystem = new InputSystem_Actions();
 
         //get input and leave it hanging
         playerInputSystem.Player.Move.performed += ctx => moveDirection = ctx.ReadValue<Vector2>();
