@@ -1,8 +1,9 @@
 using Unity.VisualScripting;
 using UnityEngine;
+using Fusion;
 using static UnityEngine.ParticleSystem;
 
-public class tempBarrel : MonoBehaviour
+public class tempBarrel : NetworkBehaviour
 {
     [SerializeField] private GameObject placeholderPrefab;
     [SerializeField] private GameObject barrelPrefab;
@@ -17,6 +18,7 @@ public class tempBarrel : MonoBehaviour
 
     void Update()
     {
+        
         //queue schematic if barrel is nearby
         if (Input.GetKeyDown(KeyCode.Q))
         {
