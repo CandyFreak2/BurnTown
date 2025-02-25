@@ -13,6 +13,7 @@ GameObject:
   - component: {fileID: 3969186222525366971}
   - component: {fileID: -3451595229046550759}
   - component: {fileID: 734422676065146028}
+  - component: {fileID: 5624042275094535373}
   m_Layer: 0
   m_Name: FlameVisual
   m_TagString: Untagged
@@ -69,7 +70,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: b016bdd72ff2e2d48be0c23cd643faf0, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  _isOnGaslinePoint: 0
+  _isOnGaslinePoint:
+    _value: 0
 --- !u!54 &-3451595229046550759
 Rigidbody:
   m_ObjectHideFlags: 0
@@ -115,7 +117,25 @@ MonoBehaviour:
   NestedObjects: []
   NetworkedBehaviours:
   - {fileID: 3969186222525366971}
+  - {fileID: 5624042275094535373}
   ForceRemoteRenderTimeframe: 0
+--- !u!114 &5624042275094535373
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 5174873677586650576}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 158639473, guid: e725a070cec140c4caffb81624c8c787, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  _stateAuthorityChangeErrorCorrectionDelta: 0.15
+  SyncScale: 0
+  SyncParent: 0
+  _autoAOIOverride: 1
+  DisableSharedModeInterpolation: 0
 --- !u!1001 &1694216876515591582
 PrefabInstance:
   m_ObjectHideFlags: 0

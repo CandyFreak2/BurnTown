@@ -55,27 +55,28 @@ public class Gasline : NetworkBehaviour {
         gaslinePoints = GetComponentsInChildren<GaslinePoint>();
     }
 
-    public override void FixedUpdateNetwork() {
-        if (isSpawned && Object.HasStateAuthority) {
+    private void FixedUpdate() {
+        if (isSpawned) {
             if (!wasSpawned) {
                 StartFireSpread(startIndex);
             }
 
             if (wasLit) {
-                HandleGaslineMovement();
+                RPC_HandleGaslineMovement();
             }
         }
     }
 
     public void SpawnFlameVisual() {
-        if (flameVisual == null && !canSpawnFlame) {
-            flameVisual = Runner.Spawn(flamePrefab, points[currentIndex].location.transform.position, Quaternion.identity);
-            canSpawnFlame = true;
-        }
+    if (flameVisual == null && !canSpawnFlame) {
+        flameVisual = Runner.Spawn(flamePrefab, points[currentIndex].location.transform.position, Quaternion.identity);
+        canSpawnFlame = true;
     }
+}
 
     // Function that handles gasline movement
-    public void HandleGaslineMovement() {
+    [Rpc(RpcSources.All, RpcTargets.All)]
+    public void RPC_HandleGaslineMovement() {
         SpawnFlameVisual();
 
         if (flameVisual != null) {
@@ -92,14 +93,13 @@ public class Gasline : NetworkBehaviour {
                 flameVisual.transform.forward = (direction - flameVisual.transform.position).normalized;
                 flameVisual.transform.position = direction;
             }
-            RPC_HandlePointFire();
+            HandlePointFire();
         }
     }
 
-    //[Rpc(RpcSources.StateAuthority, RpcTargets.All)]
-    public void RPC_HandlePointFire() {
+    public void HandlePointFire() {
         // Flame Visual - If flame is on gasline point, the valve can pop and within general radius of the location of points
-        if (flameVisual.GetComponent<GaslineSpark>().isOnGaslinePoint && CanIndexPop(currentIndex) && (Vector3.Distance(flameVisual.transform.position, GetPointPosition(currentIndex)) < tolerance)) {
+        if (CanIndexPop(currentIndex) && flameVisual.GetComponent<GaslineSpark>().isOnGaslinePoint && (Vector3.Distance(flameVisual.transform.position, GetPointPosition(currentIndex)) < tolerance)) {
             Vector3 popDirection = GetPopDirection(currentIndex);
             Vector3 spawnPosition = GetPointPosition(currentIndex);
 

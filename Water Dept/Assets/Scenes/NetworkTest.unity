@@ -34421,6 +34421,18 @@ Transform:
     type: 3}
   m_PrefabInstance: {fileID: 203664992}
   m_PrefabAsset: {fileID: 0}
+--- !u!114 &1259172547 stripped
+MonoBehaviour:
+  m_CorrespondingSourceObject: {fileID: 4242569481940366675, guid: e9b88506609d2734b8d79a303ac642ef,
+    type: 3}
+  m_PrefabInstance: {fileID: 9009973071222278404}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: d687f89eee019c74e9f3e5c3d46719f7, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
 --- !u!1001 &1259640953
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -34914,6 +34926,16 @@ PrefabInstance:
       propertyPath: 'endGoals.Array.data[0]'
       value: 
       objectReference: {fileID: 883172842}
+    - target: {fileID: 961710666475029248, guid: 9215399602fbdc944b426e22fde06315,
+        type: 3}
+      propertyPath: 'endGoals.Array.data[1]'
+      value: 
+      objectReference: {fileID: 1936690150}
+    - target: {fileID: 961710666475029248, guid: 9215399602fbdc944b426e22fde06315,
+        type: 3}
+      propertyPath: 'endGoals.Array.data[2]'
+      value: 
+      objectReference: {fileID: 1259172547}
     - target: {fileID: 3375185424649369374, guid: 9215399602fbdc944b426e22fde06315,
         type: 3}
       propertyPath: SortKey
@@ -52842,6 +52864,18 @@ PrefabInstance:
       insertIndex: -1
       addedObject: {fileID: 2131864219}
   m_SourcePrefab: {fileID: 100100000, guid: cfd85448388bee64da6548c99d781c96, type: 3}
+--- !u!114 &1936690150 stripped
+MonoBehaviour:
+  m_CorrespondingSourceObject: {fileID: 4242569481940366675, guid: e9b88506609d2734b8d79a303ac642ef,
+    type: 3}
+  m_PrefabInstance: {fileID: 881419149}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: d687f89eee019c74e9f3e5c3d46719f7, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
 --- !u!4 &1936779972 stripped
 Transform:
   m_CorrespondingSourceObject: {fileID: 8099795120693086562, guid: 3603ab1891742bb4581f408a10c4321c,
