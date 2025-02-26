@@ -16,7 +16,7 @@ public class PauseMenu : MonoBehaviour {
     }
 
     public void Update() {
-        if (Input.GetKeyDown(KeyCode.Escape)) {
+        if (Input.GetKeyDown(KeyCode.Escape) && !pauseUI.activeInHierarchy) {
             isPanelOn = pauseUI.activeInHierarchy;
             pauseUI.SetActive(!isPanelOn);
         }
@@ -29,7 +29,7 @@ public class PauseMenu : MonoBehaviour {
 
     public void Reset() {
         runner.LoadScene(SceneManager.GetActiveScene().name);
-        //runner.
+        runner.Shutdown();
     }
 
     public void Disconnect() {
