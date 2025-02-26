@@ -32,9 +32,9 @@ public class FireHouse : NetworkBehaviour
 
     public void DropHose()
     {
-        gameObject.tag = "Untagged";
+        //gameObject.tag = "Untagged";
 
-        Invoke("ReactivateHose", 1.0f);
+        //Invoke("ReactivateHose", 1.0f);
     }
 
     private void ReactivateHose()

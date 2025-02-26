@@ -13,6 +13,7 @@ public class PlayerInputHandeler : SimulationBehaviour, IBeforeUpdate, INetworkR
     Vector2 moveDirection;
     Vector2 lookDelta;
     float interactPress;
+    float dropPress;
     float shootPress;
     
 
@@ -26,10 +27,15 @@ public class PlayerInputHandeler : SimulationBehaviour, IBeforeUpdate, INetworkR
 
         //get input and leave it hanging
         inputSystem.Player.Move.performed += ctx => moveDirection = ctx.ReadValue<Vector2>();
+        inputSystem.Player.Move.canceled += ctx => moveDirection = ctx.ReadValue<Vector2>();
         inputSystem.Player.Look.performed += ctx => lookDelta = ctx.ReadValue<Vector2>();
+        inputSystem.Player.Look.canceled += ctx => lookDelta = ctx.ReadValue<Vector2>();
 
         //interact
         inputSystem.Player.Interact.started += ctx => interactPress = ctx.ReadValue<float>();
+
+        // Drop
+        inputSystem.Player.Crouch.started += ctx => dropPress = ctx.ReadValue<float>();
         
         //shoot
         inputSystem.Player.Attack.performed += ctx => shootPress = ctx.ReadValue<float>();
@@ -82,12 +88,13 @@ public class PlayerInputHandeler : SimulationBehaviour, IBeforeUpdate, INetworkR
         NetworkButtons buttons = default;
 
         bool interactDown = (inputSystem.Player.Interact.ReadValue<float>() > 0.0f);
-
         buttons.Set(InputButton.Interact, interactDown);
+
+        bool dropDown = (inputSystem.Player.Crouch.ReadValue<float>() > 0.0f);
+        buttons.Set(InputButton.Drop, dropDown);
 
         // shootpress returns 0, attack.readvalue returns 1
         bool shootDown = (inputSystem.Player.Attack.ReadValue<float>() > 0.0f);
-
         buttons.Set(InputButton.Shoot, shootDown);
 
         // Change cursor lock state if enter or esc pressed
@@ -108,8 +115,8 @@ public class PlayerInputHandeler : SimulationBehaviour, IBeforeUpdate, INetworkR
         //load inputs into the package
         accumulatedInput.MoveDirection += moveDirection;
 
-        if (lookDelta.magnitude > 0)
-            accumulatedInput.LookDelta += lookDelta;
+        //if (lookDelta.magnitude > 0)
+            accumulatedInput.LookDelta = lookDelta;
 
         accumulatedInput.Buttons = new NetworkButtons(accumulatedInput.Buttons.Bits | buttons.Bits);
     }

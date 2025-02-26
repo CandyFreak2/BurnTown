@@ -2,6 +2,7 @@ using Fusion;
 using System.Collections;
 using UnityEngine;
 using UnityEngine.Splines.Interpolators;
+using UnityEngine.XR;
 using static Fusion.NetworkBehaviour;
 
 public class Burnable : NetworkBehaviour
@@ -11,9 +12,12 @@ public class Burnable : NetworkBehaviour
 
     [SerializeField] protected float startFuel = 10.0f;
     private float fuelRemaining;
+
     [SerializeField] protected float spreadRate = 3.0f;
     [SerializeField] protected float spreadRadius = 10.0f;
     [SerializeField] protected float fireResistance = 3.0f;
+    //how much "health" damage a burnable takes per update if being actively burnt
+    [SerializeField] protected float damageRate = 0.1f;
 
     //networked vars are communicated and updated by networkbehaviors
     [Networked] public bool nIsBurning { get; set; }
@@ -92,13 +96,6 @@ public class Burnable : NetworkBehaviour
             }
 
         }
-        else if (fuelRemaining < 0)
-        {
-            Debug.Log("Object Destroyed");
-            //Destroy(gameObject);
-            //Runner.Despawn(Object);
-            gameObject.SetActive(false);
-        }
         else if (!nIsBurning)
         {
             //runs lockout timer down
@@ -110,6 +107,13 @@ public class Burnable : NetworkBehaviour
                 gameObject.GetComponent<Renderer>().material.color = Color.green;
             }
             
+        }
+        else if (fuelRemaining < 0)
+        {
+            Debug.Log("Object Destroyed");
+            //Destroy(gameObject);
+            //Runner.Despawn(Object);
+            gameObject.SetActive(false);
         }
     }
 
@@ -159,6 +163,15 @@ public class Burnable : NetworkBehaviour
         if(other.tag == "Flame")
         {
             nIsBurning = true;
+        }
+    }
+
+    // continually burning makes it burn faster based on its damageRate (applied every update)
+    private void OnTriggerStay(Collider other)
+    {
+        if(other.tag == "Flame" && nIsBurning)
+        {
+            fuelRemaining = fuelRemaining - damageRate;
         }
     }
 

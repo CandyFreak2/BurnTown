@@ -132,7 +132,7 @@ public class Gasline : NetworkBehaviour {
     }
 
     public void StartFireSpread(int index) {
-        if (gaslinePoints[index].GetIsOnFire() && points[index].canStart) {
+        if (gaslinePoints[index].GetIsOnFire() && points[index].canStart)  {
             wasLit = true;
             canMove = true;
             wasSpawned = true;
