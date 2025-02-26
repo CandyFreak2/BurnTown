@@ -129,8 +129,8 @@ public class PlayerMovement : NetworkBehaviour
 
             foreach (Collider collider in interactableObjects)
             {
-                // First object in list that is a flamethrower gets picked up
-                if (collider.gameObject.tag == "FireHoseHead")
+                // First object in list that is a flamethrower gets picked up ++ Or barrel
+                if (collider.gameObject.tag == "FireHoseHead" || collider.gameObject.tag == "Barrel")
                 {
                     PickUpObject(collider.gameObject.GetComponent<Interactable>());
                     break;
