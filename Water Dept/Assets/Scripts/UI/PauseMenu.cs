@@ -1,7 +1,6 @@
 using Fusion;
 using System;
 using UnityEngine;
-using UnityEngine.InputSystem;
 using UnityEngine.SceneManagement;
 
 public class PauseMenu : MonoBehaviour {
@@ -12,8 +11,19 @@ public class PauseMenu : MonoBehaviour {
     private bool isPanelOn = false;
     private NetworkRunner runner;
 
+    [SerializeField] private PlayerMovement playerMovement;
+
+    private void OnEnable() {
+        UIInputHandler.onActionPause += TogglePause;
+    }
+
+    private void OnDisable() {
+        UIInputHandler.onActionPause -= TogglePause;
+    }
+
     private void Start() {
         runner = FindAnyObjectByType<NetworkRunner>();
+        playerMovement = GetComponentInParent<PlayerMovement>();
 
         pauseUI.SetActive(isPanelOn);
         isPanelOn = pauseUI.activeInHierarchy;
@@ -24,6 +34,7 @@ public class PauseMenu : MonoBehaviour {
         pauseUI.SetActive(isPanelOn);
 
         OnPauseStateChanged?.Invoke(isPanelOn);
+        playerMovement.enabled = !isPanelOn;
     }
 
     public void Resume() {

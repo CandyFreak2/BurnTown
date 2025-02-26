@@ -7,19 +7,12 @@ using UnityEngine;
 using UnityEngine.InputSystem;
 
 public class PlayerInputHandeler : SimulationBehaviour, IBeforeUpdate, INetworkRunnerCallbacks {
-    private enum InputProfiles {
-        PLAYER,
-        UI
-    };
-
-    InputSystem_Actions playerInputSystem;
-    InputSystem_Actions UIInputSystem;
+    InputSystem_Actions.PlayerActions playerInputSystem;
 
     Vector2 moveDirection;
     Vector2 lookDelta;
     float interactPress;
     float shootPress;
-
 
     public PlayerInputAction accumulatedInput = new PlayerInputAction();
     private bool resetInput = false;
@@ -28,27 +21,22 @@ public class PlayerInputHandeler : SimulationBehaviour, IBeforeUpdate, INetworkR
     [SerializeField] private PauseMenu pauseMenu;
 
     private void Awake() {
-        playerInputSystem = new InputSystem_Actions();
-        UIInputSystem = new InputSystem_Actions();
+        playerInputSystem = new InputSystem_Actions().Player;
         pauseMenu = GetComponent<PauseMenu>();
 
         //get input and leave it hanging
-        playerInputSystem.Player.Move.performed += ctx => moveDirection = ctx.ReadValue<Vector2>();
-        playerInputSystem.Player.Look.performed += ctx => lookDelta = ctx.ReadValue<Vector2>();
+        playerInputSystem.Move.performed += ctx => moveDirection = ctx.ReadValue<Vector2>();
+        playerInputSystem.Look.performed += ctx => lookDelta = ctx.ReadValue<Vector2>();
 
         //interact
-        playerInputSystem.Player.Interact.started += ctx => interactPress = ctx.ReadValue<float>();
+        playerInputSystem.Interact.started += ctx => interactPress = ctx.ReadValue<float>();
 
         //shoot
-        playerInputSystem.Player.Attack.performed += ctx => shootPress = ctx.ReadValue<float>();
+        playerInputSystem.Attack.performed += ctx => shootPress = ctx.ReadValue<float>();
 
         //clear input
-        playerInputSystem.Player.Move.canceled += ctx => moveDirection = ctx.ReadValue<Vector2>();
+        playerInputSystem.Move.canceled += ctx => moveDirection = ctx.ReadValue<Vector2>();
         //inputSystem.Player.Jump.started += spaghetti => accumulatedInput.onInteractStarted?.Invoke();
-
-        if (pauseMenu != null) {
-            pauseMenu.OnPauseStateChanged += HandlePauseStateChanged;
-        }
     }
 
     private void Start() {
@@ -62,21 +50,11 @@ public class PlayerInputHandeler : SimulationBehaviour, IBeforeUpdate, INetworkR
     private void OnEnable() //restarts controls when needed
     {
         playerInputSystem.Enable();
-        UIInputSystem.Enable();
-        UIInputSystem.UI.Pause.started += OnPause;
     }
 
     private void OnDisable() //prevents controls running in editor and making junk
     {
         playerInputSystem.Disable();
-        UIInputSystem.Disable();
-        UIInputSystem.UI.Pause.started -= OnPause;
-    }
-
-    private void OnDestroy() {
-        if (pauseMenu != null) {
-            pauseMenu.OnPauseStateChanged -= HandlePauseStateChanged;
-        }
     }
 
     // Networking functions
@@ -89,12 +67,12 @@ public class PlayerInputHandeler : SimulationBehaviour, IBeforeUpdate, INetworkR
         // Add buttons
         NetworkButtons buttons = default;
 
-        bool interactDown = (playerInputSystem.Player.Interact.ReadValue<float>() > 0.0f);
+        bool interactDown = (playerInputSystem.Interact.ReadValue<float>() > 0.0f);
 
         buttons.Set(InputButton.Interact, interactDown);
 
         // shootpress returns 0, attack.readvalue returns 1
-        bool shootDown = (playerInputSystem.Player.Attack.ReadValue<float>() > 0.0f);
+        bool shootDown = (playerInputSystem.Attack.ReadValue<float>() > 0.0f);
 
         buttons.Set(InputButton.Shoot, shootDown);
 
@@ -120,20 +98,6 @@ public class PlayerInputHandeler : SimulationBehaviour, IBeforeUpdate, INetworkR
             accumulatedInput.LookDelta += lookDelta;
 
         accumulatedInput.Buttons = new NetworkButtons(accumulatedInput.Buttons.Bits | buttons.Bits);
-    }
-
-    private void OnPause(InputAction.CallbackContext context) {
-        if (pauseMenu != null) {
-            pauseMenu.TogglePause();
-        }
-    }
-
-    private void HandlePauseStateChanged(bool isPaused) {
-        if (isPaused) {
-            playerInputSystem.Disable();
-        } else {
-            playerInputSystem.Enable();
-        }
     }
 
     void INetworkRunnerCallbacks.OnInput(NetworkRunner runner, NetworkInput input) {
