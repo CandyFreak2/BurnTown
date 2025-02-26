@@ -73,7 +73,7 @@ public class tempBarrel : MonoBehaviour
         Collider[] colliders = Physics.OverlapSphere(gameObject.transform.position, pickupDistance);
         foreach (Collider hit in colliders)
         {
-            if(hit.tag == "barrel")
+            if(hit.tag == "Barrel")
             {
                 Destroy(hit.gameObject);
                 return true;

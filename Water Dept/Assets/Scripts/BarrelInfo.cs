@@ -1,3 +1,4 @@
+using Fusion;
 using NUnit.Framework.Internal;
 using System.Collections;
 using System.Data;
@@ -6,7 +7,7 @@ using System.Threading;
 using Unity.VisualScripting;
 using UnityEngine;
 
-public class BarrelInfo : MonoBehaviour {
+public class BarrelInfo : NetworkBehaviour {
     public GameObject tail = null;
     public GameObject head = null;
 
@@ -15,24 +16,36 @@ public class BarrelInfo : MonoBehaviour {
     public float delay = 0.5f;
 
     public bool isThrown = false;
+    
+    [Networked] private NetworkBool isExploded { set; get; }
+    private bool isSpawned;
 
     [SerializeField] private float throwForce = 450;
 
     [SerializeField] public float explosionRadius = 3.0f;
     [SerializeField] public float explosionForce = 10.0f;
     [SerializeField] public float wallExplosiveForce = 0.0001f;
-    public bool isExploded = false;
 
     private const int THROW_EXPLOSION_RADIUS = 1;
     private bool isAirborne;
     private float timer;
 
-    private void Update() {
-        ThrowBarrel();
+    public override void Spawned()
+    {
+        isExploded = false;
+        isSpawned = true;
+    }
 
-        if (isExploded) {
-            StartCoroutine(ChainExplode());
+    private void FixedUpdate() {
+        ThrowBarrel();
+        if (isSpawned) 
+        {
+            if (isExploded)
+            {
+                StartCoroutine(ChainExplode());
+            }
         }
+        
     }
 
     public void Explode() {
@@ -66,7 +79,6 @@ public class BarrelInfo : MonoBehaviour {
 
     //explodes current barrel and then linked barrels with delay
     IEnumerator ChainExplode() {
-        isExploded = false;
 
         ExplosionTriggers();
 
@@ -100,6 +112,7 @@ public class BarrelInfo : MonoBehaviour {
     private void ExplosionTriggers() {
         //play anim
         pixelBoom.Play();
+        isExploded = false;
 
         //dereference components to prevent stack overf;pw
         if (gameObject.GetComponent<Rigidbody>() != null) {
@@ -134,6 +147,14 @@ public class BarrelInfo : MonoBehaviour {
             if (barr != null && barr != gameObject.GetComponent<BarrelInfo>() && !hit.CompareTag("DestructibleObject")) {
                 StartCoroutine(DelayedChainExplode(barr));
             }
+        }
+    }
+
+    private void OnTriggerEnter(Collider other)
+    {
+        if(other.tag == "Flame")
+        {
+            isExploded = true;
         }
     }
 }
