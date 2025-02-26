@@ -110,7 +110,6 @@ public class Burnable : NetworkBehaviour
         }
         else if (fuelRemaining < 0)
         {
-            Debug.Log("Object Destroyed");
             //Destroy(gameObject);
             //Runner.Despawn(Object);
             gameObject.SetActive(false);

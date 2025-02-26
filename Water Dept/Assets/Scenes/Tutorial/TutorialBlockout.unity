@@ -7943,7 +7943,7 @@ GameObject:
   - component: {fileID: 199913096}
   m_Layer: 0
   m_Name: Cube
-  m_TagString: Untagged
+  m_TagString: DestructibleObject
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -21708,7 +21708,7 @@ GameObject:
   - component: {fileID: 569902774}
   m_Layer: 0
   m_Name: Cube (1)
-  m_TagString: Untagged
+  m_TagString: DestructibleObject
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -23574,7 +23574,7 @@ PrefabInstance:
     - target: {fileID: 5993214933592233659, guid: e124b4f1c1efc7147a5dc3a5af79b5f1,
         type: 3}
       propertyPath: m_LocalPosition.x
-      value: 93.88
+      value: 94.23
       objectReference: {fileID: 0}
     - target: {fileID: 5993214933592233659, guid: e124b4f1c1efc7147a5dc3a5af79b5f1,
         type: 3}
@@ -23584,7 +23584,7 @@ PrefabInstance:
     - target: {fileID: 5993214933592233659, guid: e124b4f1c1efc7147a5dc3a5af79b5f1,
         type: 3}
       propertyPath: m_LocalPosition.z
-      value: 8.34
+      value: 7.72
       objectReference: {fileID: 0}
     - target: {fileID: 5993214933592233659, guid: e124b4f1c1efc7147a5dc3a5af79b5f1,
         type: 3}
@@ -51540,13 +51540,18 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 3861447882259504122, guid: 9215399602fbdc944b426e22fde06315,
         type: 3}
+      propertyPath: Flags
+      value: 262145
+      objectReference: {fileID: 0}
+    - target: {fileID: 3861447882259504122, guid: 9215399602fbdc944b426e22fde06315,
+        type: 3}
       propertyPath: SortKey
       value: 1774401356
       objectReference: {fileID: 0}
     - target: {fileID: 4523067259339558909, guid: 9215399602fbdc944b426e22fde06315,
         type: 3}
       propertyPath: m_LocalPosition.x
-      value: 9.83
+      value: 10.66
       objectReference: {fileID: 0}
     - target: {fileID: 4523067259339558909, guid: 9215399602fbdc944b426e22fde06315,
         type: 3}
@@ -58208,6 +58213,11 @@ PrefabInstance:
       propertyPath: m_Name
       value: WoodWall
       objectReference: {fileID: 0}
+    - target: {fileID: 6741218830040709599, guid: 0f50ae542c4e0484c9137813faec2810,
+        type: 3}
+      propertyPath: m_IsKinematic
+      value: 1
+      objectReference: {fileID: 0}
     - target: {fileID: 7070302226826673100, guid: 0f50ae542c4e0484c9137813faec2810,
         type: 3}
       propertyPath: SortKey
@@ -61420,8 +61430,18 @@ PrefabInstance:
     m_Modifications:
     - target: {fileID: 2231112711022109005, guid: 7bc267a87c484d24389c90ef87d05a48,
         type: 3}
+      propertyPath: m_LocalScale.x
+      value: 0.26
+      objectReference: {fileID: 0}
+    - target: {fileID: 2231112711022109005, guid: 7bc267a87c484d24389c90ef87d05a48,
+        type: 3}
+      propertyPath: m_LocalScale.z
+      value: 3.75
+      objectReference: {fileID: 0}
+    - target: {fileID: 2231112711022109005, guid: 7bc267a87c484d24389c90ef87d05a48,
+        type: 3}
       propertyPath: m_LocalPosition.x
-      value: 113.15739
+      value: 112.38
       objectReference: {fileID: 0}
     - target: {fileID: 2231112711022109005, guid: 7bc267a87c484d24389c90ef87d05a48,
         type: 3}
@@ -61436,7 +61456,7 @@ PrefabInstance:
     - target: {fileID: 2231112711022109005, guid: 7bc267a87c484d24389c90ef87d05a48,
         type: 3}
       propertyPath: m_LocalRotation.w
-      value: 0.7071072
+      value: 0.000001952052
       objectReference: {fileID: 0}
     - target: {fileID: 2231112711022109005, guid: 7bc267a87c484d24389c90ef87d05a48,
         type: 3}
@@ -61446,7 +61466,7 @@ PrefabInstance:
     - target: {fileID: 2231112711022109005, guid: 7bc267a87c484d24389c90ef87d05a48,
         type: 3}
       propertyPath: m_LocalRotation.y
-      value: 0.7071065
+      value: 1
       objectReference: {fileID: 0}
     - target: {fileID: 2231112711022109005, guid: 7bc267a87c484d24389c90ef87d05a48,
         type: 3}
@@ -61461,7 +61481,7 @@ PrefabInstance:
     - target: {fileID: 2231112711022109005, guid: 7bc267a87c484d24389c90ef87d05a48,
         type: 3}
       propertyPath: m_LocalEulerAnglesHint.y
-      value: 90
+      value: 180
       objectReference: {fileID: 0}
     - target: {fileID: 2231112711022109005, guid: 7bc267a87c484d24389c90ef87d05a48,
         type: 3}

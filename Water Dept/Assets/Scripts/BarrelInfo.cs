@@ -130,6 +130,8 @@ public class BarrelInfo : NetworkBehaviour {
             if (rb != null) {
                 if (rb.gameObject.CompareTag("DestructibleObject")) {
                     rb.gameObject.transform.parent.GetComponent<ConcreteWall>().Explode();
+
+
                     //rb.gameObject.transform.parent.GetComponent<ConcreteWall>().Explode(explosionForce);
                 }
                 rb.AddExplosionForce(explosionForce, gameObject.transform.position, explosionRadius, 3.0f);
@@ -146,6 +148,11 @@ public class BarrelInfo : NetworkBehaviour {
             //if barrel is horizontal and not itself blow it up after delay
             if (barr != null && barr != gameObject.GetComponent<BarrelInfo>() && !hit.CompareTag("DestructibleObject")) {
                 StartCoroutine(DelayedChainExplode(barr));
+            }
+
+            if(hit.CompareTag("DestructibleObject"))
+            {
+                Destroy(hit.gameObject);
             }
         }
     }
