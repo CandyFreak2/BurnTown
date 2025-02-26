@@ -25,9 +25,12 @@ public class PlayerInputHandeler : SimulationBehaviour, IBeforeUpdate, INetworkR
     private bool resetInput = false;
     public Action<PlayerInputAction> onInputSignal;
 
+    [SerializeField] private PauseMenu pauseMenu;
+
     private void Awake() {
         playerInputSystem = new InputSystem_Actions();
         UIInputSystem = new InputSystem_Actions();
+        pauseMenu = GetComponent<PauseMenu>();
 
         //get input and leave it hanging
         playerInputSystem.Player.Move.performed += ctx => moveDirection = ctx.ReadValue<Vector2>();
@@ -43,7 +46,13 @@ public class PlayerInputHandeler : SimulationBehaviour, IBeforeUpdate, INetworkR
         playerInputSystem.Player.Move.canceled += ctx => moveDirection = ctx.ReadValue<Vector2>();
         //inputSystem.Player.Jump.started += spaghetti => accumulatedInput.onInteractStarted?.Invoke();
 
-        //inputSystem.UI.Pause.started += ctx => ;
+        if (pauseMenu != null) {
+            pauseMenu.OnPauseStateChanged += HandlePauseStateChanged;
+        }
+    }
+
+    private void Start() {
+        onInputSignal?.Invoke(new PlayerInputAction(accumulatedInput));
     }
 
     private void Navigate_performed(InputAction.CallbackContext obj) {
@@ -54,16 +63,20 @@ public class PlayerInputHandeler : SimulationBehaviour, IBeforeUpdate, INetworkR
     {
         playerInputSystem.Enable();
         UIInputSystem.Enable();
+        UIInputSystem.UI.Pause.started += OnPause;
     }
 
     private void OnDisable() //prevents controls running in editor and making junk
     {
         playerInputSystem.Disable();
         UIInputSystem.Disable();
+        UIInputSystem.UI.Pause.started -= OnPause;
     }
 
-    private void Start() {
-        onInputSignal?.Invoke(new PlayerInputAction(accumulatedInput));
+    private void OnDestroy() {
+        if (pauseMenu != null) {
+            pauseMenu.OnPauseStateChanged -= HandlePauseStateChanged;
+        }
     }
 
     // Networking functions
@@ -107,6 +120,20 @@ public class PlayerInputHandeler : SimulationBehaviour, IBeforeUpdate, INetworkR
             accumulatedInput.LookDelta += lookDelta;
 
         accumulatedInput.Buttons = new NetworkButtons(accumulatedInput.Buttons.Bits | buttons.Bits);
+    }
+
+    private void OnPause(InputAction.CallbackContext context) {
+        if (pauseMenu != null) {
+            pauseMenu.TogglePause();
+        }
+    }
+
+    private void HandlePauseStateChanged(bool isPaused) {
+        if (isPaused) {
+            playerInputSystem.Disable();
+        } else {
+            playerInputSystem.Enable();
+        }
     }
 
     void INetworkRunnerCallbacks.OnInput(NetworkRunner runner, NetworkInput input) {
