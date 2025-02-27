@@ -180,7 +180,7 @@ public class PlayerMovement : NetworkBehaviour
             if (collider.gameObject.tag == "FireHoseHead" || collider.gameObject.tag == "Barrel" && !IsHolding())
             {
                 nearestInteractable = collider.gameObject.GetComponent<Interactable>();
-                pickupText.text = "X / A to Pickup";
+                pickupText.text = "North Button / E to Pickup";
                 return nearestInteractable;
             }
             else
