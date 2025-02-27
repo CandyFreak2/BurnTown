@@ -64,7 +64,7 @@ public class BasicSpawner : MonoBehaviour, INetworkRunnerCallbacks
     public void OnInputMissing(NetworkRunner runner, PlayerRef player, NetworkInput input) { }
     public void OnShutdown(NetworkRunner runner, ShutdownReason shutdownReason) { }
     public void OnConnectedToServer(NetworkRunner runner) { }
-    public void OnDisconnectedFromServer(NetworkRunner runner, NetDisconnectReason reason) { }
+    public void OnDisconnectedFromServer(NetworkRunner runner, NetDisconnectReason reason) {}
     public void OnConnectRequest(NetworkRunner runner, NetworkRunnerCallbackArgs.ConnectRequest request, byte[] token) { }
     public void OnConnectFailed(NetworkRunner runner, NetAddress remoteAddress, NetConnectFailedReason reason) { }
     public void OnUserSimulationMessage(NetworkRunner runner, SimulationMessagePtr message) { }
@@ -96,7 +96,7 @@ public class BasicSpawner : MonoBehaviour, INetworkRunnerCallbacks
         await _runner.StartGame(new StartGameArgs()
         {
             GameMode = mode,
-            SessionName = "TestRoom",
+            SessionName = "TestRoom-1",
             Scene = scene,
             SceneManager = gameObject.AddComponent<NetworkSceneManagerDefault>()
         });
@@ -121,4 +121,6 @@ public class BasicSpawner : MonoBehaviour, INetworkRunnerCallbacks
             }
         }
     }
+
+    public Dictionary<PlayerRef, NetworkObject> GetSpawnedPlayers() => _spawnedCharacters;
 }
