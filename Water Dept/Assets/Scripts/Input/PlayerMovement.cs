@@ -12,6 +12,7 @@ public class PlayerMovement : NetworkBehaviour
     [SerializeField] Transform playerObj;
     [SerializeField] Transform camTarget;
     [SerializeField] float rotSpeed = 7.0f;
+    [Networked] public Vector3 networkedForward { get; set; }
 
     //movement input
     public Vector3 moveDirection = Vector3.zero;
@@ -84,6 +85,11 @@ public class PlayerMovement : NetworkBehaviour
         }
     }
 
+    private void FixedUpdate()
+    {
+        playerObj.forward = Vector3.Slerp(playerObj.forward, networkedForward, Time.fixedDeltaTime * rotSpeed);
+    }
+
     public void RotatePlayer()
     {
         //get camera view direction
@@ -106,8 +112,15 @@ public class PlayerMovement : NetworkBehaviour
             orientation.Rotate(0, viewDir, 0);
         }
 
+        Vector3 targetForward = orientation.forward.normalized;
+
+        if (HasStateAuthority)
+        {
+            networkedForward = targetForward;
+        }
+
         //Rotate the player towards the orientations direction
-        playerObj.forward = Vector3.Slerp(playerObj.forward, orientation.forward.normalized, Time.fixedDeltaTime * rotSpeed);
+        playerObj.forward = Vector3.Slerp(playerObj.forward, networkedForward, Time.fixedDeltaTime * rotSpeed);
     }
 
     public void MovePlayer()
