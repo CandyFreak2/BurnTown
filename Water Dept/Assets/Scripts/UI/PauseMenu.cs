@@ -44,6 +44,7 @@ public class PauseMenu : MonoBehaviour {
     public void Resume() {
         isPanelOn = false;
         pauseUI.SetActive(isPanelOn);
+        playerMovement.enabled = true;
     }
 
     public void Reset() {
