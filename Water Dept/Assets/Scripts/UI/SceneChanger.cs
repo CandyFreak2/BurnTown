@@ -3,7 +3,7 @@ using UnityEngine;
 using UnityEngine.SceneManagement;
 
 public class SceneChanger : MonoBehaviour {
-    [SerializeField] private string tutorialScene, playScene;
+    [SerializeField] private int tutorialScene, playScene;
    
     public void PlayTutorial() {
         SceneManager.LoadScene(tutorialScene);
