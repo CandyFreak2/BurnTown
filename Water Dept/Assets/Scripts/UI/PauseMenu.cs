@@ -33,6 +33,10 @@ public class PauseMenu : MonoBehaviour {
         isPanelOn = !isPanelOn;
         pauseUI.SetActive(isPanelOn);
 
+        if (isPanelOn) {
+            Cursor.lockState = CursorLockMode.Locked;
+        }
+
         OnPauseStateChanged?.Invoke(isPanelOn);
         playerMovement.enabled = !isPanelOn;
     }
