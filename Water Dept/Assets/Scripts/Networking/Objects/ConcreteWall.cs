@@ -1,20 +1,25 @@
+using Fusion;
 using System.Collections;
 using UnityEngine;
 
-public class ConcreteWall : MonoBehaviour {
+public class ConcreteWall : NetworkBehaviour {
     public GameObject originalWall, fractureWall, explosionEffect;
     public float explosionRadius, fragScale;
     public float shrinkTime, modelDestroyTime, explosionTime;
 
-    private GameObject fracturedObject, explosionObject;
-
     public GameObject FracturedObject { get => fracturedObject; set => fracturedObject = value; }
     public GameObject ExplosionObject { get => explosionObject; set => explosionObject = value; }
 
-     private void Update() {
-        // Temporary Triggers until barrel implementation
-        if (Input.GetKeyDown(KeyCode.X)) {
-            Explode(10);
+    private GameObject fracturedObject, explosionObject;
+    private bool isSpawned;
+
+    public override void Spawned() {
+        isSpawned = true;
+    }
+
+    public void Explode() {
+        if (Object.HasStateAuthority && isSpawned) {
+            Runner.Despawn(Object);
         }
     }
 

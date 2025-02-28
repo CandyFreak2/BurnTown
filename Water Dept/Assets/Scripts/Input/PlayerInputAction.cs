@@ -5,7 +5,8 @@ using UnityEngine;
 public enum InputButton
 {
     Interact, 
-    Shoot
+    Shoot,
+    Drop
 }
 
 public struct PlayerInputAction : INetworkInput

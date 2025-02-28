@@ -12,6 +12,7 @@ public class PlayerMovement : NetworkBehaviour
     [SerializeField] Transform playerObj;
     [SerializeField] Transform camTarget;
     [SerializeField] float rotSpeed = 7.0f;
+    [Networked] public Vector3 networkedForward { get; set; }
 
     //movement input
     public Vector3 moveDirection = Vector3.zero;
@@ -23,7 +24,7 @@ public class PlayerMovement : NetworkBehaviour
     //private GameObject fireHoseHead;
     //[Networked] public NetworkBool isHolding { get; set; } //public for pickup collider
     //[Networked] private NetworkId heldHoseId {  get; set; }
-    [Networked] private Interactable carriedObject { get; set; }
+    [Networked] public Interactable carriedObject { get; set; }
 
     PlayerInputHandeler input;
     PlayerInputAction action;
@@ -74,33 +75,52 @@ public class PlayerMovement : NetworkBehaviour
             action = input;
 
             CheckGround();
-            RotatePlayer();
             CapSpeed();
 
             MovePlayer();
+            RotatePlayer();
             HandleInteraction();
 
             previousButtons = action.Buttons;
         }
     }
 
+    private void FixedUpdate()
+    {
+        playerObj.forward = Vector3.Slerp(playerObj.forward, networkedForward, Time.fixedDeltaTime * rotSpeed);
+    }
+
     public void RotatePlayer()
     {
-        //skip rotate if the player has no input
-        if (action.LookDelta == Vector2.zero)
-            return;
-
         //get camera view direction
         Vector3 camDir = camTarget.forward;
         camDir.y = 0;
         float viewDir = Vector3.Angle(Vector3.forward, camDir);
 
-        //set the orientation to where the player is inputing to look
-        orientation.forward = ToVector3(action.LookDelta).normalized;
-        orientation.Rotate(0, viewDir, 0);
+        //skip rotate if the player has no input
+        if (action.LookDelta == Vector2.zero)
+        {
+            if(moveDirection !=  Vector3.zero)
+            {
+                orientation.forward = moveDirection;
+            }
+        }
+        else
+        {
+            //set the orientation to where the player is inputing to look
+            orientation.forward = ToVector3(action.LookDelta).normalized;
+            orientation.Rotate(0, viewDir, 0);
+        }
+
+        Vector3 targetForward = orientation.forward.normalized;
+
+        if (HasStateAuthority)
+        {
+            networkedForward = targetForward;
+        }
 
         //Rotate the player towards the orientations direction
-        playerObj.forward = Vector3.Lerp(playerObj.forward, orientation.forward.normalized, Time.deltaTime * rotSpeed);
+        playerObj.forward = Vector3.Slerp(playerObj.forward, networkedForward, Time.fixedDeltaTime * rotSpeed);
     }
 
     public void MovePlayer()
@@ -115,8 +135,24 @@ public class PlayerMovement : NetworkBehaviour
 
     private void HandleInteraction()
     {
+        //Pickup hose
+        if (action.Buttons.WasPressed(previousButtons, InputButton.Interact) && !IsHolding())
+        {
+            Collider[] interactableObjects = Physics.OverlapSphere(transform.position, 3.5f);
+
+            foreach (Collider collider in interactableObjects)
+            {
+                // First object in list that is a flamethrower gets picked up ++ Or barrel
+                if (collider.gameObject.tag == "FireHoseHead" || collider.gameObject.tag == "Barrel")
+                {
+                    PickUpObject(collider.gameObject.GetComponent<Interactable>());
+                    break;
+                }
+            }
+        }
+
         //Drop hose
-        if (action.Buttons.WasPressed(previousButtons, InputButton.Interact) && IsHolding())
+        if (action.Buttons.WasPressed(previousButtons, InputButton.Drop) && IsHolding())
         {
             RPC_RequestDrop(Object.Id);
         }
@@ -124,13 +160,19 @@ public class PlayerMovement : NetworkBehaviour
         // Fire hose
         if (action.Buttons.WasPressed(previousButtons, InputButton.Shoot) && IsHolding())
         {
-            carriedObject.gameObject.GetComponent<FireHouse>().Spray();
+            if (carriedObject.interactableType == InteractableType.Flamethrower)
+            {
+                carriedObject.gameObject.GetComponent<FireHouse>().Spray();
+            }
         }
 
         // Stop firing hose
         if (action.Buttons.WasReleased(previousButtons, InputButton.Shoot) && IsHolding())
         {
-            carriedObject.gameObject.GetComponent<FireHouse>().StartCoroutine(carriedObject.gameObject.GetComponent<FireHouse>().StopSpraying());
+            if (carriedObject.interactableType == InteractableType.Flamethrower)
+            {
+                carriedObject.gameObject.GetComponent<FireHouse>().StartCoroutine(carriedObject.gameObject.GetComponent<FireHouse>().StopSpraying());
+            }
         }
     }
 
@@ -192,11 +234,13 @@ public class PlayerMovement : NetworkBehaviour
     public void RPC_RequestDrop(NetworkId _playerId)
     {
         PlayerMovement player = Runner.FindObject(_playerId).GetComponent<PlayerMovement>();
-
         if (player.IsHolding() && player.carriedObject.GetCarrierId() == _playerId)
         {
             player.carriedObject.Drop();
-            player.carriedObject.gameObject.GetComponent<FireHouse>().DropHose();
+            if (player.carriedObject.interactableType == InteractableType.Flamethrower)
+            {
+                player.carriedObject.gameObject.GetComponent<FireHouse>().StartCoroutine(carriedObject.gameObject.GetComponent<FireHouse>().StopSpraying());
+            }
             player.carriedObject.gameObject.GetComponent<NetworkObject>().RemoveInputAuthority();
             player.carriedObject = null;
         }
