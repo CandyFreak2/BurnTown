@@ -52,7 +52,8 @@ public class PlayerMovement : NetworkBehaviour
 
         if (HasInputAuthority)
         {
-            FreeCameraController.Singleton.SetTarget(camTarget);
+            //FreeCameraController.Singleton.SetTarget(camTarget);
+            GetComponentInChildren<CineSingleCamera>().SetAsActiveCamera();
         }
 
         isSpawned = true;

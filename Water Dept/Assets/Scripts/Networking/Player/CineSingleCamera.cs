@@ -18,7 +18,7 @@ public class CineSingleCamera : MonoBehaviour
         activeCineCameras.Remove(this);
     }
 
-    public void SetActive()
+    public void SetAsActiveCamera()
     {
         foreach (var cam in activeCineCameras)
             cam._PlayerCam.enabled = false;
