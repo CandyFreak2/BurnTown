@@ -93,6 +93,17 @@ public class Gasline : NetworkBehaviour {
                 flameVisual.transform.forward = (direction - flameVisual.transform.position).normalized;
                 flameVisual.transform.position = direction;
             }
+
+            // Handles enabling burning
+            //Tmp moved up here so generator will burn
+            if (currentIndex == GetPointLength())
+            {
+                foreach (Burnable b in endGoals)
+                {
+                    b.nIsBurning = true;
+                }
+            }
+
             HandlePointFire();
         }
     }
@@ -121,12 +132,15 @@ public class Gasline : NetworkBehaviour {
                 // Stops VFX after duration is reached
                 StartCoroutine(TurnOffFireVFX(fireVisualVFX.main.duration, fireVisualVFX));
 
-                // Handles enabling burning
-                if (currentIndex == GetPointLength()) {
-                    foreach (Burnable b in endGoals) {
-                        b.nIsBurning = true;
-                    }
-                }
+                //// Handles enabling burning
+                //Debug.Log(currentIndex);
+                //if (currentIndex == GetPointLength())
+                //{
+                //    foreach (Burnable b in endGoals)
+                //    {
+                //        b.nIsBurning = true;
+                //    }
+                //}
             }
         }
     }

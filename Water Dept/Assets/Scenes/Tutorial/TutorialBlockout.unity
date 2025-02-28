@@ -3434,7 +3434,7 @@ GameObject:
   - component: {fileID: 65503073}
   - component: {fileID: 65503072}
   - component: {fileID: 65503071}
-  m_Layer: 0
+  m_Layer: 3
   m_Name: Cube
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -5016,7 +5016,7 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0.5, y: 0.5}
   m_AnchorMax: {x: 0.5, y: 0.5}
-  m_AnchoredPosition: {x: 72, y: -72.59926}
+  m_AnchoredPosition: {x: 72, y: -73.13}
   m_SizeDelta: {x: 20, y: 5}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!114 &100053544
@@ -17432,7 +17432,7 @@ GameObject:
   - component: {fileID: 467682436}
   - component: {fileID: 467682435}
   - component: {fileID: 467682434}
-  m_Layer: 0
+  m_Layer: 3
   m_Name: Cube (3)
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -25435,7 +25435,7 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0.5, y: 0.5}
   m_AnchorMax: {x: 0.5, y: 0.5}
-  m_AnchoredPosition: {x: 98.15739, y: -72.59926}
+  m_AnchoredPosition: {x: 98.15739, y: -73.14}
   m_SizeDelta: {x: 20, y: 5}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!114 &661916636
@@ -40948,7 +40948,7 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0.5, y: 0.5}
   m_AnchorMax: {x: 0.5, y: 0.5}
-  m_AnchoredPosition: {x: 22, y: -72.59926}
+  m_AnchoredPosition: {x: 22, y: -73.17}
   m_SizeDelta: {x: 20, y: 5}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!114 &1151509511
@@ -44249,8 +44249,8 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0.5, y: 0.5}
   m_AnchorMax: {x: 0.5, y: 0.5}
-  m_AnchoredPosition: {x: 46.157387, y: -72.59926}
-  m_SizeDelta: {x: 20, y: 5}
+  m_AnchoredPosition: {x: 46.157387, y: -73.07}
+  m_SizeDelta: {x: 25, y: 5}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!114 &1231117202
 MonoBehaviour:
@@ -44272,9 +44272,9 @@ MonoBehaviour:
   m_OnCullStateChanged:
     m_PersistentCalls:
       m_Calls: []
-  m_text: 'X / A - Pickup
+  m_text: 'North Button / E to Pickup
 
-    Circle / B - Place'
+    East Button / Q to Place'
   m_isRightToLeft: 0
   m_fontAsset: {fileID: 11400000, guid: 8f586378b4e144a9851e7b34d9b748ee, type: 2}
   m_sharedMaterial: {fileID: 2180264, guid: 8f586378b4e144a9851e7b34d9b748ee, type: 2}
@@ -51448,26 +51448,6 @@ PrefabInstance:
     serializedVersion: 3
     m_TransformParent: {fileID: 0}
     m_Modifications:
-    - target: {fileID: 25467624596783971, guid: 9215399602fbdc944b426e22fde06315,
-        type: 3}
-      propertyPath: m_LocalPosition.x
-      value: 2.22
-      objectReference: {fileID: 0}
-    - target: {fileID: 25467624596783971, guid: 9215399602fbdc944b426e22fde06315,
-        type: 3}
-      propertyPath: m_LocalPosition.y
-      value: 0.74
-      objectReference: {fileID: 0}
-    - target: {fileID: 25467624596783971, guid: 9215399602fbdc944b426e22fde06315,
-        type: 3}
-      propertyPath: m_LocalPosition.z
-      value: 0.33
-      objectReference: {fileID: 0}
-    - target: {fileID: 961710666475029248, guid: 9215399602fbdc944b426e22fde06315,
-        type: 3}
-      propertyPath: endGoals.Array.size
-      value: 1
-      objectReference: {fileID: 0}
     - target: {fileID: 961710666475029248, guid: 9215399602fbdc944b426e22fde06315,
         type: 3}
       propertyPath: 'endGoals.Array.data[0]'
@@ -51475,18 +51455,13 @@ PrefabInstance:
       objectReference: {fileID: 1770134048}
     - target: {fileID: 961710666475029248, guid: 9215399602fbdc944b426e22fde06315,
         type: 3}
-      propertyPath: points.Array.data[0].speed
-      value: 20
+      propertyPath: points.Array.data[1].delay
+      value: 0.2
       objectReference: {fileID: 0}
     - target: {fileID: 961710666475029248, guid: 9215399602fbdc944b426e22fde06315,
         type: 3}
-      propertyPath: points.Array.data[1].speed
-      value: 20
-      objectReference: {fileID: 0}
-    - target: {fileID: 961710666475029248, guid: 9215399602fbdc944b426e22fde06315,
-        type: 3}
-      propertyPath: points.Array.data[2].speed
-      value: 20
+      propertyPath: points.Array.data[1].canPop
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 3375185424649369374, guid: 9215399602fbdc944b426e22fde06315,
         type: 3}
@@ -51545,28 +51520,8 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 3861447882259504122, guid: 9215399602fbdc944b426e22fde06315,
         type: 3}
-      propertyPath: Flags
-      value: 262145
-      objectReference: {fileID: 0}
-    - target: {fileID: 3861447882259504122, guid: 9215399602fbdc944b426e22fde06315,
-        type: 3}
       propertyPath: SortKey
       value: 1774401356
-      objectReference: {fileID: 0}
-    - target: {fileID: 4523067259339558909, guid: 9215399602fbdc944b426e22fde06315,
-        type: 3}
-      propertyPath: m_LocalPosition.x
-      value: 10.66
-      objectReference: {fileID: 0}
-    - target: {fileID: 4523067259339558909, guid: 9215399602fbdc944b426e22fde06315,
-        type: 3}
-      propertyPath: m_LocalPosition.y
-      value: 6.96
-      objectReference: {fileID: 0}
-    - target: {fileID: 4523067259339558909, guid: 9215399602fbdc944b426e22fde06315,
-        type: 3}
-      propertyPath: m_LocalPosition.z
-      value: 0.014
       objectReference: {fileID: 0}
     - target: {fileID: 5362460887575588938, guid: 9215399602fbdc944b426e22fde06315,
         type: 3}
@@ -51577,21 +51532,6 @@ PrefabInstance:
         type: 3}
       propertyPath: SortKey
       value: 1645757140
-      objectReference: {fileID: 0}
-    - target: {fileID: 5469678252797713790, guid: 9215399602fbdc944b426e22fde06315,
-        type: 3}
-      propertyPath: m_LocalPosition.x
-      value: 10.63
-      objectReference: {fileID: 0}
-    - target: {fileID: 5469678252797713790, guid: 9215399602fbdc944b426e22fde06315,
-        type: 3}
-      propertyPath: m_LocalPosition.y
-      value: 3.23
-      objectReference: {fileID: 0}
-    - target: {fileID: 5469678252797713790, guid: 9215399602fbdc944b426e22fde06315,
-        type: 3}
-      propertyPath: m_LocalPosition.z
-      value: 0.1
       objectReference: {fileID: 0}
     - target: {fileID: 9020599918749242177, guid: 9215399602fbdc944b426e22fde06315,
         type: 3}
@@ -61497,6 +61437,16 @@ PrefabInstance:
         type: 3}
       propertyPath: m_Name
       value: Bridge
+      objectReference: {fileID: 0}
+    - target: {fileID: 3169800694422499242, guid: 7bc267a87c484d24389c90ef87d05a48,
+        type: 3}
+      propertyPath: m_Layer
+      value: 3
+      objectReference: {fileID: 0}
+    - target: {fileID: 3704927642711793242, guid: 7bc267a87c484d24389c90ef87d05a48,
+        type: 3}
+      propertyPath: m_Layer
+      value: 3
       objectReference: {fileID: 0}
     - target: {fileID: 5930737081561983912, guid: 7bc267a87c484d24389c90ef87d05a48,
         type: 3}
@@ -72897,8 +72847,8 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0.5, y: 0.5}
   m_AnchorMax: {x: 0.5, y: 0.5}
-  m_AnchoredPosition: {x: -3.8426132, y: -72.59926}
-  m_SizeDelta: {x: 20, y: 5}
+  m_AnchoredPosition: {x: -0.75, y: -73.01}
+  m_SizeDelta: {x: 25, y: 5}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!114 &2051232298
 MonoBehaviour:
@@ -72920,9 +72870,11 @@ MonoBehaviour:
   m_OnCullStateChanged:
     m_PersistentCalls:
       m_Calls: []
-  m_text: 'Square / X - Fire
+  m_text: 'North Button / E to Pickup
 
-    Triangle / Y - Drop'
+    Left Trigger / LMB to Fire
+
+'
   m_isRightToLeft: 0
   m_fontAsset: {fileID: 11400000, guid: 8f586378b4e144a9851e7b34d9b748ee, type: 2}
   m_sharedMaterial: {fileID: 2180264, guid: 8f586378b4e144a9851e7b34d9b748ee, type: 2}

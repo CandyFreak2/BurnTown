@@ -52,6 +52,8 @@ public class Interactable : NetworkBehaviour
             // Update position of interactable to player
             if (carrier != null)
             {
+                // FIX THIS - SHOULD NOT BE CHECKING FOR NAME OR INDEX OF CHILD
+                // COMPARE TAG OF CHILD OR REFERENCE POSITION OF OBJECT
                 Transform handtransform = carrier.transform.GetChild(0);
 
                 transform.position = handtransform.position + handtransform.TransformDirection(holdOffset);

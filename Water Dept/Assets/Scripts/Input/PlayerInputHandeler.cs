@@ -6,80 +6,63 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.InputSystem;
 
-public class PlayerInputHandeler : SimulationBehaviour, IBeforeUpdate, INetworkRunnerCallbacks
-{
-    InputSystem_Actions inputSystem;
+public class PlayerInputHandeler : SimulationBehaviour, IBeforeUpdate, INetworkRunnerCallbacks {
+    InputSystem_Actions.PlayerActions playerInputSystem;
 
     Vector2 moveDirection;
     Vector2 lookDelta;
     float interactPress;
     float dropPress;
     float shootPress;
-    
 
     public PlayerInputAction accumulatedInput = new PlayerInputAction();
     private bool resetInput = false;
     public Action<PlayerInputAction> onInputSignal;
 
-    private void Awake()
-    {
-        inputSystem = new InputSystem_Actions();
+    private void Awake() {
+        playerInputSystem = new InputSystem_Actions().Player;
 
         //get input and leave it hanging
-        inputSystem.Player.Move.performed += ctx => moveDirection = ctx.ReadValue<Vector2>();
-        inputSystem.Player.Move.canceled += ctx => moveDirection = ctx.ReadValue<Vector2>();
-        inputSystem.Player.Look.performed += ctx => lookDelta = ctx.ReadValue<Vector2>();
-        inputSystem.Player.Look.canceled += ctx => lookDelta = ctx.ReadValue<Vector2>();
+        playerInputSystem.Move.performed += ctx => moveDirection = ctx.ReadValue<Vector2>();
+        playerInputSystem.Move.canceled += ctx => moveDirection = ctx.ReadValue<Vector2>();
+        playerInputSystem.Look.performed += ctx => lookDelta = ctx.ReadValue<Vector2>();
+        playerInputSystem.Look.canceled += ctx => lookDelta = ctx.ReadValue<Vector2>();
 
         //interact
-        inputSystem.Player.Interact.started += ctx => interactPress = ctx.ReadValue<float>();
+        playerInputSystem.Interact.started += ctx => interactPress = ctx.ReadValue<float>();
 
         // Drop
-        inputSystem.Player.Crouch.started += ctx => dropPress = ctx.ReadValue<float>();
+        playerInputSystem.Crouch.started += ctx => dropPress = ctx.ReadValue<float>();
         
         //shoot
-        inputSystem.Player.Attack.performed += ctx => shootPress = ctx.ReadValue<float>();
+        playerInputSystem.Attack.performed += ctx => shootPress = ctx.ReadValue<float>();
 
         //clear input
-        inputSystem.Player.Move.canceled += ctx => moveDirection = ctx.ReadValue<Vector2>();
-        //inputSystem.Player.Jump.started += spaghetti => accumulatedInput.onInteractStarted?.Invoke();
+        playerInputSystem.Move.canceled += ctx => moveDirection = ctx.ReadValue<Vector2>();
+        //playerInputSystem.Jump.started += spaghetti => accumulatedInput.onInteractStarted?.Invoke();
+    }
+
+    private void Start() {
+        onInputSignal?.Invoke(new PlayerInputAction(accumulatedInput));
+    }
+
+    private void Navigate_performed(InputAction.CallbackContext obj) {
+        throw new NotImplementedException();
     }
 
     private void OnEnable() //restarts controls when needed
     {
-        inputSystem.Enable();
+        playerInputSystem.Enable();
     }
 
     private void OnDisable() //prevents controls running in editor and making junk
     {
-        inputSystem.Disable();
-
-        moveDirection = Vector2.zero;
-        lookDelta = Vector2.zero;
-    }
-
-    private void Start()
-    {
-        onInputSignal?.Invoke(new PlayerInputAction(accumulatedInput));
-    }
-
-    private void Update()
-    {
-        ////load inputs into the package
-        //accumulatedInput.MoveDirection = moveDirection;
-
-        //if(lookDelta.magnitude > 0)
-        //    accumulatedInput.LookDelta = lookDelta;
-
-        ////send out a copy of this frame's input to all listeners?
-        //onInputSignal?.Invoke(new PlayerInputAction(accumulatedInput));
+        playerInputSystem.Disable();
     }
 
     // Networking functions
-    void IBeforeUpdate.BeforeUpdate()
-    {
-        if (resetInput)
-        {
+    void IBeforeUpdate.BeforeUpdate() {
+        if (resetInput) {
             resetInput = false;
             accumulatedInput = default;
         }
@@ -87,14 +70,14 @@ public class PlayerInputHandeler : SimulationBehaviour, IBeforeUpdate, INetworkR
         // Add buttons
         NetworkButtons buttons = default;
 
-        bool interactDown = (inputSystem.Player.Interact.ReadValue<float>() > 0.0f);
+        bool interactDown = (playerInputSystem.Interact.ReadValue<float>() > 0.0f);
         buttons.Set(InputButton.Interact, interactDown);
 
-        bool dropDown = (inputSystem.Player.Crouch.ReadValue<float>() > 0.0f);
+        bool dropDown = (playerInputSystem.Crouch.ReadValue<float>() > 0.0f);
         buttons.Set(InputButton.Drop, dropDown);
 
         // shootpress returns 0, attack.readvalue returns 1
-        bool shootDown = (inputSystem.Player.Attack.ReadValue<float>() > 0.0f);
+        bool shootDown = (playerInputSystem.Attack.ReadValue<float>() > 0.0f);
         buttons.Set(InputButton.Shoot, shootDown);
 
         // Change cursor lock state if enter or esc pressed
@@ -121,8 +104,7 @@ public class PlayerInputHandeler : SimulationBehaviour, IBeforeUpdate, INetworkR
         accumulatedInput.Buttons = new NetworkButtons(accumulatedInput.Buttons.Bits | buttons.Bits);
     }
 
-    void INetworkRunnerCallbacks.OnInput(NetworkRunner runner, NetworkInput input)
-    {
+    void INetworkRunnerCallbacks.OnInput(NetworkRunner runner, NetworkInput input) {
         // Send package to server
         accumulatedInput.MoveDirection.Normalize();
         input.Set(accumulatedInput);
@@ -132,8 +114,7 @@ public class PlayerInputHandeler : SimulationBehaviour, IBeforeUpdate, INetworkR
         accumulatedInput.LookDelta = default;
     }
 
-    void INetworkRunnerCallbacks.OnPlayerJoined(NetworkRunner runner, PlayerRef player)
-    {
+    void INetworkRunnerCallbacks.OnPlayerJoined(NetworkRunner runner, PlayerRef player) {
         //if (player == runner.LocalPlayer)
         //{
         //    Cursor.lockState = CursorLockMode.Locked;
@@ -171,8 +152,7 @@ public class PlayerInputHandeler : SimulationBehaviour, IBeforeUpdate, INetworkR
 
     void INetworkRunnerCallbacks.OnSessionListUpdated(NetworkRunner runner, List<SessionInfo> sessionList) { }
 
-    async void INetworkRunnerCallbacks.OnShutdown(NetworkRunner runner, ShutdownReason shutdownReason)
-    {
+    async void INetworkRunnerCallbacks.OnShutdown(NetworkRunner runner, ShutdownReason shutdownReason) {
         Cursor.lockState = CursorLockMode.None;
         Cursor.visible = true;
 
