@@ -8,6 +8,11 @@ public class CineSingleCamera : MonoBehaviour
 
     private CinemachineCamera _PlayerCam;
 
+    private void Awake()
+    {
+        _PlayerCam = GetComponent<CinemachineCamera>();
+    }
+
     private void OnEnable()
     {
         activeCineCameras.Add(this);

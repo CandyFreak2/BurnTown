@@ -537,6 +537,11 @@ PrefabInstance:
       propertyPath: m_Name
       value: Player
       objectReference: {fileID: 0}
+    - target: {fileID: 3738928137041615996, guid: 2d6a5a266e8495b439e27b01846476d9,
+        type: 3}
+      propertyPath: Target.TrackingTarget
+      value: 
+      objectReference: {fileID: 1765764238}
     - target: {fileID: 5779141458447338188, guid: 2d6a5a266e8495b439e27b01846476d9,
         type: 3}
       propertyPath: m_LocalPosition.x
@@ -596,6 +601,12 @@ PrefabInstance:
       insertIndex: -1
       addedObject: {fileID: 0}
   m_SourcePrefab: {fileID: 100100000, guid: 2d6a5a266e8495b439e27b01846476d9, type: 3}
+--- !u!4 &1765764238 stripped
+Transform:
+  m_CorrespondingSourceObject: {fileID: 5779141458447338188, guid: 2d6a5a266e8495b439e27b01846476d9,
+    type: 3}
+  m_PrefabInstance: {fileID: 1661988527}
+  m_PrefabAsset: {fileID: 0}
 --- !u!1 &2133233916
 GameObject:
   m_ObjectHideFlags: 0

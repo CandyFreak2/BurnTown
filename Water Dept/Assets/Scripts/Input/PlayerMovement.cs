@@ -127,7 +127,8 @@ public class PlayerMovement : NetworkBehaviour
 
     public void MovePlayer()
     {
-        moveDirection = kcc.TransformRotation * new Vector3(action.MoveDirection.x, 0.0f, action.MoveDirection.y);
+        Quaternion camOffest = Quaternion.Euler(0, camTarget.rotation.eulerAngles.y, 0);
+        moveDirection = kcc.TransformRotation * camOffest * ToVector3(action.MoveDirection);
 
         if (isGrounded)
             kcc.Move(moveDirection * MoveSpeed);
