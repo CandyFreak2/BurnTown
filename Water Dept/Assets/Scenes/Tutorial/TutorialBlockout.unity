@@ -51453,6 +51453,16 @@ PrefabInstance:
       propertyPath: 'endGoals.Array.data[0]'
       value: 
       objectReference: {fileID: 1770134048}
+    - target: {fileID: 961710666475029248, guid: 9215399602fbdc944b426e22fde06315,
+        type: 3}
+      propertyPath: points.Array.data[1].delay
+      value: 0.2
+      objectReference: {fileID: 0}
+    - target: {fileID: 961710666475029248, guid: 9215399602fbdc944b426e22fde06315,
+        type: 3}
+      propertyPath: points.Array.data[1].canPop
+      value: 0
+      objectReference: {fileID: 0}
     - target: {fileID: 3375185424649369374, guid: 9215399602fbdc944b426e22fde06315,
         type: 3}
       propertyPath: SortKey
