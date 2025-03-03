@@ -11,16 +11,15 @@ public class TimerSystem : NetworkBehaviour, INetworkRunnerCallbacks {
 
     [Networked] private TickTimer Timer { get; set; }
     [Networked] private NetworkBool canStart { get; set; }
-    [Networked] private bool isSpawned { get; set; }
+    private bool isSpawned = false;
 
     [Header("Time Syncing")]
     [Tooltip("Duration is based off of seconds"), SerializeField] private float duration;
-    private TMP_Text[] timerText;
+    [SerializeField] private TMP_Text[] timerText;
     private GameObject[] timers;
 
-    [Header("Pause/Reset Controls")]
-    [SerializeField] private bool isPaused = false;
-    [SerializeField] private bool isReset = false;
+    private bool isPaused = false;
+    private bool isReset = false;
 
     private bool canPause = false;
     private bool canReset = false;
