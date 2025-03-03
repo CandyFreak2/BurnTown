@@ -105,6 +105,8 @@ MonoBehaviour:
   spreadRate: 3
   spreadRadius: 3
   fireResistance: 1
+  damageRate: 0.1
+  _nIsBurning: 0
   isBurning: 0
 --- !u!114 &4730850548071176791
 MonoBehaviour:
@@ -118,7 +120,7 @@ MonoBehaviour:
   m_Script: {fileID: -1552182283, guid: e725a070cec140c4caffb81624c8c787, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  SortKey: 3789059213
+  SortKey: 4005408632
   ObjectInterest: 1
   Flags: 262145
   NestedObjects: []

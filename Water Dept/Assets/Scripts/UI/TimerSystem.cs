@@ -36,6 +36,7 @@ public class TimerSystem : NetworkBehaviour, INetworkRunnerCallbacks {
             if (Timer.Expired(Runner)) {
                 Debug.Log("Game Ended");
                 Timer = TickTimer.None;
+                EventManager.OnTimerEnd?.Invoke();
                 canStart = false; 
             }
         }
@@ -72,11 +73,10 @@ public class TimerSystem : NetworkBehaviour, INetworkRunnerCallbacks {
         }
     }
 
-    // This function can be called when a player joins to re-sync all timers
+    // This function gets triggered when a player joins to allow re-syncing
     public void UpdateTimerReferences() {
         timers = GameObject.FindGameObjectsWithTag("Clock");
 
-        // Resize the array and assign the new TMP_Text references
         timerText = new TMP_Text[timers.Length];
         for (int i = 0; i < timers.Length; i++) {
             timerText[i] = timers[i].GetComponent<TMP_Text>();
