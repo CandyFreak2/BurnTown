@@ -10,11 +10,15 @@ public class TimerSystem : NetworkBehaviour, INetworkRunnerCallbacks {
     [Networked] private NetworkBool canStart { get; set; }
 
     [Header("Time Syncing")]
-    [SerializeField] private TMP_Text[] timerText;
     [Tooltip("Duration is based off of seconds"), SerializeField] private float duration;
-
-    public float remainingTime;
+    private TMP_Text[] timerText;
     private GameObject[] timers;
+
+    [Header("Designer Controls")]
+    public float remainingTime;
+    public bool isPaused = false;
+    public bool isReset = false;
+    
 
     public override void Spawned() {
         remainingTime = duration;
