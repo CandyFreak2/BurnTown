@@ -175,19 +175,22 @@ public class PlayerMovement : NetworkBehaviour
     {
         Interactable nearestInteractable = null;
 
-        Collider[] interactableObjects = Physics.OverlapSphere(transform.position, 3.5f);
-        foreach (Collider collider in interactableObjects)
+        if (HasInputAuthority && !IsHolding())
         {
-            // First object in list that is a flamethrower gets picked up ++ Or barrel
-            if (collider.gameObject.tag == "FireHoseHead" || collider.gameObject.tag == "Barrel" && !IsHolding())
+            Collider[] interactableObjects = Physics.OverlapSphere(transform.position, 3.5f);
+            foreach (Collider collider in interactableObjects)
             {
-                nearestInteractable = collider.gameObject.GetComponent<Interactable>();
-                pickupText.text = "North Button / E to Pickup";
-                return nearestInteractable;
-            }
-            else
-            {
-                pickupText.text = "";
+                // First object in list that is a flamethrower gets picked up ++ Or barrel
+                if (collider.gameObject.tag == "FireHoseHead" || collider.gameObject.tag == "Barrel")
+                {
+                    nearestInteractable = collider.gameObject.GetComponent<Interactable>();
+                    pickupText.text = "North Button / E to Pickup";
+                    return nearestInteractable;
+                }
+                else
+                {
+                    pickupText.text = "";
+                }
             }
         }
 

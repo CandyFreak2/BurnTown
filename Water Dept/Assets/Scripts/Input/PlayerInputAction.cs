@@ -6,7 +6,8 @@ public enum InputButton
 {
     Interact, 
     Shoot,
-    Drop
+    Drop,
+    Brake
 }
 
 public struct PlayerInputAction : INetworkInput
