@@ -725,7 +725,7 @@ GameObject:
   - component: {fileID: 943226093199292436}
   m_Layer: 6
   m_Name: Player
-  m_TagString: Untagged
+  m_TagString: Player
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -2055,7 +2055,7 @@ GameObject:
   - component: {fileID: 5282231797609785769}
   m_Layer: 5
   m_Name: Timer
-  m_TagString: Untagged
+  m_TagString: Clock
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -3312,7 +3312,7 @@ PrefabInstance:
     - target: {fileID: 1906332718947837429, guid: 96804e7c3961f9140b030ab112fcfa6e,
         type: 3}
       propertyPath: m_LocalRotation.w
-      value: 0.8482589
+      value: 0.84825885
       objectReference: {fileID: 0}
     - target: {fileID: 1906332718947837429, guid: 96804e7c3961f9140b030ab112fcfa6e,
         type: 3}
@@ -3327,7 +3327,7 @@ PrefabInstance:
     - target: {fileID: 1906332718947837429, guid: 96804e7c3961f9140b030ab112fcfa6e,
         type: 3}
       propertyPath: m_LocalRotation.z
-      value: -0.15163288
+      value: -0.15163289
       objectReference: {fileID: 0}
     - target: {fileID: 1906332718947837429, guid: 96804e7c3961f9140b030ab112fcfa6e,
         type: 3}
@@ -3351,9 +3351,29 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 3340170326400492564, guid: 96804e7c3961f9140b030ab112fcfa6e,
         type: 3}
+      propertyPath: m_Enabled
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 3340170326400492564, guid: 96804e7c3961f9140b030ab112fcfa6e,
+        type: 3}
       propertyPath: Target.TrackingTarget
       value: 
       objectReference: {fileID: 5779141458447338188}
+    - target: {fileID: 4387287218986668996, guid: 96804e7c3961f9140b030ab112fcfa6e,
+        type: 3}
+      propertyPath: m_NoiseOffsets.x
+      value: 169.23154
+      objectReference: {fileID: 0}
+    - target: {fileID: 4387287218986668996, guid: 96804e7c3961f9140b030ab112fcfa6e,
+        type: 3}
+      propertyPath: m_NoiseOffsets.y
+      value: -540.6449
+      objectReference: {fileID: 0}
+    - target: {fileID: 4387287218986668996, guid: 96804e7c3961f9140b030ab112fcfa6e,
+        type: 3}
+      propertyPath: m_NoiseOffsets.z
+      value: -233.56165
+      objectReference: {fileID: 0}
     - target: {fileID: 4436330917512356284, guid: 96804e7c3961f9140b030ab112fcfa6e,
         type: 3}
       propertyPath: FollowOffset.x
