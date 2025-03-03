@@ -4,44 +4,62 @@ using System;
 using System.Collections.Generic;
 using TMPro;
 using UnityEngine;
+using UnityEngine.UI;
 
 public class TimerSystem : NetworkBehaviour, INetworkRunnerCallbacks {
+    public float remainingTime;
+
     [Networked] private TickTimer Timer { get; set; }
     [Networked] private NetworkBool canStart { get; set; }
+    [Networked] private bool isSpawned { get; set; }
 
     [Header("Time Syncing")]
     [Tooltip("Duration is based off of seconds"), SerializeField] private float duration;
     private TMP_Text[] timerText;
     private GameObject[] timers;
 
-    [Header("Designer Controls")]
-    public float remainingTime;
-    public bool isPaused = false;
-    public bool isReset = false;
-    
+    [Header("Pause/Reset Controls")]
+    [SerializeField] private bool isPaused = false;
+    [SerializeField] private bool isReset = false;
+
+    private bool canPause = false;
+    private bool canReset = false;
+
+    private Button pauseButton, resetButton; 
 
     public override void Spawned() {
+        // KEEP CODE
         remainingTime = duration;
         Timer = TickTimer.CreateFromSeconds(Runner, remainingTime);
         canStart = true;
+        isSpawned = true;
     }
 
     public void FixedUpdate() {
+        if (!isSpawned) return;
+
         timers = GameObject.FindGameObjectsWithTag("Clock");
 
         timerText = new TMP_Text[timers.Length];
         for (int i = 0; i < timers.Length; i++) {
-             timerText[i] = timers[i].GetComponent<TMP_Text>();
+            timerText[i] = timers[i].GetComponent<TMP_Text>();
         }
+
+        // TEMP CODE REMOVE 
+        pauseButton = GameObject.Find("Pause1").GetComponent<Button>();
+        resetButton = GameObject.Find("Reset1").GetComponent<Button>();
+
+        pauseButton.onClick.AddListener(PauseTimer);
+        resetButton.onClick.AddListener(ResetTimer);
     }
 
     public void FixedUpdateNetworked() {
-        if (canStart) {
+        if (canStart && !canPause) {
             if (Timer.Expired(Runner)) {
                 Debug.Log("Game Ended");
                 Timer = TickTimer.None;
                 EventManager.OnTimerEnd?.Invoke();
-                canStart = false; 
+                canStart = false;
             }
         }
     }
@@ -84,6 +102,23 @@ public class TimerSystem : NetworkBehaviour, INetworkRunnerCallbacks {
         timerText = new TMP_Text[timers.Length];
         for (int i = 0; i < timers.Length; i++) {
             timerText[i] = timers[i].GetComponent<TMP_Text>();
+        }
+    }
+
+    public void PauseTimer() {
+        if (Timer.IsRunning) {
+            Timer = TickTimer.None; 
+            canPause = !canPause;
+        }
+    }
+
+    public void ResetTimer() {
+        if (canPause || !Timer.IsRunning) {
+            duration = remainingTime;
+            Timer = TickTimer.CreateFromSeconds(Runner, remainingTime); 
+            canPause = false;
+            canReset = true;
+            canStart = true;
         }
     }
 
