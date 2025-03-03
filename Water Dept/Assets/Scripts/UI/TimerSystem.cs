@@ -4,19 +4,26 @@ using UnityEngine;
 
 public class TimerSystem : NetworkBehaviour {
     [Networked] private TickTimer Timer { get; set; }
+    [Networked] private NetworkBool canStart { get; set; }
 
     [Header("Time Syncing")]
     [SerializeField] private TMP_Text timerText;
-    [SerializeField] private float duration;
+    [Tooltip("Duration is based off of seconds"), SerializeField] private float duration;
+
+    private float remainingTime;
 
     public override void Spawned() {
-        Timer = TickTimer.CreateFromSeconds(Runner, duration);
+        remainingTime = duration;
+        Timer = TickTimer.CreateFromSeconds(Runner, remainingTime);
+        canStart = true;
     }
 
-    public override void FixedUpdateNetwork() {
-        if (Timer.Expired(Runner)) {
-            Debug.Log("Game Ended");
-            Timer = TickTimer.None;
+    public void FixedUpdate() {
+        if (canStart) {
+            if (Timer.Expired(Runner)) {
+                Debug.Log("Game Ended");
+                Timer = TickTimer.None;
+            }
         }
     }
 
@@ -27,7 +34,7 @@ public class TimerSystem : NetworkBehaviour {
         }
     }
 
-    public void DisplayTime(float displayTime) { 
+    public void DisplayTime(float displayTime) {
         if (displayTime < 0) {
             displayTime = 0;
         }
