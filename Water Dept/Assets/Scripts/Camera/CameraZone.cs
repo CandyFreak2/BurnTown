@@ -5,8 +5,6 @@ public class CameraZone : MonoBehaviour
 {
     //[SerializeField] string triggerTag = "Player";
     CinemachineCamera cam;
-    [SerializeField] GameObject mainPlayer;
-
 
     private void Awake()
     {
@@ -21,16 +19,19 @@ public class CameraZone : MonoBehaviour
 
         if(player.HasInputAuthority)
         {
-            mainPlayer = player.gameObject;
             cam.Priority = 10;
         }
     }
 
     private void OnTriggerExit(Collider other)
     {
-        if (other.gameObject != mainPlayer)
+        PlayerMovement player = other.GetComponentInParent<PlayerMovement>();
+        if (player == null)
             return;
 
-        cam.Priority = -1;
+        if (player.HasInputAuthority)
+        {
+            cam.Priority = 1;
+        }
     }
 }
