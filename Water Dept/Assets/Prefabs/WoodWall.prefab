@@ -13,8 +13,8 @@ GameObject:
   - component: {fileID: 6616012625910489278}
   - component: {fileID: 8006097637334632744}
   - component: {fileID: 6741218830040709599}
-  - component: {fileID: 6017591092908145897}
   - component: {fileID: 7070302226826673100}
+  - component: {fileID: 6192657797160081394}
   m_Layer: 0
   m_Name: WoodWall
   m_TagString: Untagged
@@ -32,7 +32,7 @@ Transform:
   serializedVersion: 2
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
   m_LocalPosition: {x: 0, y: 5, z: 10}
-  m_LocalScale: {x: 2, y: 10, z: 10}
+  m_LocalScale: {x: 1, y: 2, z: 4}
   m_ConstrainProportionsScale: 0
   m_Children: []
   m_Father: {fileID: 0}
@@ -134,24 +134,10 @@ Rigidbody:
   m_ImplicitCom: 1
   m_ImplicitTensor: 1
   m_UseGravity: 1
-  m_IsKinematic: 0
+  m_IsKinematic: 1
   m_Interpolate: 0
   m_Constraints: 0
   m_CollisionDetection: 0
---- !u!114 &6017591092908145897
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 3389213166802151147}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: fd59cc16d73f31e48a5e82845f275f9c, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  burnTime: 5
-  isBurning: 0
 --- !u!114 &7070302226826673100
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -169,5 +155,29 @@ MonoBehaviour:
   Flags: 262145
   NestedObjects: []
   NetworkedBehaviours:
-  - {fileID: 6017591092908145897}
+  - {fileID: 6192657797160081394}
   ForceRemoteRenderTimeframe: 0
+--- !u!114 &6192657797160081394
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 3389213166802151147}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: d687f89eee019c74e9f3e5c3d46719f7, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  burnableScore: 150
+  startFuel: 15
+  spreadRate: 100
+  spreadRadius: 0
+  fireResistance: 600
+  damageRate: 0.1
+  _nIsBurning: 0
+  isBurning: 0
+  showsLerp: 1
+  initialColor: {r: 0.41568628, g: 0.31764707, b: 0.17254902, a: 1}
+  startColor: {r: 0.41568628, g: 0.31764707, b: 0.17254902, a: 1}
+  endColor: {r: 1, g: 0, b: 0, a: 1}

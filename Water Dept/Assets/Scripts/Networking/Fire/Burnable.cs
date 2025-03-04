@@ -7,6 +7,8 @@ using static Fusion.NetworkBehaviour;
 
 public class Burnable : NetworkBehaviour
 {
+    // SCORE
+    [SerializeField] private int burnableScore = 3500;
     //SYSTEM HALF DESIGNED FOR POLYMORPHISM
     //NOT IMPLEMENTED YET, JUST CONCEPT TEST
 
@@ -23,14 +25,16 @@ public class Burnable : NetworkBehaviour
     [Networked] public bool nIsBurning { get; set; }
     [SerializeField] protected bool isBurning = true;
     private bool isSpawned = false;
+    [SerializeField] private bool showsLerp = true;
 
     //prevents multiple fire sources from damaging an object separately
     private float lockoutTimer = 0.0f;
     private const float LOCKOUT_MAX_TIME = 3.0f;
 
     //lerp burn colors
-    private Color startColor = Color.yellow;
-    private Color endColor = Color.red;
+    [SerializeField] private Color initialColor = Color.green;
+    [SerializeField] private Color startColor = Color.yellow;
+    [SerializeField] private Color endColor = Color.red;
 
     //temp vars for testing
     float timer = 0.0f;
@@ -45,7 +49,9 @@ public class Burnable : NetworkBehaviour
     {
         //used for tracking percentages
         fuelRemaining = startFuel;
-        gameObject.GetComponent<Renderer>().material.color = Color.green;
+        if (showsLerp) {
+            gameObject.GetComponent<Renderer>().material.color = initialColor;
+        }
     }
 
     private void Update()
@@ -74,8 +80,10 @@ public class Burnable : NetworkBehaviour
     //changes obj color 
     private void handeColorLerp()
     {
-        //lerp between start and end color based on % of fuel remaining
-        gameObject.GetComponent<Renderer>().material.color = Color.Lerp(endColor, startColor, (fuelRemaining / startFuel));
+        if (nIsBurning) {
+            //lerp between start and end color based on % of fuel remaining
+            gameObject.GetComponent<Renderer>().material.color = Color.Lerp(endColor, startColor, (fuelRemaining / startFuel));
+        }
     }
 
     // Checks if burning object is on fire and burns it and spreads fire
@@ -96,15 +104,15 @@ public class Burnable : NetworkBehaviour
             }
 
         }
-        else if (!nIsBurning)
+        else if (!nIsBurning && showsLerp)
         {
             //runs lockout timer down
             lockoutTimer -= Time.deltaTime;
 
             //placeholder for updating req
-            if (gameObject.GetComponent<Renderer>().material.color != Color.green)
+            if (gameObject.GetComponent<Renderer>().material.color != initialColor)
             {
-                gameObject.GetComponent<Renderer>().material.color = Color.green;
+                gameObject.GetComponent<Renderer>().material.color = initialColor;
             }
             
         }
@@ -113,6 +121,7 @@ public class Burnable : NetworkBehaviour
             //Destroy(gameObject);
             //Runner.Despawn(Object);
             gameObject.SetActive(false);
+            EventManager.BurnableDestroyed(burnableScore);
         }
     }
 

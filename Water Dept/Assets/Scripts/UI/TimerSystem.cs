@@ -57,7 +57,7 @@ public class TimerSystem : NetworkBehaviour, INetworkRunnerCallbacks {
             if (Timer.Expired(Runner)) {
                 Debug.Log("Game Ended");
                 Timer = TickTimer.None;
-                EventManager.OnTimerEnd?.Invoke();
+                EventManager.TimerEnd();
                 canStart = false;
             }
         }

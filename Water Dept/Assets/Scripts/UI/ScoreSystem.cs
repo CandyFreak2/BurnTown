@@ -3,10 +3,9 @@ using TMPro;
 using UnityEngine;
 
 public class ScoreSystem : NetworkBehaviour {
-    private const string SCORE_HEADER = "Score: ";
-    
+    private const string SCORE_HEADER = "Financial Damage: $";
+
     [Networked, SerializeField] private int overallScore { get; set; }
-    [SerializeField] private int burnableScore = 100;
     private bool isSpawned = false;
 
     public TMP_Text scoreText;
@@ -20,6 +19,19 @@ public class ScoreSystem : NetworkBehaviour {
             scoreText = GameObject.Find("Score").GetComponent<TMP_Text>();
             scoreText.text = SCORE_HEADER + overallScore;
         }
+    }
+
+    public void UpdateScoreUI(int score) {
+        overallScore += score;
+        scoreText.text = SCORE_HEADER + overallScore;
+    }
+
+    private void OnEnable() {
+        EventManager.OnBurnableDestroyed += UpdateScoreUI;
+    }
+
+    private void OnDisable() {
+        EventManager.OnBurnableDestroyed -= UpdateScoreUI;
     }
 
 }
