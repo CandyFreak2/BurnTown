@@ -6,6 +6,7 @@ public class ScoreSystem : NetworkBehaviour {
     private const string SCORE_HEADER = "Financial Damage: $";
 
     [Networked, SerializeField] private int overallScore { get; set; }
+    [SerializeField] private bool isReset;
     private bool isSpawned = false;
 
     public TMP_Text scoreText;
@@ -17,6 +18,12 @@ public class ScoreSystem : NetworkBehaviour {
     private void FixedUpdate() {
         if (scoreText == null && isSpawned) {
             scoreText = GameObject.Find("Score").GetComponent<TMP_Text>();
+            scoreText.text = SCORE_HEADER + overallScore;
+        }
+
+        if (scoreText != null && isReset) {
+            isReset = false;
+            overallScore = 0;
             scoreText.text = SCORE_HEADER + overallScore;
         }
     }
@@ -33,5 +40,4 @@ public class ScoreSystem : NetworkBehaviour {
     private void OnDisable() {
         EventManager.OnBurnableDestroyed -= UpdateScoreUI;
     }
-
 }
