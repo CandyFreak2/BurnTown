@@ -13,9 +13,11 @@ GameObject:
   - component: {fileID: 4171279322762421496}
   - component: {fileID: 3264080367947759093}
   - component: {fileID: 2484273316510601656}
+  - component: {fileID: -7736339395039427817}
+  - component: {fileID: -8978315845249998030}
   m_Layer: 0
   m_Name: barrel
-  m_TagString: barrel
+  m_TagString: Barrel
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -131,7 +133,40 @@ MonoBehaviour:
   explosionRadius: 3
   explosionForce: 0.0001
   wallExplosiveForce: 0.0001
-  isExploded: 0
+--- !u!114 &-7736339395039427817
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 7658933350302763111}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: -1552182283, guid: e725a070cec140c4caffb81624c8c787, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  SortKey: 2478502440
+  ObjectInterest: 1
+  Flags: 262145
+  NestedObjects: []
+  NetworkedBehaviours:
+  - {fileID: 2484273316510601656}
+  - {fileID: -8978315845249998030}
+  ForceRemoteRenderTimeframe: 0
+--- !u!114 &-8978315845249998030
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 7658933350302763111}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 448471b91d9a6cc4bbdb69ea7b4a35f3, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  holdOffset: {x: 1, y: 0.5, z: 0}
+  interactableType: 1
 --- !u!1001 &674358661341962459
 PrefabInstance:
   m_ObjectHideFlags: 0

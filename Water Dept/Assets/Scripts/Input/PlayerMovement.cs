@@ -1,9 +1,12 @@
 using UnityEngine;
 using Fusion;
 using Fusion.Addons.SimpleKCC;
+using TMPro;
 
 public class PlayerMovement : NetworkBehaviour
 {
+    private bool isSpawned = false;
+
     [Header("Movement")]
     public float MoveSpeed = 5.0f;
     public float AirMoveSpeed = 3.0f;
@@ -12,18 +15,14 @@ public class PlayerMovement : NetworkBehaviour
     [SerializeField] Transform playerObj;
     [SerializeField] Transform camTarget;
     [SerializeField] float rotSpeed = 7.0f;
+    [Networked] private Vector3 networkedForward { get; set; }
 
     //movement input
     public Vector3 moveDirection = Vector3.zero;
     [Networked] private NetworkButtons previousButtons { get; set; }
 
-    // Hose data
-    //public Transform hand;
-    //private GameObject fireHoseParent;
-    //private GameObject fireHoseHead;
-    //[Networked] public NetworkBool isHolding { get; set; } //public for pickup collider
-    //[Networked] private NetworkId heldHoseId {  get; set; }
     [Networked] public Interactable carriedObject { get; set; }
+    [SerializeField] private TextMeshPro pickupText;
 
     PlayerInputHandeler input;
     PlayerInputAction action;
@@ -53,8 +52,11 @@ public class PlayerMovement : NetworkBehaviour
 
         if (HasInputAuthority)
         {
-            FreeCameraController.Singleton.SetTarget(camTarget);
+            //FreeCameraController.Singleton.SetTarget(camTarget);
+            GetComponentInChildren<CineSingleCamera>().SetAsActiveCamera();
         }
+
+        isSpawned = true;
     }
 
     //overridden by FixedUpdateNetwork
@@ -84,6 +86,12 @@ public class PlayerMovement : NetworkBehaviour
         }
     }
 
+    private void FixedUpdate()
+    {
+        if (isSpawned)
+        playerObj.forward = Vector3.Slerp(playerObj.forward, networkedForward, Time.fixedDeltaTime * rotSpeed);
+    }
+
     public void RotatePlayer()
     {
         //get camera view direction
@@ -106,13 +114,21 @@ public class PlayerMovement : NetworkBehaviour
             orientation.Rotate(0, viewDir, 0);
         }
 
+        Vector3 targetForward = orientation.forward.normalized;
+
+        if (HasStateAuthority)
+        {
+            networkedForward = targetForward;
+        }
+
         //Rotate the player towards the orientations direction
-        playerObj.forward = Vector3.Slerp(playerObj.forward, orientation.forward.normalized, Time.fixedDeltaTime * rotSpeed);
+        playerObj.forward = Vector3.Slerp(playerObj.forward, networkedForward, Time.fixedDeltaTime * rotSpeed);
     }
 
     public void MovePlayer()
     {
-        moveDirection = kcc.TransformRotation * new Vector3(action.MoveDirection.x, 0.0f, action.MoveDirection.y);
+        Quaternion camOffest = Quaternion.Euler(0, camTarget.rotation.eulerAngles.y, 0);
+        moveDirection = kcc.TransformRotation * camOffest * ToVector3(action.MoveDirection);
 
         if (isGrounded)
             kcc.Move(moveDirection * MoveSpeed);
@@ -122,20 +138,12 @@ public class PlayerMovement : NetworkBehaviour
 
     private void HandleInteraction()
     {
+        Interactable nearestInteractable = GetNearestInteractable();
         //Pickup hose
-        if (action.Buttons.WasPressed(previousButtons, InputButton.Interact) && !IsHolding())
+        if (action.Buttons.WasPressed(previousButtons, InputButton.Interact) && !IsHolding() && nearestInteractable != null)
         {
-            Collider[] interactableObjects = Physics.OverlapSphere(transform.position, 3.5f);
-
-            foreach (Collider collider in interactableObjects)
-            {
-                // First object in list that is a flamethrower gets picked up
-                if (collider.gameObject.tag == "FireHoseHead")
-                {
-                    PickUpObject(collider.gameObject.GetComponent<Interactable>());
-                    break;
-                }
-            }
+            PickUpObject(nearestInteractable);
+            pickupText.text = "";
         }
 
         //Drop hose
@@ -161,6 +169,29 @@ public class PlayerMovement : NetworkBehaviour
                 carriedObject.gameObject.GetComponent<FireHouse>().StartCoroutine(carriedObject.gameObject.GetComponent<FireHouse>().StopSpraying());
             }
         }
+    }
+
+    private Interactable GetNearestInteractable()
+    {
+        Interactable nearestInteractable = null;
+
+        Collider[] interactableObjects = Physics.OverlapSphere(transform.position, 3.5f);
+        foreach (Collider collider in interactableObjects)
+        {
+            // First object in list that is a flamethrower gets picked up ++ Or barrel
+            if (collider.gameObject.tag == "FireHoseHead" || collider.gameObject.tag == "Barrel" && !IsHolding())
+            {
+                nearestInteractable = collider.gameObject.GetComponent<Interactable>();
+                pickupText.text = "North Button / E to Pickup";
+                return nearestInteractable;
+            }
+            else
+            {
+                pickupText.text = "";
+            }
+        }
+
+        return nearestInteractable;
     }
 
     public bool CheckGround()
