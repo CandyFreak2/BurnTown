@@ -96,10 +96,9 @@ public class Gasline : NetworkBehaviour {
 
             // Handles enabling burning
             //Tmp moved up here so generator will burn
-            if (currentIndex == GetPointLength())
+            if (currentIndex == GetPointLength() && (Vector3.Distance(flameVisual.transform.position, GetPointPosition(currentIndex)) < tolerance))
             {
-                foreach (Burnable b in endGoals)
-                {
+                foreach (Burnable b in endGoals) {
                     b.nIsBurning = true;
                 }
             }
