@@ -25,6 +25,7 @@ public class BasicSpawner : MonoBehaviour, INetworkRunnerCallbacks
             _spawnedCharacters.Add(player, networkPlayerObject);
             runner.SetPlayerObject(player, networkPlayerObject);
         }
+        UIManager.Instance.SetUI();
     }
     public void OnPlayerLeft(NetworkRunner runner, PlayerRef player) 
     {
