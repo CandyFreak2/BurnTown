@@ -1,4 +1,5 @@
 using Unity.VisualScripting;
+using UnityEditor.Experimental.GraphView;
 using UnityEngine;
 using static UnityEngine.ParticleSystem;
 
@@ -15,21 +16,10 @@ public class tempBarrel : MonoBehaviour
     [SerializeField] public int placeDistance = 3;
     [SerializeField] public int pickupDistance = 2;
 
+    private Transform orientation;
+
     void Update()
     {
-        //queue schematic if barrel is nearby
-        if (Input.GetKeyDown(KeyCode.Q))
-        {
-            if(!isSchemOut)
-            {
-                if(PickupBarrel())
-                {
-                    isSchemOut = true;
-                    schematic = Instantiate(placeholderPrefab);
-                }
-            }
-        }
-
         if (Input.GetKeyDown(KeyCode.E) && isSchemOut)
         {
             PlaceBarrel();
@@ -68,19 +58,32 @@ public class tempBarrel : MonoBehaviour
         }
     }
 
-    private bool PickupBarrel()
+    //queue schematic if barrel is nearby
+    public void BarrelSchematics(Transform playerOrientation)
     {
-        Collider[] colliders = Physics.OverlapSphere(gameObject.transform.position, pickupDistance);
-        foreach (Collider hit in colliders)
+        if (!isSchemOut)
         {
-            if(hit.tag == "Barrel")
-            {
-                Destroy(hit.gameObject);
-                return true;
-            }
+            isSchemOut = true;
+            schematic = Instantiate(placeholderPrefab);
+
+            orientation = playerOrientation;
         }
-        return false;
     }
+
+    //gets repalced by existing pickup
+    //private bool PickupBarrel()
+    //{
+    //    Collider[] colliders = Physics.OverlapSphere(gameObject.transform.position, pickupDistance);
+    //    foreach (Collider hit in colliders)
+    //    {
+    //        if(hit.tag == "Barrel")
+    //        {
+    //            Destroy(hit.gameObject);
+    //            return true;
+    //        }
+    //    }
+    //    return false;
+    //}
 
     //hovers a schematic prefab in front of the player indicating where a barrel will be placed
     private void SchemBarrel()
@@ -88,8 +91,8 @@ public class tempBarrel : MonoBehaviour
         isSchemOut = true;
         if (isSchemOut)
         {
-            schematic.transform.position = (gameObject.GetComponent<Transform>().transform.position) + 
-                gameObject.GetComponent<Transform>().transform.forward * placeDistance;
+            schematic.transform.position = (gameObject.GetComponent<Transform>().transform.position) +
+               orientation.forward * placeDistance;
         }
 
         SnapPosition(schematic);
@@ -119,12 +122,12 @@ public class tempBarrel : MonoBehaviour
                 obj.transform.position -= Vector3.up * dist - new Vector3(0, 0.5f, 0);
             }
             //if its a barrel, snaps position to on top of the barrel
-            else if(hit.collider.GetComponent<BarrelInfo>() != null && !isThrowing)
+            else if (hit.collider.GetComponent<BarrelInfo>() != null && !isThrowing)
             {
                 obj.transform.position = hit.collider.transform.position + new Vector3(0, 1.0f, 0);
 
                 //links head/tail chain components of barrelInfo on place
-                if(obj.GetComponent<BarrelInfo>() != null)
+                if (obj.GetComponent<BarrelInfo>() != null)
                 {
                     obj.GetComponent<BarrelInfo>().tail = hit.collider.gameObject;
                     hit.collider.gameObject.GetComponent<BarrelInfo>().head = obj.gameObject;

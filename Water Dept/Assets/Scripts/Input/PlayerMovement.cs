@@ -2,6 +2,7 @@ using UnityEngine;
 using Fusion;
 using Fusion.Addons.SimpleKCC;
 using TMPro;
+using System.Threading;
 
 public class PlayerMovement : NetworkBehaviour
 {
@@ -29,6 +30,9 @@ public class PlayerMovement : NetworkBehaviour
     [SerializeField] Rigidbody rb;
     [SerializeField] SimpleKCC kcc;
 
+    //Barrel interactions
+    tempBarrel barrelController;
+
     [Header("Ground Check")]
     [SerializeField] Transform groundCheck;
     [SerializeField] LayerMask groundMask;
@@ -42,6 +46,7 @@ public class PlayerMovement : NetworkBehaviour
     private void Start()
     {
         input = GetComponent<PlayerInputHandeler>();
+        barrelController = GetComponent<tempBarrel>();
         //input.onInputSignal += RecieveInput;
         rb.mass = Mass;
     }
@@ -139,11 +144,18 @@ public class PlayerMovement : NetworkBehaviour
     private void HandleInteraction()
     {
         Interactable nearestInteractable = GetNearestInteractable();
-        //Pickup hose
+        //Pickup hose // barrel
         if (action.Buttons.WasPressed(previousButtons, InputButton.Interact) && !IsHolding() && nearestInteractable != null)
         {
             PickUpObject(nearestInteractable);
             pickupText.text = "";
+
+            //if barrel is picked up, queue schematic
+            if (nearestInteractable.interactableType == InteractableType.Barrel)
+            {
+                barrelController.BarrelSchematics(playerObj);
+            }
+
         }
 
         //Drop hose
@@ -169,6 +181,7 @@ public class PlayerMovement : NetworkBehaviour
                 carriedObject.gameObject.GetComponent<FireHouse>().StartCoroutine(carriedObject.gameObject.GetComponent<FireHouse>().StopSpraying());
             }
         }
+
     }
 
     private Interactable GetNearestInteractable()
