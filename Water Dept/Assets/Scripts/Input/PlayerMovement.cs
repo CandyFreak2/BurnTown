@@ -181,10 +181,16 @@ public class PlayerMovement : NetworkBehaviour
             foreach (Collider collider in interactableObjects)
             {
                 // First object in list that is a flamethrower gets picked up ++ Or barrel
-                if (collider.gameObject.tag == "FireHoseHead" || collider.gameObject.tag == "Barrel")
+                if (collider.gameObject.tag == "FireHoseHead")
                 {
                     nearestInteractable = collider.gameObject.GetComponent<Interactable>();
-                    pickupText.text = "North Button / E to Pickup";
+                    pickupText.text = "North Button / E to Pickup Flamethrower";
+                    return nearestInteractable;
+                }
+                else if (collider.gameObject.tag == "Barrel")
+                {
+                    nearestInteractable = collider.gameObject.GetComponent<Interactable>();
+                    pickupText.text = "North Button / E to Pickup Barrel";
                     return nearestInteractable;
                 }
                 else
