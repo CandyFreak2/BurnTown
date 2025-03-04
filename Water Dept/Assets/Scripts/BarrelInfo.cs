@@ -1,11 +1,13 @@
 using Fusion;
 using NUnit.Framework.Internal;
 using System.Collections;
+using System.Collections.Generic;
 using System.Data;
 using System.Linq;
 using System.Threading;
 using Unity.VisualScripting;
 using UnityEngine;
+using static Gasline;
 
 public class BarrelInfo : NetworkBehaviour {
     public GameObject tail = null;
@@ -25,6 +27,15 @@ public class BarrelInfo : NetworkBehaviour {
     [SerializeField] public float explosionRadius = 3.0f;
     [SerializeField] public float explosionForce = 10.0f;
     [SerializeField] public float wallExplosiveForce = 0.0001f;
+
+    //SFX
+    [Header("SFX")]
+    [SerializeField] public AudioClip[] pickupSFX;
+    [SerializeField] public AudioClip[] placeSFX;
+    [SerializeField] public AudioClip[] stackSFX;
+    [SerializeField] public AudioClip[] throwSFX;
+    [SerializeField] public AudioClip[] impactSFX;
+    [SerializeField] public AudioClip[] explodeSFX;
 
     private const int THROW_EXPLOSION_RADIUS = 1;
     private bool isAirborne;
@@ -109,6 +120,9 @@ public class BarrelInfo : NetworkBehaviour {
 
     //triggers that play when an object explodes
     private void ExplosionTriggers() {
+        //play sfx
+        AudioPlayer.PlaySFX(explodeSFX, transform.position, 0.1f);
+
         //play anim
         pixelBoom.Play();
         isExploded = false;
@@ -129,7 +143,6 @@ public class BarrelInfo : NetworkBehaviour {
             if (rb != null) {
                 if (rb.gameObject.CompareTag("DestructibleObject")) {
                     rb.gameObject.transform.parent.GetComponent<ConcreteWall>().Explode();
-
 
                     //rb.gameObject.transform.parent.GetComponent<ConcreteWall>().Explode(explosionForce);
                 }

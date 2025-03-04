@@ -153,6 +153,7 @@ public class PlayerMovement : NetworkBehaviour
             //if barrel is picked up, queue schematic
             if (nearestInteractable.interactableType == InteractableType.Barrel)
             {
+                AudioPlayer.PlaySFX(nearestInteractable.gameObject.GetComponent<BarrelInfo>().pickupSFX, playerObj.position, 0.1f);
                 barrelController.BarrelSchematics(playerObj);
             }
 

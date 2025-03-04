@@ -59,7 +59,6 @@ public class tempBarrel : MonoBehaviour
             bar.transform.position = (gameObject.GetComponent<Transform>().transform.position) + playerOrientation.forward * placeDistance;
             bar.GetComponent<BarrelInfo>().isThrown = true;
             //FIX FLOATING NUMBER
-            bar.AddComponent<Rigidbody>();
             bar.GetComponent<Rigidbody>().AddForce((orientation.forward + new Vector3(0, 1, 0)) *  1000);
 
             SnapPosition(bar);
@@ -108,10 +107,13 @@ public class tempBarrel : MonoBehaviour
     private void PlaceBarrel()
     {
         GameObject bar = Instantiate(barrelPrefab);
+
         bar.transform.position = (gameObject.GetComponent<Transform>().transform.position) +
                 gameObject.GetComponent<Transform>().transform.forward * placeDistance;
-
         SnapPosition(bar);
+
+        //sfx
+        AudioPlayer.PlaySFX(bar.GetComponent<BarrelInfo>().placeSFX, bar.transform.position, 0.1f);
     }
 
     //assigns a barrels position to snap to the ground and/or a barrel nearby

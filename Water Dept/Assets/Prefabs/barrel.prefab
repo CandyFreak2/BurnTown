@@ -15,6 +15,7 @@ GameObject:
   - component: {fileID: 2484273316510601656}
   - component: {fileID: -7736339395039427817}
   - component: {fileID: -8978315845249998030}
+  - component: {fileID: -5567084107334230165}
   m_Layer: 0
   m_Name: barrel
   m_TagString: Barrel
@@ -133,6 +134,29 @@ MonoBehaviour:
   explosionRadius: 3
   explosionForce: 0.0001
   wallExplosiveForce: 0.0001
+  pickupSFX:
+  - {fileID: 8300000, guid: 4bd416964268d6f498d91439b58d1d41, type: 3}
+  - {fileID: 8300000, guid: 7fbcd20bd179e6e4f8163a5547927a54, type: 3}
+  placeSFX:
+  - {fileID: 8300000, guid: 7baace6dde2185147bb4c7edb49df41e, type: 3}
+  - {fileID: 8300000, guid: 73de407c1fbd65c478d7d7559f90e3d3, type: 3}
+  - {fileID: 8300000, guid: 52c07d4e03338d648849e0e73c537c7c, type: 3}
+  - {fileID: 8300000, guid: fa2e14d0a9ea5df45a23339d98ba283b, type: 3}
+  - {fileID: 8300000, guid: 9cca2ea70e840fd41879299a38272d6c, type: 3}
+  - {fileID: 8300000, guid: 1fc767cd02ed8f5468ba3938fcde32bc, type: 3}
+  stackSFX:
+  - {fileID: 8300000, guid: 7baace6dde2185147bb4c7edb49df41e, type: 3}
+  - {fileID: 8300000, guid: 73de407c1fbd65c478d7d7559f90e3d3, type: 3}
+  - {fileID: 8300000, guid: 52c07d4e03338d648849e0e73c537c7c, type: 3}
+  - {fileID: 8300000, guid: fa2e14d0a9ea5df45a23339d98ba283b, type: 3}
+  - {fileID: 8300000, guid: 9cca2ea70e840fd41879299a38272d6c, type: 3}
+  - {fileID: 8300000, guid: 1fc767cd02ed8f5468ba3938fcde32bc, type: 3}
+  throwSFX: []
+  impactSFX: []
+  explodeSFX:
+  - {fileID: 8300000, guid: 3d362f112992f8347b8dfd3622b3faa4, type: 3}
+  - {fileID: 8300000, guid: 4c5de4c7df83ab647a861c6482570edf, type: 3}
+  - {fileID: 8300000, guid: 48750393e83a2e34f9f271025b3e867a, type: 3}
 --- !u!114 &-7736339395039427817
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -167,6 +191,33 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   holdOffset: {x: 1, y: 0.5, z: 0}
   interactableType: 1
+--- !u!54 &-5567084107334230165
+Rigidbody:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 7658933350302763111}
+  serializedVersion: 4
+  m_Mass: 1
+  m_Drag: 0
+  m_AngularDrag: 0.05
+  m_CenterOfMass: {x: 0, y: 0, z: 0}
+  m_InertiaTensor: {x: 1, y: 1, z: 1}
+  m_InertiaRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_IncludeLayers:
+    serializedVersion: 2
+    m_Bits: 0
+  m_ExcludeLayers:
+    serializedVersion: 2
+    m_Bits: 0
+  m_ImplicitCom: 1
+  m_ImplicitTensor: 1
+  m_UseGravity: 1
+  m_IsKinematic: 0
+  m_Interpolate: 0
+  m_Constraints: 0
+  m_CollisionDetection: 0
 --- !u!1001 &674358661341962459
 PrefabInstance:
   m_ObjectHideFlags: 0
