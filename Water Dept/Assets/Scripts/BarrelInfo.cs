@@ -57,8 +57,7 @@ public class BarrelInfo : NetworkBehaviour {
     //Throws barrel with throwForce and explodes when it hits ground
     private void ThrowBarrel() {
         if (isThrown) {
-            gameObject.AddComponent<Rigidbody>();
-            gameObject.GetComponent<Rigidbody>().AddForce((transform.forward + new Vector3(0, 1, 0)) * throwForce);
+            
             isThrown = false;
             isAirborne = true;
         }

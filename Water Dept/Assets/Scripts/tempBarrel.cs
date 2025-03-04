@@ -30,27 +30,6 @@ public class tempBarrel : MonoBehaviour
             }
         }
 
-        //Creates a barrel and throws it
-        if (Input.GetKeyDown(KeyCode.F) && isSchemOut)
-        {
-            isThrowing = true;
-
-            GameObject bar = Instantiate(barrelPrefab);
-            bar.transform.position = (gameObject.GetComponent<Transform>().transform.position) +
-                gameObject.GetComponent<Transform>().transform.forward * placeDistance;
-            bar.GetComponent<BarrelInfo>().isThrown = true;
-
-            SnapPosition(bar);
-
-            if (isSchemOut)
-            {
-                isSchemOut = false;
-                Destroy(schematic);
-            }
-
-            //prevents player from throwign on stacks
-            isThrowing = false;
-        }
 
         if (isSchemOut)
         {
@@ -68,6 +47,32 @@ public class tempBarrel : MonoBehaviour
 
             orientation = playerOrientation;
         }
+    }
+
+    public void BarrelThrow(Transform playerOrientation)
+    {
+        if(isSchemOut)
+        {
+            isThrowing = true;
+
+            GameObject bar = Instantiate(barrelPrefab);
+            bar.transform.position = (gameObject.GetComponent<Transform>().transform.position) + playerOrientation.forward * placeDistance;
+            bar.GetComponent<BarrelInfo>().isThrown = true;
+            bar.AddComponent<Rigidbody>();
+            bar.GetComponent<Rigidbody>().AddForce((orientation.forward + new Vector3(0, 1, 0)) *  1000);
+
+            SnapPosition(bar);
+
+            if (isSchemOut)
+            {
+                isSchemOut = false;
+                Destroy(schematic);
+            }
+
+            //prevents player from throwign on stacks
+            isThrowing = false;
+        }
+        
     }
 
     //gets repalced by existing pickup

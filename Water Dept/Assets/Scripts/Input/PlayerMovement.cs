@@ -164,12 +164,19 @@ public class PlayerMovement : NetworkBehaviour
             RPC_RequestDrop(Object.Id);
         }
 
-        // Fire hose
+        // Fire hose // throw barrel
         if (action.Buttons.WasPressed(previousButtons, InputButton.Shoot) && IsHolding())
         {
             if (carriedObject.interactableType == InteractableType.Flamethrower)
             {
                 carriedObject.gameObject.GetComponent<FireHouse>().Spray();
+            }
+            else if(carriedObject.interactableType == InteractableType.Barrel)
+            {
+                barrelController.BarrelThrow(playerObj);
+                Destroy(carriedObject.gameObject);
+                RPC_RequestDrop(Object.Id);
+
             }
         }
 
@@ -180,6 +187,17 @@ public class PlayerMovement : NetworkBehaviour
             {
                 carriedObject.gameObject.GetComponent<FireHouse>().StartCoroutine(carriedObject.gameObject.GetComponent<FireHouse>().StopSpraying());
             }
+        }
+
+        //if holding barrel and throw, throw barrel! Boom!
+        if (action.Buttons.WasPressed(previousButtons, InputButton.Throw) && !IsHolding() && nearestInteractable != null)
+        {
+            //if barrel is picked up, queue schematic
+            if (nearestInteractable.interactableType == InteractableType.Barrel)
+            {
+                barrelController.BarrelSchematics(playerObj);
+            }
+
         }
 
     }
