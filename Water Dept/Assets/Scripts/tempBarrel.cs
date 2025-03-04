@@ -58,6 +58,7 @@ public class tempBarrel : MonoBehaviour
             GameObject bar = Instantiate(barrelPrefab);
             bar.transform.position = (gameObject.GetComponent<Transform>().transform.position) + playerOrientation.forward * placeDistance;
             bar.GetComponent<BarrelInfo>().isThrown = true;
+            //FIX FLOATING NUMBER
             bar.AddComponent<Rigidbody>();
             bar.GetComponent<Rigidbody>().AddForce((orientation.forward + new Vector3(0, 1, 0)) *  1000);
 

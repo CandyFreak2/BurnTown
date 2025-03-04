@@ -57,7 +57,7 @@ public class BarrelInfo : NetworkBehaviour {
     //Throws barrel with throwForce and explodes when it hits ground
     private void ThrowBarrel() {
         if (isThrown) {
-            
+            //SUBBED OUT
             isThrown = false;
             isAirborne = true;
         }
