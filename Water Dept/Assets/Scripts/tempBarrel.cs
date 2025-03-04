@@ -1,22 +1,29 @@
+using Fusion;
 using Unity.VisualScripting;
 using UnityEditor.Experimental.GraphView;
 using UnityEngine;
 using static UnityEngine.ParticleSystem;
 
-public class tempBarrel : MonoBehaviour
+public class tempBarrel : NetworkBehaviour
 {
     [SerializeField] private GameObject placeholderPrefab;
     [SerializeField] private GameObject barrelPrefab;
 
     private bool isSchemOut = false;
-    private bool isThrowing = false;
+    public bool isThrowing = false;
     private GameObject schematic;
+
+    [SerializeField] private float throwForce = 450;
 
     [Tooltip("Distance barrel is placed from player")]
     [SerializeField] public int placeDistance = 3;
-    [SerializeField] public int pickupDistance = 2;
 
     private Transform orientation;
+
+    public override void Spawned()
+    {
+        
+    }
 
     void Update()
     {
@@ -44,6 +51,7 @@ public class tempBarrel : MonoBehaviour
         {
             isSchemOut = true;
             schematic = Instantiate(placeholderPrefab);
+            //schematic = Runner.Spawn(placeholderPrefab).gameObject;
 
             orientation = playerOrientation;
         }
@@ -55,11 +63,11 @@ public class tempBarrel : MonoBehaviour
         {
             isThrowing = true;
 
-            GameObject bar = Instantiate(barrelPrefab);
+            GameObject bar = Runner.Spawn(barrelPrefab).gameObject;
+            
             bar.transform.position = (gameObject.GetComponent<Transform>().transform.position) + playerOrientation.forward * placeDistance;
             bar.GetComponent<BarrelInfo>().isThrown = true;
-            //FIX FLOATING NUMBER
-            bar.GetComponent<Rigidbody>().AddForce((orientation.forward + new Vector3(0, 1, 0)) *  1000);
+            bar.GetComponent<Rigidbody>().AddForce((orientation.forward + new Vector3(0, 1, 0)) * throwForce);
 
             SnapPosition(bar);
 

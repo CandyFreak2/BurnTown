@@ -1100,6 +1100,7 @@ MonoBehaviour:
   NetworkedBehaviours:
   - {fileID: 5214953744532743937}
   - {fileID: 1538818724924762789}
+  - {fileID: -5186318397056866673}
   ForceRemoteRenderTimeframe: 0
 --- !u!114 &1538818724924762789
 MonoBehaviour:
@@ -1180,8 +1181,8 @@ MonoBehaviour:
     type: 3}
   barrelPrefab: {fileID: 7658933350302763111, guid: e124b4f1c1efc7147a5dc3a5af79b5f1,
     type: 3}
+  throwForce: 450
   placeDistance: 3
-  pickupDistance: 2
 --- !u!1 &3115012930030835093
 GameObject:
   m_ObjectHideFlags: 0
