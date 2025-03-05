@@ -20289,6 +20289,12 @@ MonoBehaviour:
   m_SelectedFaces: 
   m_SelectedEdges: []
   m_SelectedVertices: 
+--- !u!1 &317640574 stripped
+GameObject:
+  m_CorrespondingSourceObject: {fileID: 2541601199049158276, guid: db4c12ccadf5f2a4e8a6c627eaeec5d0,
+    type: 3}
+  m_PrefabInstance: {fileID: 3032088686812734789}
+  m_PrefabAsset: {fileID: 0}
 --- !u!1 &322611127
 GameObject:
   m_ObjectHideFlags: 0
@@ -41967,6 +41973,12 @@ GameObject:
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
   m_IsActive: 1
+--- !u!1 &642166387 stripped
+GameObject:
+  m_CorrespondingSourceObject: {fileID: 4620012050718815089, guid: db4c12ccadf5f2a4e8a6c627eaeec5d0,
+    type: 3}
+  m_PrefabInstance: {fileID: 3032088686812734789}
+  m_PrefabAsset: {fileID: 0}
 --- !u!4 &644457217
 Transform:
   m_ObjectHideFlags: 0
@@ -199721,11 +199733,21 @@ PrefabInstance:
     serializedVersion: 3
     m_TransformParent: {fileID: 0}
     m_Modifications:
+    - target: {fileID: 1157798571653331782, guid: db4c12ccadf5f2a4e8a6c627eaeec5d0,
+        type: 3}
+      propertyPath: m_Enabled
+      value: 1
+      objectReference: {fileID: 0}
     - target: {fileID: 2541601199049158276, guid: db4c12ccadf5f2a4e8a6c627eaeec5d0,
         type: 3}
       propertyPath: m_IsActive
       value: 0
       objectReference: {fileID: 0}
+    - target: {fileID: 2990188135101988940, guid: db4c12ccadf5f2a4e8a6c627eaeec5d0,
+        type: 3}
+      propertyPath: m_FirstSelected
+      value: 
+      objectReference: {fileID: 642166387}
     - target: {fileID: 3328198504419574230, guid: db4c12ccadf5f2a4e8a6c627eaeec5d0,
         type: 3}
       propertyPath: m_Name
@@ -199736,6 +199758,11 @@ PrefabInstance:
       propertyPath: m_IsActive
       value: 1
       objectReference: {fileID: 0}
+    - target: {fileID: 6506664261585387361, guid: db4c12ccadf5f2a4e8a6c627eaeec5d0,
+        type: 3}
+      propertyPath: pauseMenu
+      value: 
+      objectReference: {fileID: 317640574}
     - target: {fileID: 7168526005480168304, guid: db4c12ccadf5f2a4e8a6c627eaeec5d0,
         type: 3}
       propertyPath: m_AnchoredPosition.x

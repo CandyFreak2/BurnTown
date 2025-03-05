@@ -36,4 +36,6 @@ public class UIManager : MonoBehaviour {
         timerText.enabled = true;
         pauseMenu.SetActive(false);
     }
+
+    public GameObject GetPauseMenu() => pauseMenu;
 }

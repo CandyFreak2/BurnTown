@@ -5,13 +5,10 @@ using UnityEngine.SceneManagement;
 
 public class PauseMenu : MonoBehaviour {
     [SerializeField] private GameObject pauseUI;
-
-    public event Action<bool> OnPauseStateChanged;
+    [SerializeField] private PlayerMovement playerMovement;
 
     private bool isPanelOn = false;
     private NetworkRunner runner;
-
-    [SerializeField] private PlayerMovement playerMovement;
 
     private void OnEnable() {
         UIInputHandler.onActionPause += TogglePause;
@@ -24,23 +21,21 @@ public class PauseMenu : MonoBehaviour {
     private void Start() {
         runner = FindAnyObjectByType<NetworkRunner>();
         playerMovement = GetComponentInParent<PlayerMovement>();
-        pauseUI = GameObject.FindGameObjectWithTag("PauseMenu").transform.GetChild(0).gameObject;
+        pauseUI = UIManager.Instance.GetPauseMenu();
 
         pauseUI.SetActive(isPanelOn);
         isPanelOn = pauseUI.activeInHierarchy;
     }
 
-    public void TogglePause() {
-        isPanelOn = !isPanelOn;
-        pauseUI.SetActive(isPanelOn);
-        Debug.Log("Panel is on: " +  isPanelOn);
+    public void TogglePause(bool input) {
+        input = !input;
+        pauseUI.SetActive(input);
 
-        if (isPanelOn) {
+        if (input) {
             Cursor.lockState = CursorLockMode.Locked;
         }
 
-        OnPauseStateChanged?.Invoke(isPanelOn);
-        playerMovement.enabled = !isPanelOn;
+        playerMovement.enabled = !input;
     }
 
     public void Resume() {
