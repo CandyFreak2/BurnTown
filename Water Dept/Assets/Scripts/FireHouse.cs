@@ -1,6 +1,8 @@
 using UnityEngine;
+using System.Collections.Generic;
 using System.Collections;
 using Fusion;
+using System;
 
 public class FireHouse : NetworkBehaviour
 {
@@ -9,6 +11,12 @@ public class FireHouse : NetworkBehaviour
     [SerializeField] public float waterForce = 10f;
 
     [SerializeField] private ParticleSystem flamethrower;
+    [SerializeField] AudioProfile audioProfile;
+    [Serializable] private class AudioProfile
+    {
+        public AudioSource flamethrowerLoop;
+        public List<AudioClip> flamethrowerStart;
+    }
 
     public override void Spawned()
     {
@@ -24,10 +32,11 @@ public class FireHouse : NetworkBehaviour
 
     public IEnumerator StopSpraying()
     {
-        yield return new WaitForSeconds(0.5f);
+        yield return new WaitForSeconds(0.2f);
         flame.SetActive(false);
         RPC_StopFire(Object.Id);
         isShooting = false;
+
     }
 
     public void DropHose()
@@ -51,6 +60,8 @@ public class FireHouse : NetworkBehaviour
         if (firehose != null)
         {
             firehose.flamethrower.Play();
+            AudioPlayer.PlaySFX(audioProfile.flamethrowerStart, transform);
+            AudioPlayer.FadeAudioIn(audioProfile.flamethrowerLoop, 0.2f);
         }
     }
 
@@ -63,6 +74,7 @@ public class FireHouse : NetworkBehaviour
         if (firehose != null)
         {
             firehose.flamethrower.Stop();
+            AudioPlayer.FadeAudioOut(audioProfile.flamethrowerLoop, 0.2f);
         }
     }
 }
