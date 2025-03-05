@@ -95,11 +95,10 @@ public class Gasline : NetworkBehaviour {
             }
 
             // Handles enabling burning
-            //Tmp moved up here so generator will burn
-            if (currentIndex == GetPointLength())
+            // Tmp moved up here so generator will burn
+            if (currentIndex == GetPointLength() && (Vector3.Distance(flameVisual.transform.position, GetPointPosition(currentIndex)) < tolerance))
             {
-                foreach (Burnable b in endGoals)
-                {
+                foreach (Burnable b in endGoals) {
                     b.nIsBurning = true;
                 }
             }
@@ -131,16 +130,6 @@ public class Gasline : NetworkBehaviour {
 
                 // Stops VFX after duration is reached
                 StartCoroutine(TurnOffFireVFX(fireVisualVFX.main.duration, fireVisualVFX));
-
-                //// Handles enabling burning
-                //Debug.Log(currentIndex);
-                //if (currentIndex == GetPointLength())
-                //{
-                //    foreach (Burnable b in endGoals)
-                //    {
-                //        b.nIsBurning = true;
-                //    }
-                //}
             }
         }
     }

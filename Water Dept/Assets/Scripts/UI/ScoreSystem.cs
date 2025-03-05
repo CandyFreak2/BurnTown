@@ -1,0 +1,38 @@
+using Fusion;
+using TMPro;
+using UnityEngine;
+
+public class ScoreSystem : NetworkBehaviour {
+    private const string SCORE_HEADER = "Financial Damage: $";
+
+    [Networked, SerializeField] private int overallScore { get; set; }
+    [SerializeField] private TMP_Text scoreText;
+    [SerializeField] private bool isReset;
+    private bool isSpawned = false;
+
+    public override void Spawned() {
+        isSpawned = true;
+        scoreText.text = SCORE_HEADER + overallScore;
+    }
+
+    public void FixedUpdateNetworked() {
+        if (scoreText != null && isReset) {
+            isReset = false;
+            overallScore = 0;
+            scoreText.text = SCORE_HEADER + overallScore;
+        }
+    }
+
+    public void UpdateScoreUI(int score) {
+        overallScore += score;
+        scoreText.text = SCORE_HEADER + overallScore;
+    }
+
+    private void OnEnable() {
+        EventManager.OnBurnableDestroyed += UpdateScoreUI;
+    }
+
+    private void OnDisable() {
+        EventManager.OnBurnableDestroyed -= UpdateScoreUI;
+    }
+}

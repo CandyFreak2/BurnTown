@@ -121,11 +121,18 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: d687f89eee019c74e9f3e5c3d46719f7, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  burnableScore: 30000
   startFuel: 10
   spreadRate: 3
   spreadRadius: 10
   fireResistance: 3
+  damageRate: 0.1
+  _nIsBurning: 0
   isBurning: 0
+  showsLerp: 1
+  initialColor: {r: 0, g: 1, b: 0, a: 1}
+  startColor: {r: 1, g: 0.92156863, b: 0.015686275, a: 1}
+  endColor: {r: 1, g: 0, b: 0, a: 1}
 --- !u!1 &6937441743240912893
 GameObject:
   m_ObjectHideFlags: 0
@@ -192,7 +199,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 9e29ccdfb768f7b42ba6ac4045bd3e0b, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  genObjective: {fileID: 0}
+  PoweredObjective: {fileID: 0}
   genBurnable: {fileID: 4242569481940366675}
   disabledPercent01: 0.1
   _isDisabled:
