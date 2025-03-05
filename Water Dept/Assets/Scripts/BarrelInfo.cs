@@ -1,4 +1,5 @@
 using Fusion;
+using Fusion.Addons.Physics;
 using NUnit.Framework.Internal;
 using System.Collections;
 using System.Collections.Generic;
@@ -37,7 +38,7 @@ public class BarrelInfo : NetworkBehaviour
     [SerializeField] public AudioClip[] explodeSFX;
 
     private const float THROW_EXPLOSION_RADIUS = 3.0f;
-    private bool isAirborne;
+    public bool isAirborne;
     private float timer;
 
     public override void Spawned()
@@ -46,8 +47,7 @@ public class BarrelInfo : NetworkBehaviour
         isSpawned = true;
     }
 
-
-    private void FixedUpdate()
+    public override void FixedUpdateNetwork()
     {
         ThrowBarrel();
         if (isSpawned)
@@ -57,8 +57,8 @@ public class BarrelInfo : NetworkBehaviour
                 StartCoroutine(ChainExplode());
             }
         }
-
     }
+
 
     public void Explode()
     {
@@ -198,7 +198,6 @@ public class BarrelInfo : NetworkBehaviour
         else if (isAirborne)
         {
             timer += Time.deltaTime;
-
             //if collides with something mid air, blow up
             Collider[] colliders = Physics.OverlapSphere(gameObject.transform.position - new Vector3(0, 0.5f, 0), THROW_EXPLOSION_RADIUS);
             foreach (Collider hit in colliders)
@@ -208,15 +207,19 @@ public class BarrelInfo : NetworkBehaviour
                     gameObject.GetComponent<Rigidbody>().isKinematic = true;
                     gameObject.GetComponent<Rigidbody>().isKinematic = false;
 
-                    gameObject.transform.position = hit.transform.position + new Vector3(0, 1, 0);
-                    isAirborne = false;
+                    transform.position = hit.transform.position + new Vector3(0, 1, 0);
 
-                    //links head/tail chain components of barrelInfo on place
+                    isAirborne = false;
+                    // links head/ tail chain components of barrelInfo on place
                     if (gameObject.GetComponent<BarrelInfo>() != null)
                     {
                         tail = hit.gameObject;
                         hit.gameObject.GetComponent<BarrelInfo>().head = gameObject;
                     }
+
+                    
+                    
+                    Debug.Log("SnapBox");
                 }
             }
             Collider[] colliders2 = Physics.OverlapSphere(gameObject.transform.position - new Vector3(0, 0.5f, 0), 0.5f);
@@ -239,9 +242,11 @@ public class BarrelInfo : NetworkBehaviour
                             isAirborne = false;
                         }
                     }
+                    Debug.Log("SnapGround");
                 }
 
             }
+
         }
     }
 }

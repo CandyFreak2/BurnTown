@@ -1,6 +1,5 @@
 using Fusion;
 using Unity.VisualScripting;
-using UnityEditor.Experimental.GraphView;
 using UnityEngine;
 using static UnityEngine.ParticleSystem;
 
@@ -25,7 +24,7 @@ public class tempBarrel : NetworkBehaviour
         
     }
 
-    void Update()
+    void FixedUpdate()
     {
         if (Input.GetKeyDown(KeyCode.E) && isSchemOut)
         {
@@ -63,13 +62,13 @@ public class tempBarrel : NetworkBehaviour
         {
             isThrowing = true;
 
-            GameObject bar = Runner.Spawn(barrelPrefab).gameObject;
+            NetworkObject bar = Runner.Spawn(barrelPrefab);
             
             bar.transform.position = (gameObject.GetComponent<Transform>().transform.position) + playerOrientation.forward * placeDistance;
             bar.GetComponent<BarrelInfo>().isThrown = true;
             bar.GetComponent<Rigidbody>().AddForce((orientation.forward + new Vector3(0, 1, 0)) * throwForce);
 
-            SnapPosition(bar);
+            SnapPosition(bar.gameObject);
 
             if (isSchemOut)
             {
