@@ -24,6 +24,7 @@ public class PauseMenu : MonoBehaviour {
     private void Start() {
         runner = FindAnyObjectByType<NetworkRunner>();
         playerMovement = GetComponentInParent<PlayerMovement>();
+        pauseUI = GameObject.FindGameObjectWithTag("PauseMenu").transform.GetChild(0).gameObject;
 
         pauseUI.SetActive(isPanelOn);
         isPanelOn = pauseUI.activeInHierarchy;
@@ -32,6 +33,7 @@ public class PauseMenu : MonoBehaviour {
     public void TogglePause() {
         isPanelOn = !isPanelOn;
         pauseUI.SetActive(isPanelOn);
+        Debug.Log("Panel is on: " +  isPanelOn);
 
         if (isPanelOn) {
             Cursor.lockState = CursorLockMode.Locked;
