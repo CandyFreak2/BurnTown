@@ -22,7 +22,6 @@ public class TimerSystem : NetworkBehaviour {
     [SerializeField] private Button pauseButton, resetButton; 
 
     public override void Spawned() {
-        // KEEP CODE
         remainingTime = duration;
         Timer = TickTimer.CreateFromSeconds(Runner, remainingTime);
         canStart = true;
@@ -54,7 +53,6 @@ public class TimerSystem : NetworkBehaviour {
         }
     }
 
-    [Rpc(RpcSources.StateAuthority, RpcTargets.All)]
     public void RPC_SyncTimer() {
         if (Timer.IsRunning) {
             remainingTime = Timer.RemainingTime(Runner) ?? 0;
