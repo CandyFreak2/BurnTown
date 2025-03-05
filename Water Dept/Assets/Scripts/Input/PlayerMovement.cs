@@ -138,11 +138,19 @@ public class PlayerMovement : NetworkBehaviour
 
     private void HandleInteraction()
     {
-        Interactable nearestInteractable = GetNearestInteractable();
+        GameObject nearestInteractable = GetNearestInteractable();
         //Pickup hose
-        if (action.Buttons.WasPressed(previousButtons, InputButton.Interact) && !IsHolding() && nearestInteractable != null)
+        if (action.Buttons.WasPressed(previousButtons, InputButton.Interact) && !IsHolding() && nearestInteractable != null && CanPickup(nearestInteractable))
         {
-            PickUpObject(nearestInteractable);
+            PickUpObject(nearestInteractable.GetComponent<Interactable>());
+            pickupText.text = "";
+        }
+
+        // Get in truck
+        if (action.Buttons.WasPressed(previousButtons, InputButton.Interact) && nearestInteractable != null && nearestInteractable.gameObject.tag == "FireTruck")
+        {
+            
+
             pickupText.text = "";
         }
 
@@ -171,9 +179,9 @@ public class PlayerMovement : NetworkBehaviour
         }
     }
 
-    private Interactable GetNearestInteractable()
+    private GameObject GetNearestInteractable()
     {
-        Interactable nearestInteractable = null;
+        GameObject nearestInteractable = null;
 
         if (HasInputAuthority && !IsHolding())
         {
@@ -181,15 +189,21 @@ public class PlayerMovement : NetworkBehaviour
             foreach (Collider collider in interactableObjects)
             {
                 // First object in list that is a flamethrower gets picked up ++ Or barrel
-                if (collider.gameObject.tag == "FireHoseHead")
+                if (collider.gameObject.tag == "FireTruck")
                 {
-                    nearestInteractable = collider.gameObject.GetComponent<Interactable>();
+                    nearestInteractable = collider.gameObject;
+                    pickupText.text = "North Button / E to Enter Fire Truck";
+                    return nearestInteractable;
+                }
+                else if (collider.gameObject.tag == "FireHoseHead")
+                {
+                    nearestInteractable = collider.gameObject;
                     pickupText.text = "North Button / E to Pickup Flamethrower";
                     return nearestInteractable;
                 }
                 else if (collider.gameObject.tag == "Barrel")
                 {
-                    nearestInteractable = collider.gameObject.GetComponent<Interactable>();
+                    nearestInteractable = collider.gameObject;
                     pickupText.text = "North Button / E to Pickup Barrel";
                     return nearestInteractable;
                 }
@@ -276,5 +290,10 @@ public class PlayerMovement : NetworkBehaviour
     public bool IsHolding()
     {
         return carriedObject != null;
+    }
+
+    private bool CanPickup(GameObject _interactable)
+    {
+        return _interactable.gameObject.tag == "FireHoseHead" || _interactable.gameObject.tag == "Barrel";
     }
 }
