@@ -6,21 +6,16 @@ public class ScoreSystem : NetworkBehaviour {
     private const string SCORE_HEADER = "Financial Damage: $";
 
     [Networked, SerializeField] private int overallScore { get; set; }
+    [SerializeField] private TMP_Text scoreText;
     [SerializeField] private bool isReset;
     private bool isSpawned = false;
 
-    public TMP_Text scoreText;
-
     public override void Spawned() {
         isSpawned = true;
+        scoreText.text = SCORE_HEADER + overallScore;
     }
 
-    private void FixedUpdate() {
-        if (scoreText == null && isSpawned) {
-            scoreText = GameObject.Find("Score").GetComponent<TMP_Text>();
-            scoreText.text = SCORE_HEADER + overallScore;
-        }
-
+    public void FixedUpdateNetworked() {
         if (scoreText != null && isReset) {
             isReset = false;
             overallScore = 0;

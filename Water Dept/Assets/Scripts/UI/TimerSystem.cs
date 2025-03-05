@@ -21,18 +21,18 @@ public class TimerSystem : NetworkBehaviour {
 
     [SerializeField] private Button pauseButton, resetButton; 
 
-    public override void Spawned() {
-        remainingTime = duration;
-        Timer = TickTimer.CreateFromSeconds(Runner, remainingTime);
-        canStart = true;
-        isSpawned = true;
-    }
-
     private void Awake() {
         if (Application.isEditor) {
             pauseButton.gameObject.SetActive(true);
             resetButton.gameObject.SetActive(true);
         }
+    }
+
+    public override void Spawned() {
+        remainingTime = duration;
+        Timer = TickTimer.CreateFromSeconds(Runner, remainingTime);
+        canStart = true;
+        isSpawned = true;
     }
 
     public void FixedUpdateNetworked() {
