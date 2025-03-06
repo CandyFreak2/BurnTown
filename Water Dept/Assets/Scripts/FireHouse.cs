@@ -14,6 +14,7 @@ public class FireHouse : NetworkBehaviour
     [SerializeField] AudioProfile audioProfile;
     [Serializable] private class AudioProfile
     {
+        public float fadeDuration = 0.2f;
         public AudioSource flamethrowerLoop;
         public List<AudioClip> flamethrowerStart;
         public Coroutine activeFade;
@@ -64,7 +65,7 @@ public class FireHouse : NetworkBehaviour
             AudioPlayer.PlaySFX(audioProfile.flamethrowerStart, transform);
             if (audioProfile.activeFade != null) 
                 StopCoroutine(audioProfile.activeFade);
-            audioProfile.activeFade = StartCoroutine(AudioPlayer.FadeAudioIn(audioProfile.flamethrowerLoop, 0.2f));
+            audioProfile.activeFade = StartCoroutine(AudioPlayer.FadeAudioIn(audioProfile.flamethrowerLoop, audioProfile.fadeDuration));
         }
     }
 
@@ -79,7 +80,7 @@ public class FireHouse : NetworkBehaviour
             firehose.flamethrower.Stop();
             if (audioProfile.activeFade != null)
                 StopCoroutine(audioProfile.activeFade);
-            audioProfile.activeFade = StartCoroutine(AudioPlayer.FadeAudioOut(audioProfile.flamethrowerLoop, 0.2f));
+            audioProfile.activeFade = StartCoroutine(AudioPlayer.FadeAudioOut(audioProfile.flamethrowerLoop, audioProfile.fadeDuration));
         }
     }
 }
