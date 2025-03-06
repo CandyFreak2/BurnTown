@@ -14,6 +14,7 @@ public class PlayerInputHandeler : SimulationBehaviour, IBeforeUpdate, INetworkR
     float interactPress;
     float dropPress;
     float shootPress;
+    float brakePress;
 
     public PlayerInputAction accumulatedInput = new PlayerInputAction();
     private bool resetInput = false;
@@ -36,6 +37,9 @@ public class PlayerInputHandeler : SimulationBehaviour, IBeforeUpdate, INetworkR
         
         //shoot
         playerInputSystem.Attack.performed += ctx => shootPress = ctx.ReadValue<float>();
+
+        //Brake
+        playerInputSystem.Brake.performed += ctx => brakePress = ctx.ReadValue<float>();
 
         //clear input
         playerInputSystem.Move.canceled += ctx => moveDirection = ctx.ReadValue<Vector2>();
@@ -79,6 +83,9 @@ public class PlayerInputHandeler : SimulationBehaviour, IBeforeUpdate, INetworkR
         // shootpress returns 0, attack.readvalue returns 1
         bool shootDown = (playerInputSystem.Attack.ReadValue<float>() > 0.0f);
         buttons.Set(InputButton.Shoot, shootDown);
+
+        bool brakeDown = (playerInputSystem.Brake.ReadValue<float>() > 0.0f);
+        buttons.Set(InputButton.Brake, brakeDown);
 
         // Change cursor lock state if enter or esc pressed
         //if (keyboard != null && (keyboard.enterKey.wasPressedThisFrame || keyboard.numpadEnterKey.wasPressedThisFrame || keyboard.escapeKey.wasPressedThisFrame))
