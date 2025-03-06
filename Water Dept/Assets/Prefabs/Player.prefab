@@ -169,7 +169,8 @@ MonoBehaviour:
   rotSpeed: 6
   _carriedObject: {fileID: 0}
   pickupText: {fileID: 5343811775102406559}
-  truckController: {fileID: 0}
+  truckController: {fileID: 3709194789665923367}
+  indicator: {fileID: 0}
   rb: {fileID: 6338638400722076882}
   kcc: {fileID: 1538818724924762789}
   groundCheck: {fileID: 3946907390898007895}
@@ -276,7 +277,10 @@ MonoBehaviour:
   camTarget: {fileID: 0}
   frontTires: []
   backTires: []
+  tireMaxAngle: 70
   tireTurnSpeed: 1
+  leftTireAngle: {x: 0, y: 0, z: 0}
+  rightTireAngle: {x: 0, y: 0, z: 0}
 --- !u!114 &-6402713201429934659
 MonoBehaviour:
   m_ObjectHideFlags: 0

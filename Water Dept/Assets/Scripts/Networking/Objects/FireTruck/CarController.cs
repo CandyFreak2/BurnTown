@@ -257,6 +257,7 @@ public class CarController : NetworkBehaviour
         leftTireAngle = tmpTrans.transform.forward;
         tmpTrans.Rotate(0, 2 * tireMaxAngle, 0);
         rightTireAngle = tmpTrans.transform.forward;
+        tmpTrans.Rotate(0, -tireMaxAngle, 0);
 
         Debug.DrawLine(carRB.transform.position, carRB.transform.position + leftTireAngle * 10, Color.red, 5.0f);
         Debug.DrawLine(carRB.transform.position, carRB.transform.position + rightTireAngle * 10, Color.red, 5.0f);
