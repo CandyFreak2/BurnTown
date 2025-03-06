@@ -169,7 +169,7 @@ MonoBehaviour:
   rotSpeed: 6
   _carriedObject: {fileID: 0}
   pickupText: {fileID: 5343811775102406559}
-  truckController: {fileID: 3709194789665923367}
+  truckController: {fileID: 0}
   rb: {fileID: 6338638400722076882}
   kcc: {fileID: 1538818724924762789}
   groundCheck: {fileID: 3946907390898007895}
@@ -179,6 +179,16 @@ MonoBehaviour:
   isGrounded: 0
   Mass: 1
   Drag: 5
+  sfxProfile:
+    footstep: []
+    equipItem:
+    - {fileID: 8300000, guid: 65e1bfce2d6c5354bbcdb7f6b21dfc13, type: 3}
+    - {fileID: 8300000, guid: cd194bd7c1394c04e9d0de81a8bd36ef, type: 3}
+    - {fileID: 8300000, guid: d76f409009d92784dac6bccc5f21f0e9, type: 3}
+    - {fileID: 8300000, guid: 1f6117a46d97c294fb056945dcbf809f, type: 3}
+    dropItem: []
+    stunned: []
+    onFire: []
 --- !u!114 &2376758521203680051
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -283,6 +293,7 @@ MonoBehaviour:
     type: 3}
   barrelPrefab: {fileID: 7658933350302763111, guid: e124b4f1c1efc7147a5dc3a5af79b5f1,
     type: 3}
+  isSchemOut: 0
   isThrowing: 0
   throwForce: 450
   placeDistance: 3

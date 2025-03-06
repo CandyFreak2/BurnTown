@@ -2,6 +2,10 @@ using UnityEngine;
 using Fusion;
 using Fusion.Addons.SimpleKCC;
 using TMPro;
+using Unity.Cinemachine;
+using System;
+using NUnit.Framework;
+using System.Collections.Generic;
 
 public class PlayerMovement : NetworkBehaviour
 {
