@@ -2,7 +2,6 @@ using UnityEngine;
 using Fusion;
 using Fusion.Addons.SimpleKCC;
 using TMPro;
-using Unity.Cinemachine;
 
 public class PlayerMovement : NetworkBehaviour
 {
@@ -44,6 +43,17 @@ public class PlayerMovement : NetworkBehaviour
     [SerializeField] float Mass = 1.0f;
     [SerializeField] float Drag = 5.0f;
     //[SerializeField] float AirDrag = 7.0f;
+
+    [Header("Audio")]
+    [SerializeField] PlayerSFXProfile sfxProfile;
+    [Serializable] private class PlayerSFXProfile
+    {
+        public List<AudioClip> footstep = new List<AudioClip>();
+        public List<AudioClip> equipItem = new List<AudioClip>();
+        public List<AudioClip> dropItem = new List<AudioClip>();
+        public List<AudioClip> stunned = new List<AudioClip>();
+        public List<AudioClip> onFire = new List<AudioClip>();
+    }
 
     private void Start()
     {
@@ -353,6 +363,7 @@ public class PlayerMovement : NetworkBehaviour
         if (_object != null && _object.CanBePickedUp())
         {
             RPC_RequestPickUp(_object.Object.Id, Object.Id);
+            AudioPlayer.PlaySFX(sfxProfile.equipItem, transform, 0.2f);
         }
     }
 
