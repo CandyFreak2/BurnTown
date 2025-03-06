@@ -22,7 +22,7 @@ public class tempBarrel : NetworkBehaviour
 
     public override void Spawned()
     {
-        
+
     }
 
     void FixedUpdate()
@@ -59,28 +59,67 @@ public class tempBarrel : NetworkBehaviour
 
     public void BarrelThrow(Transform playerOrientation)
     {
-        if(isSchemOut)
+        if (!Runner.IsClient)
         {
-            isThrowing = true;
+            if (isSchemOut)
+            {
+                isThrowing = true;
+
+                NetworkObject bar = Runner.Spawn(barrelPrefab);
+
+                bar.transform.position = (gameObject.GetComponent<Transform>().transform.position) + playerOrientation.forward * placeDistance;
+                bar.GetComponent<BarrelInfo>().isThrown = true;
+                bar.GetComponent<Rigidbody>().AddForce((orientation.forward + new Vector3(0, 1, 0)) * throwForce);
+
+                SnapPosition(bar.gameObject);
+
+                if (isSchemOut)
+                {
+                    isSchemOut = false;
+                    Destroy(schematic);
+                }
+
+                //prevents player from throwign on stacks
+                isThrowing = false;
+
+            }
+        }
+        else if(Runner.IsClient)
+        {
+            RPC_RequestBarrelThrow(playerOrientation.forward, Object.Id);
+        }
+
+    }
+
+    [Rpc(RpcSources.All, RpcTargets.StateAuthority)]
+    public void RPC_RequestBarrelThrow(Vector3 playerOrientation, NetworkId b)
+    {
+        tempBarrel tBarr = Runner.FindObject(b).GetComponent<tempBarrel>();
+        tBarr.isSchemOut = true;
+        if (tBarr.isSchemOut)
+        {
+            
+
+            tBarr.isThrowing = true;
 
             NetworkObject bar = Runner.Spawn(barrelPrefab);
-            
-            bar.transform.position = (gameObject.GetComponent<Transform>().transform.position) + playerOrientation.forward * placeDistance;
+
+            bar.transform.position = (tBarr.gameObject.GetComponent<Transform>().transform.position) + playerOrientation * placeDistance;
             bar.GetComponent<BarrelInfo>().isThrown = true;
             bar.GetComponent<Rigidbody>().AddForce((orientation.forward + new Vector3(0, 1, 0)) * throwForce);
 
-            SnapPosition(bar.gameObject);
+            tBarr.SnapPosition(bar.gameObject);
 
-            if (isSchemOut)
+            if (tBarr.isSchemOut)
             {
-                isSchemOut = false;
-                Destroy(schematic);
+                tBarr.isSchemOut = false;
+                Destroy(tBarr.schematic);
             }
 
             //prevents player from throwign on stacks
-            isThrowing = false;
+            tBarr.isThrowing = false;
+
         }
-        
     }
 
     //gets repalced by existing pickup

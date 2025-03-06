@@ -176,7 +176,7 @@ public class PlayerMovement : NetworkBehaviour
             {
                 barrelController.BarrelThrow(playerObj);
                 Destroy(carriedObject.gameObject);
-                RPC_RequestDrop(Object.Id);
+                //RPC_RequestDrop(Object.Id);
 
             }
         }

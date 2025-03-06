@@ -68,8 +68,9 @@ public class BarrelInfo : NetworkBehaviour
         }
     }
 
+
     //Throws barrel with throwForce and explodes when it hits ground
-    private void ThrowBarrel()
+    public void ThrowBarrel()
     {
         if (isSpawned)
         {
@@ -197,7 +198,7 @@ public class BarrelInfo : NetworkBehaviour
                 if (timer > 0.2f && hit.GetComponent<BarrelInfo>() && hit.GetComponent<BarrelInfo>() != gameObject.GetComponent<BarrelInfo>() && isAirborne)
                 {
                     gameObject.GetComponent<Rigidbody>().isKinematic = true;
-                    gameObject.GetComponent<Rigidbody>().isKinematic = false;
+                    
 
                     transform.position = hit.transform.position + new Vector3(0, 1, 0);
 
@@ -208,7 +209,7 @@ public class BarrelInfo : NetworkBehaviour
                         tail = hit.gameObject;
                         hit.gameObject.GetComponent<BarrelInfo>().head = gameObject;
                     }
-                    
+                    gameObject.GetComponent<Rigidbody>().isKinematic = false;
                     Debug.Log("SnapBox");
                 }
             }
@@ -236,6 +237,7 @@ public class BarrelInfo : NetworkBehaviour
                 }
 
             }
+
 
         }
     }
