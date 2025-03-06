@@ -195,6 +195,7 @@ Transform:
   - {fileID: 6575659547491520309}
   - {fileID: 8131464861548602741}
   - {fileID: 4470442283876251106}
+  - {fileID: 445794036244975176}
   m_Father: {fileID: 0}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!54 &4768391477969633517
@@ -566,6 +567,100 @@ MonoBehaviour:
   topSpeed: 100
   brakeStrength: 0.8
   tireGripFactor: 0.5
+--- !u!1001 &118639697401735587
+PrefabInstance:
+  m_ObjectHideFlags: 0
+  serializedVersion: 2
+  m_Modification:
+    serializedVersion: 3
+    m_TransformParent: {fileID: 1245603945616768155}
+    m_Modifications:
+    - target: {fileID: -8679921383154817045, guid: f28a54885ee2b9b44bafbd242d5ba776,
+        type: 3}
+      propertyPath: m_LocalScale.x
+      value: 2
+      objectReference: {fileID: 0}
+    - target: {fileID: -8679921383154817045, guid: f28a54885ee2b9b44bafbd242d5ba776,
+        type: 3}
+      propertyPath: m_LocalScale.y
+      value: 2
+      objectReference: {fileID: 0}
+    - target: {fileID: -8679921383154817045, guid: f28a54885ee2b9b44bafbd242d5ba776,
+        type: 3}
+      propertyPath: m_LocalScale.z
+      value: 2
+      objectReference: {fileID: 0}
+    - target: {fileID: -8679921383154817045, guid: f28a54885ee2b9b44bafbd242d5ba776,
+        type: 3}
+      propertyPath: m_LocalPosition.x
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: -8679921383154817045, guid: f28a54885ee2b9b44bafbd242d5ba776,
+        type: 3}
+      propertyPath: m_LocalPosition.y
+      value: -3.57
+      objectReference: {fileID: 0}
+    - target: {fileID: -8679921383154817045, guid: f28a54885ee2b9b44bafbd242d5ba776,
+        type: 3}
+      propertyPath: m_LocalPosition.z
+      value: -19.47
+      objectReference: {fileID: 0}
+    - target: {fileID: -8679921383154817045, guid: f28a54885ee2b9b44bafbd242d5ba776,
+        type: 3}
+      propertyPath: m_LocalRotation.w
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: -8679921383154817045, guid: f28a54885ee2b9b44bafbd242d5ba776,
+        type: 3}
+      propertyPath: m_LocalRotation.x
+      value: -0
+      objectReference: {fileID: 0}
+    - target: {fileID: -8679921383154817045, guid: f28a54885ee2b9b44bafbd242d5ba776,
+        type: 3}
+      propertyPath: m_LocalRotation.y
+      value: -0
+      objectReference: {fileID: 0}
+    - target: {fileID: -8679921383154817045, guid: f28a54885ee2b9b44bafbd242d5ba776,
+        type: 3}
+      propertyPath: m_LocalRotation.z
+      value: -0
+      objectReference: {fileID: 0}
+    - target: {fileID: -8679921383154817045, guid: f28a54885ee2b9b44bafbd242d5ba776,
+        type: 3}
+      propertyPath: m_LocalEulerAnglesHint.x
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: -8679921383154817045, guid: f28a54885ee2b9b44bafbd242d5ba776,
+        type: 3}
+      propertyPath: m_LocalEulerAnglesHint.y
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: -8679921383154817045, guid: f28a54885ee2b9b44bafbd242d5ba776,
+        type: 3}
+      propertyPath: m_LocalEulerAnglesHint.z
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: -8679921383154817045, guid: f28a54885ee2b9b44bafbd242d5ba776,
+        type: 3}
+      propertyPath: m_ConstrainProportionsScale
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 919132149155446097, guid: f28a54885ee2b9b44bafbd242d5ba776,
+        type: 3}
+      propertyPath: m_Name
+      value: Firetruck (1)
+      objectReference: {fileID: 0}
+    m_RemovedComponents: []
+    m_RemovedGameObjects: []
+    m_AddedGameObjects: []
+    m_AddedComponents: []
+  m_SourcePrefab: {fileID: 100100000, guid: f28a54885ee2b9b44bafbd242d5ba776, type: 3}
+--- !u!4 &445794036244975176 stripped
+Transform:
+  m_CorrespondingSourceObject: {fileID: -8679921383154817045, guid: f28a54885ee2b9b44bafbd242d5ba776,
+    type: 3}
+  m_PrefabInstance: {fileID: 118639697401735587}
+  m_PrefabAsset: {fileID: 0}
 --- !u!1001 &8149127511318585065
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -648,6 +743,11 @@ PrefabInstance:
         type: 3}
       propertyPath: m_Name
       value: Firetruck
+      objectReference: {fileID: 0}
+    - target: {fileID: -927199367670048503, guid: a4f74229e17ac6a4d93761a436a46008,
+        type: 3}
+      propertyPath: m_IsActive
+      value: 0
       objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
