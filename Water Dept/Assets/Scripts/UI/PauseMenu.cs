@@ -36,13 +36,18 @@ public class PauseMenu : NetworkBehaviour {
     public void TogglePause(bool input) {
         input = !input;
         pauseUI.SetActive(input);
-        playerMovement = runner.GetPlayerObject(runner.LocalPlayer).GetComponent<PlayerMovement>();
 
         if (input) {
             Cursor.lockState = CursorLockMode.Locked;
         }
 
-        playerMovement.enabled = !input;
+        RPC_SetInputState(input);
+    }
+
+    [Rpc(HostMode = RpcHostMode.SourceIsHostPlayer)]
+    public void RPC_SetInputState(bool enable, RpcInfo info = default) {
+        playerMovement = runner.GetPlayerObject(info.Source).GetComponent<PlayerMovement>();
+        playerMovement.enabled = !enable;
     }
 
     public void Resume() {

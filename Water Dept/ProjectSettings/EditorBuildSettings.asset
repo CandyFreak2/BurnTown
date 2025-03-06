@@ -5,18 +5,15 @@ EditorBuildSettings:
   m_ObjectHideFlags: 0
   serializedVersion: 2
   m_Scenes:
-  - enabled: 0
+  - enabled: 1
     path: Assets/Scenes/StartScreen.unity
     guid: 860e73b72a6a9a641a33a36fade1712d
-  - enabled: 0
+  - enabled: 1
     path: Assets/Scenes/Tutorial/TutorialBlockout.unity
     guid: 987ce57d33cb3e94385703e5cbdf2c8d
-  - enabled: 0
-    path: Assets/Scenes/Tutorial/TutorialTesting.unity
-    guid: 58b00a51e353b894c96ad4e45017c3b1
   - enabled: 1
-    path: Assets/Scenes/FireTruckTest.unity
-    guid: 258c0675fcdaae04fb3d45a607b70d8a
+    path: Assets/Scenes/Level_01/Level_01.unity
+    guid: 74b91a9ede2d4834a9b9234ca2ac43f8
   m_configObjects:
     com.unity.input.settings.actions: {fileID: -944628639613478452, guid: 052faaac586de48259a63d0c4782560b,
       type: 3}
