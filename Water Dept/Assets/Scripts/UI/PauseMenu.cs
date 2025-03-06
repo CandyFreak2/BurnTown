@@ -3,12 +3,13 @@ using System;
 using UnityEngine;
 using UnityEngine.SceneManagement;
 
-public class PauseMenu : MonoBehaviour {
+public class PauseMenu : NetworkBehaviour {
     [SerializeField] private GameObject pauseUI;
     [SerializeField] private PlayerMovement playerMovement;
+    [SerializeField] private NetworkRunner runner;
 
     private bool isPanelOn = false;
-    private NetworkRunner runner;
+    private bool isSpawned = false;
 
     private void OnEnable() {
         UIInputHandler.onActionPause += TogglePause;
@@ -18,18 +19,24 @@ public class PauseMenu : MonoBehaviour {
         UIInputHandler.onActionPause -= TogglePause;
     }
 
-    private void Start() {
-        runner = FindAnyObjectByType<NetworkRunner>();
-        playerMovement = GetComponentInParent<PlayerMovement>();
-        pauseUI = UIManager.Instance.GetPauseMenu();
+    public override void Spawned() {
+        isSpawned = true;
+    }
 
-        pauseUI.SetActive(isPanelOn);
-        isPanelOn = pauseUI.activeInHierarchy;
+    private void FixedUpdate() {
+        if (isSpawned && pauseUI == null && runner == null) {
+            runner = FindAnyObjectByType<NetworkRunner>();
+            pauseUI = UIManager.Instance.GetPauseMenu();
+
+            pauseUI.SetActive(isPanelOn);
+            isPanelOn = pauseUI.activeInHierarchy;
+        }
     }
 
     public void TogglePause(bool input) {
         input = !input;
         pauseUI.SetActive(input);
+        playerMovement = runner.GetPlayerObject(runner.LocalPlayer).GetComponent<PlayerMovement>();
 
         if (input) {
             Cursor.lockState = CursorLockMode.Locked;

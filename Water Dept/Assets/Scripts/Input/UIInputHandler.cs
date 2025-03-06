@@ -2,9 +2,9 @@ using Fusion;
 using Fusion.Sockets;
 using System;
 using System.Collections.Generic;
+using UnityEngine;
 
 public class UIInputHandler : SimulationBehaviour, IBeforeUpdate, INetworkRunnerCallbacks {
-
     private InputSystem_Actions.UIActions UIInputSystem;
     private bool isPanelOn = false;
 
@@ -13,7 +13,11 @@ public class UIInputHandler : SimulationBehaviour, IBeforeUpdate, INetworkRunner
     private void Awake() {
         UIInputSystem = new InputSystem_Actions().UI;
         UIInputSystem.Pause.started += ctx => OnPause(isPanelOn);
-        //UIInputSystem.Pause.canceled += ctx => isPanelOn = OnPause(!isPanelOn);
+    }
+
+    private void OnPause(bool input) {
+        onActionPause?.Invoke(input);
+        isPanelOn = !isPanelOn;
     }
 
     private void OnEnable() {
@@ -24,10 +28,6 @@ public class UIInputHandler : SimulationBehaviour, IBeforeUpdate, INetworkRunner
         UIInputSystem.Disable();
     }
 
-    private void OnPause(bool input) {
-        onActionPause?.Invoke(input);
-        isPanelOn = !isPanelOn;
-    }
     #region unnecessary
 
     public void BeforeUpdate() {

@@ -8,10 +8,8 @@ public class ScoreSystem : NetworkBehaviour {
     [Networked, SerializeField] private int overallScore { get; set; }
     [SerializeField] private TMP_Text scoreText;
     [SerializeField] private bool isReset;
-    private bool isSpawned = false;
 
     public override void Spawned() {
-        isSpawned = true;
         scoreText.text = SCORE_HEADER + overallScore.ToString("C0");
     }
 
