@@ -151,15 +151,16 @@ public class Burnable : NetworkBehaviour
             }
             else
             {
-                if (result >= 1)
-                {
-                    obj.nIsBurning = true;
-                }
-                else
-                {
-                    obj.fireResistance++;
+                obj.nIsBurning = true;
+                //if (result >= 1)
+                //{
+                //    obj.nIsBurning = true;
+                //}
+                //else
+                //{
+                //    obj.fireResistance++;
 
-                }
+                //}
 
             }
         }
