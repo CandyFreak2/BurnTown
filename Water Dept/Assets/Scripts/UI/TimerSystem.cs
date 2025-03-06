@@ -6,18 +6,13 @@ using UnityEngine.UI;
 public class TimerSystem : NetworkBehaviour {
     [Networked] private TickTimer Timer { get; set; }
     [Networked] private NetworkBool canStart { get; set; }
-    private bool isSpawned = false;
 
     [Header("Time Syncing")]
     [Tooltip("Duration is based off of seconds"), SerializeField] private float duration;
     [SerializeField] private TMP_Text timerText;
     [SerializeField] private float remainingTime;
 
-    private bool isPaused = false;
-    private bool isReset = false;
-
     private bool canPause = false;
-    private bool canReset = false;
 
     [SerializeField] private Button pauseButton, resetButton; 
 
@@ -32,7 +27,6 @@ public class TimerSystem : NetworkBehaviour {
         remainingTime = duration;
         Timer = TickTimer.CreateFromSeconds(Runner, remainingTime);
         canStart = true;
-        isSpawned = true;
     }
 
     public void FixedUpdateNetworked() {
@@ -86,7 +80,6 @@ public class TimerSystem : NetworkBehaviour {
             duration = remainingTime;
             Timer = TickTimer.CreateFromSeconds(Runner, remainingTime); 
             canPause = false;
-            canReset = true;
             canStart = true;
         }
     }
