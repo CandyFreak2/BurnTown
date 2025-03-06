@@ -112,8 +112,6 @@ public class AudioPlayer : MonoBehaviour
         audioSource.loop = true;
 
         audioSource.Play();
-        DontDestroyOnLoad(audioSource.gameObject);
-        Destroy(audioSource.gameObject, clip.length);
         return audioSource;
     }
     /// <summary>
@@ -152,8 +150,6 @@ public class AudioPlayer : MonoBehaviour
         audioSource.loop = true;
 
         audioSource.Play();
-        DontDestroyOnLoad(audioSource.gameObject);
-        Destroy(audioSource.gameObject, clip.length);
         return audioSource;
     }
     /// <summary>
@@ -186,11 +182,12 @@ public class AudioPlayer : MonoBehaviour
     public static IEnumerator FadeAudioOut(AudioSource source, float duration = 0.5f, bool destroyComponentOnFinish = false)
     {
         WaitForFixedUpdate tick = new();
+        float startVol = source.volume;
 
         for(float i = 0; source.volume > 0; i += Time.fixedDeltaTime)
         {
             yield return tick;
-            source.volume = Mathf.Lerp(duration, 0, i);
+            source.volume = Mathf.Lerp(startVol, 0, Mathf.InverseLerp(0, duration, i));
         }
 
         if (destroyComponentOnFinish)
@@ -202,11 +199,12 @@ public class AudioPlayer : MonoBehaviour
     public static IEnumerator FadeAudioIn(AudioSource source, float duration = 0.5f)
     {
         WaitForFixedUpdate tick = new();
+        float startVol = source.volume;
 
         for (float i = 0; source.volume < 1; i += Time.fixedDeltaTime)
         {
             yield return tick;
-            source.volume = Mathf.Lerp(0, duration, i);
+            source.volume = Mathf.Lerp(startVol, 1, Mathf.InverseLerp(0 , duration, i));
         }
     }
     #endregion

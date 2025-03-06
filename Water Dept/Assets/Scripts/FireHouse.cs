@@ -16,6 +16,7 @@ public class FireHouse : NetworkBehaviour
     {
         public AudioSource flamethrowerLoop;
         public List<AudioClip> flamethrowerStart;
+        public Coroutine activeFade;
     }
 
     public override void Spawned()
@@ -61,7 +62,9 @@ public class FireHouse : NetworkBehaviour
         {
             firehose.flamethrower.Play();
             AudioPlayer.PlaySFX(audioProfile.flamethrowerStart, transform);
-            AudioPlayer.FadeAudioIn(audioProfile.flamethrowerLoop, 0.2f);
+            if (audioProfile.activeFade != null) 
+                StopCoroutine(audioProfile.activeFade);
+            audioProfile.activeFade = StartCoroutine(AudioPlayer.FadeAudioIn(audioProfile.flamethrowerLoop, 0.2f));
         }
     }
 
@@ -74,7 +77,9 @@ public class FireHouse : NetworkBehaviour
         if (firehose != null)
         {
             firehose.flamethrower.Stop();
-            AudioPlayer.FadeAudioOut(audioProfile.flamethrowerLoop, 0.2f);
+            if (audioProfile.activeFade != null)
+                StopCoroutine(audioProfile.activeFade);
+            audioProfile.activeFade = StartCoroutine(AudioPlayer.FadeAudioOut(audioProfile.flamethrowerLoop, 0.2f));
         }
     }
 }
