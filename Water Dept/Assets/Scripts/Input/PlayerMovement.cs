@@ -31,6 +31,8 @@ public class PlayerMovement : NetworkBehaviour
     [SerializeField] private TextMeshPro pickupText;
     [SerializeField] private CarController truckController;
 
+    [SerializeField] private GameObject indicator;
+
     PlayerInputHandeler input;
     PlayerInputAction action;
     [SerializeField] Rigidbody rb;
@@ -76,6 +78,7 @@ public class PlayerMovement : NetworkBehaviour
         {
             //FreeCameraController.Singleton.SetTarget(camTarget);
             GetComponentInChildren<CineSingleCamera>().SetAsActiveCamera();
+            ObjectiveIndicatorList.Singleton.SetIndicator(indicator);
         }
 
         isSpawned = true;
@@ -328,6 +331,7 @@ public class PlayerMovement : NetworkBehaviour
             truckController.SetFrontTires(_truck.transform.Find("FR Tire").gameObject.GetComponent<Tire>());
             truckController.SetBackTires(_truck.transform.Find("BL Tire").gameObject.GetComponent<Tire>());
             truckController.SetBackTires(_truck.transform.Find("BR Tire").gameObject.GetComponent<Tire>());
+            truckController.SetTireAngles();
             truckController.SetDriverPos(_truck.transform.Find("DriverPos").gameObject.transform);
 
             // lower player camera priority
@@ -393,6 +397,7 @@ public class PlayerMovement : NetworkBehaviour
                 playerTruckController.SetFrontTires(truck.transform.Find("FR Tire").gameObject.GetComponent<Tire>());
                 playerTruckController.SetBackTires(truck.transform.Find("BL Tire").gameObject.GetComponent<Tire>());
                 playerTruckController.SetBackTires(truck.transform.Find("BR Tire").gameObject.GetComponent<Tire>());
+                playerTruckController.SetTireAngles();
                 playerTruckController.SetDriverPos(truck.transform.Find("DriverPos").gameObject.transform);
 
                 // change player input to car input

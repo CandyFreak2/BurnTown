@@ -1,5 +1,6 @@
 using Fusion;
 using Fusion.Addons.SimpleKCC;
+using NUnit.Framework;
 using System.Collections;
 using System.Collections.Generic;
 using Unity.Cinemachine;
@@ -15,8 +16,10 @@ public class CarController : NetworkBehaviour
     private Transform driverPos;
 
     [SerializeField] private List<Tire> frontTires, backTires;
+    public float tireMaxAngle = 70.0f;
     public float tireTurnSpeed = 1;
     private float tireAngle = 0.0f;
+    public Vector3 leftTireAngle, rightTireAngle;
 
     private float accelerationInput;
     private float brakeInput;
@@ -30,7 +33,7 @@ public class CarController : NetworkBehaviour
     // Start is called before the first frame update
     void Start()
     {
-
+        
     }
 
     public override void Spawned()
@@ -101,26 +104,44 @@ public class CarController : NetworkBehaviour
 
     private void TurnTires()
     {
+        Debug.Log(steerInput);
         if (steerInput < 0.0f)
         {
             foreach (Tire tire in frontTires)
             {
-                if (tireAngle > -140)
-                {
-                    tire.transform.Rotate(0, -tireTurnSpeed, 0);
-                    tireAngle -= tireTurnSpeed;
-                }
+                tire.transform.localRotation = Quaternion.LookRotation(Vector3.Slerp(carRB.transform.forward, leftTireAngle, Mathf.Abs(steerInput)), carRB.transform.up);
+
+                //if (tireAngle > -140)
+                //{
+                //    tire.transform.Rotate(0, -tireTurnSpeed, 0);
+                //    tireAngle -= tireTurnSpeed;
+                //}
             }
         }
-        if (steerInput > 0.0f)
+        else if (steerInput > 0.0f)
         {
             foreach (Tire tire in frontTires)
             {
-                if (tireAngle < 140)
-                {
-                    tire.transform.Rotate(0, tireTurnSpeed, 0);
-                    tireAngle += tireTurnSpeed;
-                }
+                tire.transform.localRotation = Quaternion.LookRotation(Vector3.Slerp(carRB.transform.forward, rightTireAngle, Mathf.Abs(steerInput)), carRB.transform.up);
+
+                //if (tireAngle < 140)
+                //{
+                //    tire.transform.Rotate(0, tireTurnSpeed, 0);
+                //    tireAngle += tireTurnSpeed;
+                //}
+            }
+        }
+        else
+        {
+            foreach (Tire tire in frontTires)
+            {
+                tire.transform.forward = carRB.transform.forward;
+
+                //if (tireAngle < 140)
+                //{
+                //    tire.transform.Rotate(0, tireTurnSpeed, 0);
+                //    tireAngle += tireTurnSpeed;
+                //}
             }
         }
     }
@@ -227,6 +248,18 @@ public class CarController : NetworkBehaviour
             //carController.playerController.GetOutTruck();
             //carController.playerController = null;
         }
+    }
+
+    public void SetTireAngles()
+    {
+        Transform tmpTrans = frontTires[0].transform;
+        tmpTrans.Rotate(0, -tireMaxAngle, 0);
+        leftTireAngle = tmpTrans.transform.forward;
+        tmpTrans.Rotate(0, 2 * tireMaxAngle, 0);
+        rightTireAngle = tmpTrans.transform.forward;
+
+        Debug.DrawLine(carRB.transform.position, carRB.transform.position + leftTireAngle * 10, Color.red, 5.0f);
+        Debug.DrawLine(carRB.transform.position, carRB.transform.position + rightTireAngle * 10, Color.red, 5.0f);
     }
 
     public void SetTruckParent(GameObject _truck)
