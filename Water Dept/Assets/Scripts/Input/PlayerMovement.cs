@@ -32,6 +32,9 @@ public class PlayerMovement : NetworkBehaviour
     [SerializeField] Rigidbody rb;
     [SerializeField] SimpleKCC kcc;
 
+    //Barrel interactions
+    tempBarrel barrelController;
+
     [Header("Ground Check")]
     [SerializeField] Transform groundCheck;
     [SerializeField] LayerMask groundMask;
@@ -45,6 +48,7 @@ public class PlayerMovement : NetworkBehaviour
     private void Start()
     {
         input = GetComponent<PlayerInputHandeler>();
+        barrelController = GetComponent<tempBarrel>();
         //input.onInputSignal += RecieveInput;
         rb.mass = Mass;
     }
@@ -142,11 +146,18 @@ public class PlayerMovement : NetworkBehaviour
     private void HandleInteraction()
     {
         GameObject nearestInteractable = GetNearestInteractable();
-        //Pickup hose
+        //Pickup hose // barrel
         if (action.Buttons.WasPressed(previousButtons, InputButton.Interact) && !IsHolding() && nearestInteractable != null && CanPickup(nearestInteractable))
         {
             PickUpObject(nearestInteractable.GetComponent<Interactable>());
             pickupText.text = "";
+
+            //if barrel is picked up, queue schematic
+            if (nearestInteractable.tag == "Barrel")
+            {
+                AudioPlayer.PlaySFX(nearestInteractable.gameObject.GetComponent<BarrelInfo>().pickupSFX, playerObj.position, 0.1f);
+                barrelController.BarrelSchematics(playerObj);
+            }
         }
 
         // Get in truck
@@ -160,14 +171,22 @@ public class PlayerMovement : NetworkBehaviour
         if (action.Buttons.WasPressed(previousButtons, InputButton.Drop) && IsHolding())
         {
             RPC_RequestDrop(Object.Id);
+            barrelController.KillSchematic();
         }
 
-        // Fire hose
+        // Fire hose // throw barrel
         if (action.Buttons.WasPressed(previousButtons, InputButton.Shoot) && IsHolding())
         {
             if (carriedObject.interactableType == InteractableType.Flamethrower)
             {
                 carriedObject.gameObject.GetComponent<FireHouse>().Spray();
+            }
+            else if (carriedObject.interactableType == InteractableType.Barrel)
+            {
+                barrelController.BarrelThrow(playerObj);
+                Destroy(carriedObject.gameObject);
+                //RPC_RequestDrop(Object.Id);
+
             }
         }
 
@@ -178,6 +197,17 @@ public class PlayerMovement : NetworkBehaviour
             {
                 carriedObject.gameObject.GetComponent<FireHouse>().StartCoroutine(carriedObject.gameObject.GetComponent<FireHouse>().StopSpraying());
             }
+        }
+
+        //if holding barrel and throw, throw barrel! Boom!
+        if (action.Buttons.WasPressed(previousButtons, InputButton.Throw) && !IsHolding() && nearestInteractable != null)
+        {
+            //if barrel is picked up, queue schematic
+            if (nearestInteractable.tag == "Barrel")
+            {
+                barrelController.BarrelSchematics(playerObj);
+            }
+
         }
     }
 

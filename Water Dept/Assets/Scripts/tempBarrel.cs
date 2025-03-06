@@ -9,7 +9,7 @@ public class tempBarrel : NetworkBehaviour
     [SerializeField] private GameObject placeholderPrefab;
     [SerializeField] private GameObject barrelPrefab;
 
-    private bool isSchemOut = false;
+    public bool isSchemOut = false;
     public bool isThrowing = false;
     private GameObject schematic;
 
@@ -89,6 +89,15 @@ public class tempBarrel : NetworkBehaviour
             RPC_RequestBarrelThrow(playerOrientation.forward, Object.Id);
         }
 
+    }
+
+    public void KillSchematic()
+    {
+        isSchemOut = false;
+        if(schematic != null)
+        {
+            Destroy(schematic);
+        }
     }
 
     [Rpc(RpcSources.All, RpcTargets.StateAuthority)]

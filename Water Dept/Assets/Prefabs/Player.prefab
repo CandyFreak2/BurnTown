@@ -80,6 +80,7 @@ GameObject:
   - component: {fileID: 1538818724924762789}
   - component: {fileID: 164691849531482525}
   - component: {fileID: 3709194789665923367}
+  - component: {fileID: -6402713201429934659}
   m_Layer: 6
   m_Name: Player
   m_TagString: Untagged
@@ -198,6 +199,7 @@ MonoBehaviour:
   - {fileID: 5214953744532743937}
   - {fileID: 1538818724924762789}
   - {fileID: 3709194789665923367}
+  - {fileID: -6402713201429934659}
   ForceRemoteRenderTimeframe: 0
 --- !u!114 &1538818724924762789
 MonoBehaviour:
@@ -265,6 +267,25 @@ MonoBehaviour:
   frontTires: []
   backTires: []
   tireTurnSpeed: 1
+--- !u!114 &-6402713201429934659
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 3029772528895407285}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: b597e69f0ba8d304181667196262baa4, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  placeholderPrefab: {fileID: 2834350690521883054, guid: 7184ed08a17892142a596b69225ebe7e,
+    type: 3}
+  barrelPrefab: {fileID: 7658933350302763111, guid: e124b4f1c1efc7147a5dc3a5af79b5f1,
+    type: 3}
+  isThrowing: 0
+  throwForce: 450
+  placeDistance: 3
 --- !u!1 &3348894177522433908
 GameObject:
   m_ObjectHideFlags: 0
