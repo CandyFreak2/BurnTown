@@ -1,6 +1,7 @@
 using UnityEngine;
 using System.Collections;
 using Fusion;
+using DG.Tweening;
 
 public class FireHouse : NetworkBehaviour
 {
@@ -8,6 +9,7 @@ public class FireHouse : NetworkBehaviour
     [Networked] private NetworkBool isShooting { get; set; }
     [SerializeField] public float waterForce = 10f;
 
+    Tween activeTween;
     [SerializeField] private ParticleSystem flamethrower;
 
     public override void Spawned()
@@ -50,6 +52,9 @@ public class FireHouse : NetworkBehaviour
 
         if (firehose != null)
         {
+            if (activeTween != null)
+                activeTween.Complete();
+            activeTween = firehose.transform.DOShakeScale(0.5f, Vector3.forward * 0.5f);
             firehose.flamethrower.Play();
         }
     }
