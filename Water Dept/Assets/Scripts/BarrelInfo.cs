@@ -37,7 +37,8 @@ public class BarrelInfo : NetworkBehaviour
     [SerializeField] public AudioClip[] impactSFX;
     [SerializeField] public AudioClip[] explodeSFX;
 
-    private const float THROW_EXPLOSION_RADIUS = 3.0f;
+    [Range(0,3)]
+    [SerializeField] private float throwSnapRadius = 2.0f;
     public bool isAirborne;
     private float timer;
 
@@ -58,7 +59,6 @@ public class BarrelInfo : NetworkBehaviour
             }
         }
     }
-
 
     public void Explode()
     {
@@ -178,14 +178,6 @@ public class BarrelInfo : NetworkBehaviour
         }
     }
 
-    private void OnTriggerEnter(Collider other)
-    {
-        if (other.tag == "Flame")
-        {
-            isExploded = true;
-        }
-    }
-
     //hell on earth :( (very very very temporary)
     //snaps a thrown barrel to other barrels or ground
     private void ThrowSnapping()
@@ -199,7 +191,7 @@ public class BarrelInfo : NetworkBehaviour
         {
             timer += Time.deltaTime;
             //if collides with something mid air, blow up
-            Collider[] colliders = Physics.OverlapSphere(gameObject.transform.position - new Vector3(0, 0.5f, 0), THROW_EXPLOSION_RADIUS);
+            Collider[] colliders = Physics.OverlapSphere(gameObject.transform.position - new Vector3(0, 0.5f, 0), throwSnapRadius);
             foreach (Collider hit in colliders)
             {
                 if (timer > 0.2f && hit.GetComponent<BarrelInfo>() && hit.GetComponent<BarrelInfo>() != gameObject.GetComponent<BarrelInfo>() && isAirborne)
@@ -216,8 +208,6 @@ public class BarrelInfo : NetworkBehaviour
                         tail = hit.gameObject;
                         hit.gameObject.GetComponent<BarrelInfo>().head = gameObject;
                     }
-
-                    
                     
                     Debug.Log("SnapBox");
                 }
@@ -247,6 +237,14 @@ public class BarrelInfo : NetworkBehaviour
 
             }
 
+        }
+    }
+
+    private void OnTriggerEnter(Collider other)
+    {
+        if (other.tag == "Flame")
+        {
+            isExploded = true;
         }
     }
 }

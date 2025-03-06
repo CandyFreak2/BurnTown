@@ -1,4 +1,5 @@
 using Fusion;
+using Fusion.Addons.Physics;
 using Unity.VisualScripting;
 using UnityEngine;
 using static UnityEngine.ParticleSystem;
