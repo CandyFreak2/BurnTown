@@ -6,6 +6,7 @@ using Unity.Cinemachine;
 using System;
 using NUnit.Framework;
 using System.Collections.Generic;
+using DG.Tweening;
 
 public class PlayerMovement : NetworkBehaviour
 {
@@ -425,6 +426,7 @@ public class PlayerMovement : NetworkBehaviour
             player.carriedObject = interactable;
             player.carriedObject.gameObject.GetComponent<NetworkObject>().AssignInputAuthority(player.Object.InputAuthority);
             player.carriedObject.PickUp(Object.Id);
+            player.carriedObject.transform.DOShakeScale(0.5f, 0.8f);
         }
     }
 
