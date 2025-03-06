@@ -11,7 +11,7 @@ GameObject:
   - component: {fileID: 1725478720067289867}
   - component: {fileID: 934586132027870992}
   m_Layer: 0
-  m_Name: AudioSource
+  m_Name: AudioLoop
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -514,9 +514,10 @@ MonoBehaviour:
   waterForce: 25
   flamethrower: {fileID: 6700870194366174231}
   audioProfile:
+    fadeDuration: 0.2
     flamethrowerLoop: {fileID: 934586132027870992}
     flamethrowerStart:
-    - {fileID: 8300000, guid: 60a5407638d7b33458902f7e85bd2fcf, type: 3}
+    - {fileID: 8300000, guid: 8040ef18cb08ee3408e123820e3a84f4, type: 3}
 --- !u!1 &7041200510704412517
 GameObject:
   m_ObjectHideFlags: 0
