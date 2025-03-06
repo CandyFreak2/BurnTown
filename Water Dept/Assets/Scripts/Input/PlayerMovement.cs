@@ -351,7 +351,7 @@ public class PlayerMovement : NetworkBehaviour
                 playerTruckController.SetFrontTires(truck.transform.Find("FR Tire").gameObject.GetComponent<Tire>());
                 playerTruckController.SetBackTires(truck.transform.Find("BL Tire").gameObject.GetComponent<Tire>());
                 playerTruckController.SetBackTires(truck.transform.Find("BR Tire").gameObject.GetComponent<Tire>());
-                //playerTruckController.SetTireAngles();
+                playerTruckController.SetTireAngles();
                 playerTruckController.SetDriverPos(truck.transform.Find("DriverPos").gameObject.transform);
 
                 // change player input to car input
