@@ -723,6 +723,7 @@ GameObject:
   - component: {fileID: 1538818724924762789}
   - component: {fileID: 164691849531482525}
   - component: {fileID: 943226093199292436}
+  - component: {fileID: 3709194789665923367}
   m_Layer: 6
   m_Name: Player
   m_TagString: Untagged
@@ -811,9 +812,9 @@ MonoBehaviour:
   playerObj: {fileID: 4569886283134892048}
   camTarget: {fileID: 562206555851054493}
   rotSpeed: 6
-  moveDirection: {x: 0, y: 0, z: 0}
   _carriedObject: {fileID: 0}
   pickupText: {fileID: 5343811775102406559}
+  truckController: {fileID: 3709194789665923367}
   rb: {fileID: 6338638400722076882}
   kcc: {fileID: 1538818724924762789}
   groundCheck: {fileID: 3946907390898007895}
@@ -842,6 +843,7 @@ MonoBehaviour:
   NetworkedBehaviours:
   - {fileID: 5214953744532743937}
   - {fileID: 1538818724924762789}
+  - {fileID: 3709194789665923367}
   ForceRemoteRenderTimeframe: 0
 --- !u!114 &1538818724924762789
 MonoBehaviour:
@@ -906,6 +908,23 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   pauseUI: {fileID: 181854273351813836}
   playerMovement: {fileID: 0}
+--- !u!114 &3709194789665923367
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 3029772528895407285}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: bd4f9feec875c974ab3e000f8898befa, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  carRB: {fileID: 0}
+  camTarget: {fileID: 0}
+  frontTires: []
+  backTires: []
+  tireTurnSpeed: 1
 --- !u!1 &3115012930030835093
 GameObject:
   m_ObjectHideFlags: 0
@@ -1085,7 +1104,7 @@ CapsuleCollider:
   m_LayerOverridePriority: 0
   m_IsTrigger: 0
   m_ProvidesContacts: 0
-  m_Enabled: 1
+  m_Enabled: 0
   serializedVersion: 2
   m_Radius: 0.5000001
   m_Height: 2
@@ -2146,7 +2165,7 @@ BoxCollider:
   m_LayerOverridePriority: 0
   m_IsTrigger: 0
   m_ProvidesContacts: 0
-  m_Enabled: 1
+  m_Enabled: 0
   serializedVersion: 3
   m_Size: {x: 2, y: 2, z: 2}
   m_Center: {x: 0, y: 0, z: 0}
@@ -3113,6 +3132,16 @@ PrefabInstance:
     - target: {fileID: 3340170326400492564, guid: 96804e7c3961f9140b030ab112fcfa6e,
         type: 3}
       propertyPath: m_Enabled
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 3340170326400492564, guid: 96804e7c3961f9140b030ab112fcfa6e,
+        type: 3}
+      propertyPath: Priority.Enabled
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 3340170326400492564, guid: 96804e7c3961f9140b030ab112fcfa6e,
+        type: 3}
+      propertyPath: Priority.m_Value
       value: 1
       objectReference: {fileID: 0}
     - target: {fileID: 3340170326400492564, guid: 96804e7c3961f9140b030ab112fcfa6e,
@@ -3128,50 +3157,8 @@ PrefabInstance:
     m_RemovedComponents: []
     m_RemovedGameObjects: []
     m_AddedGameObjects: []
-    m_AddedComponents:
-    - targetCorrespondingSourceObject: {fileID: 2074288446012508850, guid: 96804e7c3961f9140b030ab112fcfa6e,
-        type: 3}
-      insertIndex: -1
-      addedObject: {fileID: 5357496889843221399}
+    m_AddedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 96804e7c3961f9140b030ab112fcfa6e, type: 3}
---- !u!1 &103765558280270554 stripped
-GameObject:
-  m_CorrespondingSourceObject: {fileID: 2074288446012508850, guid: 96804e7c3961f9140b030ab112fcfa6e,
-    type: 3}
-  m_PrefabInstance: {fileID: 2142020603068217448}
-  m_PrefabAsset: {fileID: 0}
---- !u!114 &5357496889843221399
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 103765558280270554}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 72ece51f2901e7445ab60da3685d6b5f, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  ShowDebugText: 0
-  ShowCameraFrustum: 1
-  IgnoreTimeScale: 0
-  WorldUpOverride: {fileID: 0}
-  ChannelMask: -1
-  UpdateMethod: 2
-  BlendUpdateMethod: 1
-  LensModeOverride:
-    Enabled: 0
-    DefaultMode: 2
-  DefaultBlend:
-    Style: 1
-    Time: 2
-    CustomCurve:
-      serializedVersion: 2
-      m_Curve: []
-      m_PreInfinity: 2
-      m_PostInfinity: 2
-      m_RotationOrder: 4
-  CustomBlends: {fileID: 0}
 --- !u!4 &562206555851054493 stripped
 Transform:
   m_CorrespondingSourceObject: {fileID: 1906332718947837429, guid: 96804e7c3961f9140b030ab112fcfa6e,

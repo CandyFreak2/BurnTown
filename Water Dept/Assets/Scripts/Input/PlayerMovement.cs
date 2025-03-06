@@ -2,10 +2,12 @@ using UnityEngine;
 using Fusion;
 using Fusion.Addons.SimpleKCC;
 using TMPro;
+using Unity.Cinemachine;
 
 public class PlayerMovement : NetworkBehaviour
 {
     private bool isSpawned = false;
+    private bool canEnter = true;
 
     [Header("Movement")]
     public float MoveSpeed = 5.0f;
@@ -18,11 +20,12 @@ public class PlayerMovement : NetworkBehaviour
     [Networked] private Vector3 networkedForward { get; set; }
 
     //movement input
-    public Vector3 moveDirection = Vector3.zero;
+    private Vector3 moveDirection = Vector3.zero;
     [Networked] private NetworkButtons previousButtons { get; set; }
 
     [Networked] public Interactable carriedObject { get; set; }
     [SerializeField] private TextMeshPro pickupText;
+    [SerializeField] private CarController truckController;
 
     PlayerInputHandeler input;
     PlayerInputAction action;
@@ -147,10 +150,9 @@ public class PlayerMovement : NetworkBehaviour
         }
 
         // Get in truck
-        if (action.Buttons.WasPressed(previousButtons, InputButton.Interact) && nearestInteractable != null && nearestInteractable.gameObject.tag == "FireTruck")
+        if (action.Buttons.WasPressed(previousButtons, InputButton.Interact) && nearestInteractable != null && nearestInteractable.gameObject.tag == "FireTruck" && canEnter)
         {
-            
-
+            GetInTruck(nearestInteractable);
             pickupText.text = "";
         }
 
@@ -185,7 +187,7 @@ public class PlayerMovement : NetworkBehaviour
 
         if (HasInputAuthority && !IsHolding())
         {
-            Collider[] interactableObjects = Physics.OverlapSphere(transform.position, 3.5f);
+            Collider[] interactableObjects = Physics.OverlapSphere(kcc.transform.position, 3.5f);
             foreach (Collider collider in interactableObjects)
             {
                 // First object in list that is a flamethrower gets picked up ++ Or barrel
@@ -246,6 +248,75 @@ public class PlayerMovement : NetworkBehaviour
         return new Vector3(input.x, 0, input.y);
     }
 
+    public void DeactivateSystems()
+    {
+        GetComponent<SimpleKCC>().enabled = false;
+
+        foreach (Transform child in gameObject.transform) //crazy tech bro
+        {
+            child.gameObject.SetActive(false);
+        }
+    }
+
+    public void ReactivateSystems()
+    {
+        GetComponent<SimpleKCC>().enabled = true;
+
+        foreach (Transform child in gameObject.transform) //crazy tech bro
+        {
+            child.gameObject.SetActive(true);
+        }
+    }
+
+    private void GetInTruck(GameObject _truck)
+    {
+        //truckController = _truck.GetComponent<CarController>();
+
+        truckController.enabled = true;
+
+        if (truckController != null)
+        {
+            // set data
+            truckController.SetTruckParent(_truck);
+            truckController.SetCarRB(_truck.GetComponent<Rigidbody>());
+            truckController.SetFrontTires(_truck.transform.Find("FL Tire").gameObject.GetComponent<Tire>());
+            truckController.SetFrontTires(_truck.transform.Find("FR Tire").gameObject.GetComponent<Tire>());
+            truckController.SetBackTires(_truck.transform.Find("BL Tire").gameObject.GetComponent<Tire>());
+            truckController.SetBackTires(_truck.transform.Find("BR Tire").gameObject.GetComponent<Tire>());
+            truckController.SetDriverPos(_truck.transform.Find("DriverPos").gameObject.transform);
+
+            // lower player camera priority
+            if (HasInputAuthority)
+            {
+                CinemachineCamera camera = GetComponentInChildren<CinemachineCamera>();
+                camera.Priority = -1;
+            }
+
+            // change player input to car input
+            truckController.PlayerEnterTruck(this);
+        }
+
+        RPC_RequestGetInTruck(_truck.GetComponent<NetworkObject>().Id, Object.Id);
+    }
+
+    public void GetOutTruck()
+    {
+        truckController.enabled = false;
+
+        // raise player camera priority
+        if (HasInputAuthority)
+        {
+            CinemachineCamera camera = GetComponentInChildren<CinemachineCamera>();
+            camera.Priority = 1;
+        }
+
+        // Add delay to player being able to enter so player doesn't instantly leave off of exit input
+        canEnter = false;
+        Invoke("EnterDelay", 0.5f);
+
+        RPC_RequestGetOutTruck(Object.Id);
+    }
+
     public void PickUpObject(Interactable _object)
     {
         //Debug.Log(_object.CanBePickedUp());
@@ -253,6 +324,48 @@ public class PlayerMovement : NetworkBehaviour
         {
             RPC_RequestPickUp(_object.Object.Id, Object.Id);
         }
+    }
+
+    // Asks server very nicely if client can get in whip
+    [Rpc(RpcSources.All, RpcTargets.StateAuthority)] // Only run by host
+    public void RPC_RequestGetInTruck(NetworkId _truckId, NetworkId _playerId)
+    {
+        GameObject truck = Runner.FindObject(_truckId).gameObject;
+        PlayerMovement player = Runner.FindObject(_playerId).GetComponent<PlayerMovement>();
+
+        if (truck != null)
+        {
+            CarController playerTruckController = player.truckController;
+            playerTruckController.enabled = true;
+
+            if (playerTruckController != null)
+            {
+                // set data
+                playerTruckController.SetTruckParent(truck);
+                playerTruckController.SetCarRB(truck.GetComponent<Rigidbody>());
+                playerTruckController.SetFrontTires(truck.transform.Find("FL Tire").gameObject.GetComponent<Tire>());
+                playerTruckController.SetFrontTires(truck.transform.Find("FR Tire").gameObject.GetComponent<Tire>());
+                playerTruckController.SetBackTires(truck.transform.Find("BL Tire").gameObject.GetComponent<Tire>());
+                playerTruckController.SetBackTires(truck.transform.Find("BR Tire").gameObject.GetComponent<Tire>());
+                playerTruckController.SetDriverPos(truck.transform.Find("DriverPos").gameObject.transform);
+
+                // change player input to car input
+                playerTruckController.PlayerEnterTruck(player);
+            }
+        }
+    }
+
+    // Asks server very nicely if client can get out whip
+    [Rpc(RpcSources.All, RpcTargets.StateAuthority)] // Only run by host
+    public void RPC_RequestGetOutTruck(NetworkId _playerId)
+    {
+        PlayerMovement player = Runner.FindObject(_playerId).GetComponent<PlayerMovement>();
+
+        player.truckController.enabled = false;
+
+        // Add delay to player being able to enter so player doesn't instantly leave off of exit input
+        player.canEnter = false;
+        player.Invoke("EnterDelay", 0.5f);
     }
 
     // Asks server very nicely if client can pick up object
@@ -290,6 +403,11 @@ public class PlayerMovement : NetworkBehaviour
     public bool IsHolding()
     {
         return carriedObject != null;
+    }
+
+    private void EnterDelay()
+    {
+        canEnter = true;
     }
 
     private bool CanPickup(GameObject _interactable)
