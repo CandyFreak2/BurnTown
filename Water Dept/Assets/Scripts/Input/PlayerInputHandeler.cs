@@ -29,13 +29,13 @@ public class PlayerInputHandeler : SimulationBehaviour, IBeforeUpdate, INetworkR
         playerInputSystem.Look.performed += ctx => lookDelta = ctx.ReadValue<Vector2>();
         playerInputSystem.Look.canceled += ctx => lookDelta = ctx.ReadValue<Vector2>();
 
-        //interact
+        // Interact
         playerInputSystem.Interact.started += ctx => interactPress = ctx.ReadValue<float>();
 
         // Drop
-        playerInputSystem.Crouch.started += ctx => dropPress = ctx.ReadValue<float>();
+        playerInputSystem.Drop.started += ctx => dropPress = ctx.ReadValue<float>();
         
-        //shoot
+        // Shoot
         playerInputSystem.Attack.performed += ctx => shootPress = ctx.ReadValue<float>();
 
         //Brake
@@ -77,7 +77,7 @@ public class PlayerInputHandeler : SimulationBehaviour, IBeforeUpdate, INetworkR
         bool interactDown = (playerInputSystem.Interact.ReadValue<float>() > 0.0f);
         buttons.Set(InputButton.Interact, interactDown);
 
-        bool dropDown = (playerInputSystem.Crouch.ReadValue<float>() > 0.0f);
+        bool dropDown = (playerInputSystem.Drop.ReadValue<float>() > 0.0f);
         buttons.Set(InputButton.Drop, dropDown);
 
         // shootpress returns 0, attack.readvalue returns 1
