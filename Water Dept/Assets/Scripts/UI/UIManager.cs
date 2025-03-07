@@ -19,6 +19,7 @@ public class UIManager : MonoBehaviour {
 
     [SerializeField] private TextMeshProUGUI scoreText;
     [SerializeField] private TextMeshProUGUI timerText;
+    [SerializeField] private GameObject pauseMenu;
 
     private void Awake() {
         Instance = this;
@@ -33,5 +34,8 @@ public class UIManager : MonoBehaviour {
     public void SetUI() {
         scoreText.enabled = true; 
         timerText.enabled = true;
+        pauseMenu.SetActive(false);
     }
+
+    public GameObject GetPauseMenu() => pauseMenu;
 }
