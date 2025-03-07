@@ -126,6 +126,7 @@ GameObject:
   - component: {fileID: 3656389120166898570}
   - component: {fileID: 3780006245957552425}
   - component: {fileID: 5875268049657550506}
+  - component: {fileID: 3571306103396218847}
   m_Layer: 0
   m_Name: FireHose
   m_TagString: FireHoseHead
@@ -307,6 +308,7 @@ MonoBehaviour:
   NetworkedBehaviours:
   - {fileID: 5997422084245149722}
   - {fileID: 5875268049657550506}
+  - {fileID: 3571306103396218847}
   ForceRemoteRenderTimeframe: 0
 --- !u!114 &5997422084245149722
 MonoBehaviour:
@@ -390,6 +392,29 @@ MonoBehaviour:
     flamethrowerLoop: {fileID: 1573701087310409857}
     flamethrowerStart:
     - {fileID: 8300000, guid: 8040ef18cb08ee3408e123820e3a84f4, type: 3}
+--- !u!114 &3571306103396218847
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 5953924477471692778}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 0a591d221a634417e9827eb58e17de84, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  _stateAuthorityChangeErrorCorrectionDelta: 0.15
+  SyncScale: 0
+  SyncParent: 1
+  _interpolationTarget: {fileID: 0}
+  UsePreciseRotation: 0
+  UseRenderSleepThresholds: 1
+  RenderThresholds:
+    UseEnergy: 1
+    Position: 0.01
+    Rotation: 0.01
+    Scale: 0.01
 --- !u!1 &6349611979054584368
 GameObject:
   m_ObjectHideFlags: 0
