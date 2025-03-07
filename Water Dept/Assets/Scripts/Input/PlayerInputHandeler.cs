@@ -171,4 +171,10 @@ public class PlayerInputHandeler : SimulationBehaviour, IBeforeUpdate, INetworkR
     }
 
     void INetworkRunnerCallbacks.OnUserSimulationMessage(NetworkRunner runner, SimulationMessagePtr message) { }
+
+    // Tutorial Getters
+    public bool IsPlayerMovingUp { get { return playerInputSystem.Move.ReadValue<Vector2>().y > 0; } }
+    public bool IsPlayerMovingDown { get { return playerInputSystem.Move.ReadValue<Vector2>().y < 0; } }
+    public bool IsPlayerMovingLeft { get { return playerInputSystem.Move.ReadValue<Vector2>().x < 0; } }
+    public bool IsPlayerMovingRight { get { return playerInputSystem.Move.ReadValue<Vector2>().x > 0; } }
 }

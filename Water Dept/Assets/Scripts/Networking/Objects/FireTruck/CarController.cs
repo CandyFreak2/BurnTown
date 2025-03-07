@@ -104,7 +104,8 @@ public class CarController : NetworkBehaviour
 
     private void TurnTires()
     {
-        Debug.Log(steerInput);
+        // Sorry Jake, I was getting spammed :( - Jerry
+        //Debug.Log(steerInput);
         if (steerInput < 0.0f)
         {
             foreach (Tire tire in frontTires)
