@@ -13,7 +13,7 @@ public class Burnable : NetworkBehaviour
     //NOT IMPLEMENTED YET, JUST CONCEPT TEST
 
     [SerializeField] protected float startFuel = 10.0f;
-    private float fuelRemaining;
+    [Networked] private float fuelRemaining { get; set; }
 
     [SerializeField] protected float spreadRate = 3.0f;
     [SerializeField] protected float spreadRadius = 10.0f;
@@ -23,7 +23,6 @@ public class Burnable : NetworkBehaviour
 
     //networked vars are communicated and updated by networkbehaviors
     [Networked] public bool nIsBurning { get; set; }
-    [SerializeField] protected bool isBurning = true;
     private bool isSpawned = false;
     [SerializeField] private bool showsLerp = true;
 
@@ -41,37 +40,35 @@ public class Burnable : NetworkBehaviour
 
     public override void Spawned()
     {
-        nIsBurning = isBurning;
-        isSpawned = true;
-    }
-
-    private void Start()
-    {
-        //used for tracking percentages
         fuelRemaining = startFuel;
-        if (showsLerp) {
+        isSpawned = true;
+
+        //used for tracking percentages
+        if (showsLerp)
+        {
             gameObject.GetComponent<Renderer>().material.color = initialColor;
         }
     }
 
+    private void Start()
+    {
+        
+    }
+
     private void Update()
     {
-        if (isSpawned)
-        {
-            handeFire();
-            isBurning = nIsBurning;
-        }
+        handeColorLerp();
 
+    }
+
+    public override void FixedUpdateNetwork()
+    {
+        handeFire();
     }
 
     //does all functions related to burning of objects
     private void handeFire()
     {
-        if(nIsBurning)
-        {
-            handeColorLerp();
-        }
-        
         //SpreadFire();
 
         handleBurn();
@@ -80,7 +77,8 @@ public class Burnable : NetworkBehaviour
     //changes obj color 
     private void handeColorLerp()
     {
-        if (nIsBurning) {
+        if (isSpawned && nIsBurning)
+        {
             //lerp between start and end color based on % of fuel remaining
             gameObject.GetComponent<Renderer>().material.color = Color.Lerp(endColor, startColor, (fuelRemaining / startFuel));
         }
@@ -114,14 +112,15 @@ public class Burnable : NetworkBehaviour
             {
                 gameObject.GetComponent<Renderer>().material.color = initialColor;
             }
-            
+
         }
         else if (fuelRemaining < 0)
         {
             //Destroy(gameObject);
-            //Runner.Despawn(Object);
+
             gameObject.SetActive(false);
             EventManager.BurnableDestroyed(burnableScore);
+            Runner.Despawn(Object);
         }
     }
 
@@ -129,7 +128,7 @@ public class Burnable : NetworkBehaviour
     private void tempSpread()
     {
         Collider[] objArr = Physics.OverlapSphere(gameObject.transform.position, spreadRadius);
-        foreach(var obj in objArr)
+        foreach (var obj in objArr)
         {
             if (obj.GetComponent<Burnable>() != null)
             {
@@ -169,7 +168,7 @@ public class Burnable : NetworkBehaviour
 
     private void OnTriggerEnter(Collider other)
     {
-        if(other.tag == "Flame")
+        if (other.tag == "Flame")
         {
             nIsBurning = true;
         }
@@ -178,7 +177,7 @@ public class Burnable : NetworkBehaviour
     // continually burning makes it burn faster based on its damageRate (applied every update)
     private void OnTriggerStay(Collider other)
     {
-        if(other.tag == "Flame" && nIsBurning)
+        if (other.tag == "Flame" && nIsBurning)
         {
             fuelRemaining = fuelRemaining - damageRate;
         }
