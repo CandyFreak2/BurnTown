@@ -1,11 +1,7 @@
 using Fusion;
-using Fusion.Addons.Physics;
-using Unity.VisualScripting;
 using UnityEngine;
-using static UnityEngine.ParticleSystem;
 
-public class tempBarrel : NetworkBehaviour
-{
+public class tempBarrel : NetworkBehaviour {
     [SerializeField] private GameObject placeholderPrefab;
     [SerializeField] private GameObject barrelPrefab;
 
@@ -20,35 +16,28 @@ public class tempBarrel : NetworkBehaviour
 
     private Transform orientation;
 
-    public override void Spawned()
-    {
+    public override void Spawned() {
 
     }
 
-    void FixedUpdate()
-    {
-        if (Input.GetKeyDown(KeyCode.E) && isSchemOut)
-        {
+    void FixedUpdate() {
+        if (Input.GetKeyDown(KeyCode.E) && isSchemOut) {
             PlaceBarrel();
-            if (isSchemOut)
-            {
+            if (isSchemOut) {
                 isSchemOut = false;
                 Destroy(schematic);
             }
         }
 
 
-        if (isSchemOut)
-        {
+        if (isSchemOut) {
             SchemBarrel();
         }
     }
 
     //queue schematic if barrel is nearby
-    public void BarrelSchematics(Transform playerOrientation)
-    {
-        if (!isSchemOut)
-        {
+    public void BarrelSchematics(Transform playerOrientation) {
+        if (!isSchemOut) {
             isSchemOut = true;
             schematic = Instantiate(placeholderPrefab);
             //schematic = Runner.Spawn(placeholderPrefab).gameObject;
@@ -57,12 +46,9 @@ public class tempBarrel : NetworkBehaviour
         }
     }
 
-    public void BarrelThrow(Transform playerOrientation)
-    {
-        if (!Runner.IsClient)
-        {
-            if (isSchemOut)
-            {
+    public void BarrelThrow(Transform playerOrientation) {
+        if (!Runner.IsClient) {
+            if (isSchemOut) {
                 isThrowing = true;
 
                 NetworkObject bar = Runner.Spawn(barrelPrefab);
@@ -73,8 +59,7 @@ public class tempBarrel : NetworkBehaviour
 
                 SnapPosition(bar.gameObject);
 
-                if (isSchemOut)
-                {
+                if (isSchemOut) {
                     isSchemOut = false;
                     Destroy(schematic);
                 }
@@ -83,31 +68,25 @@ public class tempBarrel : NetworkBehaviour
                 isThrowing = false;
 
             }
-        }
-        else if(Runner.IsClient)
-        {
+        } else if (Runner.IsClient) {
             RPC_RequestBarrelThrow(playerOrientation.forward, Object.Id);
         }
 
     }
 
-    public void KillSchematic()
-    {
+    public void KillSchematic() {
         isSchemOut = false;
-        if(schematic != null)
-        {
+        if (schematic != null) {
             Destroy(schematic);
         }
     }
 
     [Rpc(RpcSources.All, RpcTargets.StateAuthority)]
-    public void RPC_RequestBarrelThrow(Vector3 playerOrientation, NetworkId b)
-    {
+    public void RPC_RequestBarrelThrow(Vector3 playerOrientation, NetworkId b) {
         tempBarrel tBarr = Runner.FindObject(b).GetComponent<tempBarrel>();
         tBarr.isSchemOut = true;
-        if (tBarr.isSchemOut)
-        {
-            
+        if (tBarr.isSchemOut) {
+
 
             tBarr.isThrowing = true;
 
@@ -119,8 +98,7 @@ public class tempBarrel : NetworkBehaviour
 
             tBarr.SnapPosition(bar.gameObject);
 
-            if (tBarr.isSchemOut)
-            {
+            if (tBarr.isSchemOut) {
                 tBarr.isSchemOut = false;
                 Destroy(tBarr.schematic);
             }
@@ -147,11 +125,9 @@ public class tempBarrel : NetworkBehaviour
     //}
 
     //hovers a schematic prefab in front of the player indicating where a barrel will be placed
-    private void SchemBarrel()
-    {
+    private void SchemBarrel() {
         isSchemOut = true;
-        if (isSchemOut)
-        {
+        if (isSchemOut) {
             schematic.transform.position = (gameObject.GetComponent<Transform>().transform.position) +
                orientation.forward * placeDistance;
         }
@@ -160,8 +136,7 @@ public class tempBarrel : NetworkBehaviour
     }
 
     //places a barrel prefab where the schematic was previously
-    private void PlaceBarrel()
-    {
+    private void PlaceBarrel() {
         GameObject bar = Instantiate(barrelPrefab);
 
         bar.transform.position = (gameObject.GetComponent<Transform>().transform.position) +
@@ -173,26 +148,21 @@ public class tempBarrel : NetworkBehaviour
     }
 
     //assigns a barrels position to snap to the ground and/or a barrel nearby
-    private void SnapPosition(GameObject obj)
-    {
+    private void SnapPosition(GameObject obj) {
         RaycastHit hit;
         //casts ray from the sky down
-        if (Physics.Raycast(obj.transform.position + new Vector3(0, 100f, 0), Vector3.down, out hit))
-        {
+        if (Physics.Raycast(obj.transform.position + new Vector3(0, 100f, 0), Vector3.down, out hit)) {
             //snaps barrel to ground
-            if (hit.collider.GetComponent<BarrelInfo>() == null)
-            {
+            if (hit.collider.GetComponent<BarrelInfo>() == null) {
                 float dist = Vector3.Distance(obj.transform.position, hit.point);
                 obj.transform.position -= Vector3.up * dist - new Vector3(0, 0.5f, 0);
             }
             //if its a barrel, snaps position to on top of the barrel
-            else if (hit.collider.GetComponent<BarrelInfo>() != null && !isThrowing)
-            {
+            else if (hit.collider.GetComponent<BarrelInfo>() != null && !isThrowing) {
                 obj.transform.position = hit.collider.transform.position + new Vector3(0, 1.0f, 0);
 
                 //links head/tail chain components of barrelInfo on place
-                if (obj.GetComponent<BarrelInfo>() != null)
-                {
+                if (obj.GetComponent<BarrelInfo>() != null) {
                     obj.GetComponent<BarrelInfo>().tail = hit.collider.gameObject;
                     hit.collider.gameObject.GetComponent<BarrelInfo>().head = obj.gameObject;
                 }
