@@ -1,5 +1,6 @@
 using Fusion;
 using System.Collections;
+using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.Splines.Interpolators;
 using UnityEngine.XR;
@@ -14,12 +15,14 @@ public class Burnable : NetworkBehaviour
 
     [SerializeField] protected float startFuel = 10.0f;
     [Networked] private float fuelRemaining { get; set; }
+    [Networked] private List<HeatSource> activeHeaters { get; set; }
 
     [SerializeField] protected float spreadRate = 3.0f;
     [SerializeField] protected float spreadRadius = 10.0f;
     [SerializeField] protected float fireResistance = 3.0f;
     //how much "health" damage a burnable takes per update if being actively burnt
     [SerializeField] protected float damageRate = 0.1f;
+    [SerializeField] HeatSource heatSource;
 
     //networked vars are communicated and updated by networkbehaviors
     [Networked] public bool nIsBurning { get; set; }
@@ -132,12 +135,14 @@ public class Burnable : NetworkBehaviour
         {
             if (obj.GetComponent<Burnable>() != null)
             {
-                fireDamage(obj.GetComponent<Burnable>());
+                DealFireDamage(obj.GetComponent<Burnable>());
             }
         }
     }
+
+    /// Oh boy, this was alot to wrap my head arround, but I think I get it... Gotta make a way for the flamethrower to effect this -James 03/08
     //handles damage/burn, goes through fire resistance first
-    private void fireDamage(Burnable obj)
+    private void DealFireDamage(Burnable obj)
     {
         int result = Random.Range(0, 2);
         if (obj.lockoutTimer <= 0.0f)
@@ -164,6 +169,17 @@ public class Burnable : NetworkBehaviour
             }
         }
 
+    }
+
+    ///A function for taking damage from incoming fire sources (spisifically the player flamethrower) -James 03/08
+    public void AddHeatSource(HeatSource source)
+    {
+        activeHeaters.Add(source);
+    }
+
+    public void RemoveHeatSource(HeatSource source)
+    {
+        activeHeaters.Remove(source);
     }
 
     private void OnTriggerEnter(Collider other)
