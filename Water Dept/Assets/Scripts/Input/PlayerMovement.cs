@@ -197,7 +197,7 @@ public class PlayerMovement : NetworkBehaviour
         {
             if (carriedObject.interactableType == InteractableType.Flamethrower)
             {
-                carriedObject.gameObject.GetComponent<FireHouse>().Spray();
+                carriedObject.gameObject.GetComponent<Flamethrower>().Spray();
             }
             else if (carriedObject.interactableType == InteractableType.Barrel)
             {
@@ -213,7 +213,7 @@ public class PlayerMovement : NetworkBehaviour
         {
             if (carriedObject.interactableType == InteractableType.Flamethrower)
             {
-                carriedObject.gameObject.GetComponent<FireHouse>().StartCoroutine(carriedObject.gameObject.GetComponent<FireHouse>().StopSpraying());
+                carriedObject.gameObject.GetComponent<Flamethrower>().StopSpraying();
             }
         }
 
@@ -445,7 +445,7 @@ public class PlayerMovement : NetworkBehaviour
             player.carriedObject.Drop();
             if (player.carriedObject.interactableType == InteractableType.Flamethrower)
             {
-                player.carriedObject.gameObject.GetComponent<FireHouse>().StartCoroutine(carriedObject.gameObject.GetComponent<FireHouse>().StopSpraying());
+                player.carriedObject.gameObject.GetComponent<Flamethrower>().StopSpraying();
             }
             player.carriedObject.gameObject.GetComponent<NetworkObject>().RemoveInputAuthority();
             player.carriedObject = null;
