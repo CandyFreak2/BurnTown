@@ -1,5 +1,6 @@
 using UnityEngine;
 using Fusion;
+using Fusion.Addons.Physics;
 
 public enum InteractableType
 {
@@ -19,6 +20,7 @@ public class Interactable : NetworkBehaviour
 
     private Rigidbody rb;
     private Collider interactableCollider;
+    private NetworkRigidbody3D networkRB;
 
     [SerializeField]
     private Vector3 holdOffset = new Vector3(1.0f, 0.5f, 0.0f);
@@ -40,6 +42,7 @@ public class Interactable : NetworkBehaviour
             isSpawned = true;
             isPickedUp = false;
             carrierId = default;
+            networkRB = GetComponent<NetworkRigidbody3D>();
         }
     }
 
@@ -52,9 +55,7 @@ public class Interactable : NetworkBehaviour
             // Update position of interactable to player
             if (carrier != null)
             {
-                // FIX THIS - SHOULD NOT BE CHECKING FOR NAME OR INDEX OF CHILD
-                // COMPARE TAG OF CHILD OR REFERENCE POSITION OF OBJECT
-                Transform handtransform = carrier.transform.GetChild(0);
+                Transform handtransform = carrier.transform.Find("PlayerModelObj");
 
                 transform.position = handtransform.position + handtransform.TransformDirection(holdOffset);
                 transform.rotation = handtransform.rotation;
@@ -78,6 +79,7 @@ public class Interactable : NetworkBehaviour
             rb.isKinematic = true;
             rb.constraints = RigidbodyConstraints.FreezeAll;
             interactableCollider.enabled = false;
+            networkRB.enabled = false;
         }
     }
 
@@ -92,6 +94,7 @@ public class Interactable : NetworkBehaviour
             rb.isKinematic = false;
             rb.constraints = RigidbodyConstraints.None;
             interactableCollider.enabled = true;
+            networkRB.enabled = true;
         }
     }
 

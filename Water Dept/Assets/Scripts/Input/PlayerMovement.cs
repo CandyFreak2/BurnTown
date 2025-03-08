@@ -208,9 +208,11 @@ public class PlayerMovement : NetworkBehaviour
             }
         }
 
+        Debug.Log(action.Buttons.WasReleased(previousButtons, InputButton.Shoot));
         // Stop firing hose
         if (action.Buttons.WasReleased(previousButtons, InputButton.Shoot) && IsHolding())
         {
+            Debug.Log("Stop pls");
             if (carriedObject.interactableType == InteractableType.Flamethrower)
             {
                 carriedObject.gameObject.GetComponent<FireHouse>().StartCoroutine(carriedObject.gameObject.GetComponent<FireHouse>().StopSpraying());
