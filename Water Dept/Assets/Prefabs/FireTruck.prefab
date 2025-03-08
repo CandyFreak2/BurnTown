@@ -48,7 +48,7 @@ MonoBehaviour:
   suspensionRestLength: 0.5
   suspensionStrength: 10
   suspensionDamping: 8
-  topSpeed: 100
+  topSpeed: 60
   brakeStrength: 0.8
   tireGripFactor: 0.5
 --- !u!1 &1601628383318992276
@@ -99,7 +99,7 @@ MonoBehaviour:
   suspensionRestLength: 0.5
   suspensionStrength: 10
   suspensionDamping: 8
-  topSpeed: 100
+  topSpeed: 60
   brakeStrength: 0.8
   tireGripFactor: 0.5
 --- !u!1 &2040709483166779140
@@ -163,7 +163,6 @@ GameObject:
   - component: {fileID: 1245603945616768155}
   - component: {fileID: 4768391477969633517}
   - component: {fileID: 6431982868594129600}
-  - component: {fileID: 7254870765361703125}
   - component: {fileID: 2467624447809652897}
   - component: {fileID: 7867418211170759902}
   m_Layer: 0
@@ -245,27 +244,6 @@ BoxCollider:
   serializedVersion: 3
   m_Size: {x: 5, y: 5.5, z: 16.5}
   m_Center: {x: 0, y: -0.1, z: 0}
---- !u!114 &7254870765361703125
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 2231294426090905358}
-  m_Enabled: 0
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: bd4f9feec875c974ab3e000f8898befa, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  carRB: {fileID: 4768391477969633517}
-  camTarget: {fileID: 0}
-  frontTires:
-  - {fileID: 5595848358408308924}
-  - {fileID: 3962749562720211918}
-  backTires:
-  - {fileID: 6463156045763490709}
-  - {fileID: 7827506412703968857}
-  tireTurnSpeed: 1
 --- !u!114 &2467624447809652897
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -306,7 +284,6 @@ MonoBehaviour:
   Flags: 262145
   NestedObjects: []
   NetworkedBehaviours:
-  - {fileID: 7254870765361703125}
   - {fileID: 2467624447809652897}
   - {fileID: 5595848358408308924}
   - {fileID: 3962749562720211918}
@@ -512,7 +489,7 @@ MonoBehaviour:
   suspensionRestLength: 0.5
   suspensionStrength: 10
   suspensionDamping: 8
-  topSpeed: 100
+  topSpeed: 60
   brakeStrength: 0.8
   tireGripFactor: 0.5
 --- !u!1 &8539886274263462978
@@ -563,7 +540,7 @@ MonoBehaviour:
   suspensionRestLength: 0.5
   suspensionStrength: 10
   suspensionDamping: 8
-  topSpeed: 100
+  topSpeed: 60
   brakeStrength: 0.8
   tireGripFactor: 0.5
 --- !u!1001 &118639697401735587

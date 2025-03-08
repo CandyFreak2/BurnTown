@@ -110,39 +110,44 @@ public class CarController : NetworkBehaviour
         {
             foreach (Tire tire in frontTires)
             {
-                tire.transform.localRotation = Quaternion.LookRotation(Vector3.Slerp(carRB.transform.forward, leftTireAngle, Mathf.Abs(steerInput)), carRB.transform.up);
+                //tire.transform.localRotation = Quaternion.LookRotation(Vector3.Slerp(carRB.transform.forward, leftTireAngle, Mathf.Abs(steerInput)), carRB.transform.up);
 
-                //if (tireAngle > -140)
-                //{
-                //    tire.transform.Rotate(0, -tireTurnSpeed, 0);
-                //    tireAngle -= tireTurnSpeed;
-                //}
+                if (tireAngle > -(2 * tireMaxAngle))
+                {
+                    tire.transform.Rotate(0, -tireTurnSpeed, 0);
+                    tireAngle -= tireTurnSpeed;
+                }
             }
         }
         else if (steerInput > 0.0f)
         {
             foreach (Tire tire in frontTires)
             {
-                tire.transform.localRotation = Quaternion.LookRotation(Vector3.Slerp(carRB.transform.forward, rightTireAngle, Mathf.Abs(steerInput)), carRB.transform.up);
+                //tire.transform.localRotation = Quaternion.LookRotation(Vector3.Slerp(carRB.transform.forward, rightTireAngle, Mathf.Abs(steerInput)), carRB.transform.up);
 
-                //if (tireAngle < 140)
-                //{
-                //    tire.transform.Rotate(0, tireTurnSpeed, 0);
-                //    tireAngle += tireTurnSpeed;
-                //}
+                if (tireAngle < (2 * tireMaxAngle))
+                {
+                    tire.transform.Rotate(0, tireTurnSpeed, 0);
+                    tireAngle += tireTurnSpeed;
+                }
             }
         }
         else
         {
             foreach (Tire tire in frontTires)
             {
-                tire.transform.forward = carRB.transform.forward;
+                //tire.transform.rotation = carRB.transform.rotation;
 
-                //if (tireAngle < 140)
-                //{
-                //    tire.transform.Rotate(0, tireTurnSpeed, 0);
-                //    tireAngle += tireTurnSpeed;
-                //}
+                if (tireAngle > 0)
+                {
+                    tire.transform.Rotate(0, -tireTurnSpeed, 0);
+                    tireAngle -= tireTurnSpeed;
+                }
+                else if (tireAngle < 0)
+                {
+                    tire.transform.Rotate(0, tireTurnSpeed, 0);
+                    tireAngle += tireTurnSpeed;
+                }
             }
         }
     }
@@ -179,7 +184,6 @@ public class CarController : NetworkBehaviour
 
         // RB
        // carRB.isKinematic = false;
-        Debug.Log("U in the shit bruh");
 
         // Add delay to player being able to exit so player doesn't instantly leave off of enter input
         canExit = false;
@@ -227,7 +231,6 @@ public class CarController : NetworkBehaviour
 
             // RB
             //carController.carRB.isKinematic = false;
-            Debug.Log("U in the shit bruh");
 
             // Add delay to player being able to exit so player doesn't instantly leave off of enter input
             carController.canExit = false;

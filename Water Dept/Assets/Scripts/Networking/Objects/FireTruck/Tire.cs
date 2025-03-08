@@ -21,7 +21,7 @@ public class Tire : NetworkBehaviour
 
     //Acceleration variables
     private Vector3 accelerationForce;
-    public float topSpeed = 100;
+    public float topSpeed = 60;
     public float brakeStrength = 0.8f;
     private float frictionStrength = 0.3f;
 
@@ -100,7 +100,7 @@ public class Tire : NetworkBehaviour
             //Speed as float 0-1 based on how close to top speed
             float normalizedSpeed = Mathf.Clamp01(Mathf.Abs(carSpeed) / topSpeed);
 
-            float powerToTire = 1.0f * _accelerationInput; //change 1.0f to a lookup curve that uses normalizedSpeed
+            float powerToTire = PowerToTiresLookup(normalizedSpeed) * _accelerationInput; //change 1.0f to a lookup curve that uses normalizedSpeed
 
             accelerationForce = accelerationDirection * powerToTire;
         }
@@ -142,5 +142,17 @@ public class Tire : NetworkBehaviour
         float deltaVelocity = -steeringVelocity * tireGripFactor;
 
         steeringForce = steeringDirection * deltaVelocity;
+    }
+
+    private float PowerToTiresLookup(float _normalizedSpeed)
+    {
+        if (_normalizedSpeed < 0.5f)
+        {
+            return Mathf.Sqrt(_normalizedSpeed / 2) + 0.5f;
+        }
+        else
+        {
+            return 1.0f;
+        }
     }
 }
