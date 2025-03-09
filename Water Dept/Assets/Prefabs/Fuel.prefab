@@ -117,7 +117,7 @@ MonoBehaviour:
   _fuelRemaining: 0
   HeatSources: []
   burnOnAwake: 1
-  startFuel: 4
+  startFuel: 5
   heatResistance: 0
   heatStrength: 1
   heatBuffer: 0
@@ -215,6 +215,11 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 4269215873629458677, guid: ed0ec57b29d994745b54217131e7cfb8,
         type: 3}
+      propertyPath: playOnAwake
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 4269215873629458677, guid: ed0ec57b29d994745b54217131e7cfb8,
+        type: 3}
       propertyPath: InitialModule.startLifetime.scalar
       value: 1
       objectReference: {fileID: 0}
@@ -222,6 +227,11 @@ PrefabInstance:
         type: 3}
       propertyPath: lengthInSec
       value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 7981112598627152828, guid: ed0ec57b29d994745b54217131e7cfb8,
+        type: 3}
+      propertyPath: playOnAwake
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 7981112598627152828, guid: ed0ec57b29d994745b54217131e7cfb8,
         type: 3}

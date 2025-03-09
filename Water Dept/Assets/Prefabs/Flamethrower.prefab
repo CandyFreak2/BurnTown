@@ -104,7 +104,7 @@ GameObject:
   - component: {fileID: 1579977748051243662}
   - component: {fileID: 5875268049657550506}
   - component: {fileID: 7476817858956929214}
-  - component: {fileID: 7413121143772927428}
+  - component: {fileID: 1116310039190540832}
   m_Layer: 0
   m_Name: Flamethrower
   m_TagString: FireHoseHead
@@ -285,7 +285,7 @@ MonoBehaviour:
   NetworkedBehaviours:
   - {fileID: 5997422084245149722}
   - {fileID: 5875268049657550506}
-  - {fileID: 7413121143772927428}
+  - {fileID: 1116310039190540832}
   ForceRemoteRenderTimeframe: 0
 --- !u!114 &5997422084245149722
 MonoBehaviour:
@@ -401,7 +401,7 @@ MonoBehaviour:
   numberOfObjects: 100
   useRepoolDelay: 1
   repoolDelay: 20
---- !u!114 &7413121143772927428
+--- !u!114 &1116310039190540832
 MonoBehaviour:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
@@ -410,14 +410,20 @@ MonoBehaviour:
   m_GameObject: {fileID: 5953924477471692778}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 158639473, guid: e725a070cec140c4caffb81624c8c787, type: 3}
+  m_Script: {fileID: 11500000, guid: 0a591d221a634417e9827eb58e17de84, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
   _stateAuthorityChangeErrorCorrectionDelta: 0.15
-  SyncScale: 1
+  SyncScale: 0
   SyncParent: 1
-  _autoAOIOverride: 1
-  DisableSharedModeInterpolation: 0
+  _interpolationTarget: {fileID: 0}
+  UsePreciseRotation: 0
+  UseRenderSleepThresholds: 1
+  RenderThresholds:
+    UseEnergy: 1
+    Position: 0.01
+    Rotation: 0.01
+    Scale: 0.01
 --- !u!1 &6193447075105349618
 GameObject:
   m_ObjectHideFlags: 0
