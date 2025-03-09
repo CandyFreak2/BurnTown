@@ -5,6 +5,7 @@ public class ObjectPool : MonoBehaviour
 {
     public List<GameObject> pooledObjects;
     public GameObject objectTemplate;
+    [HideInInspector] public Transform objectPool;
     public int numberOfObjects;
     public bool useRepoolDelay = true;
     public float repoolDelay = 20.0f;
@@ -14,14 +15,17 @@ public class ObjectPool : MonoBehaviour
     private void Start()
     {
         pooledObjects = new List<GameObject>();
+        objectPool =  new GameObject("Object Pool").transform;
+        objectPool.parent = transform;
 
         for (int i = 0; i < numberOfObjects; i++)
         {
             GameObject obj = Instantiate(objectTemplate);
             obj.SetActive(false);
-            obj.AddComponent<PooledObject>();
-            obj.GetComponent<PooledObject>()._Pool = this;
-            obj.transform.parent = transform;
+            PooledObject pObj = obj.AddComponent<PooledObject>();
+            pObj._Pool = this;
+            pObj.SetPooling(useRepoolDelay, repoolDelay);
+            obj.transform.parent = objectPool;
             pooledObjects.Add(obj);
         }
     }

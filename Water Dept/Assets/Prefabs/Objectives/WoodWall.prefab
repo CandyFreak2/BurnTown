@@ -164,20 +164,24 @@ MonoBehaviour:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 3389213166802151147}
-  m_Enabled: 1
+  m_Enabled: 0
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: d687f89eee019c74e9f3e5c3d46719f7, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
   burnableScore: 150
+  _fuelRemaining: 0
+  HeatSources: []
+  burnOnAwake: 0
   startFuel: 15
-  spreadRate: 100
+  heatResistance: 0
+  heatStrength: 1
+  heatBuffer: 5
+  heartBeat: 2
   spreadRadius: 0
-  fireResistance: 600
-  damageRate: 0.1
   _nIsBurning: 0
-  isBurning: 0
   showsLerp: 1
   initialColor: {r: 0.41568628, g: 0.31764707, b: 0.17254902, a: 1}
   startColor: {r: 0.41568628, g: 0.31764707, b: 0.17254902, a: 1}
   endColor: {r: 1, g: 0, b: 0, a: 1}
+  onFireVFX: {fileID: 0}

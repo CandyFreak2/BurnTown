@@ -23,11 +23,11 @@ public class PooledObject : MonoBehaviour
     {
         CancelInvoke();
         gameObject.SetActive(false);
-        transform.parent = _Pool.transform;
+        transform.parent = _Pool.objectPool;
         gameObject.SetActive(false);
     }
 
-    public void SetState(bool _repool, float _repoolDelay)
+    public void SetPooling(bool _repool, float _repoolDelay)
     {
         repool = _repool;
         repoolDelay = _repoolDelay;
