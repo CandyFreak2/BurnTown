@@ -157506,6 +157506,11 @@ PrefabInstance:
       propertyPath: SortKey
       value: 1506837190
       objectReference: {fileID: 0}
+    - target: {fileID: 3432334790476556191, guid: da37d0d4cf3baf84594e695fb6cefe1a,
+        type: 3}
+      propertyPath: 'NetworkedBehaviours.Array.data[2]'
+      value: 
+      objectReference: {fileID: 0}
     - target: {fileID: 5875268049657550506, guid: da37d0d4cf3baf84594e695fb6cefe1a,
         type: 3}
       propertyPath: rayAccuracy
@@ -157706,7 +157711,8 @@ PrefabInstance:
       propertyPath: endPoint
       value: 
       objectReference: {fileID: 0}
-    m_RemovedComponents: []
+    m_RemovedComponents:
+    - {fileID: 1116310039190540832, guid: da37d0d4cf3baf84594e695fb6cefe1a, type: 3}
     m_RemovedGameObjects: []
     m_AddedGameObjects: []
     m_AddedComponents: []
