@@ -79,14 +79,20 @@ public class Flamethrower : NetworkBehaviour
 
             fuelTimer = 0f; 
 
-            //apply fire damage
-            if(hit.collider.TryGetComponent(out Burnable target))
+            //apply fire dammage to burnables
+            if(hit.collider.TryGetComponent(out Burnable burn))
             {
                 NetworkObject fuel = Runner.Spawn(fuelPrefab);
                 fuel.transform.position = hit.point;
                 fuel.transform.forward = -hit.normal;
 
                 fuelTimer = 0f;
+            }
+
+            //apply fire dammage to barrels
+            if(hit.collider.TryGetComponent(out BarrelInfo barrel))
+            {
+                barrel.Explode();
             }
 
             //apply decals

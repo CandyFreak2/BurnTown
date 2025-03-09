@@ -19172,12 +19172,13 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   burnOnAwake: 0
   burnableScore: 150
-  startFuel: 10
   _fuelRemaining: 0
   HeatSources: []
+  startFuel: 10
   heatResistance: 0
   heatStrength: 1
-  spreadDelay: 1
+  heatBuffer: 5
+  triggerDelay: 1
   spreadRadius: 5.5
   _nIsBurning: 0
   showsLerp: 1
@@ -21033,12 +21034,13 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   burnOnAwake: 0
   burnableScore: 150
-  startFuel: 10
   _fuelRemaining: 0
   HeatSources: []
+  startFuel: 10
   heatResistance: 0
   heatStrength: 1
-  spreadDelay: 1
+  heatBuffer: 5
+  triggerDelay: 1
   spreadRadius: 5.5
   _nIsBurning: 0
   showsLerp: 1
@@ -22239,12 +22241,13 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   burnOnAwake: 0
   burnableScore: 150
-  startFuel: 10
   _fuelRemaining: 0
   HeatSources: []
+  startFuel: 10
   heatResistance: 0
   heatStrength: 1
-  spreadDelay: 1
+  heatBuffer: 5
+  triggerDelay: 1
   spreadRadius: 5.5
   _nIsBurning: 0
   showsLerp: 1
@@ -23280,12 +23283,13 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   burnOnAwake: 0
   burnableScore: 150
-  startFuel: 10
   _fuelRemaining: 0
   HeatSources: []
+  startFuel: 10
   heatResistance: 0
   heatStrength: 1
-  spreadDelay: 1
+  heatBuffer: 5
+  triggerDelay: 1
   spreadRadius: 5.5
   _nIsBurning: 0
   showsLerp: 1
@@ -26005,12 +26009,13 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   burnOnAwake: 0
   burnableScore: 150
-  startFuel: 10
   _fuelRemaining: 0
   HeatSources: []
+  startFuel: 10
   heatResistance: 0
   heatStrength: 1
-  spreadDelay: 1
+  heatBuffer: 5
+  triggerDelay: 1
   spreadRadius: 5.5
   _nIsBurning: 0
   showsLerp: 1
@@ -29864,12 +29869,13 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   burnOnAwake: 0
   burnableScore: 150
-  startFuel: 10
   _fuelRemaining: 0
   HeatSources: []
+  startFuel: 10
   heatResistance: 0
   heatStrength: 1
-  spreadDelay: 1
+  heatBuffer: 5
+  triggerDelay: 1
   spreadRadius: 5.5
   _nIsBurning: 0
   showsLerp: 1
@@ -31625,12 +31631,13 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   burnOnAwake: 0
   burnableScore: 150
-  startFuel: 10
   _fuelRemaining: 0
   HeatSources: []
+  startFuel: 10
   heatResistance: 0
   heatStrength: 1
-  spreadDelay: 1
+  heatBuffer: 5
+  triggerDelay: 1
   spreadRadius: 5.5
   _nIsBurning: 0
   showsLerp: 1
@@ -33297,12 +33304,13 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   burnOnAwake: 0
   burnableScore: 150
-  startFuel: 10
   _fuelRemaining: 0
   HeatSources: []
+  startFuel: 10
   heatResistance: 0
   heatStrength: 1
-  spreadDelay: 1
+  heatBuffer: 5
+  triggerDelay: 1
   spreadRadius: 5.5
   _nIsBurning: 0
   showsLerp: 1
@@ -41958,12 +41966,13 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   burnOnAwake: 0
   burnableScore: 150
-  startFuel: 10
   _fuelRemaining: 0
   HeatSources: []
+  startFuel: 10
   heatResistance: 0
   heatStrength: 1
-  spreadDelay: 1
+  heatBuffer: 5
+  triggerDelay: 1
   spreadRadius: 5.5
   _nIsBurning: 0
   showsLerp: 1
@@ -64665,12 +64674,13 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   burnOnAwake: 0
   burnableScore: 150
-  startFuel: 10
   _fuelRemaining: 0
   HeatSources: []
+  startFuel: 10
   heatResistance: 0
   heatStrength: 1
-  spreadDelay: 1
+  heatBuffer: 5
+  triggerDelay: 1
   spreadRadius: 5.5
   _nIsBurning: 0
   showsLerp: 1
@@ -69758,6 +69768,105 @@ PrefabInstance:
     m_AddedGameObjects: []
     m_AddedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 870625944caa1a444865fface7be7146, type: 3}
+--- !u!1001 &855785948
+PrefabInstance:
+  m_ObjectHideFlags: 0
+  serializedVersion: 2
+  m_Modification:
+    serializedVersion: 3
+    m_TransformParent: {fileID: 1455386683}
+    m_Modifications:
+    - target: {fileID: 772804189910156240, guid: 0c766043ffd33e54fa8a888f0fba4bfe,
+        type: 3}
+      propertyPath: SortKey
+      value: 1220416880
+      objectReference: {fileID: 0}
+    - target: {fileID: 1462673451956636832, guid: 0c766043ffd33e54fa8a888f0fba4bfe,
+        type: 3}
+      propertyPath: SortKey
+      value: 2388961707
+      objectReference: {fileID: 0}
+    - target: {fileID: 1614090328699143526, guid: 0c766043ffd33e54fa8a888f0fba4bfe,
+        type: 3}
+      propertyPath: SortKey
+      value: 799848673
+      objectReference: {fileID: 0}
+    - target: {fileID: 2161613931768771680, guid: 0c766043ffd33e54fa8a888f0fba4bfe,
+        type: 3}
+      propertyPath: m_LocalPosition.x
+      value: 2.48
+      objectReference: {fileID: 0}
+    - target: {fileID: 2161613931768771680, guid: 0c766043ffd33e54fa8a888f0fba4bfe,
+        type: 3}
+      propertyPath: m_LocalPosition.y
+      value: -5.5689645
+      objectReference: {fileID: 0}
+    - target: {fileID: 2161613931768771680, guid: 0c766043ffd33e54fa8a888f0fba4bfe,
+        type: 3}
+      propertyPath: m_LocalPosition.z
+      value: -0.84
+      objectReference: {fileID: 0}
+    - target: {fileID: 2161613931768771680, guid: 0c766043ffd33e54fa8a888f0fba4bfe,
+        type: 3}
+      propertyPath: m_LocalRotation.w
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 2161613931768771680, guid: 0c766043ffd33e54fa8a888f0fba4bfe,
+        type: 3}
+      propertyPath: m_LocalRotation.x
+      value: -0
+      objectReference: {fileID: 0}
+    - target: {fileID: 2161613931768771680, guid: 0c766043ffd33e54fa8a888f0fba4bfe,
+        type: 3}
+      propertyPath: m_LocalRotation.y
+      value: -0
+      objectReference: {fileID: 0}
+    - target: {fileID: 2161613931768771680, guid: 0c766043ffd33e54fa8a888f0fba4bfe,
+        type: 3}
+      propertyPath: m_LocalRotation.z
+      value: -0
+      objectReference: {fileID: 0}
+    - target: {fileID: 2161613931768771680, guid: 0c766043ffd33e54fa8a888f0fba4bfe,
+        type: 3}
+      propertyPath: m_LocalEulerAnglesHint.x
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 2161613931768771680, guid: 0c766043ffd33e54fa8a888f0fba4bfe,
+        type: 3}
+      propertyPath: m_LocalEulerAnglesHint.y
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 2161613931768771680, guid: 0c766043ffd33e54fa8a888f0fba4bfe,
+        type: 3}
+      propertyPath: m_LocalEulerAnglesHint.z
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 5173689902066433234, guid: 0c766043ffd33e54fa8a888f0fba4bfe,
+        type: 3}
+      propertyPath: m_Name
+      value: Trash Pile (13)
+      objectReference: {fileID: 0}
+    - target: {fileID: 7017574267918145477, guid: 0c766043ffd33e54fa8a888f0fba4bfe,
+        type: 3}
+      propertyPath: SortKey
+      value: 1153235205
+      objectReference: {fileID: 0}
+    - target: {fileID: 8947828916428315507, guid: 0c766043ffd33e54fa8a888f0fba4bfe,
+        type: 3}
+      propertyPath: SortKey
+      value: 2272599627
+      objectReference: {fileID: 0}
+    m_RemovedComponents: []
+    m_RemovedGameObjects: []
+    m_AddedGameObjects: []
+    m_AddedComponents: []
+  m_SourcePrefab: {fileID: 100100000, guid: 0c766043ffd33e54fa8a888f0fba4bfe, type: 3}
+--- !u!4 &855785949 stripped
+Transform:
+  m_CorrespondingSourceObject: {fileID: 2161613931768771680, guid: 0c766043ffd33e54fa8a888f0fba4bfe,
+    type: 3}
+  m_PrefabInstance: {fileID: 855785948}
+  m_PrefabAsset: {fileID: 0}
 --- !u!1001 &856431820
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -77814,12 +77923,13 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   burnOnAwake: 0
   burnableScore: 150
-  startFuel: 10
   _fuelRemaining: 0
   HeatSources: []
+  startFuel: 10
   heatResistance: 0
   heatStrength: 1
-  spreadDelay: 1
+  heatBuffer: 5
+  triggerDelay: 1
   spreadRadius: 5.5
   _nIsBurning: 0
   showsLerp: 1
@@ -83454,12 +83564,13 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   burnOnAwake: 0
   burnableScore: 150
-  startFuel: 10
   _fuelRemaining: 0
   HeatSources: []
+  startFuel: 10
   heatResistance: 0
   heatStrength: 1
-  spreadDelay: 1
+  heatBuffer: 5
+  triggerDelay: 1
   spreadRadius: 5.5
   _nIsBurning: 0
   showsLerp: 1
@@ -84888,12 +84999,13 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   burnOnAwake: 0
   burnableScore: 150
-  startFuel: 10
   _fuelRemaining: 0
   HeatSources: []
+  startFuel: 10
   heatResistance: 0
   heatStrength: 1
-  spreadDelay: 1
+  heatBuffer: 5
+  triggerDelay: 1
   spreadRadius: 5.5
   _nIsBurning: 0
   showsLerp: 1
@@ -86955,6 +87067,105 @@ PrefabInstance:
       insertIndex: -1
       addedObject: {fileID: 1183790525}
   m_SourcePrefab: {fileID: 100100000, guid: 870625944caa1a444865fface7be7146, type: 3}
+--- !u!1001 &1120368761
+PrefabInstance:
+  m_ObjectHideFlags: 0
+  serializedVersion: 2
+  m_Modification:
+    serializedVersion: 3
+    m_TransformParent: {fileID: 1455386683}
+    m_Modifications:
+    - target: {fileID: 772804189910156240, guid: 0c766043ffd33e54fa8a888f0fba4bfe,
+        type: 3}
+      propertyPath: SortKey
+      value: 3407776020
+      objectReference: {fileID: 0}
+    - target: {fileID: 1462673451956636832, guid: 0c766043ffd33e54fa8a888f0fba4bfe,
+        type: 3}
+      propertyPath: SortKey
+      value: 281353551
+      objectReference: {fileID: 0}
+    - target: {fileID: 1614090328699143526, guid: 0c766043ffd33e54fa8a888f0fba4bfe,
+        type: 3}
+      propertyPath: SortKey
+      value: 2987207813
+      objectReference: {fileID: 0}
+    - target: {fileID: 2161613931768771680, guid: 0c766043ffd33e54fa8a888f0fba4bfe,
+        type: 3}
+      propertyPath: m_LocalPosition.x
+      value: -0.58
+      objectReference: {fileID: 0}
+    - target: {fileID: 2161613931768771680, guid: 0c766043ffd33e54fa8a888f0fba4bfe,
+        type: 3}
+      propertyPath: m_LocalPosition.y
+      value: -5.5689645
+      objectReference: {fileID: 0}
+    - target: {fileID: 2161613931768771680, guid: 0c766043ffd33e54fa8a888f0fba4bfe,
+        type: 3}
+      propertyPath: m_LocalPosition.z
+      value: 1.91
+      objectReference: {fileID: 0}
+    - target: {fileID: 2161613931768771680, guid: 0c766043ffd33e54fa8a888f0fba4bfe,
+        type: 3}
+      propertyPath: m_LocalRotation.w
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 2161613931768771680, guid: 0c766043ffd33e54fa8a888f0fba4bfe,
+        type: 3}
+      propertyPath: m_LocalRotation.x
+      value: -0
+      objectReference: {fileID: 0}
+    - target: {fileID: 2161613931768771680, guid: 0c766043ffd33e54fa8a888f0fba4bfe,
+        type: 3}
+      propertyPath: m_LocalRotation.y
+      value: -0
+      objectReference: {fileID: 0}
+    - target: {fileID: 2161613931768771680, guid: 0c766043ffd33e54fa8a888f0fba4bfe,
+        type: 3}
+      propertyPath: m_LocalRotation.z
+      value: -0
+      objectReference: {fileID: 0}
+    - target: {fileID: 2161613931768771680, guid: 0c766043ffd33e54fa8a888f0fba4bfe,
+        type: 3}
+      propertyPath: m_LocalEulerAnglesHint.x
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 2161613931768771680, guid: 0c766043ffd33e54fa8a888f0fba4bfe,
+        type: 3}
+      propertyPath: m_LocalEulerAnglesHint.y
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 2161613931768771680, guid: 0c766043ffd33e54fa8a888f0fba4bfe,
+        type: 3}
+      propertyPath: m_LocalEulerAnglesHint.z
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 5173689902066433234, guid: 0c766043ffd33e54fa8a888f0fba4bfe,
+        type: 3}
+      propertyPath: m_Name
+      value: Trash Pile (12)
+      objectReference: {fileID: 0}
+    - target: {fileID: 7017574267918145477, guid: 0c766043ffd33e54fa8a888f0fba4bfe,
+        type: 3}
+      propertyPath: SortKey
+      value: 3340594345
+      objectReference: {fileID: 0}
+    - target: {fileID: 8947828916428315507, guid: 0c766043ffd33e54fa8a888f0fba4bfe,
+        type: 3}
+      propertyPath: SortKey
+      value: 164991471
+      objectReference: {fileID: 0}
+    m_RemovedComponents: []
+    m_RemovedGameObjects: []
+    m_AddedGameObjects: []
+    m_AddedComponents: []
+  m_SourcePrefab: {fileID: 100100000, guid: 0c766043ffd33e54fa8a888f0fba4bfe, type: 3}
+--- !u!4 &1120368762 stripped
+Transform:
+  m_CorrespondingSourceObject: {fileID: 2161613931768771680, guid: 0c766043ffd33e54fa8a888f0fba4bfe,
+    type: 3}
+  m_PrefabInstance: {fileID: 1120368761}
+  m_PrefabAsset: {fileID: 0}
 --- !u!43 &1122763291
 Mesh:
   m_ObjectHideFlags: 0
@@ -105367,12 +105578,13 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   burnOnAwake: 0
   burnableScore: 150
-  startFuel: 10
   _fuelRemaining: 0
   HeatSources: []
+  startFuel: 10
   heatResistance: 0
   heatStrength: 1
-  spreadDelay: 1
+  heatBuffer: 5
+  triggerDelay: 1
   spreadRadius: 5.5
   _nIsBurning: 0
   showsLerp: 1
@@ -113007,12 +113219,13 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   burnOnAwake: 0
   burnableScore: 150
-  startFuel: 10
   _fuelRemaining: 0
   HeatSources: []
+  startFuel: 10
   heatResistance: 0
   heatStrength: 1
-  spreadDelay: 1
+  heatBuffer: 5
+  triggerDelay: 1
   spreadRadius: 5.5
   _nIsBurning: 0
   showsLerp: 1
@@ -113320,6 +113533,9 @@ Transform:
   m_ConstrainProportionsScale: 0
   m_Children:
   - {fileID: 1362272108}
+  - {fileID: 1869908691}
+  - {fileID: 1120368762}
+  - {fileID: 855785949}
   - {fileID: 1878423230}
   - {fileID: 1257815076}
   - {fileID: 1058411122}
@@ -117365,12 +117581,13 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   burnOnAwake: 0
   burnableScore: 150
-  startFuel: 10
   _fuelRemaining: 0
   HeatSources: []
+  startFuel: 10
   heatResistance: 0
   heatStrength: 1
-  spreadDelay: 1
+  heatBuffer: 5
+  triggerDelay: 1
   spreadRadius: 5.5
   _nIsBurning: 0
   showsLerp: 1
@@ -125411,12 +125628,13 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   burnOnAwake: 0
   burnableScore: 150
-  startFuel: 10
   _fuelRemaining: 0
   HeatSources: []
+  startFuel: 10
   heatResistance: 0
   heatStrength: 1
-  spreadDelay: 1
+  heatBuffer: 5
+  triggerDelay: 1
   spreadRadius: 5.5
   _nIsBurning: 0
   showsLerp: 1
@@ -143950,6 +144168,105 @@ PrefabInstance:
     m_AddedGameObjects: []
     m_AddedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 870625944caa1a444865fface7be7146, type: 3}
+--- !u!1001 &1869908690
+PrefabInstance:
+  m_ObjectHideFlags: 0
+  serializedVersion: 2
+  m_Modification:
+    serializedVersion: 3
+    m_TransformParent: {fileID: 1455386683}
+    m_Modifications:
+    - target: {fileID: 772804189910156240, guid: 0c766043ffd33e54fa8a888f0fba4bfe,
+        type: 3}
+      propertyPath: SortKey
+      value: 359609165
+      objectReference: {fileID: 0}
+    - target: {fileID: 1462673451956636832, guid: 0c766043ffd33e54fa8a888f0fba4bfe,
+        type: 3}
+      propertyPath: SortKey
+      value: 1528153992
+      objectReference: {fileID: 0}
+    - target: {fileID: 1614090328699143526, guid: 0c766043ffd33e54fa8a888f0fba4bfe,
+        type: 3}
+      propertyPath: SortKey
+      value: 4234008254
+      objectReference: {fileID: 0}
+    - target: {fileID: 2161613931768771680, guid: 0c766043ffd33e54fa8a888f0fba4bfe,
+        type: 3}
+      propertyPath: m_LocalPosition.x
+      value: -5.21
+      objectReference: {fileID: 0}
+    - target: {fileID: 2161613931768771680, guid: 0c766043ffd33e54fa8a888f0fba4bfe,
+        type: 3}
+      propertyPath: m_LocalPosition.y
+      value: -5.5689645
+      objectReference: {fileID: 0}
+    - target: {fileID: 2161613931768771680, guid: 0c766043ffd33e54fa8a888f0fba4bfe,
+        type: 3}
+      propertyPath: m_LocalPosition.z
+      value: 3.26
+      objectReference: {fileID: 0}
+    - target: {fileID: 2161613931768771680, guid: 0c766043ffd33e54fa8a888f0fba4bfe,
+        type: 3}
+      propertyPath: m_LocalRotation.w
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 2161613931768771680, guid: 0c766043ffd33e54fa8a888f0fba4bfe,
+        type: 3}
+      propertyPath: m_LocalRotation.x
+      value: -0
+      objectReference: {fileID: 0}
+    - target: {fileID: 2161613931768771680, guid: 0c766043ffd33e54fa8a888f0fba4bfe,
+        type: 3}
+      propertyPath: m_LocalRotation.y
+      value: -0
+      objectReference: {fileID: 0}
+    - target: {fileID: 2161613931768771680, guid: 0c766043ffd33e54fa8a888f0fba4bfe,
+        type: 3}
+      propertyPath: m_LocalRotation.z
+      value: -0
+      objectReference: {fileID: 0}
+    - target: {fileID: 2161613931768771680, guid: 0c766043ffd33e54fa8a888f0fba4bfe,
+        type: 3}
+      propertyPath: m_LocalEulerAnglesHint.x
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 2161613931768771680, guid: 0c766043ffd33e54fa8a888f0fba4bfe,
+        type: 3}
+      propertyPath: m_LocalEulerAnglesHint.y
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 2161613931768771680, guid: 0c766043ffd33e54fa8a888f0fba4bfe,
+        type: 3}
+      propertyPath: m_LocalEulerAnglesHint.z
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 5173689902066433234, guid: 0c766043ffd33e54fa8a888f0fba4bfe,
+        type: 3}
+      propertyPath: m_Name
+      value: Trash Pile (11)
+      objectReference: {fileID: 0}
+    - target: {fileID: 7017574267918145477, guid: 0c766043ffd33e54fa8a888f0fba4bfe,
+        type: 3}
+      propertyPath: SortKey
+      value: 292427490
+      objectReference: {fileID: 0}
+    - target: {fileID: 8947828916428315507, guid: 0c766043ffd33e54fa8a888f0fba4bfe,
+        type: 3}
+      propertyPath: SortKey
+      value: 1411791912
+      objectReference: {fileID: 0}
+    m_RemovedComponents: []
+    m_RemovedGameObjects: []
+    m_AddedGameObjects: []
+    m_AddedComponents: []
+  m_SourcePrefab: {fileID: 100100000, guid: 0c766043ffd33e54fa8a888f0fba4bfe, type: 3}
+--- !u!4 &1869908691 stripped
+Transform:
+  m_CorrespondingSourceObject: {fileID: 2161613931768771680, guid: 0c766043ffd33e54fa8a888f0fba4bfe,
+    type: 3}
+  m_PrefabInstance: {fileID: 1869908690}
+  m_PrefabAsset: {fileID: 0}
 --- !u!1001 &1870025194
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -146466,12 +146783,13 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   burnOnAwake: 0
   burnableScore: 150
-  startFuel: 10
   _fuelRemaining: 0
   HeatSources: []
+  startFuel: 10
   heatResistance: 0
   heatStrength: 1
-  spreadDelay: 1
+  heatBuffer: 5
+  triggerDelay: 1
   spreadRadius: 5.5
   _nIsBurning: 0
   showsLerp: 1
@@ -147976,12 +148294,13 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   burnOnAwake: 0
   burnableScore: 150
-  startFuel: 10
   _fuelRemaining: 0
   HeatSources: []
+  startFuel: 10
   heatResistance: 0
   heatStrength: 1
-  spreadDelay: 1
+  heatBuffer: 5
+  triggerDelay: 1
   spreadRadius: 5.5
   _nIsBurning: 0
   showsLerp: 1
@@ -152121,12 +152440,13 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   burnOnAwake: 0
   burnableScore: 150
-  startFuel: 10
   _fuelRemaining: 0
   HeatSources: []
+  startFuel: 10
   heatResistance: 0
   heatStrength: 1
-  spreadDelay: 1
+  heatBuffer: 5
+  triggerDelay: 1
   spreadRadius: 5.5
   _nIsBurning: 0
   showsLerp: 1
@@ -158887,12 +159207,13 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   burnOnAwake: 0
   burnableScore: 150
-  startFuel: 10
   _fuelRemaining: 0
   HeatSources: []
+  startFuel: 10
   heatResistance: 0
   heatStrength: 1
-  spreadDelay: 1
+  heatBuffer: 5
+  triggerDelay: 1
   spreadRadius: 5.5
   _nIsBurning: 0
   showsLerp: 1
@@ -160121,12 +160442,13 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   burnOnAwake: 0
   burnableScore: 150
-  startFuel: 10
   _fuelRemaining: 0
   HeatSources: []
+  startFuel: 10
   heatResistance: 0
   heatStrength: 1
-  spreadDelay: 1
+  heatBuffer: 5
+  triggerDelay: 1
   spreadRadius: 5.5
   _nIsBurning: 0
   showsLerp: 1
@@ -167399,12 +167721,13 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   burnOnAwake: 0
   burnableScore: 150
-  startFuel: 10
   _fuelRemaining: 0
   HeatSources: []
+  startFuel: 10
   heatResistance: 0
   heatStrength: 1
-  spreadDelay: 1
+  heatBuffer: 5
+  triggerDelay: 1
   spreadRadius: 5.5
   _nIsBurning: 0
   showsLerp: 1
@@ -169247,7 +169570,7 @@ PrefabInstance:
     - target: {fileID: 2161613931768771680, guid: 0c766043ffd33e54fa8a888f0fba4bfe,
         type: 3}
       propertyPath: m_LocalPosition.x
-      value: -11.134563
+      value: -9.58
       objectReference: {fileID: 0}
     - target: {fileID: 2161613931768771680, guid: 0c766043ffd33e54fa8a888f0fba4bfe,
         type: 3}
@@ -169257,7 +169580,7 @@ PrefabInstance:
     - target: {fileID: 2161613931768771680, guid: 0c766043ffd33e54fa8a888f0fba4bfe,
         type: 3}
       propertyPath: m_LocalPosition.z
-      value: 0.008115768
+      value: 3.82
       objectReference: {fileID: 0}
     - target: {fileID: 2161613931768771680, guid: 0c766043ffd33e54fa8a888f0fba4bfe,
         type: 3}
@@ -169469,6 +169792,11 @@ PrefabInstance:
         type: 3}
       propertyPath: m_Name
       value: Trash Pile 3
+      objectReference: {fileID: 0}
+    - target: {fileID: 4859601978218776830, guid: f3cd11cd5a87d624f8bf00c619ac845e,
+        type: 3}
+      propertyPath: burnOnAwake
+      value: 1
       objectReference: {fileID: 0}
     - target: {fileID: 7411377130561210162, guid: f3cd11cd5a87d624f8bf00c619ac845e,
         type: 3}

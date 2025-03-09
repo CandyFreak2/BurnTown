@@ -8,29 +8,44 @@ using static Fusion.NetworkBehaviour;
 
 public class Burnable : NetworkBehaviour
 {
-    public bool burnOnAwake = false;
 
     // SCORE
     [SerializeField] private int burnableScore = 3500;
     //SYSTEM HALF DESIGNED FOR POLYMORPHISM
     //NOT IMPLEMENTED YET, JUST CONCEPT TEST
 
-    [SerializeField] protected int startFuel = 10;
     [SerializeField, Networked] private int fuelRemaining { get; set; }
     public int CurrentHeat { get => GetCurrentHeat(); }
     public List<Burnable> HeatSources = new List<Burnable>();
-    [SerializeField] protected int heatResistance = 0;
-    [SerializeField] protected int heatStrength = 1;
 
-    [SerializeField] protected float spreadDelay = 1.0f;
-    [SerializeField] protected float spreadRadius = 10.0f;
+    [SerializeField, Tooltip("Does this object start on fire")]
+    protected bool burnOnAwake = false;
+
+    [SerializeField, Tooltip("The health of the object, takes damage from surrounding fire and itself")] 
+    protected int startFuel = 10;
+
+    [SerializeField, Tooltip("The level of heat required to do damage to this object")] 
+    protected int heatResistance = 0;
+
+    [SerializeField, Tooltip("The amount of heat damage this object does to others, only the highest is used")] 
+    protected int heatStrength = 1;
+
+    [SerializeField, Tooltip("Heatbuffer takes damage before fuel does")] 
+    protected int heatBuffer = 5;
+
+    [SerializeField, Tooltip("The delay between each damage and spread tick, sets the speed of the simulation, keep at 1 second ")] 
+    protected float triggerDelay = 1.0f;
+
+    [SerializeField, Tooltip("The radius the fire will spread")] 
+    protected float spreadRadius = 10.0f;
+
     private float spreadTimer = 0.0f;
 
     //networked vars are communicated and updated by networkbehaviors
     [Networked] public bool nIsBurning { get; set; }
     private bool isSpawned = false;
     [SerializeField] private bool showsLerp = true;
-
+    private bool overrideBurning;
     //prevents multiple fire sources from damaging an object separately
     //private float lockoutTimer = 0.0f;
     //private const float LOCKOUT_MAX_TIME = 1.0f;
@@ -42,12 +57,13 @@ public class Burnable : NetworkBehaviour
 
     //VFX
     [SerializeField] ParticleSystem onFireVFX;
+    bool stopEffects = false;
 
     public override void Spawned()
     {
         fuelRemaining = startFuel;
         isSpawned = true;
-        nIsBurning = burnOnAwake;
+        //nIsBurning = burnOnAwake;
 
         //used for tracking percentages
         if (showsLerp)
@@ -58,7 +74,7 @@ public class Burnable : NetworkBehaviour
 
     private void Start()
     {
-        
+        triggerDelay += Random.Range(-0.1f, 0.1f);
     }
 
     private void Update()
@@ -70,6 +86,7 @@ public class Burnable : NetworkBehaviour
     {
         HandleBurn();
     }
+    public void TriggerBurn() => overrideBurning = true;
 
     //changes obj color 
     private void handeColorLerp()
@@ -88,43 +105,52 @@ public class Burnable : NetworkBehaviour
         //temp
         spreadTimer += Time.fixedDeltaTime;
 
-        if(burnOnAwake)
+        if (spreadTimer < triggerDelay)
+            return;
+        spreadTimer = 0.0f;
+
+        if (burnOnAwake || overrideBurning)
             AddHeat(this);
 
         if(CurrentHeat > heatResistance)
         {
-            nIsBurning = true;
-            if(onFireVFX != null && !onFireVFX.isPlaying)
-                onFireVFX.Play();
+            TakeFireDamageTick();
+            if(heatBuffer <= 0)
+            {
+                nIsBurning = true;
+                if (onFireVFX != null && !onFireVFX.isPlaying)
+                    onFireVFX.Play();
+            }
         }
 
         if (nIsBurning && fuelRemaining > 0)
-        {
-            if (spreadTimer > spreadDelay)
-            {
-                TempSpread();
-                TakeFireDamageTick();
-                spreadTimer = 0.0f;
-            }
+            SpreadFire();
 
-        }
-        if (fuelRemaining <= 0)
+        if(fuelRemaining <= 1 && !stopEffects)
         {
+            stopEffects = true;
+
             //detatch VFX
             onFireVFX.transform.parent = null;
             onFireVFX.Stop();
-            Destroy(onFireVFX, onFireVFX.main.duration);
+            Destroy(onFireVFX.gameObject, onFireVFX.main.duration);
+        }
 
-            //disable obj
-            gameObject.SetActive(false);
+        if (fuelRemaining <= 0)
+        {
+            nIsBurning = false;
+
+            //despawn obj
             EventManager.BurnableDestroyed(burnableScore);
+            gameObject.SetActive(false);
             Runner.Despawn(Object);
         }
     }
 
+
     //gets an array of burnables in spread radius and damages them
     ///Gets the array of burnables in a radius and adds the source to them
-    private void TempSpread()
+    private void SpreadFire()
     {
         Collider[] objArr = Physics.OverlapSphere(gameObject.transform.position, spreadRadius);
         foreach (var obj in objArr)
@@ -174,8 +200,12 @@ public class Burnable : NetworkBehaviour
         if(CurrentHeat <= heatResistance)
             return;
 
-        int heatDamage = CurrentHeat - heatResistance;
-        fuelRemaining -= heatDamage;
+        int heatDamage = Mathf.Clamp(CurrentHeat - heatResistance, 0, 9999);
+
+        if(heatBuffer > 0)
+            heatBuffer -= heatDamage;
+        else
+            fuelRemaining -= heatDamage;
     }
 
     ///A function for taking damage from incoming fire sources (spisifically the player flamethrower) -James 03/08
@@ -191,7 +221,7 @@ public class Burnable : NetworkBehaviour
 
     private IEnumerator RemoveHeatSource(Burnable source)
     {
-        yield return new WaitForSeconds(1f);
+        yield return new WaitForSeconds(triggerDelay);
         RPC_RemoveHeat(Object.Id, source);
     }
 
