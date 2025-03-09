@@ -3281,94 +3281,6 @@ PrefabInstance:
     m_AddedGameObjects: []
     m_AddedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 870625944caa1a444865fface7be7146, type: 3}
---- !u!1001 &50439078
-PrefabInstance:
-  m_ObjectHideFlags: 0
-  serializedVersion: 2
-  m_Modification:
-    serializedVersion: 3
-    m_TransformParent: {fileID: 1812866000}
-    m_Modifications:
-    - target: {fileID: 122068770842325883, guid: dcffeeeeb26f0ab418336c2779f00a8c,
-        type: 3}
-      propertyPath: EmissionModule.rateOverTime.scalar
-      value: 1
-      objectReference: {fileID: 0}
-    - target: {fileID: 961762408205275243, guid: dcffeeeeb26f0ab418336c2779f00a8c,
-        type: 3}
-      propertyPath: m_Name
-      value: VFX_BoxFire_Small
-      objectReference: {fileID: 0}
-    - target: {fileID: 3827635482907629621, guid: dcffeeeeb26f0ab418336c2779f00a8c,
-        type: 3}
-      propertyPath: m_LocalScale.y
-      value: 0.62455
-      objectReference: {fileID: 0}
-    - target: {fileID: 3827635482907629621, guid: dcffeeeeb26f0ab418336c2779f00a8c,
-        type: 3}
-      propertyPath: m_LocalScale.z
-      value: 9.9438
-      objectReference: {fileID: 0}
-    - target: {fileID: 3827635482907629621, guid: dcffeeeeb26f0ab418336c2779f00a8c,
-        type: 3}
-      propertyPath: m_LocalPosition.x
-      value: 0
-      objectReference: {fileID: 0}
-    - target: {fileID: 3827635482907629621, guid: dcffeeeeb26f0ab418336c2779f00a8c,
-        type: 3}
-      propertyPath: m_LocalPosition.y
-      value: 0.48
-      objectReference: {fileID: 0}
-    - target: {fileID: 3827635482907629621, guid: dcffeeeeb26f0ab418336c2779f00a8c,
-        type: 3}
-      propertyPath: m_LocalPosition.z
-      value: 0
-      objectReference: {fileID: 0}
-    - target: {fileID: 3827635482907629621, guid: dcffeeeeb26f0ab418336c2779f00a8c,
-        type: 3}
-      propertyPath: m_LocalRotation.w
-      value: 1
-      objectReference: {fileID: 0}
-    - target: {fileID: 3827635482907629621, guid: dcffeeeeb26f0ab418336c2779f00a8c,
-        type: 3}
-      propertyPath: m_LocalRotation.x
-      value: 0
-      objectReference: {fileID: 0}
-    - target: {fileID: 3827635482907629621, guid: dcffeeeeb26f0ab418336c2779f00a8c,
-        type: 3}
-      propertyPath: m_LocalRotation.y
-      value: 0
-      objectReference: {fileID: 0}
-    - target: {fileID: 3827635482907629621, guid: dcffeeeeb26f0ab418336c2779f00a8c,
-        type: 3}
-      propertyPath: m_LocalRotation.z
-      value: 0
-      objectReference: {fileID: 0}
-    - target: {fileID: 3827635482907629621, guid: dcffeeeeb26f0ab418336c2779f00a8c,
-        type: 3}
-      propertyPath: m_LocalEulerAnglesHint.x
-      value: 0
-      objectReference: {fileID: 0}
-    - target: {fileID: 3827635482907629621, guid: dcffeeeeb26f0ab418336c2779f00a8c,
-        type: 3}
-      propertyPath: m_LocalEulerAnglesHint.y
-      value: 0
-      objectReference: {fileID: 0}
-    - target: {fileID: 3827635482907629621, guid: dcffeeeeb26f0ab418336c2779f00a8c,
-        type: 3}
-      propertyPath: m_LocalEulerAnglesHint.z
-      value: 0
-      objectReference: {fileID: 0}
-    - target: {fileID: 3827635482907629621, guid: dcffeeeeb26f0ab418336c2779f00a8c,
-        type: 3}
-      propertyPath: m_ConstrainProportionsScale
-      value: 0
-      objectReference: {fileID: 0}
-    m_RemovedComponents: []
-    m_RemovedGameObjects: []
-    m_AddedGameObjects: []
-    m_AddedComponents: []
-  m_SourcePrefab: {fileID: 100100000, guid: dcffeeeeb26f0ab418336c2779f00a8c, type: 3}
 --- !u!1001 &52069916
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -19170,15 +19082,14 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: d687f89eee019c74e9f3e5c3d46719f7, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  burnOnAwake: 0
   burnableScore: 150
   _fuelRemaining: 0
   HeatSources: []
+  burnOnAwake: 0
   startFuel: 10
   heatResistance: 0
   heatStrength: 1
   heatBuffer: 5
-  triggerDelay: 1
   spreadRadius: 5.5
   _nIsBurning: 0
   showsLerp: 1
@@ -21032,15 +20943,14 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: d687f89eee019c74e9f3e5c3d46719f7, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  burnOnAwake: 0
   burnableScore: 150
   _fuelRemaining: 0
   HeatSources: []
+  burnOnAwake: 0
   startFuel: 10
   heatResistance: 0
   heatStrength: 1
   heatBuffer: 5
-  triggerDelay: 1
   spreadRadius: 5.5
   _nIsBurning: 0
   showsLerp: 1
@@ -22239,15 +22149,14 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: d687f89eee019c74e9f3e5c3d46719f7, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  burnOnAwake: 0
   burnableScore: 150
   _fuelRemaining: 0
   HeatSources: []
+  burnOnAwake: 0
   startFuel: 10
   heatResistance: 0
   heatStrength: 1
   heatBuffer: 5
-  triggerDelay: 1
   spreadRadius: 5.5
   _nIsBurning: 0
   showsLerp: 1
@@ -23281,15 +23190,14 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: d687f89eee019c74e9f3e5c3d46719f7, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  burnOnAwake: 0
   burnableScore: 150
   _fuelRemaining: 0
   HeatSources: []
+  burnOnAwake: 0
   startFuel: 10
   heatResistance: 0
   heatStrength: 1
   heatBuffer: 5
-  triggerDelay: 1
   spreadRadius: 5.5
   _nIsBurning: 0
   showsLerp: 1
@@ -26007,15 +25915,14 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: d687f89eee019c74e9f3e5c3d46719f7, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  burnOnAwake: 0
   burnableScore: 150
   _fuelRemaining: 0
   HeatSources: []
+  burnOnAwake: 0
   startFuel: 10
   heatResistance: 0
   heatStrength: 1
   heatBuffer: 5
-  triggerDelay: 1
   spreadRadius: 5.5
   _nIsBurning: 0
   showsLerp: 1
@@ -29867,15 +29774,14 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: d687f89eee019c74e9f3e5c3d46719f7, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  burnOnAwake: 0
   burnableScore: 150
   _fuelRemaining: 0
   HeatSources: []
+  burnOnAwake: 0
   startFuel: 10
   heatResistance: 0
   heatStrength: 1
   heatBuffer: 5
-  triggerDelay: 1
   spreadRadius: 5.5
   _nIsBurning: 0
   showsLerp: 1
@@ -31629,15 +31535,14 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: d687f89eee019c74e9f3e5c3d46719f7, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  burnOnAwake: 0
   burnableScore: 150
   _fuelRemaining: 0
   HeatSources: []
+  burnOnAwake: 0
   startFuel: 10
   heatResistance: 0
   heatStrength: 1
   heatBuffer: 5
-  triggerDelay: 1
   spreadRadius: 5.5
   _nIsBurning: 0
   showsLerp: 1
@@ -33302,15 +33207,14 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: d687f89eee019c74e9f3e5c3d46719f7, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  burnOnAwake: 0
   burnableScore: 150
   _fuelRemaining: 0
   HeatSources: []
+  burnOnAwake: 0
   startFuel: 10
   heatResistance: 0
   heatStrength: 1
   heatBuffer: 5
-  triggerDelay: 1
   spreadRadius: 5.5
   _nIsBurning: 0
   showsLerp: 1
@@ -41964,15 +41868,14 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: d687f89eee019c74e9f3e5c3d46719f7, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  burnOnAwake: 0
   burnableScore: 150
   _fuelRemaining: 0
   HeatSources: []
+  burnOnAwake: 0
   startFuel: 10
   heatResistance: 0
   heatStrength: 1
   heatBuffer: 5
-  triggerDelay: 1
   spreadRadius: 5.5
   _nIsBurning: 0
   showsLerp: 1
@@ -64672,15 +64575,14 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: d687f89eee019c74e9f3e5c3d46719f7, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  burnOnAwake: 0
   burnableScore: 150
   _fuelRemaining: 0
   HeatSources: []
+  burnOnAwake: 0
   startFuel: 10
   heatResistance: 0
   heatStrength: 1
   heatBuffer: 5
-  triggerDelay: 1
   spreadRadius: 5.5
   _nIsBurning: 0
   showsLerp: 1
@@ -67025,18 +66927,6 @@ PrefabInstance:
     m_AddedGameObjects: []
     m_AddedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 870625944caa1a444865fface7be7146, type: 3}
---- !u!4 &819850761 stripped
-Transform:
-  m_CorrespondingSourceObject: {fileID: 3827635482907629621, guid: dcffeeeeb26f0ab418336c2779f00a8c,
-    type: 3}
-  m_PrefabInstance: {fileID: 50439078}
-  m_PrefabAsset: {fileID: 0}
---- !u!198 &819850763 stripped
-ParticleSystem:
-  m_CorrespondingSourceObject: {fileID: 122068770842325883, guid: dcffeeeeb26f0ab418336c2779f00a8c,
-    type: 3}
-  m_PrefabInstance: {fileID: 50439078}
-  m_PrefabAsset: {fileID: 0}
 --- !u!1001 &821351863
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -77921,15 +77811,14 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: d687f89eee019c74e9f3e5c3d46719f7, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  burnOnAwake: 0
   burnableScore: 150
   _fuelRemaining: 0
   HeatSources: []
+  burnOnAwake: 0
   startFuel: 10
   heatResistance: 0
   heatStrength: 1
   heatBuffer: 5
-  triggerDelay: 1
   spreadRadius: 5.5
   _nIsBurning: 0
   showsLerp: 1
@@ -83562,15 +83451,14 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: d687f89eee019c74e9f3e5c3d46719f7, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  burnOnAwake: 0
   burnableScore: 150
   _fuelRemaining: 0
   HeatSources: []
+  burnOnAwake: 0
   startFuel: 10
   heatResistance: 0
   heatStrength: 1
   heatBuffer: 5
-  triggerDelay: 1
   spreadRadius: 5.5
   _nIsBurning: 0
   showsLerp: 1
@@ -84997,15 +84885,14 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: d687f89eee019c74e9f3e5c3d46719f7, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  burnOnAwake: 0
   burnableScore: 150
   _fuelRemaining: 0
   HeatSources: []
+  burnOnAwake: 0
   startFuel: 10
   heatResistance: 0
   heatStrength: 1
   heatBuffer: 5
-  triggerDelay: 1
   spreadRadius: 5.5
   _nIsBurning: 0
   showsLerp: 1
@@ -105576,15 +105463,14 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: d687f89eee019c74e9f3e5c3d46719f7, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  burnOnAwake: 0
   burnableScore: 150
   _fuelRemaining: 0
   HeatSources: []
+  burnOnAwake: 0
   startFuel: 10
   heatResistance: 0
   heatStrength: 1
   heatBuffer: 5
-  triggerDelay: 1
   spreadRadius: 5.5
   _nIsBurning: 0
   showsLerp: 1
@@ -113217,15 +113103,14 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: d687f89eee019c74e9f3e5c3d46719f7, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  burnOnAwake: 0
   burnableScore: 150
   _fuelRemaining: 0
   HeatSources: []
+  burnOnAwake: 0
   startFuel: 10
   heatResistance: 0
   heatStrength: 1
   heatBuffer: 5
-  triggerDelay: 1
   spreadRadius: 5.5
   _nIsBurning: 0
   showsLerp: 1
@@ -117579,15 +117464,14 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: d687f89eee019c74e9f3e5c3d46719f7, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  burnOnAwake: 0
   burnableScore: 150
   _fuelRemaining: 0
   HeatSources: []
+  burnOnAwake: 0
   startFuel: 10
   heatResistance: 0
   heatStrength: 1
   heatBuffer: 5
-  triggerDelay: 1
   spreadRadius: 5.5
   _nIsBurning: 0
   showsLerp: 1
@@ -125626,15 +125510,14 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: d687f89eee019c74e9f3e5c3d46719f7, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  burnOnAwake: 0
   burnableScore: 150
   _fuelRemaining: 0
   HeatSources: []
+  burnOnAwake: 0
   startFuel: 10
   heatResistance: 0
   heatStrength: 1
   heatBuffer: 5
-  triggerDelay: 1
   spreadRadius: 5.5
   _nIsBurning: 0
   showsLerp: 1
@@ -139348,21 +139231,6 @@ PrefabInstance:
       propertyPath: m_Name
       value: WoodWall (1)
       objectReference: {fileID: 0}
-    - target: {fileID: 6192657797160081394, guid: 0f50ae542c4e0484c9137813faec2810,
-        type: 3}
-      propertyPath: onFireVFX
-      value: 
-      objectReference: {fileID: 819850763}
-    - target: {fileID: 6192657797160081394, guid: 0f50ae542c4e0484c9137813faec2810,
-        type: 3}
-      propertyPath: spreadRate
-      value: 1
-      objectReference: {fileID: 0}
-    - target: {fileID: 6192657797160081394, guid: 0f50ae542c4e0484c9137813faec2810,
-        type: 3}
-      propertyPath: heatResistance
-      value: 0
-      objectReference: {fileID: 0}
     - target: {fileID: 7070302226826673100, guid: 0f50ae542c4e0484c9137813faec2810,
         type: 3}
       propertyPath: SortKey
@@ -139370,11 +139238,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
-    m_AddedGameObjects:
-    - targetCorrespondingSourceObject: {fileID: 2116483395508810862, guid: 0f50ae542c4e0484c9137813faec2810,
-        type: 3}
-      insertIndex: -1
-      addedObject: {fileID: 819850761}
+    m_AddedGameObjects: []
     m_AddedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 0f50ae542c4e0484c9137813faec2810, type: 3}
 --- !u!4 &1812866000 stripped
@@ -146781,15 +146645,14 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: d687f89eee019c74e9f3e5c3d46719f7, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  burnOnAwake: 0
   burnableScore: 150
   _fuelRemaining: 0
   HeatSources: []
+  burnOnAwake: 0
   startFuel: 10
   heatResistance: 0
   heatStrength: 1
   heatBuffer: 5
-  triggerDelay: 1
   spreadRadius: 5.5
   _nIsBurning: 0
   showsLerp: 1
@@ -148292,15 +148155,14 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: d687f89eee019c74e9f3e5c3d46719f7, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  burnOnAwake: 0
   burnableScore: 150
   _fuelRemaining: 0
   HeatSources: []
+  burnOnAwake: 0
   startFuel: 10
   heatResistance: 0
   heatStrength: 1
   heatBuffer: 5
-  triggerDelay: 1
   spreadRadius: 5.5
   _nIsBurning: 0
   showsLerp: 1
@@ -152438,15 +152300,14 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: d687f89eee019c74e9f3e5c3d46719f7, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  burnOnAwake: 0
   burnableScore: 150
   _fuelRemaining: 0
   HeatSources: []
+  burnOnAwake: 0
   startFuel: 10
   heatResistance: 0
   heatStrength: 1
   heatBuffer: 5
-  triggerDelay: 1
   spreadRadius: 5.5
   _nIsBurning: 0
   showsLerp: 1
@@ -157600,15 +157461,75 @@ PrefabInstance:
       propertyPath: m_LocalEulerAnglesHint.z
       value: 0
       objectReference: {fileID: 0}
+    - target: {fileID: 2040343409374755601, guid: da37d0d4cf3baf84594e695fb6cefe1a,
+        type: 3}
+      propertyPath: m_LocalScale.x
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 2040343409374755601, guid: da37d0d4cf3baf84594e695fb6cefe1a,
+        type: 3}
+      propertyPath: m_LocalScale.y
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 2040343409374755601, guid: da37d0d4cf3baf84594e695fb6cefe1a,
+        type: 3}
+      propertyPath: m_LocalScale.z
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 2040343409374755601, guid: da37d0d4cf3baf84594e695fb6cefe1a,
+        type: 3}
+      propertyPath: m_LocalPosition.y
+      value: 0.26
+      objectReference: {fileID: 0}
+    - target: {fileID: 2040343409374755601, guid: da37d0d4cf3baf84594e695fb6cefe1a,
+        type: 3}
+      propertyPath: m_LocalPosition.z
+      value: 6.21
+      objectReference: {fileID: 0}
+    - target: {fileID: 2718493701278218693, guid: da37d0d4cf3baf84594e695fb6cefe1a,
+        type: 3}
+      propertyPath: m_Height
+      value: 8
+      objectReference: {fileID: 0}
+    - target: {fileID: 2718493701278218693, guid: da37d0d4cf3baf84594e695fb6cefe1a,
+        type: 3}
+      propertyPath: m_Radius
+      value: 0.2
+      objectReference: {fileID: 0}
+    - target: {fileID: 2728231644651137783, guid: da37d0d4cf3baf84594e695fb6cefe1a,
+        type: 3}
+      propertyPath: m_IsActive
+      value: 1
+      objectReference: {fileID: 0}
     - target: {fileID: 3432334790476556191, guid: da37d0d4cf3baf84594e695fb6cefe1a,
         type: 3}
       propertyPath: SortKey
       value: 1506837190
       objectReference: {fileID: 0}
+    - target: {fileID: 3432334790476556191, guid: da37d0d4cf3baf84594e695fb6cefe1a,
+        type: 3}
+      propertyPath: 'NetworkedBehaviours.Array.data[2]'
+      value: 
+      objectReference: {fileID: 0}
+    - target: {fileID: 5875268049657550506, guid: da37d0d4cf3baf84594e695fb6cefe1a,
+        type: 3}
+      propertyPath: rayAccuracy
+      value: 20
+      objectReference: {fileID: 0}
     - target: {fileID: 5953924477471692778, guid: da37d0d4cf3baf84594e695fb6cefe1a,
         type: 3}
       propertyPath: m_Name
-      value: FireHose
+      value: Flamethrower
+      objectReference: {fileID: 0}
+    - target: {fileID: 5997422084245149722, guid: da37d0d4cf3baf84594e695fb6cefe1a,
+        type: 3}
+      propertyPath: holdOffset.x
+      value: 0.2
+      objectReference: {fileID: 0}
+    - target: {fileID: 5997422084245149722, guid: da37d0d4cf3baf84594e695fb6cefe1a,
+        type: 3}
+      propertyPath: holdOffset.y
+      value: 1.2
       objectReference: {fileID: 0}
     - target: {fileID: 2107730186189465194, guid: fa27aca4b8e13dc448c41e74e7c0b108,
         type: 3}
@@ -157790,7 +157711,8 @@ PrefabInstance:
       propertyPath: endPoint
       value: 
       objectReference: {fileID: 0}
-    m_RemovedComponents: []
+    m_RemovedComponents:
+    - {fileID: 1116310039190540832, guid: da37d0d4cf3baf84594e695fb6cefe1a, type: 3}
     m_RemovedGameObjects: []
     m_AddedGameObjects: []
     m_AddedComponents: []
@@ -159205,15 +159127,14 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: d687f89eee019c74e9f3e5c3d46719f7, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  burnOnAwake: 0
   burnableScore: 150
   _fuelRemaining: 0
   HeatSources: []
+  burnOnAwake: 0
   startFuel: 10
   heatResistance: 0
   heatStrength: 1
   heatBuffer: 5
-  triggerDelay: 1
   spreadRadius: 5.5
   _nIsBurning: 0
   showsLerp: 1
@@ -160440,15 +160361,14 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: d687f89eee019c74e9f3e5c3d46719f7, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  burnOnAwake: 0
   burnableScore: 150
   _fuelRemaining: 0
   HeatSources: []
+  burnOnAwake: 0
   startFuel: 10
   heatResistance: 0
   heatStrength: 1
   heatBuffer: 5
-  triggerDelay: 1
   spreadRadius: 5.5
   _nIsBurning: 0
   showsLerp: 1
@@ -167719,15 +167639,14 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: d687f89eee019c74e9f3e5c3d46719f7, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  burnOnAwake: 0
   burnableScore: 150
   _fuelRemaining: 0
   HeatSources: []
+  burnOnAwake: 0
   startFuel: 10
   heatResistance: 0
   heatStrength: 1
   heatBuffer: 5
-  triggerDelay: 1
   spreadRadius: 5.5
   _nIsBurning: 0
   showsLerp: 1
@@ -169792,6 +169711,11 @@ PrefabInstance:
         type: 3}
       propertyPath: m_Name
       value: Trash Pile 3
+      objectReference: {fileID: 0}
+    - target: {fileID: 4859601978218776830, guid: f3cd11cd5a87d624f8bf00c619ac845e,
+        type: 3}
+      propertyPath: m_Enabled
+      value: 1
       objectReference: {fileID: 0}
     - target: {fileID: 4859601978218776830, guid: f3cd11cd5a87d624f8bf00c619ac845e,
         type: 3}

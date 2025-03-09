@@ -9,28 +9,31 @@ public class Flamethrower : NetworkBehaviour
 {
     [Networked] private NetworkBool isShooting { get; set; }
 
-    //fuel
+    [Header("Fuel")]
     [SerializeField] GameObject fuelPrefab;
     [SerializeField] float fuelSpawnDelay = 0.2f;
     float fuelTimer;
 
-    //raycast
+    [Header("Raycast")]
     [SerializeField] Transform raySource;
     [SerializeField] float rayAccuracy;
     [SerializeField] float rayDistance;
     [SerializeField] LayerMask rayMask;
 
-    //tween
-    Tween activeTween;
+
+    [Header("Tween")]
     [SerializeField] float tweenDuration;
     [SerializeField] Vector3 tweenMagnatude;
     [SerializeField] int tweenVibrato;
+    Tween activeTween;
 
-    //vfx
+    [Header("VFX")]
     [SerializeField] private ParticleSystem VFX_Flame;
     [SerializeField] private ObjectPool decalPool;
+    [SerializeField] float decalSpawnDelay = 0.2f;
+    float decalTimer;
 
-    //audio
+    [Header("Audio")]
     [SerializeField] AudioProfile audioProfile;
     [Serializable] private class AudioProfile
     {
@@ -65,6 +68,7 @@ public class Flamethrower : NetworkBehaviour
             return;
 
         fuelTimer += Time.fixedDeltaTime;
+        decalTimer += Time.fixedDeltaTime;
 
         //give a random accuracy for this shot,      //will desync the players... ikd 
         raySource.localRotation = Quaternion.identity;
@@ -74,19 +78,16 @@ public class Flamethrower : NetworkBehaviour
         //ray cast the shot
         if (Physics.Raycast(raySource.position, raySource.forward, out RaycastHit hit, rayDistance, rayMask))
         {
-            if (fuelTimer < fuelSpawnDelay)
-                return;
-
-            fuelTimer = 0f; 
-
-            //apply fire dammage to burnables
-            if(hit.collider.TryGetComponent(out Burnable burn))
+            if (fuelTimer > fuelSpawnDelay)
             {
-                NetworkObject fuel = Runner.Spawn(fuelPrefab);
-                fuel.transform.position = hit.point;
-                fuel.transform.forward = -hit.normal;
-
-                fuelTimer = 0f;
+                //apply fire dammage to burnables
+                if (hit.collider.TryGetComponent(out Burnable burn))
+                {
+                    NetworkObject fuel = Runner.Spawn(fuelPrefab);
+                    fuel.transform.position = hit.point;
+                    fuel.transform.forward = -hit.normal;
+                    fuelTimer = 0f;
+                }
             }
 
             //apply fire dammage to barrels
@@ -95,10 +96,15 @@ public class Flamethrower : NetworkBehaviour
                 barrel.Explode();
             }
 
-            //apply decals
-            Transform decal = decalPool.GetPooledObject().transform;
-            decal.position = hit.point;
-            decal.forward = -hit.normal;
+            if(decalTimer > decalSpawnDelay)
+            {
+                //apply decals
+                Transform decal = decalPool.GetPooledObject().transform;
+                decal.position = hit.point;
+                decal.forward = -hit.normal;
+                decalTimer = 0f;
+            }
+
         }
     }
 

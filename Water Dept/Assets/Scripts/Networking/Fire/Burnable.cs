@@ -9,11 +9,12 @@ using static Fusion.NetworkBehaviour;
 public class Burnable : NetworkBehaviour
 {
 
-    // SCORE
+    [Header("Score")]
     [SerializeField] private int burnableScore = 3500;
     //SYSTEM HALF DESIGNED FOR POLYMORPHISM
     //NOT IMPLEMENTED YET, JUST CONCEPT TEST
 
+    [Header("Burning Effects")]
     [SerializeField, Networked] private int fuelRemaining { get; set; }
     public int CurrentHeat { get => GetCurrentHeat(); }
     public List<Burnable> HeatSources = new List<Burnable>();
@@ -33,8 +34,8 @@ public class Burnable : NetworkBehaviour
     [SerializeField, Tooltip("Heatbuffer takes damage before fuel does")] 
     protected int heatBuffer = 5;
 
-    [SerializeField, Tooltip("The delay between each damage and spread tick, sets the speed of the simulation, keep at 1 second ")] 
-    protected float triggerDelay = 1.0f;
+    [SerializeField, Tooltip("The delay between each damage and spread tick, low numbers may cause server lag")] 
+    protected static int heartBeat = 1;
 
     [SerializeField, Tooltip("The radius the fire will spread")] 
     protected float spreadRadius = 10.0f;
@@ -42,109 +43,84 @@ public class Burnable : NetworkBehaviour
     private float spreadTimer = 0.0f;
 
     //networked vars are communicated and updated by networkbehaviors
+    [Header("Network")]
     [Networked] public bool nIsBurning { get; set; }
-    private bool isSpawned = false;
-    [SerializeField] private bool showsLerp = true;
-    private bool overrideBurning;
-    //prevents multiple fire sources from damaging an object separately
-    //private float lockoutTimer = 0.0f;
-    //private const float LOCKOUT_MAX_TIME = 1.0f;
+    bool startedBurning = false;
+    bool stoppedBurning = false;
 
-    //colors
+    private bool isSpawned = false;
+
+    [Header("Colors")]
+    [SerializeField] private bool showsLerp = true;
     [SerializeField] private Color initialColor = Color.green;
     [SerializeField] private Color startColor = Color.yellow;
     [SerializeField] private Color endColor = Color.red;
+    private Renderer render;
 
-    //VFX
+    [Header("VFX")]
     [SerializeField] ParticleSystem onFireVFX;
-    bool stopEffects = false;
+
 
     public override void Spawned()
     {
         fuelRemaining = startFuel;
         isSpawned = true;
-        //nIsBurning = burnOnAwake;
+        nIsBurning = burnOnAwake;
 
         //used for tracking percentages
         if (showsLerp)
         {
-            gameObject.GetComponent<Renderer>().material.color = initialColor;
+            render = GetComponent<Renderer>();
+            render.material.color = initialColor;
         }
-    }
-
-    private void Start()
-    {
-        triggerDelay += Random.Range(-0.1f, 0.1f);
     }
 
     private void Update()
     {
-        handeColorLerp();
+        Effects();
     }
 
     public override void FixedUpdateNetwork()
     {
         HandleBurn();
     }
-    public void TriggerBurn() => overrideBurning = true;
+
 
     //changes obj color 
-    private void handeColorLerp()
+    private void Effects()
     {
         if (isSpawned && nIsBurning)
         {
             //lerp between start and end color based on % of fuel remaining
-            gameObject.GetComponent<Renderer>().material.color = Color.Lerp(endColor, startColor, ((float)fuelRemaining / (float)startFuel));
+            if(showsLerp)
+                render.material.color = Color.Lerp(endColor, startColor, ((float)fuelRemaining / (float)startFuel));
         }
     }
 
-    // Checks if burning object is on fire and burns it and spreads fire
+    //Checks if burning object is on fire and burns it and spreads fire
     //Destroys object if no more fuel
     private void HandleBurn()
     {
-        //temp
         spreadTimer += Time.fixedDeltaTime;
 
-        if (spreadTimer < triggerDelay)
+        if (spreadTimer < heartBeat)
             return;
+
         spreadTimer = 0.0f;
 
-        if (burnOnAwake || overrideBurning)
-            AddHeat(this);
-
-        if(CurrentHeat > heatResistance)
-        {
-            TakeFireDamageTick();
-            if(heatBuffer <= 0)
-            {
-                nIsBurning = true;
-                if (onFireVFX != null && !onFireVFX.isPlaying)
-                    onFireVFX.Play();
-            }
-        }
-
         if (nIsBurning && fuelRemaining > 0)
+        {
+            AddHeat(this);
             SpreadFire();
-
-        if(fuelRemaining <= 1 && !stopEffects)
-        {
-            stopEffects = true;
-
-            //detatch VFX
-            onFireVFX.transform.parent = null;
-            onFireVFX.Stop();
-            Destroy(onFireVFX.gameObject, onFireVFX.main.duration);
         }
 
-        if (fuelRemaining <= 0)
-        {
-            nIsBurning = false;
+        TakeFireDamageTick();
 
-            //despawn obj
-            EventManager.BurnableDestroyed(burnableScore);
-            gameObject.SetActive(false);
-            Runner.Despawn(Object);
-        }
+        if(!startedBurning && heatBuffer <= 0 && fuelRemaining < startFuel)
+            RPC_BurningStarted();
+
+        if (!stoppedBurning && fuelRemaining <= 0)
+            RPC_BurningStopped();
     }
 
 
@@ -158,10 +134,142 @@ public class Burnable : NetworkBehaviour
             if (obj.TryGetComponent(out Burnable target))
             {
                 //DealFireDamage(obj.GetComponent<Burnable>());
+                target.enabled = true;
                 target.AddHeat(Runner.FindObject(Object.Id).GetComponent<Burnable>());
             }
         }
     }
+
+    
+
+    private void TakeFireDamageTick()
+    {
+        //Debug.Log(gameObject.name + "'s current heat is " + CurrentHeat);
+        if(CurrentHeat <= heatResistance)
+            return;
+
+        int heatDamage = Mathf.Clamp(CurrentHeat - heatResistance, 0, 9999) * heartBeat;
+
+        if(heatBuffer > 0)
+            heatBuffer -= heatDamage;
+        else
+            fuelRemaining -= heatDamage;
+    }
+    int GetCurrentHeat()
+    {
+        int heat = 0;
+
+        //sets heat to the hottest current object
+        foreach (Burnable hs in HeatSources)
+            if (hs.heatStrength > heat)
+                heat = hs.heatStrength;
+
+        return heat;
+    }
+
+    ///A function for taking damage from incoming fire sources -James 03/08
+    public void AddHeat(Burnable source)
+    {
+        if(!HeatSources.Contains(source))
+        {
+            //Debug.Log("Adding heat source");
+            RPC_AddHeat(Object.Id, source);
+            StartCoroutine(RemoveHeat(source));
+        }
+    }
+
+    private IEnumerator RemoveHeat(Burnable source)
+    {
+        yield return new WaitForSeconds(heartBeat + 1);
+        RPC_RemoveHeat(Object.Id, source);
+    }
+
+
+    /// Tell everyone to add the new heatsource to their lists
+    [Rpc(RpcSources.All, RpcTargets.All)] // Run by everyone
+    private void RPC_AddHeat(NetworkId _objID, Burnable source)
+    {
+        Burnable target = Runner.FindObject(_objID).GetComponent<Burnable>();
+        target.HeatSources.Add(source);
+    }
+
+
+    /// Tell everyone that the heat source has expired
+    [Rpc(RpcSources.All, RpcTargets.All)] // Run by everyone
+    private void RPC_RemoveHeat(NetworkId _objID, Burnable source)
+    {
+        Burnable target = Runner.FindObject(_objID).GetComponent<Burnable>();
+        target.HeatSources.Remove(source);
+    }
+
+    public void TriggerBurn() => RPC_TrigggerBurn(Object.Id);
+    [Rpc(RpcSources.All, RpcTargets.All)]
+    private void RPC_TrigggerBurn(NetworkId _objID)
+    {
+        Burnable target = Runner.FindObject(_objID).GetComponent<Burnable>();
+        target.nIsBurning = true;
+    }
+
+
+    [Rpc(RpcSources.All, RpcTargets.All)] 
+    private void RPC_BurningStarted() => Runner.FindObject(Object.Id)?.GetComponent<Burnable>().BurningStarted();
+    private void BurningStarted() //do not call, use RPC
+    {
+        startedBurning = true;
+        nIsBurning = true;
+        onFireVFX.Play();
+    }
+
+
+    [Rpc(RpcSources.All, RpcTargets.All)] 
+    private void RPC_BurningStopped() => Runner.FindObject(Object.Id)?.GetComponent<Burnable>().BurningStopped();
+    private void BurningStopped() //do not call, use RPC
+    {
+        stoppedBurning = true;
+
+        //detatch VFX
+        onFireVFX.Stop();
+        Destroy(onFireVFX.gameObject, 10); //magic 10, VFX should be stopped and destroyed waaaaaayyy after they're done, but it's hard to tell when that is
+        onFireVFX.transform.parent = null;
+
+        nIsBurning = false;
+
+        //it's annoying to have to delay this but the client fucks up without it. We should avoid removing objects from scene in the future
+        Invoke("Despawn", 0.5f);
+    }
+
+    private void Despawn()
+    {
+        //despawn obj 
+        EventManager.BurnableDestroyed(burnableScore);
+        gameObject.SetActive(false);
+        Runner.Despawn(Object);
+    }
+
+    public bool GetDisabled(float _disabledPercent)
+    {
+        return _disabledPercent > fuelRemaining / startFuel;
+    }
+
+    /// removed, for flamethrower reworks -James 03\08
+    /*
+    private void OnTriggerEnter(Collider other)
+    {
+        if (other.tag == "Flame")
+        {
+            nIsBurning = true;
+        }
+    }
+
+    // continually burning makes it burn faster based on its damageRate (applied every update)
+    private void OnTriggerStay(Collider other)
+    {
+        if (other.tag == "Flame" && nIsBurning)
+        {
+            fuelRemaining = fuelRemaining - damageRate;
+        }
+    }
+    */
 
     /// Oh boy, this was alot to wrap my head arround, but I think I get it... Gotta make a way for the flamethrower to effect this -James 03/08
     //handles damage/burn, goes through fire resistance first
@@ -194,88 +302,7 @@ public class Burnable : NetworkBehaviour
 
     }*/
 
-    private void TakeFireDamageTick()
-    {
-        //Debug.Log(gameObject.name + "'s current heat is " + CurrentHeat);
-        if(CurrentHeat <= heatResistance)
-            return;
-
-        int heatDamage = Mathf.Clamp(CurrentHeat - heatResistance, 0, 9999);
-
-        if(heatBuffer > 0)
-            heatBuffer -= heatDamage;
-        else
-            fuelRemaining -= heatDamage;
-    }
-
-    ///A function for taking damage from incoming fire sources (spisifically the player flamethrower) -James 03/08
-    public void AddHeat(Burnable source)
-    {
-        if(!HeatSources.Contains(source))
-        {
-            //Debug.Log("Adding heat source");
-            RPC_AddHeat(Object.Id, source);
-            StartCoroutine(RemoveHeatSource(source));
-        }
-    }
-
-    private IEnumerator RemoveHeatSource(Burnable source)
-    {
-        yield return new WaitForSeconds(triggerDelay);
-        RPC_RemoveHeat(Object.Id, source);
-    }
-
-    /// Tell everyone to add the new heatsource to their lists
-    [Rpc(RpcSources.All, RpcTargets.All)] // Run by everyone
-    private void RPC_AddHeat(NetworkId _objID, Burnable source)
-    {
-        Burnable target = Runner.FindObject(_objID).GetComponent<Burnable>();
-        target.HeatSources.Add(source);
-    }
-
-    /// Tell everyone that the heat source has expired
-    [Rpc(RpcSources.All, RpcTargets.All)] // Run by everyone
-    private void RPC_RemoveHeat(NetworkId _objID, Burnable source)
-    {
-        Burnable target = Runner.FindObject(_objID).GetComponent<Burnable>();
-        target.HeatSources.Remove(source);
-    }
-
-    int GetCurrentHeat()
-    {
-        int heat = 0;
-
-        //sets heat to the hottest current object
-        foreach (Burnable hs in HeatSources)
-            if(hs.heatStrength > heat)
-                heat = hs.heatStrength;
-
-        return heat;
-    }
-
-    /// removed, for flamethrower reworks -James 03\08
-    /*
-    private void OnTriggerEnter(Collider other)
-    {
-        if (other.tag == "Flame")
-        {
-            nIsBurning = true;
-        }
-    }
-
-    // continually burning makes it burn faster based on its damageRate (applied every update)
-    private void OnTriggerStay(Collider other)
-    {
-        if (other.tag == "Flame" && nIsBurning)
-        {
-            fuelRemaining = fuelRemaining - damageRate;
-        }
-    }
-    */
 
     // Checks if burn progress is below certain amount
-    public bool GetDisabled(float _disabledPercent)
-    {
-        return _disabledPercent > fuelRemaining / startFuel;
-    }
+
 }
