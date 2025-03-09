@@ -8,21 +8,23 @@ using static Fusion.NetworkBehaviour;
 
 public class Burnable : NetworkBehaviour
 {
+    public bool burnOnAwake = false;
+
     // SCORE
     [SerializeField] private int burnableScore = 3500;
     //SYSTEM HALF DESIGNED FOR POLYMORPHISM
     //NOT IMPLEMENTED YET, JUST CONCEPT TEST
 
-    [SerializeField] protected float startFuel = 10.0f;
-    [Networked] private float fuelRemaining { get; set; }
-    [Networked] private List<HeatSource> activeHeaters { get; set; }
+    [SerializeField] protected int startFuel = 10;
+    [SerializeField, Networked] private int fuelRemaining { get; set; }
+    public int CurrentHeat { get => GetCurrentHeat(); }
+    public List<Burnable> HeatSources = new List<Burnable>();
+    [SerializeField] protected int heatResistance = 0;
+    [SerializeField] protected int heatStrength = 1;
 
-    [SerializeField] protected float spreadRate = 3.0f;
+    [SerializeField] protected float spreadDelay = 1.0f;
     [SerializeField] protected float spreadRadius = 10.0f;
-    [SerializeField] protected float fireResistance = 3.0f;
-    //how much "health" damage a burnable takes per update if being actively burnt
-    [SerializeField] protected float damageRate = 0.1f;
-    [SerializeField] HeatSource heatSource;
+    private float spreadTimer = 0.0f;
 
     //networked vars are communicated and updated by networkbehaviors
     [Networked] public bool nIsBurning { get; set; }
@@ -30,21 +32,22 @@ public class Burnable : NetworkBehaviour
     [SerializeField] private bool showsLerp = true;
 
     //prevents multiple fire sources from damaging an object separately
-    private float lockoutTimer = 0.0f;
-    private const float LOCKOUT_MAX_TIME = 3.0f;
+    //private float lockoutTimer = 0.0f;
+    //private const float LOCKOUT_MAX_TIME = 1.0f;
 
-    //lerp burn colors
+    //colors
     [SerializeField] private Color initialColor = Color.green;
     [SerializeField] private Color startColor = Color.yellow;
     [SerializeField] private Color endColor = Color.red;
 
-    //temp vars for testing
-    float timer = 0.0f;
+    //VFX
+    [SerializeField] ParticleSystem onFireVFX;
 
     public override void Spawned()
     {
         fuelRemaining = startFuel;
         isSpawned = true;
+        nIsBurning = burnOnAwake;
 
         //used for tracking percentages
         if (showsLerp)
@@ -61,20 +64,11 @@ public class Burnable : NetworkBehaviour
     private void Update()
     {
         handeColorLerp();
-
     }
 
     public override void FixedUpdateNetwork()
     {
-        handeFire();
-    }
-
-    //does all functions related to burning of objects
-    private void handeFire()
-    {
-        //SpreadFire();
-
-        handleBurn();
+        HandleBurn();
     }
 
     //changes obj color 
@@ -83,44 +77,45 @@ public class Burnable : NetworkBehaviour
         if (isSpawned && nIsBurning)
         {
             //lerp between start and end color based on % of fuel remaining
-            gameObject.GetComponent<Renderer>().material.color = Color.Lerp(endColor, startColor, (fuelRemaining / startFuel));
+            gameObject.GetComponent<Renderer>().material.color = Color.Lerp(endColor, startColor, ((float)fuelRemaining / (float)startFuel));
         }
     }
 
     // Checks if burning object is on fire and burns it and spreads fire
     //Destroys object if no more fuel
-    private void handleBurn()
+    private void HandleBurn()
     {
         //temp
-        timer += Time.deltaTime;
+        spreadTimer += Time.fixedDeltaTime;
+
+        if(burnOnAwake)
+            AddHeat(this);
+
+        if(CurrentHeat > heatResistance)
+        {
+            nIsBurning = true;
+            if(onFireVFX != null && !onFireVFX.isPlaying)
+                onFireVFX.Play();
+        }
 
         if (nIsBurning && fuelRemaining > 0)
         {
-            fuelRemaining -= Time.deltaTime;
-
-            if (timer > spreadRate)
+            if (spreadTimer > spreadDelay)
             {
-                tempSpread();
-                timer = 0.0f;
+                TempSpread();
+                TakeFireDamageTick();
+                spreadTimer = 0.0f;
             }
 
         }
-        else if (!nIsBurning && showsLerp)
+        if (fuelRemaining <= 0)
         {
-            //runs lockout timer down
-            lockoutTimer -= Time.deltaTime;
+            //detatch VFX
+            onFireVFX.transform.parent = null;
+            onFireVFX.Stop();
+            Destroy(onFireVFX, onFireVFX.main.duration);
 
-            //placeholder for updating req
-            if (gameObject.GetComponent<Renderer>().material.color != initialColor)
-            {
-                gameObject.GetComponent<Renderer>().material.color = initialColor;
-            }
-
-        }
-        else if (fuelRemaining < 0)
-        {
-            //Destroy(gameObject);
-
+            //disable obj
             gameObject.SetActive(false);
             EventManager.BurnableDestroyed(burnableScore);
             Runner.Despawn(Object);
@@ -128,21 +123,23 @@ public class Burnable : NetworkBehaviour
     }
 
     //gets an array of burnables in spread radius and damages them
-    private void tempSpread()
+    ///Gets the array of burnables in a radius and adds the source to them
+    private void TempSpread()
     {
         Collider[] objArr = Physics.OverlapSphere(gameObject.transform.position, spreadRadius);
         foreach (var obj in objArr)
         {
-            if (obj.GetComponent<Burnable>() != null)
+            if (obj.TryGetComponent(out Burnable target))
             {
-                DealFireDamage(obj.GetComponent<Burnable>());
+                //DealFireDamage(obj.GetComponent<Burnable>());
+                target.AddHeat(Runner.FindObject(Object.Id).GetComponent<Burnable>());
             }
         }
     }
 
     /// Oh boy, this was alot to wrap my head arround, but I think I get it... Gotta make a way for the flamethrower to effect this -James 03/08
     //handles damage/burn, goes through fire resistance first
-    private void DealFireDamage(Burnable obj)
+    /*private void DealFireDamage(Burnable obj)
     {
         int result = Random.Range(0, 2);
         if (obj.lockoutTimer <= 0.0f)
@@ -169,19 +166,65 @@ public class Burnable : NetworkBehaviour
             }
         }
 
+    }*/
+
+    private void TakeFireDamageTick()
+    {
+        //Debug.Log(gameObject.name + "'s current heat is " + CurrentHeat);
+        if(CurrentHeat <= heatResistance)
+            return;
+
+        int heatDamage = CurrentHeat - heatResistance;
+        fuelRemaining -= heatDamage;
     }
 
     ///A function for taking damage from incoming fire sources (spisifically the player flamethrower) -James 03/08
-    public void AddHeatSource(HeatSource source)
+    public void AddHeat(Burnable source)
     {
-        activeHeaters.Add(source);
+        if(!HeatSources.Contains(source))
+        {
+            //Debug.Log("Adding heat source");
+            RPC_AddHeat(Object.Id, source);
+            StartCoroutine(RemoveHeatSource(source));
+        }
     }
 
-    public void RemoveHeatSource(HeatSource source)
+    private IEnumerator RemoveHeatSource(Burnable source)
     {
-        activeHeaters.Remove(source);
+        yield return new WaitForSeconds(1f);
+        RPC_RemoveHeat(Object.Id, source);
     }
 
+    /// Tell everyone to add the new heatsource to their lists
+    [Rpc(RpcSources.All, RpcTargets.All)] // Run by everyone
+    private void RPC_AddHeat(NetworkId _objID, Burnable source)
+    {
+        Burnable target = Runner.FindObject(_objID).GetComponent<Burnable>();
+        target.HeatSources.Add(source);
+    }
+
+    /// Tell everyone that the heat source has expired
+    [Rpc(RpcSources.All, RpcTargets.All)] // Run by everyone
+    private void RPC_RemoveHeat(NetworkId _objID, Burnable source)
+    {
+        Burnable target = Runner.FindObject(_objID).GetComponent<Burnable>();
+        target.HeatSources.Remove(source);
+    }
+
+    int GetCurrentHeat()
+    {
+        int heat = 0;
+
+        //sets heat to the hottest current object
+        foreach (Burnable hs in HeatSources)
+            if(hs.heatStrength > heat)
+                heat = hs.heatStrength;
+
+        return heat;
+    }
+
+    /// removed, for flamethrower reworks -James 03\08
+    /*
     private void OnTriggerEnter(Collider other)
     {
         if (other.tag == "Flame")
@@ -198,6 +241,7 @@ public class Burnable : NetworkBehaviour
             fuelRemaining = fuelRemaining - damageRate;
         }
     }
+    */
 
     // Checks if burn progress is below certain amount
     public bool GetDisabled(float _disabledPercent)

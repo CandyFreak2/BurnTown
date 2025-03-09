@@ -28,11 +28,12 @@ public class ObjectPool : MonoBehaviour
 
     public GameObject GetPooledObject()
     {
-        if (index > numberOfObjects)
+        if (index >= numberOfObjects)
             index = 0;
 
         GameObject obj = pooledObjects[index];
         obj.SetActive(true);
+        obj.transform.parent = null;
 
         index++;
         return obj;

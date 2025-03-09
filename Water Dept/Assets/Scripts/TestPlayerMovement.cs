@@ -41,7 +41,7 @@ public class TestPlayerMovement : MonoBehaviour
             //sprays water
             fireHose.GetComponent<Flamethrower>().Spray();
             //apply backward force
-            WaterForce();
+            //WaterForce();
         }
         else if (Input.GetKeyUp(KeyCode.Mouse0) && isHolding == true)
         {
@@ -87,10 +87,10 @@ public class TestPlayerMovement : MonoBehaviour
         fireHose.transform.position = hand.transform.position;
     }
 
-    void WaterForce()
+    /*void WaterForce()
     {
         rb.AddForce(-transform.forward * fireHose.GetComponent<Flamethrower>().waterForce, ForceMode.Impulse);
-    }
+    }*/
 
     void StopWaterForce()
     {

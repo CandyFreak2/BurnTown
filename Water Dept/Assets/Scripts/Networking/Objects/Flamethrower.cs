@@ -4,11 +4,15 @@ using System.Collections;
 using Fusion;
 using DG.Tweening;
 using System;
-using DG.Tweening;
 
 public class Flamethrower : NetworkBehaviour
 {
     [Networked] private NetworkBool isShooting { get; set; }
+
+    //fuel
+    [SerializeField] GameObject fuelPrefab;
+    [SerializeField] float fuelSpawnDelay = 0.2f;
+    float fuelTimer;
 
     //raycast
     [SerializeField] Transform raySource;
@@ -59,7 +63,10 @@ public class Flamethrower : NetworkBehaviour
     {
         if(!isShooting)
             return;
-        //give a random accuracy for this shot,      //no this isnt networked, yes this will desync the players... but only if the accuracy is low :P
+
+        fuelTimer += Time.fixedDeltaTime;
+
+        //give a random accuracy for this shot,      //will desync the players... ikd 
         raySource.localRotation = Quaternion.identity;
         raySource.Rotate(Vector3.forward, UnityEngine.Random.Range(0f, 360f), Space.Self);
         raySource.Rotate(Vector3.up, UnityEngine.Random.Range(0f, rayAccuracy), Space.Self);
@@ -67,16 +74,25 @@ public class Flamethrower : NetworkBehaviour
         //ray cast the shot
         if (Physics.Raycast(raySource.position, raySource.forward, out RaycastHit hit, rayDistance, rayMask))
         {
+            if (fuelTimer < fuelSpawnDelay)
+                return;
+
+            fuelTimer = 0f; 
+
             //apply fire damage
             if(hit.collider.TryGetComponent(out Burnable target))
             {
-                target.
+                NetworkObject fuel = Runner.Spawn(fuelPrefab);
+                fuel.transform.position = hit.point;
+                fuel.transform.forward = -hit.normal;
+
+                fuelTimer = 0f;
             }
 
             //apply decals
             Transform decal = decalPool.GetPooledObject().transform;
             decal.position = hit.point;
-            decal.parent = hit.collider.transform;
+            decal.forward = -hit.normal;
         }
     }
 

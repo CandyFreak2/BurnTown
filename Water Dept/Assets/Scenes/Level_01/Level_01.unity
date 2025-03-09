@@ -3281,6 +3281,94 @@ PrefabInstance:
     m_AddedGameObjects: []
     m_AddedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 870625944caa1a444865fface7be7146, type: 3}
+--- !u!1001 &50439078
+PrefabInstance:
+  m_ObjectHideFlags: 0
+  serializedVersion: 2
+  m_Modification:
+    serializedVersion: 3
+    m_TransformParent: {fileID: 1812866000}
+    m_Modifications:
+    - target: {fileID: 122068770842325883, guid: dcffeeeeb26f0ab418336c2779f00a8c,
+        type: 3}
+      propertyPath: EmissionModule.rateOverTime.scalar
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 961762408205275243, guid: dcffeeeeb26f0ab418336c2779f00a8c,
+        type: 3}
+      propertyPath: m_Name
+      value: VFX_BoxFire_Small
+      objectReference: {fileID: 0}
+    - target: {fileID: 3827635482907629621, guid: dcffeeeeb26f0ab418336c2779f00a8c,
+        type: 3}
+      propertyPath: m_LocalScale.y
+      value: 0.62455
+      objectReference: {fileID: 0}
+    - target: {fileID: 3827635482907629621, guid: dcffeeeeb26f0ab418336c2779f00a8c,
+        type: 3}
+      propertyPath: m_LocalScale.z
+      value: 9.9438
+      objectReference: {fileID: 0}
+    - target: {fileID: 3827635482907629621, guid: dcffeeeeb26f0ab418336c2779f00a8c,
+        type: 3}
+      propertyPath: m_LocalPosition.x
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 3827635482907629621, guid: dcffeeeeb26f0ab418336c2779f00a8c,
+        type: 3}
+      propertyPath: m_LocalPosition.y
+      value: 0.48
+      objectReference: {fileID: 0}
+    - target: {fileID: 3827635482907629621, guid: dcffeeeeb26f0ab418336c2779f00a8c,
+        type: 3}
+      propertyPath: m_LocalPosition.z
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 3827635482907629621, guid: dcffeeeeb26f0ab418336c2779f00a8c,
+        type: 3}
+      propertyPath: m_LocalRotation.w
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 3827635482907629621, guid: dcffeeeeb26f0ab418336c2779f00a8c,
+        type: 3}
+      propertyPath: m_LocalRotation.x
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 3827635482907629621, guid: dcffeeeeb26f0ab418336c2779f00a8c,
+        type: 3}
+      propertyPath: m_LocalRotation.y
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 3827635482907629621, guid: dcffeeeeb26f0ab418336c2779f00a8c,
+        type: 3}
+      propertyPath: m_LocalRotation.z
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 3827635482907629621, guid: dcffeeeeb26f0ab418336c2779f00a8c,
+        type: 3}
+      propertyPath: m_LocalEulerAnglesHint.x
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 3827635482907629621, guid: dcffeeeeb26f0ab418336c2779f00a8c,
+        type: 3}
+      propertyPath: m_LocalEulerAnglesHint.y
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 3827635482907629621, guid: dcffeeeeb26f0ab418336c2779f00a8c,
+        type: 3}
+      propertyPath: m_LocalEulerAnglesHint.z
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 3827635482907629621, guid: dcffeeeeb26f0ab418336c2779f00a8c,
+        type: 3}
+      propertyPath: m_ConstrainProportionsScale
+      value: 0
+      objectReference: {fileID: 0}
+    m_RemovedComponents: []
+    m_RemovedGameObjects: []
+    m_AddedGameObjects: []
+    m_AddedComponents: []
+  m_SourcePrefab: {fileID: 100100000, guid: dcffeeeeb26f0ab418336c2779f00a8c, type: 3}
 --- !u!1001 &52069916
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -19082,17 +19170,21 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: d687f89eee019c74e9f3e5c3d46719f7, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  burnOnAwake: 0
   burnableScore: 150
   startFuel: 10
-  spreadRate: 0.5
+  _fuelRemaining: 0
+  HeatSources: []
+  heatResistance: 0
+  heatStrength: 1
+  spreadDelay: 1
   spreadRadius: 5.5
-  fireResistance: 1
-  damageRate: 0.1
   _nIsBurning: 0
   showsLerp: 1
   initialColor: {r: 0, g: 1, b: 0, a: 1}
   startColor: {r: 1, g: 0.92156863, b: 0.015686275, a: 1}
   endColor: {r: 1, g: 0, b: 0, a: 1}
+  onFireVFX: {fileID: 0}
 --- !u!1 &218887322 stripped
 GameObject:
   m_CorrespondingSourceObject: {fileID: 453698788867256445, guid: 870625944caa1a444865fface7be7146,
@@ -20939,17 +21031,21 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: d687f89eee019c74e9f3e5c3d46719f7, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  burnOnAwake: 0
   burnableScore: 150
   startFuel: 10
-  spreadRate: 0.5
+  _fuelRemaining: 0
+  HeatSources: []
+  heatResistance: 0
+  heatStrength: 1
+  spreadDelay: 1
   spreadRadius: 5.5
-  fireResistance: 1
-  damageRate: 0.1
   _nIsBurning: 0
   showsLerp: 1
   initialColor: {r: 0, g: 1, b: 0, a: 1}
   startColor: {r: 1, g: 0.92156863, b: 0.015686275, a: 1}
   endColor: {r: 1, g: 0, b: 0, a: 1}
+  onFireVFX: {fileID: 0}
 --- !u!43 &234129763
 Mesh:
   m_ObjectHideFlags: 0
@@ -22141,17 +22237,21 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: d687f89eee019c74e9f3e5c3d46719f7, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  burnOnAwake: 0
   burnableScore: 150
   startFuel: 10
-  spreadRate: 0.5
+  _fuelRemaining: 0
+  HeatSources: []
+  heatResistance: 0
+  heatStrength: 1
+  spreadDelay: 1
   spreadRadius: 5.5
-  fireResistance: 1
-  damageRate: 0.1
   _nIsBurning: 0
   showsLerp: 1
   initialColor: {r: 0, g: 1, b: 0, a: 1}
   startColor: {r: 1, g: 0.92156863, b: 0.015686275, a: 1}
   endColor: {r: 1, g: 0, b: 0, a: 1}
+  onFireVFX: {fileID: 0}
 --- !u!1 &237409932
 GameObject:
   m_ObjectHideFlags: 0
@@ -23178,17 +23278,21 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: d687f89eee019c74e9f3e5c3d46719f7, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  burnOnAwake: 0
   burnableScore: 150
   startFuel: 10
-  spreadRate: 0.5
+  _fuelRemaining: 0
+  HeatSources: []
+  heatResistance: 0
+  heatStrength: 1
+  spreadDelay: 1
   spreadRadius: 5.5
-  fireResistance: 1
-  damageRate: 0.1
   _nIsBurning: 0
   showsLerp: 1
   initialColor: {r: 0, g: 1, b: 0, a: 1}
   startColor: {r: 1, g: 0.92156863, b: 0.015686275, a: 1}
   endColor: {r: 1, g: 0, b: 0, a: 1}
+  onFireVFX: {fileID: 0}
 --- !u!43 &240945135
 Mesh:
   m_ObjectHideFlags: 0
@@ -25899,17 +26003,21 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: d687f89eee019c74e9f3e5c3d46719f7, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  burnOnAwake: 0
   burnableScore: 150
   startFuel: 10
-  spreadRate: 0.5
+  _fuelRemaining: 0
+  HeatSources: []
+  heatResistance: 0
+  heatStrength: 1
+  spreadDelay: 1
   spreadRadius: 5.5
-  fireResistance: 1
-  damageRate: 0.1
   _nIsBurning: 0
   showsLerp: 1
   initialColor: {r: 0, g: 1, b: 0, a: 1}
   startColor: {r: 1, g: 0.92156863, b: 0.015686275, a: 1}
   endColor: {r: 1, g: 0, b: 0, a: 1}
+  onFireVFX: {fileID: 0}
 --- !u!1001 &267695448
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -29754,17 +29862,21 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: d687f89eee019c74e9f3e5c3d46719f7, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  burnOnAwake: 0
   burnableScore: 150
   startFuel: 10
-  spreadRate: 0.5
+  _fuelRemaining: 0
+  HeatSources: []
+  heatResistance: 0
+  heatStrength: 1
+  spreadDelay: 1
   spreadRadius: 5.5
-  fireResistance: 1
-  damageRate: 0.1
   _nIsBurning: 0
   showsLerp: 1
   initialColor: {r: 0, g: 1, b: 0, a: 1}
   startColor: {r: 1, g: 0.92156863, b: 0.015686275, a: 1}
   endColor: {r: 1, g: 0, b: 0, a: 1}
+  onFireVFX: {fileID: 0}
 --- !u!43 &316488897
 Mesh:
   m_ObjectHideFlags: 0
@@ -31511,17 +31623,21 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: d687f89eee019c74e9f3e5c3d46719f7, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  burnOnAwake: 0
   burnableScore: 150
   startFuel: 10
-  spreadRate: 0.5
+  _fuelRemaining: 0
+  HeatSources: []
+  heatResistance: 0
+  heatStrength: 1
+  spreadDelay: 1
   spreadRadius: 5.5
-  fireResistance: 1
-  damageRate: 0.1
   _nIsBurning: 0
   showsLerp: 1
   initialColor: {r: 0, g: 1, b: 0, a: 1}
   startColor: {r: 1, g: 0.92156863, b: 0.015686275, a: 1}
   endColor: {r: 1, g: 0, b: 0, a: 1}
+  onFireVFX: {fileID: 0}
 --- !u!1001 &330315710
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -33179,17 +33295,21 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: d687f89eee019c74e9f3e5c3d46719f7, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  burnOnAwake: 0
   burnableScore: 150
   startFuel: 10
-  spreadRate: 0.5
+  _fuelRemaining: 0
+  HeatSources: []
+  heatResistance: 0
+  heatStrength: 1
+  spreadDelay: 1
   spreadRadius: 5.5
-  fireResistance: 1
-  damageRate: 0.1
   _nIsBurning: 0
   showsLerp: 1
   initialColor: {r: 0, g: 1, b: 0, a: 1}
   startColor: {r: 1, g: 0.92156863, b: 0.015686275, a: 1}
   endColor: {r: 1, g: 0, b: 0, a: 1}
+  onFireVFX: {fileID: 0}
 --- !u!1001 &337825877
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -41836,17 +41956,21 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: d687f89eee019c74e9f3e5c3d46719f7, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  burnOnAwake: 0
   burnableScore: 150
   startFuel: 10
-  spreadRate: 0.5
+  _fuelRemaining: 0
+  HeatSources: []
+  heatResistance: 0
+  heatStrength: 1
+  spreadDelay: 1
   spreadRadius: 5.5
-  fireResistance: 1
-  damageRate: 0.1
   _nIsBurning: 0
   showsLerp: 1
   initialColor: {r: 0, g: 1, b: 0, a: 1}
   startColor: {r: 1, g: 0.92156863, b: 0.015686275, a: 1}
   endColor: {r: 1, g: 0, b: 0, a: 1}
+  onFireVFX: {fileID: 0}
 --- !u!1001 &434216576
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -64539,17 +64663,21 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: d687f89eee019c74e9f3e5c3d46719f7, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  burnOnAwake: 0
   burnableScore: 150
   startFuel: 10
-  spreadRate: 0.5
+  _fuelRemaining: 0
+  HeatSources: []
+  heatResistance: 0
+  heatStrength: 1
+  spreadDelay: 1
   spreadRadius: 5.5
-  fireResistance: 1
-  damageRate: 0.1
   _nIsBurning: 0
   showsLerp: 1
   initialColor: {r: 0, g: 1, b: 0, a: 1}
   startColor: {r: 1, g: 0.92156863, b: 0.015686275, a: 1}
   endColor: {r: 1, g: 0, b: 0, a: 1}
+  onFireVFX: {fileID: 0}
 --- !u!4 &799458537 stripped
 Transform:
   m_CorrespondingSourceObject: {fileID: 8099795120693086562, guid: 870625944caa1a444865fface7be7146,
@@ -66887,6 +67015,18 @@ PrefabInstance:
     m_AddedGameObjects: []
     m_AddedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 870625944caa1a444865fface7be7146, type: 3}
+--- !u!4 &819850761 stripped
+Transform:
+  m_CorrespondingSourceObject: {fileID: 3827635482907629621, guid: dcffeeeeb26f0ab418336c2779f00a8c,
+    type: 3}
+  m_PrefabInstance: {fileID: 50439078}
+  m_PrefabAsset: {fileID: 0}
+--- !u!198 &819850763 stripped
+ParticleSystem:
+  m_CorrespondingSourceObject: {fileID: 122068770842325883, guid: dcffeeeeb26f0ab418336c2779f00a8c,
+    type: 3}
+  m_PrefabInstance: {fileID: 50439078}
+  m_PrefabAsset: {fileID: 0}
 --- !u!1001 &821351863
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -77672,17 +77812,21 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: d687f89eee019c74e9f3e5c3d46719f7, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  burnOnAwake: 0
   burnableScore: 150
   startFuel: 10
-  spreadRate: 0.5
+  _fuelRemaining: 0
+  HeatSources: []
+  heatResistance: 0
+  heatStrength: 1
+  spreadDelay: 1
   spreadRadius: 5.5
-  fireResistance: 1
-  damageRate: 0.1
   _nIsBurning: 0
   showsLerp: 1
   initialColor: {r: 0, g: 1, b: 0, a: 1}
   startColor: {r: 1, g: 0.92156863, b: 0.015686275, a: 1}
   endColor: {r: 1, g: 0, b: 0, a: 1}
+  onFireVFX: {fileID: 0}
 --- !u!1001 &990065991
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -83308,17 +83452,21 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: d687f89eee019c74e9f3e5c3d46719f7, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  burnOnAwake: 0
   burnableScore: 150
   startFuel: 10
-  spreadRate: 0.5
+  _fuelRemaining: 0
+  HeatSources: []
+  heatResistance: 0
+  heatStrength: 1
+  spreadDelay: 1
   spreadRadius: 5.5
-  fireResistance: 1
-  damageRate: 0.1
   _nIsBurning: 0
   showsLerp: 1
   initialColor: {r: 0, g: 1, b: 0, a: 1}
   startColor: {r: 1, g: 0.92156863, b: 0.015686275, a: 1}
   endColor: {r: 1, g: 0, b: 0, a: 1}
+  onFireVFX: {fileID: 0}
 --- !u!4 &1067899430 stripped
 Transform:
   m_CorrespondingSourceObject: {fileID: 8099795120693086562, guid: 870625944caa1a444865fface7be7146,
@@ -84738,17 +84886,21 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: d687f89eee019c74e9f3e5c3d46719f7, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  burnOnAwake: 0
   burnableScore: 150
   startFuel: 10
-  spreadRate: 0.5
+  _fuelRemaining: 0
+  HeatSources: []
+  heatResistance: 0
+  heatStrength: 1
+  spreadDelay: 1
   spreadRadius: 5.5
-  fireResistance: 1
-  damageRate: 0.1
   _nIsBurning: 0
   showsLerp: 1
   initialColor: {r: 0, g: 1, b: 0, a: 1}
   startColor: {r: 1, g: 0.92156863, b: 0.015686275, a: 1}
   endColor: {r: 1, g: 0, b: 0, a: 1}
+  onFireVFX: {fileID: 0}
 --- !u!4 &1086444084 stripped
 Transform:
   m_CorrespondingSourceObject: {fileID: 8099795120693086562, guid: 870625944caa1a444865fface7be7146,
@@ -105213,17 +105365,21 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: d687f89eee019c74e9f3e5c3d46719f7, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  burnOnAwake: 0
   burnableScore: 150
   startFuel: 10
-  spreadRate: 0.5
+  _fuelRemaining: 0
+  HeatSources: []
+  heatResistance: 0
+  heatStrength: 1
+  spreadDelay: 1
   spreadRadius: 5.5
-  fireResistance: 1
-  damageRate: 0.1
   _nIsBurning: 0
   showsLerp: 1
   initialColor: {r: 0, g: 1, b: 0, a: 1}
   startColor: {r: 1, g: 0.92156863, b: 0.015686275, a: 1}
   endColor: {r: 1, g: 0, b: 0, a: 1}
+  onFireVFX: {fileID: 0}
 --- !u!4 &1366257779 stripped
 Transform:
   m_CorrespondingSourceObject: {fileID: 8099795120693086562, guid: 870625944caa1a444865fface7be7146,
@@ -112849,17 +113005,21 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: d687f89eee019c74e9f3e5c3d46719f7, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  burnOnAwake: 0
   burnableScore: 150
   startFuel: 10
-  spreadRate: 0.5
+  _fuelRemaining: 0
+  HeatSources: []
+  heatResistance: 0
+  heatStrength: 1
+  spreadDelay: 1
   spreadRadius: 5.5
-  fireResistance: 1
-  damageRate: 0.1
   _nIsBurning: 0
   showsLerp: 1
   initialColor: {r: 0, g: 1, b: 0, a: 1}
   startColor: {r: 1, g: 0.92156863, b: 0.015686275, a: 1}
   endColor: {r: 1, g: 0, b: 0, a: 1}
+  onFireVFX: {fileID: 0}
 --- !u!43 &1448898849
 Mesh:
   m_ObjectHideFlags: 0
@@ -117203,17 +117363,21 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: d687f89eee019c74e9f3e5c3d46719f7, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  burnOnAwake: 0
   burnableScore: 150
   startFuel: 10
-  spreadRate: 0.5
+  _fuelRemaining: 0
+  HeatSources: []
+  heatResistance: 0
+  heatStrength: 1
+  spreadDelay: 1
   spreadRadius: 5.5
-  fireResistance: 1
-  damageRate: 0.1
   _nIsBurning: 0
   showsLerp: 1
   initialColor: {r: 0, g: 1, b: 0, a: 1}
   startColor: {r: 1, g: 0.92156863, b: 0.015686275, a: 1}
   endColor: {r: 1, g: 0, b: 0, a: 1}
+  onFireVFX: {fileID: 0}
 --- !u!4 &1517248764 stripped
 Transform:
   m_CorrespondingSourceObject: {fileID: 8099795120693086562, guid: 870625944caa1a444865fface7be7146,
@@ -125245,17 +125409,21 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: d687f89eee019c74e9f3e5c3d46719f7, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  burnOnAwake: 0
   burnableScore: 150
   startFuel: 10
-  spreadRate: 0.5
+  _fuelRemaining: 0
+  HeatSources: []
+  heatResistance: 0
+  heatStrength: 1
+  spreadDelay: 1
   spreadRadius: 5.5
-  fireResistance: 1
-  damageRate: 0.1
   _nIsBurning: 0
   showsLerp: 1
   initialColor: {r: 0, g: 1, b: 0, a: 1}
   startColor: {r: 1, g: 0.92156863, b: 0.015686275, a: 1}
   endColor: {r: 1, g: 0, b: 0, a: 1}
+  onFireVFX: {fileID: 0}
 --- !u!43 &1618458148
 Mesh:
   m_ObjectHideFlags: 0
@@ -138962,6 +139130,21 @@ PrefabInstance:
       propertyPath: m_Name
       value: WoodWall (1)
       objectReference: {fileID: 0}
+    - target: {fileID: 6192657797160081394, guid: 0f50ae542c4e0484c9137813faec2810,
+        type: 3}
+      propertyPath: onFireVFX
+      value: 
+      objectReference: {fileID: 819850763}
+    - target: {fileID: 6192657797160081394, guid: 0f50ae542c4e0484c9137813faec2810,
+        type: 3}
+      propertyPath: spreadRate
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 6192657797160081394, guid: 0f50ae542c4e0484c9137813faec2810,
+        type: 3}
+      propertyPath: heatResistance
+      value: 0
+      objectReference: {fileID: 0}
     - target: {fileID: 7070302226826673100, guid: 0f50ae542c4e0484c9137813faec2810,
         type: 3}
       propertyPath: SortKey
@@ -138969,7 +139152,11 @@ PrefabInstance:
       objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
-    m_AddedGameObjects: []
+    m_AddedGameObjects:
+    - targetCorrespondingSourceObject: {fileID: 2116483395508810862, guid: 0f50ae542c4e0484c9137813faec2810,
+        type: 3}
+      insertIndex: -1
+      addedObject: {fileID: 819850761}
     m_AddedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 0f50ae542c4e0484c9137813faec2810, type: 3}
 --- !u!4 &1812866000 stripped
@@ -146277,17 +146464,21 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: d687f89eee019c74e9f3e5c3d46719f7, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  burnOnAwake: 0
   burnableScore: 150
   startFuel: 10
-  spreadRate: 0.5
+  _fuelRemaining: 0
+  HeatSources: []
+  heatResistance: 0
+  heatStrength: 1
+  spreadDelay: 1
   spreadRadius: 5.5
-  fireResistance: 1
-  damageRate: 0.1
   _nIsBurning: 0
   showsLerp: 1
   initialColor: {r: 0, g: 1, b: 0, a: 1}
   startColor: {r: 1, g: 0.92156863, b: 0.015686275, a: 1}
   endColor: {r: 1, g: 0, b: 0, a: 1}
+  onFireVFX: {fileID: 0}
 --- !u!4 &1908181770 stripped
 Transform:
   m_CorrespondingSourceObject: {fileID: 8099795120693086562, guid: 870625944caa1a444865fface7be7146,
@@ -147783,17 +147974,21 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: d687f89eee019c74e9f3e5c3d46719f7, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  burnOnAwake: 0
   burnableScore: 150
   startFuel: 10
-  spreadRate: 0.5
+  _fuelRemaining: 0
+  HeatSources: []
+  heatResistance: 0
+  heatStrength: 1
+  spreadDelay: 1
   spreadRadius: 5.5
-  fireResistance: 1
-  damageRate: 0.1
   _nIsBurning: 0
   showsLerp: 1
   initialColor: {r: 0, g: 1, b: 0, a: 1}
   startColor: {r: 1, g: 0.92156863, b: 0.015686275, a: 1}
   endColor: {r: 1, g: 0, b: 0, a: 1}
+  onFireVFX: {fileID: 0}
 --- !u!4 &1919811807 stripped
 Transform:
   m_CorrespondingSourceObject: {fileID: 8099795120693086562, guid: 870625944caa1a444865fface7be7146,
@@ -151924,17 +152119,21 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: d687f89eee019c74e9f3e5c3d46719f7, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  burnOnAwake: 0
   burnableScore: 150
   startFuel: 10
-  spreadRate: 0.5
+  _fuelRemaining: 0
+  HeatSources: []
+  heatResistance: 0
+  heatStrength: 1
+  spreadDelay: 1
   spreadRadius: 5.5
-  fireResistance: 1
-  damageRate: 0.1
   _nIsBurning: 0
   showsLerp: 1
   initialColor: {r: 0, g: 1, b: 0, a: 1}
   startColor: {r: 1, g: 0.92156863, b: 0.015686275, a: 1}
   endColor: {r: 1, g: 0, b: 0, a: 1}
+  onFireVFX: {fileID: 0}
 --- !u!4 &1969305282 stripped
 Transform:
   m_CorrespondingSourceObject: {fileID: 8099795120693086562, guid: 870625944caa1a444865fface7be7146,
@@ -158686,17 +158885,21 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: d687f89eee019c74e9f3e5c3d46719f7, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  burnOnAwake: 0
   burnableScore: 150
   startFuel: 10
-  spreadRate: 0.5
+  _fuelRemaining: 0
+  HeatSources: []
+  heatResistance: 0
+  heatStrength: 1
+  spreadDelay: 1
   spreadRadius: 5.5
-  fireResistance: 1
-  damageRate: 0.1
   _nIsBurning: 0
   showsLerp: 1
   initialColor: {r: 0, g: 1, b: 0, a: 1}
   startColor: {r: 1, g: 0.92156863, b: 0.015686275, a: 1}
   endColor: {r: 1, g: 0, b: 0, a: 1}
+  onFireVFX: {fileID: 0}
 --- !u!1001 &2051987835
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -159916,17 +160119,21 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: d687f89eee019c74e9f3e5c3d46719f7, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  burnOnAwake: 0
   burnableScore: 150
   startFuel: 10
-  spreadRate: 0.5
+  _fuelRemaining: 0
+  HeatSources: []
+  heatResistance: 0
+  heatStrength: 1
+  spreadDelay: 1
   spreadRadius: 5.5
-  fireResistance: 1
-  damageRate: 0.1
   _nIsBurning: 0
   showsLerp: 1
   initialColor: {r: 0, g: 1, b: 0, a: 1}
   startColor: {r: 1, g: 0.92156863, b: 0.015686275, a: 1}
   endColor: {r: 1, g: 0, b: 0, a: 1}
+  onFireVFX: {fileID: 0}
 --- !u!1001 &2058661091
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -167190,17 +167397,21 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: d687f89eee019c74e9f3e5c3d46719f7, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  burnOnAwake: 0
   burnableScore: 150
   startFuel: 10
-  spreadRate: 0.5
+  _fuelRemaining: 0
+  HeatSources: []
+  heatResistance: 0
+  heatStrength: 1
+  spreadDelay: 1
   spreadRadius: 5.5
-  fireResistance: 1
-  damageRate: 0.1
   _nIsBurning: 0
   showsLerp: 1
   initialColor: {r: 0, g: 1, b: 0, a: 1}
   startColor: {r: 1, g: 0.92156863, b: 0.015686275, a: 1}
   endColor: {r: 1, g: 0, b: 0, a: 1}
+  onFireVFX: {fileID: 0}
 --- !u!1001 &2119828803
 PrefabInstance:
   m_ObjectHideFlags: 0
