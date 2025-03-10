@@ -21,6 +21,7 @@ public class Tire : NetworkBehaviour
 
     //Acceleration variables
     private Vector3 accelerationForce;
+    public float powerMultiplier = 3.0f;
     public float topSpeed = 60;
     public float brakeStrength = 0.8f;
     private float frictionStrength = 0.3f;
@@ -102,22 +103,22 @@ public class Tire : NetworkBehaviour
 
             float powerToTire = PowerToTiresLookup(normalizedSpeed) * _accelerationInput; //change 1.0f to a lookup curve that uses normalizedSpeed
 
-            accelerationForce = accelerationDirection * powerToTire;
+            accelerationForce = accelerationDirection * powerToTire * powerMultiplier;
         }
 
         //Rolling friction force
-        else if (carSpeed < 0.1f && carSpeed > -0.1f) //Prevents oscilatting friction forces when speed is very low
-        {
-            accelerationForce = Vector3.zero;
-        }
-        else if (carSpeed > 0.1f)
-        {
-            accelerationForce = -accelerationDirection * frictionStrength;
-        }
-        else if (carSpeed < -0.1f)
-        {
-            accelerationForce = accelerationDirection * frictionStrength;
-        }
+        //else if (carSpeed < 0.1f && carSpeed > -0.1f) //Prevents oscilatting friction forces when speed is very low
+        //{
+        //    accelerationForce = Vector3.zero;
+        //}
+        //else if (carSpeed > 0.1f)
+        //{
+        //    accelerationForce = -accelerationDirection * frictionStrength;
+        //}
+        //else if (carSpeed < -0.1f)
+        //{
+        //    accelerationForce = accelerationDirection * frictionStrength;
+        //}
 
         //Braking force
         if (_brakingInput > 0.0f)
@@ -150,9 +151,13 @@ public class Tire : NetworkBehaviour
         {
             return Mathf.Sqrt(_normalizedSpeed / 2) + 0.5f;
         }
-        else
+        else if (_normalizedSpeed < 1.0f)
         {
             return 1.0f;
+        }
+        else
+        {
+            return 0.0f;
         }
     }
 }
