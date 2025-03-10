@@ -83,4 +83,20 @@ public class TimerSystem : NetworkBehaviour {
             canStart = true;
         }
     }
+
+    public void AddTime(float increment) {
+        if (Timer.IsRunning) {
+            Timer = TickTimer.None;
+            remainingTime += increment;
+            Timer = TickTimer.CreateFromSeconds(Runner, remainingTime);
+        }
+    }
+
+    private void OnEnable() {
+        EventManager.onTimerAdd += AddTime;
+    }
+
+    private void OnDisable() {
+        EventManager.onTimerAdd -= AddTime;
+    }
 }
