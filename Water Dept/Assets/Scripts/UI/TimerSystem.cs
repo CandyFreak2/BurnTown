@@ -8,7 +8,7 @@ public class TimerSystem : NetworkBehaviour {
     [Networked] private NetworkBool canStart { get; set; }
 
     [Header("Time Syncing")]
-    [Tooltip("Duration is based off of seconds"), SerializeField] private float duration;
+    [Tooltip("Duration (Seconds)"), SerializeField] private float duration;
     [SerializeField] private TMP_Text timerText;
     [SerializeField] private float remainingTime;
 
