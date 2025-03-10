@@ -1,25 +1,43 @@
+using Unity.VisualScripting;
 using UnityEngine;
+using UnityEngine.Events;
 
 public class PooledObject : MonoBehaviour
 {
     public ObjectPool _Pool;
-    [SerializeField] private bool repool = true;
-    [SerializeField] private float repoolDelay = 5.0f;
+    private bool repool = true;
+    private float repoolDelay = 5.0f;
 
+    [SerializeField] private float onEnableOffset = 0.0f;
+    [SerializeField] private float onDisableOffset = 0.1f;
+    [SerializeField] UnityEvent onEnable;
+    [SerializeField] UnityEvent onDisable;
     private void OnEnable()
     {
         BeginHide();
+        Invoke("PostEnableEvents", Mathf.Clamp(onEnableOffset, 0f, repoolDelay - 0.1f));
     }
 
     private void BeginHide()
     {
         if (repool)
         {
+            Invoke("PreHideEvents", Mathf.Clamp(repoolDelay - onDisableOffset, 0f, repoolDelay));
             Invoke("Repool", repoolDelay);
         }
     }
 
-    public  void Repool()
+    private void PostEnableEvents()
+    {
+        onEnable?.Invoke();
+    }
+
+    private void PreHideEvents()
+    {
+        onDisable?.Invoke();
+    }
+
+    public void Repool()
     {
         CancelInvoke();
         gameObject.SetActive(false);
@@ -31,5 +49,6 @@ public class PooledObject : MonoBehaviour
     {
         repool = _repool;
         repoolDelay = _repoolDelay;
+
     }
 }
