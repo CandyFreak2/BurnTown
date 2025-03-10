@@ -9,10 +9,13 @@ public class Flamethrower : NetworkBehaviour
 {
     [Networked] private NetworkBool isShooting { get; set; }
 
-    [Header("Fuel")]
+    /*[Header("Fuel")]
     [SerializeField] GameObject fuelPrefab;
     [SerializeField] float fuelSpawnDelay = 0.2f;
-    float fuelTimer;
+    float fuelTimer;*/
+
+    [Header("Damage & Fire")]
+    [SerializeField] int heatApplied = 1;
 
     [Header("Raycast")]
     [SerializeField] Transform raySource;
@@ -67,7 +70,7 @@ public class Flamethrower : NetworkBehaviour
         if(!isShooting)
             return;
 
-        fuelTimer += Time.fixedDeltaTime;
+        //fuelTimer += Time.fixedDeltaTime;
         decalTimer += Time.fixedDeltaTime;
 
         //give a random accuracy for this shot,      //will desync the players... ikd 
@@ -78,16 +81,11 @@ public class Flamethrower : NetworkBehaviour
         //ray cast the shot
         if (Physics.Raycast(raySource.position, raySource.forward, out RaycastHit hit, rayDistance, rayMask))
         {
-            if (fuelTimer > fuelSpawnDelay)
+            //apply fire dammage to burnables
+            if (hit.collider.TryGetComponent(out Burnable burn))
             {
-                //apply fire dammage to burnables
-                if (hit.collider.TryGetComponent(out Burnable burn))
-                {
-                    NetworkObject fuel = Runner.Spawn(fuelPrefab);
-                    fuel.transform.position = hit.point;
-                    fuel.transform.forward = -hit.normal;
-                    fuelTimer = 0f;
-                }
+                if (!burn.enabled) burn.enabled = true;
+                    burn.AddHeatModifier(heatApplied);
             }
 
             //apply fire dammage to barrels
