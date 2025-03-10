@@ -39,7 +39,7 @@ public class PlayerMovement : NetworkBehaviour
     [SerializeField] SimpleKCC kcc;
 
     //Barrel interactions
-    tempBarrel barrelController;
+    BarrelController barrelController;
 
     [Header("Ground Check")]
     [SerializeField] Transform groundCheck;
@@ -65,7 +65,7 @@ public class PlayerMovement : NetworkBehaviour
     private void Start()
     {
         input = GetComponent<PlayerInputHandeler>();
-        barrelController = GetComponent<tempBarrel>();
+        barrelController = GetComponent<BarrelController>();
         //input.onInputSignal += RecieveInput;
         rb.mass = Mass;
     }
@@ -174,7 +174,9 @@ public class PlayerMovement : NetworkBehaviour
             if (nearestInteractable.tag == "Barrel")
             {
                 AudioPlayer.PlaySFX(nearestInteractable.gameObject.GetComponent<BarrelInfo>().pickupSFX, playerObj.position, 0.1f);
-                barrelController.BarrelSchematics(playerObj);
+                barrelController.SetOrientation(playerObj);
+                barrelController.ToggleSchematic();
+                //barrelController.BarrelSchematics(playerObj);
             }
         }
 
@@ -189,7 +191,8 @@ public class PlayerMovement : NetworkBehaviour
         if (action.Buttons.WasPressed(previousButtons, InputButton.Drop) && IsHolding())
         {
             RPC_RequestDrop(Object.Id);
-            barrelController.KillSchematic();
+            barrelController.ToggleSchematic();
+            //barrelController.KillSchematic();
         }
 
         // Fire hose // throw barrel
@@ -201,8 +204,8 @@ public class PlayerMovement : NetworkBehaviour
             }
             else if (carriedObject.interactableType == InteractableType.Barrel)
             {
-                barrelController.BarrelThrow(playerObj);
-                Destroy(carriedObject.gameObject);
+                //barrelController.BarrelThrow(playerObj);
+                barrelController.ToggleSchematic();
                 //RPC_RequestDrop(Object.Id);
 
             }
@@ -217,13 +220,13 @@ public class PlayerMovement : NetworkBehaviour
             }
         }
 
-        //if holding barrel and throw, throw barrel! Boom!
+        //if holding barrel and throw, throw barrel
         if (action.Buttons.WasPressed(previousButtons, InputButton.Throw) && !IsHolding() && nearestInteractable != null)
         {
             //if barrel is picked up, queue schematic
             if (nearestInteractable.tag == "Barrel")
             {
-                barrelController.BarrelSchematics(playerObj);
+                //barrelController.BarrelSchematics(playerObj);
             }
 
         }
