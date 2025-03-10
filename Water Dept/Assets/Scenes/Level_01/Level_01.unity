@@ -18812,12 +18812,14 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   burnableScore: 150
   _fuelRemaining: 0
+  heatModifier: 0
   HeatSources: []
   burnOnAwake: 0
   startFuel: 10
   heatResistance: 0
-  heatStrength: 1
   heatBuffer: 5
+  heatDmgCap: 999
+  heatStrength: 1
   spreadRadius: 5.5
   _nIsBurning: 0
   showsLerp: 1
@@ -20673,12 +20675,14 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   burnableScore: 150
   _fuelRemaining: 0
+  heatModifier: 0
   HeatSources: []
   burnOnAwake: 0
   startFuel: 10
   heatResistance: 0
-  heatStrength: 1
   heatBuffer: 5
+  heatDmgCap: 999
+  heatStrength: 1
   spreadRadius: 5.5
   _nIsBurning: 0
   showsLerp: 1
@@ -21879,12 +21883,14 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   burnableScore: 150
   _fuelRemaining: 0
+  heatModifier: 0
   HeatSources: []
   burnOnAwake: 0
   startFuel: 10
   heatResistance: 0
-  heatStrength: 1
   heatBuffer: 5
+  heatDmgCap: 999
+  heatStrength: 1
   spreadRadius: 5.5
   _nIsBurning: 0
   showsLerp: 1
@@ -22920,12 +22926,14 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   burnableScore: 150
   _fuelRemaining: 0
+  heatModifier: 0
   HeatSources: []
   burnOnAwake: 0
   startFuel: 10
   heatResistance: 0
-  heatStrength: 1
   heatBuffer: 5
+  heatDmgCap: 999
+  heatStrength: 1
   spreadRadius: 5.5
   _nIsBurning: 0
   showsLerp: 1
@@ -25645,12 +25653,14 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   burnableScore: 150
   _fuelRemaining: 0
+  heatModifier: 0
   HeatSources: []
   burnOnAwake: 0
   startFuel: 10
   heatResistance: 0
-  heatStrength: 1
   heatBuffer: 5
+  heatDmgCap: 999
+  heatStrength: 1
   spreadRadius: 5.5
   _nIsBurning: 0
   showsLerp: 1
@@ -29504,12 +29514,14 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   burnableScore: 150
   _fuelRemaining: 0
+  heatModifier: 0
   HeatSources: []
   burnOnAwake: 0
   startFuel: 10
   heatResistance: 0
-  heatStrength: 1
   heatBuffer: 5
+  heatDmgCap: 999
+  heatStrength: 1
   spreadRadius: 5.5
   _nIsBurning: 0
   showsLerp: 1
@@ -31265,12 +31277,14 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   burnableScore: 150
   _fuelRemaining: 0
+  heatModifier: 0
   HeatSources: []
   burnOnAwake: 0
   startFuel: 10
   heatResistance: 0
-  heatStrength: 1
   heatBuffer: 5
+  heatDmgCap: 999
+  heatStrength: 1
   spreadRadius: 5.5
   _nIsBurning: 0
   showsLerp: 1
@@ -32937,12 +32951,14 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   burnableScore: 150
   _fuelRemaining: 0
+  heatModifier: 0
   HeatSources: []
   burnOnAwake: 0
   startFuel: 10
   heatResistance: 0
-  heatStrength: 1
   heatBuffer: 5
+  heatDmgCap: 999
+  heatStrength: 1
   spreadRadius: 5.5
   _nIsBurning: 0
   showsLerp: 1
@@ -41598,12 +41614,14 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   burnableScore: 150
   _fuelRemaining: 0
+  heatModifier: 0
   HeatSources: []
   burnOnAwake: 0
   startFuel: 10
   heatResistance: 0
-  heatStrength: 1
   heatBuffer: 5
+  heatDmgCap: 999
+  heatStrength: 1
   spreadRadius: 5.5
   _nIsBurning: 0
   showsLerp: 1
@@ -64111,12 +64129,14 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   burnableScore: 150
   _fuelRemaining: 0
+  heatModifier: 0
   HeatSources: []
   burnOnAwake: 0
   startFuel: 10
   heatResistance: 0
-  heatStrength: 1
   heatBuffer: 5
+  heatDmgCap: 999
+  heatStrength: 1
   spreadRadius: 5.5
   _nIsBurning: 0
   showsLerp: 1
@@ -66837,6 +66857,11 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 6677790331880970603, guid: 5692ee8dfdfefa54bb38ed60c25caf96,
         type: 3}
+      propertyPath: onFireVFX
+      value: 
+      objectReference: {fileID: 1087187112}
+    - target: {fileID: 6677790331880970603, guid: 5692ee8dfdfefa54bb38ed60c25caf96,
+        type: 3}
       propertyPath: burnableScore
       value: 10000
       objectReference: {fileID: 0}
@@ -66853,7 +66878,11 @@ PrefabInstance:
         type: 3}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
-    m_AddedGameObjects: []
+    m_AddedGameObjects:
+    - targetCorrespondingSourceObject: {fileID: 1349967590808676011, guid: 5692ee8dfdfefa54bb38ed60c25caf96,
+        type: 3}
+      insertIndex: -1
+      addedObject: {fileID: 1087187111}
     m_AddedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 5692ee8dfdfefa54bb38ed60c25caf96, type: 3}
 --- !u!4 &828009676 stripped
@@ -77347,12 +77376,14 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   burnableScore: 150
   _fuelRemaining: 0
+  heatModifier: 0
   HeatSources: []
   burnOnAwake: 0
   startFuel: 10
   heatResistance: 0
-  heatStrength: 1
   heatBuffer: 5
+  heatDmgCap: 999
+  heatStrength: 1
   spreadRadius: 5.5
   _nIsBurning: 0
   showsLerp: 1
@@ -82987,12 +83018,14 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   burnableScore: 150
   _fuelRemaining: 0
+  heatModifier: 0
   HeatSources: []
   burnOnAwake: 0
   startFuel: 10
   heatResistance: 0
-  heatStrength: 1
   heatBuffer: 5
+  heatDmgCap: 999
+  heatStrength: 1
   spreadRadius: 5.5
   _nIsBurning: 0
   showsLerp: 1
@@ -84421,12 +84454,14 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   burnableScore: 150
   _fuelRemaining: 0
+  heatModifier: 0
   HeatSources: []
   burnOnAwake: 0
   startFuel: 10
   heatResistance: 0
-  heatStrength: 1
   heatBuffer: 5
+  heatDmgCap: 999
+  heatStrength: 1
   spreadRadius: 5.5
   _nIsBurning: 0
   showsLerp: 1
@@ -84445,6 +84480,106 @@ Transform:
   m_CorrespondingSourceObject: {fileID: 8099795120693086562, guid: 870625944caa1a444865fface7be7146,
     type: 3}
   m_PrefabInstance: {fileID: 2023748656}
+  m_PrefabAsset: {fileID: 0}
+--- !u!1001 &1087187110
+PrefabInstance:
+  m_ObjectHideFlags: 0
+  serializedVersion: 2
+  m_Modification:
+    serializedVersion: 3
+    m_TransformParent: {fileID: 828009676}
+    m_Modifications:
+    - target: {fileID: 5841611648110418727, guid: 05dcc922609e20442a4a5bdea4ceeed8,
+        type: 3}
+      propertyPath: m_LocalScale.x
+      value: 10.000504
+      objectReference: {fileID: 0}
+    - target: {fileID: 5841611648110418727, guid: 05dcc922609e20442a4a5bdea4ceeed8,
+        type: 3}
+      propertyPath: m_LocalScale.y
+      value: 19.818874
+      objectReference: {fileID: 0}
+    - target: {fileID: 5841611648110418727, guid: 05dcc922609e20442a4a5bdea4ceeed8,
+        type: 3}
+      propertyPath: m_LocalScale.z
+      value: 10.522212
+      objectReference: {fileID: 0}
+    - target: {fileID: 5841611648110418727, guid: 05dcc922609e20442a4a5bdea4ceeed8,
+        type: 3}
+      propertyPath: m_LocalPosition.x
+      value: -0.3
+      objectReference: {fileID: 0}
+    - target: {fileID: 5841611648110418727, guid: 05dcc922609e20442a4a5bdea4ceeed8,
+        type: 3}
+      propertyPath: m_LocalPosition.y
+      value: 0.605
+      objectReference: {fileID: 0}
+    - target: {fileID: 5841611648110418727, guid: 05dcc922609e20442a4a5bdea4ceeed8,
+        type: 3}
+      propertyPath: m_LocalPosition.z
+      value: 0.306
+      objectReference: {fileID: 0}
+    - target: {fileID: 5841611648110418727, guid: 05dcc922609e20442a4a5bdea4ceeed8,
+        type: 3}
+      propertyPath: m_LocalRotation.w
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 5841611648110418727, guid: 05dcc922609e20442a4a5bdea4ceeed8,
+        type: 3}
+      propertyPath: m_LocalRotation.x
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 5841611648110418727, guid: 05dcc922609e20442a4a5bdea4ceeed8,
+        type: 3}
+      propertyPath: m_LocalRotation.y
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 5841611648110418727, guid: 05dcc922609e20442a4a5bdea4ceeed8,
+        type: 3}
+      propertyPath: m_LocalRotation.z
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 5841611648110418727, guid: 05dcc922609e20442a4a5bdea4ceeed8,
+        type: 3}
+      propertyPath: m_LocalEulerAnglesHint.x
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 5841611648110418727, guid: 05dcc922609e20442a4a5bdea4ceeed8,
+        type: 3}
+      propertyPath: m_LocalEulerAnglesHint.y
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 5841611648110418727, guid: 05dcc922609e20442a4a5bdea4ceeed8,
+        type: 3}
+      propertyPath: m_LocalEulerAnglesHint.z
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 5841611648110418727, guid: 05dcc922609e20442a4a5bdea4ceeed8,
+        type: 3}
+      propertyPath: m_ConstrainProportionsScale
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 7590589820563510137, guid: 05dcc922609e20442a4a5bdea4ceeed8,
+        type: 3}
+      propertyPath: m_Name
+      value: VFX_BoxFire_Large
+      objectReference: {fileID: 0}
+    m_RemovedComponents: []
+    m_RemovedGameObjects: []
+    m_AddedGameObjects: []
+    m_AddedComponents: []
+  m_SourcePrefab: {fileID: 100100000, guid: 05dcc922609e20442a4a5bdea4ceeed8, type: 3}
+--- !u!4 &1087187111 stripped
+Transform:
+  m_CorrespondingSourceObject: {fileID: 5841611648110418727, guid: 05dcc922609e20442a4a5bdea4ceeed8,
+    type: 3}
+  m_PrefabInstance: {fileID: 1087187110}
+  m_PrefabAsset: {fileID: 0}
+--- !u!198 &1087187112 stripped
+ParticleSystem:
+  m_CorrespondingSourceObject: {fileID: 7331367678004539497, guid: 05dcc922609e20442a4a5bdea4ceeed8,
+    type: 3}
+  m_PrefabInstance: {fileID: 1087187110}
   m_PrefabAsset: {fileID: 0}
 --- !u!4 &1089144705 stripped
 Transform:
@@ -105155,12 +105290,14 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   burnableScore: 150
   _fuelRemaining: 0
+  heatModifier: 0
   HeatSources: []
   burnOnAwake: 0
   startFuel: 10
   heatResistance: 0
-  heatStrength: 1
   heatBuffer: 5
+  heatDmgCap: 999
+  heatStrength: 1
   spreadRadius: 5.5
   _nIsBurning: 0
   showsLerp: 1
@@ -112652,12 +112789,14 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   burnableScore: 150
   _fuelRemaining: 0
+  heatModifier: 0
   HeatSources: []
   burnOnAwake: 0
   startFuel: 10
   heatResistance: 0
-  heatStrength: 1
   heatBuffer: 5
+  heatDmgCap: 999
+  heatStrength: 1
   spreadRadius: 5.5
   _nIsBurning: 0
   showsLerp: 1
@@ -117013,12 +117152,14 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   burnableScore: 150
   _fuelRemaining: 0
+  heatModifier: 0
   HeatSources: []
   burnOnAwake: 0
   startFuel: 10
   heatResistance: 0
-  heatStrength: 1
   heatBuffer: 5
+  heatDmgCap: 999
+  heatStrength: 1
   spreadRadius: 5.5
   _nIsBurning: 0
   showsLerp: 1
@@ -125059,12 +125200,14 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   burnableScore: 150
   _fuelRemaining: 0
+  heatModifier: 0
   HeatSources: []
   burnOnAwake: 0
   startFuel: 10
   heatResistance: 0
-  heatStrength: 1
   heatBuffer: 5
+  heatDmgCap: 999
+  heatStrength: 1
   spreadRadius: 5.5
   _nIsBurning: 0
   showsLerp: 1
@@ -146227,12 +146370,14 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   burnableScore: 150
   _fuelRemaining: 0
+  heatModifier: 0
   HeatSources: []
   burnOnAwake: 0
   startFuel: 10
   heatResistance: 0
-  heatStrength: 1
   heatBuffer: 5
+  heatDmgCap: 999
+  heatStrength: 1
   spreadRadius: 5.5
   _nIsBurning: 0
   showsLerp: 1
@@ -147737,12 +147882,14 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   burnableScore: 150
   _fuelRemaining: 0
+  heatModifier: 0
   HeatSources: []
   burnOnAwake: 0
   startFuel: 10
   heatResistance: 0
-  heatStrength: 1
   heatBuffer: 5
+  heatDmgCap: 999
+  heatStrength: 1
   spreadRadius: 5.5
   _nIsBurning: 0
   showsLerp: 1
@@ -151882,12 +152029,14 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   burnableScore: 150
   _fuelRemaining: 0
+  heatModifier: 0
   HeatSources: []
   burnOnAwake: 0
   startFuel: 10
   heatResistance: 0
-  heatStrength: 1
   heatBuffer: 5
+  heatDmgCap: 999
+  heatStrength: 1
   spreadRadius: 5.5
   _nIsBurning: 0
   showsLerp: 1
@@ -157093,6 +157242,11 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 5875268049657550506, guid: da37d0d4cf3baf84594e695fb6cefe1a,
         type: 3}
+      propertyPath: heatApplied
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 5875268049657550506, guid: da37d0d4cf3baf84594e695fb6cefe1a,
+        type: 3}
       propertyPath: rayAccuracy
       value: 20
       objectReference: {fileID: 0}
@@ -157110,6 +157264,11 @@ PrefabInstance:
         type: 3}
       propertyPath: holdOffset.y
       value: 1.2
+      objectReference: {fileID: 0}
+    - target: {fileID: 7476817858956929214, guid: da37d0d4cf3baf84594e695fb6cefe1a,
+        type: 3}
+      propertyPath: repoolDelay
+      value: 20
       objectReference: {fileID: 0}
     - target: {fileID: 2107730186189465194, guid: fa27aca4b8e13dc448c41e74e7c0b108,
         type: 3}
@@ -158709,12 +158868,14 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   burnableScore: 150
   _fuelRemaining: 0
+  heatModifier: 0
   HeatSources: []
   burnOnAwake: 0
   startFuel: 10
   heatResistance: 0
-  heatStrength: 1
   heatBuffer: 5
+  heatDmgCap: 999
+  heatStrength: 1
   spreadRadius: 5.5
   _nIsBurning: 0
   showsLerp: 1
@@ -159943,12 +160104,14 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   burnableScore: 150
   _fuelRemaining: 0
+  heatModifier: 0
   HeatSources: []
   burnOnAwake: 0
   startFuel: 10
   heatResistance: 0
-  heatStrength: 1
   heatBuffer: 5
+  heatDmgCap: 999
+  heatStrength: 1
   spreadRadius: 5.5
   _nIsBurning: 0
   showsLerp: 1
@@ -167221,12 +167384,14 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   burnableScore: 150
   _fuelRemaining: 0
+  heatModifier: 0
   HeatSources: []
   burnOnAwake: 0
   startFuel: 10
   heatResistance: 0
-  heatStrength: 1
   heatBuffer: 5
+  heatDmgCap: 999
+  heatStrength: 1
   spreadRadius: 5.5
   _nIsBurning: 0
   showsLerp: 1

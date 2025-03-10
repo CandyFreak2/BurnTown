@@ -22,7 +22,11 @@ public class ObjectPool : MonoBehaviour
         {
             GameObject obj = Instantiate(objectTemplate);
             obj.SetActive(false);
-            PooledObject pObj = obj.AddComponent<PooledObject>();
+
+            PooledObject pObj = obj.GetComponent<PooledObject>();
+            if (pObj == null) 
+                pObj = obj.AddComponent<PooledObject>();
+
             pObj._Pool = this;
             pObj.SetPooling(useRepoolDelay, repoolDelay);
             obj.transform.parent = objectPool;

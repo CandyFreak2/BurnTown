@@ -2,8 +2,6 @@ using Fusion;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
-using UnityEngine.Splines.Interpolators;
-using UnityEngine.XR;
 using static Fusion.NetworkBehaviour;
 
 public class Burnable : NetworkBehaviour
@@ -16,30 +14,38 @@ public class Burnable : NetworkBehaviour
 
     [Header("Burning Effects")]
     [SerializeField, Networked] private int fuelRemaining { get; set; }
+
+    [SerializeField, Tooltip("Increased by non-burnables like the flamethrower, decreases by 1 each seccond")]
+    protected int heatModifier = 0;
+
     public int CurrentHeat { get => GetCurrentHeat(); }
     public List<Burnable> HeatSources = new List<Burnable>();
 
     [SerializeField, Tooltip("Does this object start on fire")]
     protected bool burnOnAwake = false;
 
+    [Header("Heath and Resistance")]
     [SerializeField, Tooltip("The health of the object, takes damage from surrounding fire and itself")] 
     protected int startFuel = 10;
 
     [SerializeField, Tooltip("The level of heat required to do damage to this object")] 
     protected int heatResistance = 0;
 
+    [SerializeField, Tooltip("Heatbuffer takes damage before fuel does, slows down spread")]
+    protected int heatBuffer = 5;
+
+    [SerializeField, Tooltip("Max damage an object can take per heartbeat")]
+    protected int heatDmgCap = 999;
+
+    [Header("Damage and Spread")]
     [SerializeField, Tooltip("The amount of heat damage this object does to others, only the highest is used")] 
     protected int heatStrength = 1;
 
-    [SerializeField, Tooltip("Heatbuffer takes damage before fuel does")] 
-    protected int heatBuffer = 5;
-
-    [SerializeField, Tooltip("The delay between each damage and spread tick, low numbers may cause server lag")] 
-    protected static int heartBeat = 1;
-
-    [SerializeField, Tooltip("The radius the fire will spread")] 
+    [SerializeField, Tooltip("The radius the fire will spread")]
     protected float spreadRadius = 10.0f;
 
+    [SerializeField, Tooltip("The delay between each damage and spread tick, keep at 1 for now")] 
+    protected static int heartBeat = 1;
     private float spreadTimer = 0.0f;
 
     //networked vars are communicated and updated by networkbehaviors
@@ -66,6 +72,9 @@ public class Burnable : NetworkBehaviour
         fuelRemaining = startFuel;
         isSpawned = true;
         nIsBurning = burnOnAwake;
+
+        //offset update tick, by upto 0.2 sec. Spreads updates out over multiple frames
+        spreadTimer += 0.01f * (gameObject.GetInstanceID() % 20);
 
         //used for tracking percentages
         if (showsLerp)
@@ -140,20 +149,21 @@ public class Burnable : NetworkBehaviour
         }
     }
 
-    
-
     private void TakeFireDamageTick()
     {
         //Debug.Log(gameObject.name + "'s current heat is " + CurrentHeat);
         if(CurrentHeat <= heatResistance)
             return;
 
-        int heatDamage = Mathf.Clamp(CurrentHeat - heatResistance, 0, 9999) * heartBeat;
+        int heatDamage = Mathf.Clamp(CurrentHeat - heatResistance, 0, heatDmgCap) * heartBeat;
 
         if(heatBuffer > 0)
             heatBuffer -= heatDamage;
         else
             fuelRemaining -= heatDamage;
+
+        heatModifier -= heartBeat;
+        heatModifier = Mathf.Clamp(heatModifier, 0, heatDmgCap);
     }
     int GetCurrentHeat()
     {
@@ -161,13 +171,15 @@ public class Burnable : NetworkBehaviour
 
         //sets heat to the hottest current object
         foreach (Burnable hs in HeatSources)
-            if (hs.heatStrength > heat)
-                heat = hs.heatStrength;
+            heat += hs.heatStrength;
+
+        //add the modifier from non-burnable sources like the flamethrower
+        heat += heatModifier;
 
         return heat;
     }
 
-    ///A function for taking damage from incoming fire sources -James 03/08
+    ///<summary>A function for taking damage from incoming fire sources</summary>  -James 03/08
     public void AddHeat(Burnable source)
     {
         if(!HeatSources.Contains(source))
@@ -178,29 +190,44 @@ public class Burnable : NetworkBehaviour
         }
     }
 
-    private IEnumerator RemoveHeat(Burnable source)
-    {
-        yield return new WaitForSeconds(heartBeat + 1);
-        RPC_RemoveHeat(Object.Id, source);
-    }
-
-
     /// Tell everyone to add the new heatsource to their lists
-    [Rpc(RpcSources.All, RpcTargets.All)] // Run by everyone
+    [Rpc(RpcSources.All, RpcTargets.All)] 
     private void RPC_AddHeat(NetworkId _objID, Burnable source)
     {
         Burnable target = Runner.FindObject(_objID).GetComponent<Burnable>();
         target.HeatSources.Add(source);
     }
 
-
+    private IEnumerator RemoveHeat(Burnable source)
+    {
+        yield return new WaitForSeconds(heartBeat + 1);
+        RPC_RemoveHeat(Object.Id, source);
+    }
+    
     /// Tell everyone that the heat source has expired
-    [Rpc(RpcSources.All, RpcTargets.All)] // Run by everyone
+    [Rpc(RpcSources.All, RpcTargets.All)] 
     private void RPC_RemoveHeat(NetworkId _objID, Burnable source)
     {
         Burnable target = Runner.FindObject(_objID).GetComponent<Burnable>();
         target.HeatSources.Remove(source);
     }
+
+    /// <summary>Add a heat modifier from non-burnable objects. Highest given value is used. Decreases by 1 every seccond</summary>
+    public void AddHeatModifier(int heatValue)
+    {
+        if (heatModifier > heatValue)
+            return;
+
+        RPC_AddHeatModifier(Object.Id, heatValue);
+    }
+
+    [Rpc(RpcSources.All, RpcTargets.All)]
+    private void RPC_AddHeatModifier(NetworkId _objID, int heatValue)
+    {
+        Burnable target = Runner.FindObject(_objID).GetComponent<Burnable>();
+        target.heatModifier = heatValue;
+    }
+
 
     public void TriggerBurn() => RPC_TrigggerBurn(Object.Id);
     [Rpc(RpcSources.All, RpcTargets.All)]
