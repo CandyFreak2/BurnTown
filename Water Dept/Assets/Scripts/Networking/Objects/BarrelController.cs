@@ -15,7 +15,6 @@ public class BarrelController : NetworkBehaviour
 
     private void Start()
     {
-
     }
 
     private void FixedUpdate()
@@ -24,6 +23,7 @@ public class BarrelController : NetworkBehaviour
         {
             SnapPosition(barrelSchematic);
         }
+        
     }
 
     //assigns a barrels position to snap to the ground and/or a barrel nearby
@@ -40,40 +40,40 @@ public class BarrelController : NetworkBehaviour
     //toggles schematic state (called from PlayerMovement)
     public void ToggleSchematic()
     {
-        if(Runner.IsSceneAuthority)
-        {
-            if (isSchematicOut)
-            {
-                Runner.Despawn(barrelSchematic);
-                isSchematicOut = false;
-            }
-            else
-            {
-                barrelSchematic = Runner.Spawn(barrelSchematicPrefab);
-                isSchematicOut = true;
-            }
-        }
-        else if(Runner.IsClient)
-        {
-            RPC_ToggleBarrel(Object.Id);
-        }
-        
+        //if(!Runner.IsClient)
+        //{
+        //    if (isSchematicOut)
+        //    {
+        //        Runner.Despawn(barrelSchematic);
+        //        isSchematicOut = false;
+        //    }
+        //    else
+        //    {
+        //        barrelSchematic = Runner.Spawn(barrelSchematicPrefab);
+        //        isSchematicOut = true;
+        //    }
+        //}
+        //else if(Runner.IsClient)
+        //{
+        //    RPC_ToggleBarrel(Object.Id);
+        //}
+        RPC_ToggleBarrel(Object.Id);
     }
 
     [Rpc(RpcSources.All, RpcTargets.StateAuthority)]
-    public void RPC_ToggleBarrel(NetworkId hostScript)
+    public void RPC_ToggleBarrel(NetworkId playerScript)
     {
-        BarrelController hBarrelController = Runner.FindObject(hostScript).GetComponent<BarrelController>();
+        BarrelController pBarrelController = Runner.FindObject(playerScript).GetComponent<BarrelController>();
 
-        if (isSchematicOut)
+        if (pBarrelController.isSchematicOut)
         {
-            hBarrelController.Runner.Despawn(barrelSchematic);
-            isSchematicOut = false;
+            Runner.Despawn(barrelSchematic);
+            pBarrelController.isSchematicOut = false;
         }
-        else
+        else if(!pBarrelController.isSchematicOut)
         {
-            hBarrelController.barrelSchematic = Runner.Spawn(barrelSchematicPrefab);
-            isSchematicOut = true;
+            pBarrelController.barrelSchematic = Runner.Spawn(barrelSchematicPrefab);
+            pBarrelController.isSchematicOut = true;
         }
     }
 
