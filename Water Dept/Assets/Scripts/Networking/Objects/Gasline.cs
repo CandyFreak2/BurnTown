@@ -155,7 +155,6 @@ public class Gasline : NetworkBehaviour {
         yield return new WaitForSeconds(delay);
         vfx.Stop();
         Runner.Despawn(vfx.transform.parent.GetComponent<NetworkObject>());
-       
     }
 
     // Helper Functions
