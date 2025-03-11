@@ -26,7 +26,7 @@ Transform:
   m_GameObject: {fileID: 2728231644651137783}
   serializedVersion: 2
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 0, y: 0, z: 4}
+  m_LocalPosition: {x: 0, y: 0.26, z: 6.21}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []
@@ -104,6 +104,7 @@ GameObject:
   - component: {fileID: 1579977748051243662}
   - component: {fileID: 5875268049657550506}
   - component: {fileID: 7476817858956929214}
+  - component: {fileID: 496653181172093982}
   m_Layer: 0
   m_Name: Flamethrower
   m_TagString: FireHoseHead
@@ -284,6 +285,7 @@ MonoBehaviour:
   NetworkedBehaviours:
   - {fileID: 5997422084245149722}
   - {fileID: 5875268049657550506}
+  - {fileID: 496653181172093982}
   ForceRemoteRenderTimeframe: 0
 --- !u!114 &5997422084245149722
 MonoBehaviour:
@@ -297,7 +299,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 448471b91d9a6cc4bbdb69ea7b4a35f3, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  holdOffset: {x: 0, y: 0.5, z: 0}
+  holdOffset: {x: 0.2, y: 1.2, z: 0}
   interactableType: 0
 --- !u!54 &3656389120166898570
 Rigidbody:
@@ -363,7 +365,7 @@ MonoBehaviour:
     type: 3}
   fuelSpawnDelay: 0.1
   raySource: {fileID: 4418976957054803028}
-  rayAccuracy: 5
+  rayAccuracy: 20
   rayDistance: 8
   rayMask:
     serializedVersion: 2
@@ -399,6 +401,29 @@ MonoBehaviour:
   numberOfObjects: 100
   useRepoolDelay: 1
   repoolDelay: 20
+--- !u!114 &496653181172093982
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 5953924477471692778}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 0a591d221a634417e9827eb58e17de84, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  _stateAuthorityChangeErrorCorrectionDelta: 0.15
+  SyncScale: 0
+  SyncParent: 1
+  _interpolationTarget: {fileID: 0}
+  UsePreciseRotation: 0
+  UseRenderSleepThresholds: 1
+  RenderThresholds:
+    UseEnergy: 1
+    Position: 0.01
+    Rotation: 0.01
+    Scale: 0.01
 --- !u!1 &6193447075105349618
 GameObject:
   m_ObjectHideFlags: 0
