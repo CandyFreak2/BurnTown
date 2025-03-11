@@ -321,18 +321,21 @@ public class PlayerMovement : NetworkBehaviour
         //truckController = _truck.GetComponent<CarController>();
 
         truckController.enabled = true;
+        CarData truckData = _truck.GetComponent<CarData>();
 
-        if (truckController != null)
+        if (truckData != null)
         {
             // set data
-            truckController.SetTruckParent(_truck);
-            truckController.SetCarRB(_truck.GetComponent<Rigidbody>());
-            truckController.SetFrontTires(_truck.transform.Find("FL Tire").gameObject.GetComponent<Tire>());
-            truckController.SetFrontTires(_truck.transform.Find("FR Tire").gameObject.GetComponent<Tire>());
-            truckController.SetBackTires(_truck.transform.Find("BL Tire").gameObject.GetComponent<Tire>());
-            truckController.SetBackTires(_truck.transform.Find("BR Tire").gameObject.GetComponent<Tire>());
-            truckController.SetTireAngles();
-            truckController.SetDriverPos(_truck.transform.Find("DriverPos").gameObject.transform);
+            //truckController.SetTruckParent(_truck);
+            //truckController.SetCarRB(_truck.GetComponent<Rigidbody>());
+            //truckController.SetFrontTires(_truck.transform.Find("FL Tire").gameObject.GetComponent<Tire>());
+            //truckController.SetFrontTires(_truck.transform.Find("FR Tire").gameObject.GetComponent<Tire>());
+            //truckController.SetBackTires(_truck.transform.Find("BL Tire").gameObject.GetComponent<Tire>());
+            //truckController.SetBackTires(_truck.transform.Find("BR Tire").gameObject.GetComponent<Tire>());
+            //truckController.SetTireAngles();
+            //truckController.SetDriverPos(_truck.transform.Find("DriverPos").gameObject.transform);
+            truckData.AddPassenger();
+            truckController.SetData(truckData);
 
             // lower player camera priority
             if (HasInputAuthority)

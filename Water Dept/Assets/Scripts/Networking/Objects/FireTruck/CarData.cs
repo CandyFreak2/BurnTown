@@ -4,11 +4,11 @@ using UnityEngine;
 
 public class CarData : NetworkBehaviour
 {
-    [SerializeField] private Rigidbody carRB;
-    [SerializeField] private List<Tire> frontTires, backTires;
+    [SerializeField] public Rigidbody carRB;
+    [SerializeField] public List<Tire> frontTires, backTires;
 
-    [SerializeField] private Transform driverPos;
-    [SerializeField] private List<Transform> passengerPos;
+    [SerializeField] public Transform driverPos;
+    [SerializeField] public List<Transform> passengerPos;
     [Networked] private int numPassengers { set; get; }
 
     // Start is called once before the first execution of Update after the MonoBehaviour is created
@@ -26,5 +26,20 @@ public class CarData : NetworkBehaviour
     public override void Spawned()
     {
         numPassengers = 0;
+    }
+
+    public void AddPassenger()
+    {
+        numPassengers++;
+    }
+
+    public void SubPassenger()
+    {
+        numPassengers--;
+    }
+
+    public int GetNumPassengers()
+    {
+        return numPassengers;
     }
 }

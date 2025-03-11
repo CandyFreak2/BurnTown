@@ -165,6 +165,7 @@ GameObject:
   - component: {fileID: 1245603945616768155}
   - component: {fileID: 4768391477969633517}
   - component: {fileID: 6431982868594129600}
+  - component: {fileID: 615215578933300217}
   - component: {fileID: 2467624447809652897}
   - component: {fileID: 7867418211170759902}
   m_Layer: 0
@@ -246,6 +247,27 @@ BoxCollider:
   serializedVersion: 3
   m_Size: {x: 5, y: 5.5, z: 16.5}
   m_Center: {x: 0, y: -0.1, z: 0}
+--- !u!114 &615215578933300217
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 2231294426090905358}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: b2f113df522e3434fad56c96f37b2ad2, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  carRB: {fileID: 4768391477969633517}
+  frontTires:
+  - {fileID: 5595848358408308924}
+  - {fileID: 3962749562720211918}
+  backTires:
+  - {fileID: 6463156045763490709}
+  - {fileID: 7827506412703968857}
+  driverPos: {fileID: 4470442283876251106}
+  passengerPos: []
 --- !u!114 &2467624447809652897
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -286,6 +308,7 @@ MonoBehaviour:
   Flags: 262145
   NestedObjects: []
   NetworkedBehaviours:
+  - {fileID: 615215578933300217}
   - {fileID: 2467624447809652897}
   - {fileID: 5595848358408308924}
   - {fileID: 3962749562720211918}

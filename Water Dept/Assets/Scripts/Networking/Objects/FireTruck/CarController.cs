@@ -14,7 +14,7 @@ public class CarController : NetworkBehaviour
     [SerializeField] private Rigidbody carRB;
     [SerializeField] private Transform camTarget;
     [SerializeField] private float gravityStrength = 12.0f;
-    private Transform driverPos;
+    private Transform playerPos;
 
     [SerializeField] private List<Tire> frontTires, backTires;
     public float tireMaxAngle = 70.0f;
@@ -29,6 +29,7 @@ public class CarController : NetworkBehaviour
     [Networked] private NetworkButtons previousButtons { get; set; }
     PlayerInputAction action;
     private PlayerMovement playerController;
+    private bool isDriver;
     private bool canExit = false;
 
     // Start is called before the first frame update
@@ -51,8 +52,8 @@ public class CarController : NetworkBehaviour
         {
             GameObject player = playerController.gameObject;
 
-            player.transform.position = driverPos.position;
-            player.transform.rotation = driverPos.rotation;
+            player.transform.position = playerPos.position;
+            player.transform.rotation = playerPos.rotation;
         }
     }
 
@@ -216,7 +217,15 @@ public class CarController : NetworkBehaviour
 
         playerController.enabled = true;
         playerController.ReactivateSystems();
-        playerController.GetComponent<SimpleKCC>().SetPosition(driverPos.position - driverPos.right);
+        if (playerPos.localPosition.x < 0)
+        {
+            playerController.GetComponent<SimpleKCC>().SetPosition(playerPos.position - playerPos.right);
+        }
+        else
+        {
+            playerController.GetComponent<SimpleKCC>().SetPosition(playerPos.position + playerPos.right);
+        }
+        
 
         RPC_RequestPlayerExitTruck(Object.Id);
 
@@ -257,9 +266,36 @@ public class CarController : NetworkBehaviour
         {
             carController.playerController.enabled = true;
             carController.playerController.ReactivateSystems();
-            carController.playerController.GetComponent<SimpleKCC>().SetPosition(driverPos.position - driverPos.right);
+            if (carController.playerPos.localPosition.x < 0)
+            {
+                carController.playerController.GetComponent<SimpleKCC>().SetPosition(playerPos.position - playerPos.right);
+            }
+            else
+            {
+                carController.playerController.GetComponent<SimpleKCC>().SetPosition(playerPos.position + playerPos.right);
+            }
             //carController.playerController.GetOutTruck();
             //carController.playerController = null;
+        }
+    }
+
+    public void SetData(CarData _data)
+    {
+        truckParent = _data.gameObject;
+        carRB = _data.carRB;
+        frontTires = _data.frontTires;
+        backTires = _data.backTires;
+
+        int numPassengers = _data.GetNumPassengers();
+        if (numPassengers == 1)
+        {
+            isDriver = true;
+            playerPos = _data.driverPos;
+        }
+        else
+        {
+            isDriver = false;
+            playerPos = _data.passengerPos[numPassengers - 1];
         }
     }
 
@@ -304,7 +340,7 @@ public class CarController : NetworkBehaviour
 
     public void SetDriverPos(Transform _driverPos)
     {
-        driverPos = _driverPos;
+        playerPos = _driverPos;
     }
 
     private void ExitDelay()
