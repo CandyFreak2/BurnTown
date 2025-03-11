@@ -13,6 +13,7 @@ public class CarController : NetworkBehaviour
     private GameObject truckParent;
     [SerializeField] private Rigidbody carRB;
     [SerializeField] private Transform camTarget;
+    [SerializeField] private float gravityStrength = 12.0f;
     private Transform driverPos;
 
     [SerializeField] private List<Tire> frontTires, backTires;
@@ -33,7 +34,6 @@ public class CarController : NetworkBehaviour
     // Start is called before the first frame update
     void Start()
     {
-        
     }
 
     public override void Spawned()
@@ -66,6 +66,7 @@ public class CarController : NetworkBehaviour
             GetTruckInput();
             TurnTires();
             UpdateTires();
+            UpdateGravity();
 
             previousButtons = action.Buttons;
         }
@@ -169,6 +170,14 @@ public class CarController : NetworkBehaviour
         }
     }
 
+    private void UpdateGravity()
+    {
+        if (carRB != null)
+        {
+            carRB.AddForce(Vector3.down * gravityStrength);
+        }
+    }
+
     public void PlayerEnterTruck(PlayerMovement _playerMovement)
     {
         playerController = _playerMovement;
@@ -183,7 +192,7 @@ public class CarController : NetworkBehaviour
         }
 
         // RB
-       // carRB.isKinematic = false;
+        //carRB.isKinematic = false;
 
         // Add delay to player being able to exit so player doesn't instantly leave off of enter input
         canExit = false;
