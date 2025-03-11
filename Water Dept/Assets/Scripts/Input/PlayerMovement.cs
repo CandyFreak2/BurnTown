@@ -2,10 +2,16 @@ using UnityEngine;
 using Fusion;
 using Fusion.Addons.SimpleKCC;
 using TMPro;
+using Unity.Cinemachine;
+using System;
+using NUnit.Framework;
+using System.Collections.Generic;
+using DG.Tweening;
 
 public class PlayerMovement : NetworkBehaviour
 {
     private bool isSpawned = false;
+    private bool canEnter = true;
 
     [Header("Movement")]
     public float MoveSpeed = 5.0f;
@@ -18,16 +24,22 @@ public class PlayerMovement : NetworkBehaviour
     [Networked] private Vector3 networkedForward { get; set; }
 
     //movement input
-    public Vector3 moveDirection = Vector3.zero;
+    private Vector3 moveDirection = Vector3.zero;
     [Networked] private NetworkButtons previousButtons { get; set; }
 
     [Networked] public Interactable carriedObject { get; set; }
     [SerializeField] private TextMeshPro pickupText;
+    [SerializeField] private CarController truckController;
+
+    [SerializeField] private GameObject indicator;
 
     PlayerInputHandeler input;
     PlayerInputAction action;
     [SerializeField] Rigidbody rb;
     [SerializeField] SimpleKCC kcc;
+
+    //Barrel interactions
+    tempBarrel barrelController;
 
     [Header("Ground Check")]
     [SerializeField] Transform groundCheck;
@@ -39,9 +51,21 @@ public class PlayerMovement : NetworkBehaviour
     [SerializeField] float Drag = 5.0f;
     //[SerializeField] float AirDrag = 7.0f;
 
+    [Header("Audio")]
+    [SerializeField] PlayerSFXProfile sfxProfile;
+    [Serializable] private class PlayerSFXProfile
+    {
+        public List<AudioClip> footstep = new List<AudioClip>();
+        public List<AudioClip> equipItem = new List<AudioClip>();
+        public List<AudioClip> dropItem = new List<AudioClip>();
+        public List<AudioClip> stunned = new List<AudioClip>();
+        public List<AudioClip> onFire = new List<AudioClip>();
+    }
+
     private void Start()
     {
         input = GetComponent<PlayerInputHandeler>();
+        barrelController = GetComponent<tempBarrel>();
         //input.onInputSignal += RecieveInput;
         rb.mass = Mass;
     }
@@ -54,6 +78,7 @@ public class PlayerMovement : NetworkBehaviour
         {
             //FreeCameraController.Singleton.SetTarget(camTarget);
             GetComponentInChildren<CineSingleCamera>().SetAsActiveCamera();
+            //ObjectiveIndicatorList.Singleton.SetIndicator(indicator);
         }
 
         isSpawned = true;
@@ -138,11 +163,25 @@ public class PlayerMovement : NetworkBehaviour
 
     private void HandleInteraction()
     {
-        Interactable nearestInteractable = GetNearestInteractable();
-        //Pickup hose
-        if (action.Buttons.WasPressed(previousButtons, InputButton.Interact) && !IsHolding() && nearestInteractable != null)
+        GameObject nearestInteractable = GetNearestInteractable();
+        //Pickup hose // barrel
+        if (action.Buttons.WasPressed(previousButtons, InputButton.Interact) && !IsHolding() && nearestInteractable != null && CanPickup(nearestInteractable))
         {
-            PickUpObject(nearestInteractable);
+            PickUpObject(nearestInteractable.GetComponent<Interactable>());
+            pickupText.text = "";
+
+            //if barrel is picked up, queue schematic
+            if (nearestInteractable.tag == "Barrel")
+            {
+                AudioPlayer.PlaySFX(nearestInteractable.gameObject.GetComponent<BarrelInfo>().pickupSFX, playerObj.position, 0.1f);
+                barrelController.BarrelSchematics(playerObj);
+            }
+        }
+
+        // Get in truck
+        if (action.Buttons.WasPressed(previousButtons, InputButton.Interact) && nearestInteractable != null && nearestInteractable.gameObject.tag == "FireTruck" && canEnter)
+        {
+            GetInTruck(nearestInteractable);
             pickupText.text = "";
         }
 
@@ -150,14 +189,22 @@ public class PlayerMovement : NetworkBehaviour
         if (action.Buttons.WasPressed(previousButtons, InputButton.Drop) && IsHolding())
         {
             RPC_RequestDrop(Object.Id);
+            barrelController.KillSchematic();
         }
 
-        // Fire hose
+        // Fire hose // throw barrel
         if (action.Buttons.WasPressed(previousButtons, InputButton.Shoot) && IsHolding())
         {
             if (carriedObject.interactableType == InteractableType.Flamethrower)
             {
-                carriedObject.gameObject.GetComponent<FireHouse>().Spray();
+                carriedObject.gameObject.GetComponent<Flamethrower>().Spray();
+            }
+            else if (carriedObject.interactableType == InteractableType.Barrel)
+            {
+                barrelController.BarrelThrow(playerObj);
+                Destroy(carriedObject.gameObject);
+                //RPC_RequestDrop(Object.Id);
+
             }
         }
 
@@ -166,28 +213,54 @@ public class PlayerMovement : NetworkBehaviour
         {
             if (carriedObject.interactableType == InteractableType.Flamethrower)
             {
-                carriedObject.gameObject.GetComponent<FireHouse>().StartCoroutine(carriedObject.gameObject.GetComponent<FireHouse>().StopSpraying());
+                carriedObject.gameObject.GetComponent<Flamethrower>().StopSpraying();
             }
+        }
+
+        //if holding barrel and throw, throw barrel! Boom!
+        if (action.Buttons.WasPressed(previousButtons, InputButton.Throw) && !IsHolding() && nearestInteractable != null)
+        {
+            //if barrel is picked up, queue schematic
+            if (nearestInteractable.tag == "Barrel")
+            {
+                barrelController.BarrelSchematics(playerObj);
+            }
+
         }
     }
 
-    private Interactable GetNearestInteractable()
+    private GameObject GetNearestInteractable()
     {
-        Interactable nearestInteractable = null;
+        GameObject nearestInteractable = null;
 
-        Collider[] interactableObjects = Physics.OverlapSphere(transform.position, 3.5f);
-        foreach (Collider collider in interactableObjects)
+        if (HasInputAuthority && !IsHolding())
         {
-            // First object in list that is a flamethrower gets picked up ++ Or barrel
-            if (collider.gameObject.tag == "FireHoseHead" || collider.gameObject.tag == "Barrel" && !IsHolding())
+            Collider[] interactableObjects = Physics.OverlapSphere(kcc.transform.position, 3.5f);
+            foreach (Collider collider in interactableObjects)
             {
-                nearestInteractable = collider.gameObject.GetComponent<Interactable>();
-                pickupText.text = "North Button / E to Pickup";
-                return nearestInteractable;
-            }
-            else
-            {
-                pickupText.text = "";
+                // First object in list that is a flamethrower gets picked up ++ Or barrel
+                if (collider.gameObject.tag == "FireTruck")
+                {
+                    nearestInteractable = collider.gameObject;
+                    pickupText.text = "North Button / E to Enter Fire Truck";
+                    return nearestInteractable;
+                }
+                else if (collider.gameObject.tag == "FireHoseHead")
+                {
+                    nearestInteractable = collider.gameObject;
+                    pickupText.text = "North Button / E to Pickup Flamethrower";
+                    return nearestInteractable;
+                }
+                else if (collider.gameObject.tag == "Barrel")
+                {
+                    nearestInteractable = collider.gameObject;
+                    pickupText.text = "North Button / E to Pickup Barrel";
+                    return nearestInteractable;
+                }
+                else
+                {
+                    pickupText.text = "";
+                }
             }
         }
 
@@ -223,13 +296,127 @@ public class PlayerMovement : NetworkBehaviour
         return new Vector3(input.x, 0, input.y);
     }
 
+    public void DeactivateSystems()
+    {
+        GetComponent<SimpleKCC>().enabled = false;
+
+        foreach (Transform child in gameObject.transform) //crazy tech bro
+        {
+            child.gameObject.SetActive(false);
+        }
+    }
+
+    public void ReactivateSystems()
+    {
+        GetComponent<SimpleKCC>().enabled = true;
+
+        foreach (Transform child in gameObject.transform) //crazy tech bro
+        {
+            child.gameObject.SetActive(true);
+        }
+    }
+
+    private void GetInTruck(GameObject _truck)
+    {
+        //truckController = _truck.GetComponent<CarController>();
+
+        truckController.enabled = true;
+
+        if (truckController != null)
+        {
+            // set data
+            truckController.SetTruckParent(_truck);
+            truckController.SetCarRB(_truck.GetComponent<Rigidbody>());
+            truckController.SetFrontTires(_truck.transform.Find("FL Tire").gameObject.GetComponent<Tire>());
+            truckController.SetFrontTires(_truck.transform.Find("FR Tire").gameObject.GetComponent<Tire>());
+            truckController.SetBackTires(_truck.transform.Find("BL Tire").gameObject.GetComponent<Tire>());
+            truckController.SetBackTires(_truck.transform.Find("BR Tire").gameObject.GetComponent<Tire>());
+            truckController.SetTireAngles();
+            truckController.SetDriverPos(_truck.transform.Find("DriverPos").gameObject.transform);
+
+            // lower player camera priority
+            if (HasInputAuthority)
+            {
+                CinemachineCamera camera = GetComponentInChildren<CinemachineCamera>();
+                camera.Priority = -1;
+            }
+
+            // change player input to car input
+            truckController.PlayerEnterTruck(this);
+        }
+
+        RPC_RequestGetInTruck(_truck.GetComponent<NetworkObject>().Id, Object.Id);
+    }
+
+    public void GetOutTruck()
+    {
+        truckController.enabled = false;
+
+        // raise player camera priority
+        if (HasInputAuthority)
+        {
+            CinemachineCamera camera = GetComponentInChildren<CinemachineCamera>();
+            camera.Priority = 1;
+        }
+
+        // Add delay to player being able to enter so player doesn't instantly leave off of exit input
+        canEnter = false;
+        Invoke("EnterDelay", 0.5f);
+
+        RPC_RequestGetOutTruck(Object.Id);
+    }
+
     public void PickUpObject(Interactable _object)
     {
         //Debug.Log(_object.CanBePickedUp());
         if (_object != null && _object.CanBePickedUp())
         {
             RPC_RequestPickUp(_object.Object.Id, Object.Id);
+            AudioPlayer.PlaySFX(sfxProfile.equipItem, transform, 0.2f);
         }
+    }
+
+    // Asks server very nicely if client can get in whip
+    [Rpc(RpcSources.All, RpcTargets.StateAuthority)] // Only run by host
+    public void RPC_RequestGetInTruck(NetworkId _truckId, NetworkId _playerId)
+    {
+        GameObject truck = Runner.FindObject(_truckId).gameObject;
+        PlayerMovement player = Runner.FindObject(_playerId).GetComponent<PlayerMovement>();
+
+        if (truck != null)
+        {
+            CarController playerTruckController = player.truckController;
+            playerTruckController.enabled = true;
+
+            if (playerTruckController != null)
+            {
+                // set data
+                playerTruckController.SetTruckParent(truck);
+                playerTruckController.SetCarRB(truck.GetComponent<Rigidbody>());
+                playerTruckController.SetFrontTires(truck.transform.Find("FL Tire").gameObject.GetComponent<Tire>());
+                playerTruckController.SetFrontTires(truck.transform.Find("FR Tire").gameObject.GetComponent<Tire>());
+                playerTruckController.SetBackTires(truck.transform.Find("BL Tire").gameObject.GetComponent<Tire>());
+                playerTruckController.SetBackTires(truck.transform.Find("BR Tire").gameObject.GetComponent<Tire>());
+                playerTruckController.SetTireAngles();
+                playerTruckController.SetDriverPos(truck.transform.Find("DriverPos").gameObject.transform);
+
+                // change player input to car input
+                playerTruckController.PlayerEnterTruck(player);
+            }
+        }
+    }
+
+    // Asks server very nicely if client can get out whip
+    [Rpc(RpcSources.All, RpcTargets.StateAuthority)] // Only run by host
+    public void RPC_RequestGetOutTruck(NetworkId _playerId)
+    {
+        PlayerMovement player = Runner.FindObject(_playerId).GetComponent<PlayerMovement>();
+
+        player.truckController.enabled = false;
+
+        // Add delay to player being able to enter so player doesn't instantly leave off of exit input
+        player.canEnter = false;
+        player.Invoke("EnterDelay", 0.5f);
     }
 
     // Asks server very nicely if client can pick up object
@@ -244,6 +431,7 @@ public class PlayerMovement : NetworkBehaviour
             player.carriedObject = interactable;
             player.carriedObject.gameObject.GetComponent<NetworkObject>().AssignInputAuthority(player.Object.InputAuthority);
             player.carriedObject.PickUp(Object.Id);
+            player.carriedObject.transform.DOShakeScale(0.5f, 0.8f);
         }
     }
 
@@ -257,7 +445,7 @@ public class PlayerMovement : NetworkBehaviour
             player.carriedObject.Drop();
             if (player.carriedObject.interactableType == InteractableType.Flamethrower)
             {
-                player.carriedObject.gameObject.GetComponent<FireHouse>().StartCoroutine(carriedObject.gameObject.GetComponent<FireHouse>().StopSpraying());
+                player.carriedObject.gameObject.GetComponent<Flamethrower>().StopSpraying();
             }
             player.carriedObject.gameObject.GetComponent<NetworkObject>().RemoveInputAuthority();
             player.carriedObject = null;
@@ -267,5 +455,15 @@ public class PlayerMovement : NetworkBehaviour
     public bool IsHolding()
     {
         return carriedObject != null;
+    }
+
+    private void EnterDelay()
+    {
+        canEnter = true;
+    }
+
+    private bool CanPickup(GameObject _interactable)
+    {
+        return _interactable.gameObject.tag == "FireHoseHead" || _interactable.gameObject.tag == "Barrel";
     }
 }

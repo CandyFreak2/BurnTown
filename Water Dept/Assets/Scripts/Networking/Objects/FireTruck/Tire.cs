@@ -1,13 +1,14 @@
+using Fusion;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-public class Tire : MonoBehaviour
+public class Tire : NetworkBehaviour
 {
     [SerializeField]
     private Rigidbody carRB;
 
-    private Vector3 accForces = Vector3.zero;
+    [Networked] private Vector3 accForces { get; set; }
 
     //Collision data
     private RaycastHit tireRay;
@@ -30,10 +31,14 @@ public class Tire : MonoBehaviour
 
     private void Start()
     {
-
         suspensionForce = Vector3.zero;
         accelerationForce = Vector3.zero;
         steeringForce = Vector3.zero;
+    }
+
+    public override void Spawned()
+    {
+        accForces = Vector3.zero;
     }
 
     public void UpdateForces(float _accelerationInput, float _brakeInput, Vector3 _carForward)
