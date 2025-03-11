@@ -1,14 +1,6 @@
 using Fusion;
-using Fusion.Addons.Physics;
-using NUnit.Framework.Internal;
 using System.Collections;
-using System.Collections.Generic;
-using System.Data;
-using System.Linq;
-using System.Threading;
-using Unity.VisualScripting;
 using UnityEngine;
-using static Gasline;
 
 public class BarrelInfo : NetworkBehaviour
 {
@@ -151,9 +143,7 @@ public class BarrelInfo : NetworkBehaviour
             {
                 if (rb.gameObject.CompareTag("DestructibleObject"))
                 {
-                    rb.gameObject.transform.parent.GetComponent<ConcreteWall>().Explode();
-
-                    //rb.gameObject.transform.parent.GetComponent<ConcreteWall>().Explode(explosionForce);
+                    rb.gameObject.transform.GetComponent<ConcreteWall>().RPC_Explode();
                 }
                 rb.AddExplosionForce(explosionForce, gameObject.transform.position, explosionRadius, 3.0f);
             }

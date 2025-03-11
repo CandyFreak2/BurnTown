@@ -1,5 +1,6 @@
 using UnityEngine;
 using Fusion;
+using Fusion.Addons.Physics;
 
 public enum InteractableType
 {
@@ -12,12 +13,13 @@ public class Interactable : NetworkBehaviour
     private bool isSpawned;
 
     [Networked]
-    private NetworkBool isPickedUp { get; set; }
+    public NetworkBool isPickedUp { get; set; }
 
     [Networked]
-    private NetworkId carrierId { get; set; }
+    public NetworkId carrierId { get; set; }
 
     private Rigidbody rb;
+    private NetworkRigidbody3D networkRB;
     private Collider interactableCollider;
 
     [SerializeField]
@@ -40,6 +42,7 @@ public class Interactable : NetworkBehaviour
             isSpawned = true;
             isPickedUp = false;
             carrierId = default;
+            networkRB = GetComponent<NetworkRigidbody3D>();
         }
     }
 
@@ -52,9 +55,7 @@ public class Interactable : NetworkBehaviour
             // Update position of interactable to player
             if (carrier != null)
             {
-                // FIX THIS - SHOULD NOT BE CHECKING FOR NAME OR INDEX OF CHILD
-                // COMPARE TAG OF CHILD OR REFERENCE POSITION OF OBJECT
-                Transform handtransform = carrier.transform.GetChild(0);
+                Transform handtransform = carrier.transform.Find("PlayerModelObj");
 
                 transform.position = handtransform.position + handtransform.TransformDirection(holdOffset);
                 transform.rotation = handtransform.rotation;
@@ -71,13 +72,16 @@ public class Interactable : NetworkBehaviour
     {
         if (/*HasStateAuthority &&*/ !isPickedUp)
         {
+
             isPickedUp = true;
             carrierId = _playerId;
 
             // Disable physics while held
+            RPC_RequestPickUp(Object.Id, _playerId);
             rb.isKinematic = true;
             rb.constraints = RigidbodyConstraints.FreezeAll;
             interactableCollider.enabled = false;
+            networkRB.enabled = false;
         }
     }
 
@@ -85,13 +89,53 @@ public class Interactable : NetworkBehaviour
     {
         if (/*HasStateAuthority &&*/ isPickedUp)
         {
+
             isPickedUp = false;
             carrierId = default;
 
             // Disable physics while held
+            RPC_RequestDrop(Object.Id);
             rb.isKinematic = false;
             rb.constraints = RigidbodyConstraints.None;
             interactableCollider.enabled = true;
+            networkRB.enabled = true;
+        }
+    }
+
+    [Rpc(RpcSources.All, RpcTargets.All)] // Run by all
+    public void RPC_RequestPickUp(NetworkId _interactableId, NetworkId _playerId)
+    {
+        Interactable interactable = Runner.FindObject(_interactableId).GetComponent<Interactable>();
+
+        if (/*HasStateAuthority &&*/ interactable != null)
+        {
+            Debug.Log("Yoooo in rpc");
+            //interactable.isPickedUp = true;
+            //interactable.carrierId = _playerId;
+
+            // Disable physics while held
+            interactable.rb.isKinematic = true;
+            interactable.rb.constraints = RigidbodyConstraints.FreezeAll;
+            interactable.interactableCollider.enabled = false;
+            interactable.networkRB.enabled = false;
+        }
+    }
+
+    [Rpc(RpcSources.All, RpcTargets.All)] // Run by all
+    public void RPC_RequestDrop(NetworkId _interactableId)
+    {
+        Interactable interactable = Runner.FindObject(_interactableId).GetComponent<Interactable>();
+
+        if (/*HasStateAuthority &&*/ interactable != null)
+        {
+            //interactable.isPickedUp = false;
+            //interactable.carrierId = default;
+
+            // Disable physics while held
+            interactable.rb.isKinematic = false;
+            interactable.rb.constraints = RigidbodyConstraints.None;
+            interactable.interactableCollider.enabled = true;
+            interactable.networkRB.enabled = true;
         }
     }
 

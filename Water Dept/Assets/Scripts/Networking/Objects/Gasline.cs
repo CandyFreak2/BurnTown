@@ -2,9 +2,7 @@ using Fusion;
 using System;
 using System.Collections;
 using System.Collections.Generic;
-using Unity.VisualScripting;
 using UnityEngine;
-using UnityEngine.UIElements;
 
 public class Gasline : NetworkBehaviour {
 
@@ -155,7 +153,6 @@ public class Gasline : NetworkBehaviour {
         yield return new WaitForSeconds(delay);
         vfx.Stop();
         Runner.Despawn(vfx.transform.parent.GetComponent<NetworkObject>());
-       
     }
 
     // Helper Functions

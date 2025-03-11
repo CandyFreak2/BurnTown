@@ -8,7 +8,7 @@ public class TimerSystem : NetworkBehaviour {
     [Networked] private NetworkBool canStart { get; set; }
 
     [Header("Time Syncing")]
-    [Tooltip("Duration is based off of seconds"), SerializeField] private float duration;
+    [Tooltip("Duration (Seconds)"), SerializeField] private float duration;
     [SerializeField] private TMP_Text timerText;
     [SerializeField] private float remainingTime;
 
@@ -82,5 +82,21 @@ public class TimerSystem : NetworkBehaviour {
             canPause = false;
             canStart = true;
         }
+    }
+
+    public void AddTime(float increment) {
+        if (Timer.IsRunning) {
+            Timer = TickTimer.None;
+            remainingTime += increment;
+            Timer = TickTimer.CreateFromSeconds(Runner, remainingTime);
+        }
+    }
+
+    private void OnEnable() {
+        EventManager.onTimerAdd += AddTime;
+    }
+
+    private void OnDisable() {
+        EventManager.onTimerAdd -= AddTime;
     }
 }

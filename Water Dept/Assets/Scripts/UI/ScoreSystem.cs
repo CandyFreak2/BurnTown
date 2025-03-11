@@ -27,10 +27,10 @@ public class ScoreSystem : NetworkBehaviour {
     }
 
     private void OnEnable() {
-        EventManager.OnBurnableDestroyed += UpdateScoreUI;
+        EventManager.onBurnableDestroyed += UpdateScoreUI;
     }
 
     private void OnDisable() {
-        EventManager.OnBurnableDestroyed -= UpdateScoreUI;
+        EventManager.onBurnableDestroyed -= UpdateScoreUI;
     }
 }
