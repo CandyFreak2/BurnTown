@@ -242,8 +242,17 @@ public class PlayerMovement : NetworkBehaviour
                 if (collider.gameObject.tag == "FireTruck")
                 {
                     nearestInteractable = collider.gameObject;
-                    pickupText.text = "North Button / E to Enter Fire Truck";
-                    return nearestInteractable;
+                    CarData truckData = nearestInteractable.GetComponent<CarData>();
+                    if (truckData.GetNumPassengers() < truckData.GetMaxPassengers())
+                    {
+                        pickupText.text = "North Button / E to Enter Fire Truck";
+                        return nearestInteractable;
+                    }
+                    else
+                    {
+                        pickupText.text = "Fire Truck Full";
+                        return null;
+                    }
                 }
                 else if (collider.gameObject.tag == "FireHoseHead")
                 {
@@ -302,7 +311,10 @@ public class PlayerMovement : NetworkBehaviour
 
         foreach (Transform child in gameObject.transform) //crazy tech bro
         {
-            child.gameObject.SetActive(false);
+            if (child.name != "PlayerModelObj")
+            {
+                child.gameObject.SetActive(false);
+            }
         }
     }
 
@@ -390,18 +402,22 @@ public class PlayerMovement : NetworkBehaviour
         {
             CarController playerTruckController = player.truckController;
             playerTruckController.enabled = true;
+            CarData truckData = truck.GetComponent<CarData>();
 
             if (playerTruckController != null)
             {
                 // set data
-                playerTruckController.SetTruckParent(truck);
-                playerTruckController.SetCarRB(truck.GetComponent<Rigidbody>());
-                playerTruckController.SetFrontTires(truck.transform.Find("FL Tire").gameObject.GetComponent<Tire>());
-                playerTruckController.SetFrontTires(truck.transform.Find("FR Tire").gameObject.GetComponent<Tire>());
-                playerTruckController.SetBackTires(truck.transform.Find("BL Tire").gameObject.GetComponent<Tire>());
-                playerTruckController.SetBackTires(truck.transform.Find("BR Tire").gameObject.GetComponent<Tire>());
-                playerTruckController.SetTireAngles();
-                playerTruckController.SetDriverPos(truck.transform.Find("DriverPos").gameObject.transform);
+                //playerTruckController.SetTruckParent(truck);
+                //playerTruckController.SetCarRB(truck.GetComponent<Rigidbody>());
+                //playerTruckController.SetFrontTires(truck.transform.Find("FL Tire").gameObject.GetComponent<Tire>());
+                //playerTruckController.SetFrontTires(truck.transform.Find("FR Tire").gameObject.GetComponent<Tire>());
+                //playerTruckController.SetBackTires(truck.transform.Find("BL Tire").gameObject.GetComponent<Tire>());
+                //playerTruckController.SetBackTires(truck.transform.Find("BR Tire").gameObject.GetComponent<Tire>());
+                //playerTruckController.SetTireAngles();
+                //playerTruckController.SetDriverPos(truck.transform.Find("DriverPos").gameObject.transform);
+                //truckData.AddPassenger();
+                playerTruckController.SetData(truckData);
+
 
                 // change player input to car input
                 playerTruckController.PlayerEnterTruck(player);

@@ -9,7 +9,8 @@ public class CarData : NetworkBehaviour
 
     [SerializeField] public Transform driverPos;
     [SerializeField] public List<Transform> passengerPos;
-    [Networked] private int numPassengers { set; get; }
+    [Networked] public int numPassengers { set; get; } // change to private
+    private int maxPassengers;
 
     // Start is called once before the first execution of Update after the MonoBehaviour is created
     void Start()
@@ -26,20 +27,48 @@ public class CarData : NetworkBehaviour
     public override void Spawned()
     {
         numPassengers = 0;
+        maxPassengers = passengerPos.Count + 1;
     }
 
     public void AddPassenger()
     {
-        numPassengers++;
+        RPC_AddPassenger(Object.Id);
     }
 
     public void SubPassenger()
     {
-        numPassengers--;
+        RPC_SubPassenger(Object.Id);
+    }
+
+    [Rpc(RpcSources.All, RpcTargets.All)] // Run by everyone
+    public void RPC_AddPassenger(NetworkId carDataId)
+    {
+        CarData carData = Runner.FindObject(carDataId).GetComponent<CarData>();
+
+        if (carData != null)
+        {
+            carData.numPassengers++;
+        }
+    }
+
+    [Rpc(RpcSources.All, RpcTargets.All)] // Run by everyone
+    public void RPC_SubPassenger(NetworkId carDataId)
+    {
+        CarData carData = Runner.FindObject(carDataId).GetComponent<CarData>();
+
+        if (carData != null)
+        {
+            carData.numPassengers--;
+        }
     }
 
     public int GetNumPassengers()
     {
         return numPassengers;
+    }
+
+    public int GetMaxPassengers()
+    {
+        return maxPassengers;
     }
 }

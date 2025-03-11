@@ -10,6 +10,7 @@ using UnityEngine.InputSystem.XR;
 
 public class CarController : NetworkBehaviour
 {
+    private CarData carData;
     private GameObject truckParent;
     [SerializeField] private Rigidbody carRB;
     [SerializeField] private Transform camTarget;
@@ -65,9 +66,13 @@ public class CarController : NetworkBehaviour
             action = input;
 
             GetTruckInput();
-            TurnTires();
-            UpdateTires();
-            UpdateGravity();
+
+            if (isDriver)
+            {
+                TurnTires();
+                UpdateTires();
+                UpdateGravity();
+            }
 
             previousButtons = action.Buttons;
         }
@@ -193,7 +198,7 @@ public class CarController : NetworkBehaviour
         }
 
         // RB
-        //carRB.isKinematic = false;
+        carRB.useGravity = false;
 
         // Add delay to player being able to exit so player doesn't instantly leave off of enter input
         canExit = false;
@@ -204,7 +209,7 @@ public class CarController : NetworkBehaviour
 
     private void PlayerExitTruck()
     {
-        //carRB.isKinematic = true;
+        carRB.useGravity = true;
 
         // lower truck camera priority
         if (HasInputAuthority)
@@ -225,8 +230,8 @@ public class CarController : NetworkBehaviour
         {
             playerController.GetComponent<SimpleKCC>().SetPosition(playerPos.position + playerPos.right);
         }
-        
 
+        carData.SubPassenger();
         RPC_RequestPlayerExitTruck(Object.Id);
 
         playerController.GetOutTruck();
@@ -248,7 +253,7 @@ public class CarController : NetworkBehaviour
 
 
             // RB
-            //carController.carRB.isKinematic = false;
+            carController.carRB.useGravity = false;
 
             // Add delay to player being able to exit so player doesn't instantly leave off of enter input
             carController.canExit = false;
@@ -264,6 +269,7 @@ public class CarController : NetworkBehaviour
 
         if (carController != null)
         {
+            carController.carRB.useGravity = true;
             carController.playerController.enabled = true;
             carController.playerController.ReactivateSystems();
             if (carController.playerPos.localPosition.x < 0)
@@ -274,6 +280,7 @@ public class CarController : NetworkBehaviour
             {
                 carController.playerController.GetComponent<SimpleKCC>().SetPosition(playerPos.position + playerPos.right);
             }
+            //carController.carData.SubPassenger();
             //carController.playerController.GetOutTruck();
             //carController.playerController = null;
         }
@@ -281,6 +288,7 @@ public class CarController : NetworkBehaviour
 
     public void SetData(CarData _data)
     {
+        carData = _data;
         truckParent = _data.gameObject;
         carRB = _data.carRB;
         frontTires = _data.frontTires;
@@ -295,7 +303,7 @@ public class CarController : NetworkBehaviour
         else
         {
             isDriver = false;
-            playerPos = _data.passengerPos[numPassengers - 1];
+            playerPos = _data.passengerPos[numPassengers - 2];
         }
     }
 
