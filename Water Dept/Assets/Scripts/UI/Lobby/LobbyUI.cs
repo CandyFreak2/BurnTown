@@ -7,7 +7,7 @@ public class LobbyUI : MonoBehaviour {
     [SerializeField] private TMP_Text lobbyCode;
     [SerializeField] private Slider playerCountSlider;
     [SerializeField] private TMP_Text playerCountText;
-    [SerializeField] private int codeLength = 4;
+    [SerializeField] private static int codeLength = 4;
 
     //public Button confirmButton;
 
@@ -50,5 +50,6 @@ public class LobbyUI : MonoBehaviour {
         playerCountText.text = $"{ServerInfo.MaxPlayers}";
     }
 
+    public static int GetCodeLength => codeLength;
 
 }
