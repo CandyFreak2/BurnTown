@@ -10,12 +10,16 @@ using UnityEngine.InputSystem.XR;
 
 public class CarController : NetworkBehaviour
 {
+    private bool isSpawned = false;
+    [Networked] public NetworkBool isActive { get; set; } // If player not in car isActive is false
+
     private CarData carData;
-    private GameObject truckParent;
+    public GameObject truckParent;
     [SerializeField] private Rigidbody carRB;
     [SerializeField] private Transform camTarget;
     [SerializeField] private float gravityStrength = 12.0f;
-    private Transform playerPos;
+    private Transform seatTransform;
+    [Networked] public Vector3 playerPos { get; set; }
 
     [SerializeField] private List<Tire> frontTires, backTires;
     public float tireMaxAngle = 70.0f;
@@ -29,7 +33,9 @@ public class CarController : NetworkBehaviour
 
     [Networked] private NetworkButtons previousButtons { get; set; }
     PlayerInputAction action;
-    private PlayerMovement playerController;
+    
+    [Networked] public NetworkId playerId { get; set; }
+    public PlayerMovement playerController;
     private bool isDriver;
     private bool canExit = false;
 
@@ -44,24 +50,24 @@ public class CarController : NetworkBehaviour
         {
             //FreeCameraController.Singleton.SetTarget(camTarget);
             //GetComponentInChildren<CineSingleCamera>().SetAsActiveCamera();
+            isSpawned = true;
         }
     }
 
     private void FixedUpdate()
     {
-        if (playerController != null)
+        if (isSpawned && isActive)
         {
-            GameObject player = playerController.gameObject;
 
-            player.transform.position = playerPos.position;
-            player.transform.rotation = playerPos.rotation;
+            transform.position = /*seatTransform.position*/truckParent.transform.position + truckParent.transform.TransformDirection(playerPos);
+            //player.transform.rotation = playerPos.rotation;
         }
     }
 
     public override void FixedUpdateNetwork()
     {
         // gets input from server
-        if (GetInput(out PlayerInputAction input))
+        if (isActive && GetInput(out PlayerInputAction input))
         {
             action = input;
 
@@ -186,6 +192,7 @@ public class CarController : NetworkBehaviour
 
     public void PlayerEnterTruck(PlayerMovement _playerMovement)
     {
+        isActive = true;
         playerController = _playerMovement;
         playerController.DeactivateSystems();
         playerController.enabled = false;
@@ -222,13 +229,13 @@ public class CarController : NetworkBehaviour
 
         playerController.enabled = true;
         playerController.ReactivateSystems();
-        if (playerPos.localPosition.x < 0)
+        if (seatTransform.localPosition.x < 0)
         {
-            playerController.GetComponent<SimpleKCC>().SetPosition(playerPos.position - playerPos.right);
+            playerController.GetComponent<SimpleKCC>().SetPosition(seatTransform.position - seatTransform.right);
         }
         else
         {
-            playerController.GetComponent<SimpleKCC>().SetPosition(playerPos.position + playerPos.right);
+            playerController.GetComponent<SimpleKCC>().SetPosition(seatTransform.position + seatTransform.right);
         }
 
         carData.SubPassenger();
@@ -236,6 +243,7 @@ public class CarController : NetworkBehaviour
 
         playerController.GetOutTruck();
         playerController = null;
+        isActive = false;
     }
 
     // Asks server very nicely if client can get in whip
@@ -247,13 +255,15 @@ public class CarController : NetworkBehaviour
 
         if (carController != null && player != null)
         {
+            carController.isActive = true;
             carController.playerController = player;
             carController.playerController.DeactivateSystems();
             carController.playerController.enabled = false;
+            carController.playerId = _playerId;
 
 
             // RB
-            carController.carRB.useGravity = false;
+            //carController.carRB.useGravity = false;
 
             // Add delay to player being able to exit so player doesn't instantly leave off of enter input
             carController.canExit = false;
@@ -272,17 +282,19 @@ public class CarController : NetworkBehaviour
             carController.carRB.useGravity = true;
             carController.playerController.enabled = true;
             carController.playerController.ReactivateSystems();
-            if (carController.playerPos.localPosition.x < 0)
+            if (carController.seatTransform.localPosition.x < 0)
             {
-                carController.playerController.GetComponent<SimpleKCC>().SetPosition(playerPos.position - playerPos.right);
+                carController.playerController.GetComponent<SimpleKCC>().SetPosition(seatTransform.position - seatTransform.right);
             }
             else
             {
-                carController.playerController.GetComponent<SimpleKCC>().SetPosition(playerPos.position + playerPos.right);
+                carController.playerController.GetComponent<SimpleKCC>().SetPosition(seatTransform.position + seatTransform.right);
             }
             //carController.carData.SubPassenger();
             //carController.playerController.GetOutTruck();
             //carController.playerController = null;
+            carController.playerId = default;
+            carController.isActive = false;
         }
     }
 
@@ -298,12 +310,14 @@ public class CarController : NetworkBehaviour
         if (numPassengers == 1)
         {
             isDriver = true;
-            playerPos = _data.driverPos;
+            seatTransform = _data.driverPos;
+            playerPos = seatTransform.localPosition;
         }
         else
         {
             isDriver = false;
-            playerPos = _data.passengerPos[numPassengers - 2];
+            seatTransform = _data.passengerPos[numPassengers - 2];
+            playerPos = seatTransform.localPosition;
         }
     }
 
@@ -346,10 +360,10 @@ public class CarController : NetworkBehaviour
         }
     }
 
-    public void SetDriverPos(Transform _driverPos)
-    {
-        playerPos = _driverPos;
-    }
+    //public void SetDriverPos(Transform _driverPos)
+    //{
+    //    playerPos = _driverPos;
+    //}
 
     private void ExitDelay()
     {

@@ -4,7 +4,6 @@ using System.Collections;
 using Fusion;
 using DG.Tweening;
 using System;
-using DG.Tweening;
 
 public class FireHouse : NetworkBehaviour
 {

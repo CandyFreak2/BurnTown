@@ -333,6 +333,7 @@ public class PlayerMovement : NetworkBehaviour
         //truckController = _truck.GetComponent<CarController>();
 
         truckController.enabled = true;
+        truckController.isActive = true;
         CarData truckData = _truck.GetComponent<CarData>();
 
         if (truckData != null)
@@ -366,6 +367,7 @@ public class PlayerMovement : NetworkBehaviour
     public void GetOutTruck()
     {
         truckController.enabled = false;
+        truckController.isActive = false;
 
         // raise player camera priority
         if (HasInputAuthority)
@@ -402,6 +404,7 @@ public class PlayerMovement : NetworkBehaviour
         {
             CarController playerTruckController = player.truckController;
             playerTruckController.enabled = true;
+            playerTruckController.isActive = true;
             CarData truckData = truck.GetComponent<CarData>();
 
             if (playerTruckController != null)
@@ -432,6 +435,7 @@ public class PlayerMovement : NetworkBehaviour
         PlayerMovement player = Runner.FindObject(_playerId).GetComponent<PlayerMovement>();
 
         player.truckController.enabled = false;
+        player.truckController.isActive = false;
 
         // Add delay to player being able to enter so player doesn't instantly leave off of exit input
         player.canEnter = false;
