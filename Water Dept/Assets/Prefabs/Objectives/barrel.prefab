@@ -9,12 +9,12 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 5993214933592233659}
-  - component: {fileID: 3264080367947759093}
   - component: {fileID: 2484273316510601656}
   - component: {fileID: -7736339395039427817}
   - component: {fileID: -8978315845249998030}
   - component: {fileID: -5567084107334230165}
   - component: {fileID: -8733339029013538494}
+  - component: {fileID: 5023725320215630394}
   m_Layer: 0
   m_Name: barrel
   m_TagString: Barrel
@@ -38,27 +38,6 @@ Transform:
   - {fileID: 2416525458950768377}
   m_Father: {fileID: 0}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
---- !u!65 &3264080367947759093
-BoxCollider:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 7658933350302763111}
-  m_Material: {fileID: 0}
-  m_IncludeLayers:
-    serializedVersion: 2
-    m_Bits: 0
-  m_ExcludeLayers:
-    serializedVersion: 2
-    m_Bits: 0
-  m_LayerOverridePriority: 0
-  m_IsTrigger: 0
-  m_ProvidesContacts: 0
-  m_Enabled: 1
-  serializedVersion: 3
-  m_Size: {x: 1, y: 1, z: 1}
-  m_Center: {x: 0, y: 0, z: 0}
 --- !u!114 &2484273316510601656
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -189,6 +168,27 @@ MonoBehaviour:
     Position: 0.01
     Rotation: 0.01
     Scale: 0.01
+--- !u!65 &5023725320215630394
+BoxCollider:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 7658933350302763111}
+  m_Material: {fileID: 0}
+  m_IncludeLayers:
+    serializedVersion: 2
+    m_Bits: 0
+  m_ExcludeLayers:
+    serializedVersion: 2
+    m_Bits: 0
+  m_LayerOverridePriority: 0
+  m_IsTrigger: 0
+  m_ProvidesContacts: 0
+  m_Enabled: 1
+  serializedVersion: 3
+  m_Size: {x: 0.97313446, y: 1.2751724, z: 0.9583384}
+  m_Center: {x: 0.0073690712, y: 0.014484584, z: -0.020830825}
 --- !u!1001 &674358661341962459
 PrefabInstance:
   m_ObjectHideFlags: 0

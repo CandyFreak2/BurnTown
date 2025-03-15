@@ -115,6 +115,8 @@ public class PlayerMovement : NetworkBehaviour
     {
         if (isSpawned)
         playerObj.forward = Vector3.Slerp(playerObj.forward, networkedForward, Time.fixedDeltaTime * rotSpeed);
+
+        barrelController.SetOrientation(playerObj.forward);
     }
 
     public void RotatePlayer()
@@ -164,6 +166,7 @@ public class PlayerMovement : NetworkBehaviour
     private void HandleInteraction()
     {
         GameObject nearestInteractable = GetNearestInteractable();
+
         //Pickup hose // barrel
         if (action.Buttons.WasPressed(previousButtons, InputButton.Interact) && !IsHolding() && nearestInteractable != null && CanPickup(nearestInteractable))
         {
@@ -174,9 +177,8 @@ public class PlayerMovement : NetworkBehaviour
             if (nearestInteractable.tag == "Barrel")
             {
                 AudioPlayer.PlaySFX(nearestInteractable.gameObject.GetComponent<BarrelInfo>().pickupSFX, playerObj.position, 0.1f);
-                barrelController.SetOrientation(playerObj);
-                barrelController.ToggleSchematic();
-                //barrelController.BarrelSchematics(playerObj);
+                
+                barrelController.RPC_ToggleBarrel(Object.Id);
             }
         }
 
@@ -190,9 +192,11 @@ public class PlayerMovement : NetworkBehaviour
         //Drop hose
         if (action.Buttons.WasPressed(previousButtons, InputButton.Drop) && IsHolding())
         {
+            if(carriedObject.interactableType == InteractableType.Barrel)
+            {
+                barrelController.RPC_PlaceBarrel(Object.Id);
+            }
             RPC_RequestDrop(Object.Id);
-            barrelController.ToggleSchematic();
-            //barrelController.KillSchematic();
         }
 
         // Fire hose // throw barrel
@@ -204,10 +208,8 @@ public class PlayerMovement : NetworkBehaviour
             }
             else if (carriedObject.interactableType == InteractableType.Barrel)
             {
-                //barrelController.BarrelThrow(playerObj);
-                barrelController.ToggleSchematic();
-                //RPC_RequestDrop(Object.Id);
-
+                RPC_RequestDrop(Object.Id);
+                barrelController.RPC_ThrowBarrel(Object.Id);
             }
         }
 
@@ -445,13 +447,23 @@ public class PlayerMovement : NetworkBehaviour
         PlayerMovement player = Runner.FindObject(_playerId).GetComponent<PlayerMovement>();
         if (player.IsHolding() && player.carriedObject.GetCarrierId() == _playerId)
         {
-            player.carriedObject.Drop();
-            if (player.carriedObject.interactableType == InteractableType.Flamethrower)
+            if (player.carriedObject.interactableType == InteractableType.Barrel)
             {
-                player.carriedObject.gameObject.GetComponent<Flamethrower>().StopSpraying();
+                player.carriedObject.Drop();
+                Runner.Despawn(player.carriedObject.gameObject.GetComponent<NetworkObject>());
+                player.carriedObject = null;
             }
-            player.carriedObject.gameObject.GetComponent<NetworkObject>().RemoveInputAuthority();
-            player.carriedObject = null;
+            else 
+            {
+                player.carriedObject.Drop();
+                if (player.carriedObject.interactableType == InteractableType.Flamethrower)
+                {
+                    player.carriedObject.gameObject.GetComponent<Flamethrower>().StopSpraying();
+                }
+                player.carriedObject.gameObject.GetComponent<NetworkObject>().RemoveInputAuthority();
+                player.carriedObject = null;
+            }
+            
         }
     }
 
