@@ -18,7 +18,7 @@ public class CarController : NetworkBehaviour
     [SerializeField] private Rigidbody carRB;
     [SerializeField] private Transform camTarget;
     [SerializeField] private float gravityStrength = 12.0f;
-    private Transform seatTransform;
+    public Transform seatTransform;
     [Networked] public Vector3 playerPos { get; set; }
 
     [SerializeField] private List<Tire> frontTires, backTires;
@@ -34,7 +34,6 @@ public class CarController : NetworkBehaviour
     [Networked] private NetworkButtons previousButtons { get; set; }
     PlayerInputAction action;
     
-    [Networked] public NetworkId playerId { get; set; }
     public PlayerMovement playerController;
     private bool isDriver;
     private bool canExit = false;
@@ -50,6 +49,7 @@ public class CarController : NetworkBehaviour
         {
             //FreeCameraController.Singleton.SetTarget(camTarget);
             //GetComponentInChildren<CineSingleCamera>().SetAsActiveCamera();
+            playerController = GetComponent<PlayerMovement>();
             isSpawned = true;
         }
     }
@@ -59,7 +59,7 @@ public class CarController : NetworkBehaviour
         if (isSpawned && isActive)
         {
 
-            transform.position = /*seatTransform.position*/truckParent.transform.position + truckParent.transform.TransformDirection(playerPos);
+            transform.localPosition = Vector3.zero/*truckParent.transform.position + truckParent.transform.TransformDirection(playerPos)*/;
             //player.transform.rotation = playerPos.rotation;
         }
     }
@@ -69,6 +69,8 @@ public class CarController : NetworkBehaviour
         // gets input from server
         if (isActive && GetInput(out PlayerInputAction input))
         {
+            transform.localPosition = Vector3.zero;
+
             action = input;
 
             GetTruckInput();
@@ -195,6 +197,7 @@ public class CarController : NetworkBehaviour
         isActive = true;
         playerController = _playerMovement;
         playerController.DeactivateSystems();
+        RPC_ActivatePlayerSystems(Object.Id, false);
         playerController.enabled = false;
 
         // Raise truck camera priority
@@ -228,7 +231,8 @@ public class CarController : NetworkBehaviour
         //truckParent.GetComponent<Collider>().transform.localPosition = Vector3.zero;
 
         playerController.enabled = true;
-        playerController.ReactivateSystems();
+        //playerController.ReactivateSystems();
+        RPC_ActivatePlayerSystems(Object.Id, true);
         if (seatTransform.localPosition.x < 0)
         {
             playerController.GetComponent<SimpleKCC>().SetPosition(seatTransform.position - seatTransform.right);
@@ -241,8 +245,9 @@ public class CarController : NetworkBehaviour
         carData.SubPassenger();
         RPC_RequestPlayerExitTruck(Object.Id);
 
+        seatTransform = null;
         playerController.GetOutTruck();
-        playerController = null;
+        //playerController = null;
         isActive = false;
     }
 
@@ -258,8 +263,8 @@ public class CarController : NetworkBehaviour
             carController.isActive = true;
             carController.playerController = player;
             carController.playerController.DeactivateSystems();
+            //RPC_ActivatePlayerSystems(_playerId, false);
             carController.playerController.enabled = false;
-            carController.playerId = _playerId;
 
 
             // RB
@@ -282,6 +287,7 @@ public class CarController : NetworkBehaviour
             carController.carRB.useGravity = true;
             carController.playerController.enabled = true;
             carController.playerController.ReactivateSystems();
+            //RPC_ActivatePlayerSystems(_truckId, true);
             if (carController.seatTransform.localPosition.x < 0)
             {
                 carController.playerController.GetComponent<SimpleKCC>().SetPosition(seatTransform.position - seatTransform.right);
@@ -293,8 +299,24 @@ public class CarController : NetworkBehaviour
             //carController.carData.SubPassenger();
             //carController.playerController.GetOutTruck();
             //carController.playerController = null;
-            carController.playerId = default;
+            carController.seatTransform = null;
             carController.isActive = false;
+        }
+    }
+
+    // Updates player activation to everyone
+    [Rpc(RpcSources.All, RpcTargets.All)]
+    public void RPC_ActivatePlayerSystems(NetworkId _playerId, bool _activate)
+    {
+        CarController carController = Runner.FindObject(_playerId).GetComponent<CarController>();
+
+        if (_activate)
+        {
+            carController.playerController.ReactivateSystems();
+        }
+        else
+        {
+            carController.playerController.DeactivateSystems();
         }
     }
 
