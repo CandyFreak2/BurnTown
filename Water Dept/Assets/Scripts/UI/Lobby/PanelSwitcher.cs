@@ -5,12 +5,15 @@ public class PanelSwitcher : MonoBehaviour {
     [SerializeField] private GameObject hostPanel;
     [SerializeField] private GameObject joinPanel;
 
+    [SerializeField] private LobbyUI codeGenerator;
+
     private void Start() {
         GoBackToMainScreen();
     }
 
     public void GoToHostPanel() {
         startPanel.SetActive(false);
+        codeGenerator.enabled = true;
         hostPanel.SetActive(true);
     }
 
