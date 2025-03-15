@@ -3,7 +3,6 @@ using Fusion.Sockets;
 using System;
 using System.Collections.Generic;
 using UnityEngine;
-using UnityEngine.Device;
 using UnityEngine.SceneManagement;
 
 public enum ConnectionStatus {
@@ -21,72 +20,16 @@ public class BasicSpawner : MonoBehaviour, INetworkRunnerCallbacks {
     public static ConnectionStatus status = ConnectionStatus.DISCONNECTED;
 
     private GameMode gameMode;
+    private LevelManager levelManager;
     private NetworkRunner _runner;
 
     private Dictionary<PlayerRef, NetworkObject> _spawnedCharacters = new();
     private bool mouseButton0;
 
-    public void OnPlayerJoined(NetworkRunner runner, PlayerRef player) {
-        if(runner.IsServer)
-        {
-            // Create a unique position for the player
-            Vector3 spawnPosition = new Vector3((player.RawEncoded % runner.Config.Simulation.PlayerCount) * 3, 1, 0);
-            NetworkObject networkPlayerObject = runner.Spawn(_playerPrefab, spawnPosition, Quaternion.identity, player);
-            // Keep track of the player avatars for easy access
-            _spawnedCharacters.Add(player, networkPlayerObject);
-            runner.SetPlayerObject(player, networkPlayerObject);
-        }
-        /*if (runner.IsServer) {
-            if (gameMode == GameMode.Host) {
-                runner.Spawn(managerPrefab, Vector3.zero, Quaternion.identity);
-            }
-            var fireFighter = runner.Spawn(fireFighters, Vector3.zero, Quaternion.identity, player);
-            fireFighter.GameState = Firefighter.PlayerState.LOBBY;
-        }*/
-        SetConnectionStatus(ConnectionStatus.CONNECTED);
-        UIManager.Instance.SetUI();
+    private void Start() {
+        levelManager = GetComponent<LevelManager>();
+        DontDestroyOnLoad(gameObject);
     }
-
-    public void OnPlayerLeft(NetworkRunner runner, PlayerRef player) {
-        if (_spawnedCharacters.TryGetValue(player, out NetworkObject networkObject)) {
-            runner.Despawn(networkObject);
-            _spawnedCharacters.Remove(player);
-        }
-
-        Firefighter.RemovePlayer(runner, player);
-        SetConnectionStatus(status);
-    }
-
-    public void OnInput(NetworkRunner runner, NetworkInput input) {}
-    public void OnInputMissing(NetworkRunner runner, PlayerRef player, NetworkInput input) { }
-    public void OnShutdown(NetworkRunner runner, ShutdownReason shutdownReason) {
-        Debug.Log($"OnShutdown {shutdownReason}");
-        SetConnectionStatus(ConnectionStatus.DISCONNECTED);
-
-        (string status, string message) = OutputShutdownReason(shutdownReason);
-        //Firefighter.players.Clear();
-        _spawnedCharacters.Clear();
-
-        if (_runner) {
-            Destroy(_runner.gameObject);
-        }
-
-        _runner = null;
-    }
-    public void OnConnectedToServer(NetworkRunner runner) { }
-    public void OnDisconnectedFromServer(NetworkRunner runner, NetDisconnectReason reason) { }
-    public void OnConnectRequest(NetworkRunner runner, NetworkRunnerCallbackArgs.ConnectRequest request, byte[] token) { }
-    public void OnConnectFailed(NetworkRunner runner, NetAddress remoteAddress, NetConnectFailedReason reason) { }
-    public void OnUserSimulationMessage(NetworkRunner runner, SimulationMessagePtr message) { }
-    public void OnSessionListUpdated(NetworkRunner runner, List<SessionInfo> sessionList) { }
-    public void OnCustomAuthenticationResponse(NetworkRunner runner, Dictionary<string, object> data) { }
-    public void OnHostMigration(NetworkRunner runner, HostMigrationToken hostMigrationToken) { }
-    public void OnSceneLoadDone(NetworkRunner runner) { }
-    public void OnSceneLoadStart(NetworkRunner runner) { }
-    public void OnObjectExitAOI(NetworkRunner runner, NetworkObject obj, PlayerRef player) { }
-    public void OnObjectEnterAOI(NetworkRunner runner, NetworkObject obj, PlayerRef player) { }
-    public void OnReliableDataReceived(NetworkRunner runner, PlayerRef player, ReliableKey key, ArraySegment<byte> data) { }
-    public void OnReliableDataProgress(NetworkRunner runner, PlayerRef player, ReliableKey key, float progress) { }
 
     async void StartGame(GameMode mode) {
         // Create the Fusion runner and let it know that we will be providing user input
@@ -103,9 +46,37 @@ public class BasicSpawner : MonoBehaviour, INetworkRunnerCallbacks {
         // Start or join (depends on gamemode) a session with a specific name
         await _runner.StartGame(new StartGameArgs() {
             GameMode = mode,
-            SessionName = "TestRoom-3",
-            Scene = scene,
+            SessionName = ResourceManager.Instance.levels[ServerInfo.LevelID].levelName + LobbyUI.GetSessionCode,
+            PlayerCount = ServerInfo.MaxPlayers,
             SceneManager = gameObject.AddComponent<NetworkSceneManagerDefault>()
+        });
+    }
+
+    public void JoinOrCreateLobby() {
+        SetConnectionStatus(ConnectionStatus.CONNECTING);
+
+        if (_runner != null) {
+            //LeaveSesssion();
+        }
+        GameObject sessionGO = new("Session");
+        DontDestroyOnLoad(sessionGO);
+
+        _runner = sessionGO.AddComponent<NetworkRunner>();
+        _runner.ProvideInput = gameMode != GameMode.Server;
+        _runner.AddCallbacks(this);
+
+        var scene = SceneRef.FromIndex(LobbyUI.GetScene);
+        var sceneInfo = new NetworkSceneInfo();
+        if (scene.IsValid) {
+            sceneInfo.AddSceneRef(scene, LoadSceneMode.Additive);
+        }
+
+        _runner.StartGame(new StartGameArgs {
+            GameMode = gameMode,
+            SessionName = ResourceManager.Instance.levels[ServerInfo.LevelID].levelName + LobbyUI.GetSessionCode,
+            SceneManager = levelManager,
+            PlayerCount = ServerInfo.MaxPlayers,
+            EnableClientSessionCreation = false
         });
     }
 
@@ -178,4 +149,67 @@ public class BasicSpawner : MonoBehaviour, INetworkRunnerCallbacks {
     }
 
     public Dictionary<PlayerRef, NetworkObject> GetSpawnedPlayers() => _spawnedCharacters;
+
+    #region Networking
+    public void OnPlayerJoined(NetworkRunner runner, PlayerRef player) {
+        if (runner.IsServer) {
+            // Create a unique position for the player
+            Vector3 spawnPosition = new Vector3((player.RawEncoded % runner.Config.Simulation.PlayerCount) * 3, 1, 0);
+            NetworkObject networkPlayerObject = runner.Spawn(_playerPrefab, spawnPosition, Quaternion.identity, player);
+            // Keep track of the player avatars for easy access
+            _spawnedCharacters.Add(player, networkPlayerObject);
+            runner.SetPlayerObject(player, networkPlayerObject);
+        }
+        /*if (runner.IsServer) {
+            if (gameMode == GameMode.Host) {
+                runner.Spawn(managerPrefab, Vector3.zero, Quaternion.identity);
+            }
+            var fireFighter = runner.Spawn(fireFighters, Vector3.zero, Quaternion.identity, player);
+            fireFighter.GameState = Firefighter.PlayerState.LOBBY;
+        }*/
+        SetConnectionStatus(ConnectionStatus.CONNECTED);
+        UIManager.Instance.SetUI();
+    }
+
+    public void OnPlayerLeft(NetworkRunner runner, PlayerRef player) {
+        if (_spawnedCharacters.TryGetValue(player, out NetworkObject networkObject)) {
+            runner.Despawn(networkObject);
+            _spawnedCharacters.Remove(player);
+        }
+
+        Firefighter.RemovePlayer(runner, player);
+        SetConnectionStatus(status);
+    }
+
+    public void OnInput(NetworkRunner runner, NetworkInput input) { }
+    public void OnInputMissing(NetworkRunner runner, PlayerRef player, NetworkInput input) { }
+    public void OnShutdown(NetworkRunner runner, ShutdownReason shutdownReason) {
+        Debug.Log($"OnShutdown {shutdownReason}");
+        SetConnectionStatus(ConnectionStatus.DISCONNECTED);
+
+        (string status, string message) = OutputShutdownReason(shutdownReason);
+        //Firefighter.players.Clear();
+        _spawnedCharacters.Clear();
+
+        if (_runner) {
+            Destroy(_runner.gameObject);
+        }
+
+        _runner = null;
+    }
+    public void OnConnectedToServer(NetworkRunner runner) { }
+    public void OnDisconnectedFromServer(NetworkRunner runner, NetDisconnectReason reason) { }
+    public void OnConnectRequest(NetworkRunner runner, NetworkRunnerCallbackArgs.ConnectRequest request, byte[] token) { }
+    public void OnConnectFailed(NetworkRunner runner, NetAddress remoteAddress, NetConnectFailedReason reason) { }
+    public void OnUserSimulationMessage(NetworkRunner runner, SimulationMessagePtr message) { }
+    public void OnSessionListUpdated(NetworkRunner runner, List<SessionInfo> sessionList) { }
+    public void OnCustomAuthenticationResponse(NetworkRunner runner, Dictionary<string, object> data) { }
+    public void OnHostMigration(NetworkRunner runner, HostMigrationToken hostMigrationToken) { }
+    public void OnSceneLoadDone(NetworkRunner runner) { }
+    public void OnSceneLoadStart(NetworkRunner runner) { }
+    public void OnObjectExitAOI(NetworkRunner runner, NetworkObject obj, PlayerRef player) { }
+    public void OnObjectEnterAOI(NetworkRunner runner, NetworkObject obj, PlayerRef player) { }
+    public void OnReliableDataReceived(NetworkRunner runner, PlayerRef player, ReliableKey key, ArraySegment<byte> data) { }
+    public void OnReliableDataProgress(NetworkRunner runner, PlayerRef player, ReliableKey key, float progress) { }
+    #endregion
 }

@@ -1,5 +1,3 @@
-using NUnit.Framework;
-using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using TMPro;
@@ -8,23 +6,28 @@ using UnityEngine.UI;
 
 public class LobbyUI : MonoBehaviour {
     [SerializeField] private TMP_Text lobbyCode;
+    private static TMP_Text sLobbyCode;
+
     [SerializeField] private Slider playerCountSlider;
     [SerializeField] private TMP_Text playerCountText;
     [SerializeField] private static int codeLength = 4;
+
     [SerializeField] private TMP_Dropdown level;
     [SerializeField] private Image levelImage;
+    private static TMP_Dropdown sLevel;
 
-    //public Button confirmButton;
+    public Button confirmButton;
 
     private void Start() {
+        sLobbyCode = lobbyCode;
+
         playerCountSlider.SetValueWithoutNotify(4);
         SetLobbyCode(codeLength);
         SetPlayerCount();
 
-		level.ClearOptions();
-		level.AddOptions(ResourceManager.Instance.levels.Select(x => x.levelName).ToList());
-		level.onValueChanged.AddListener(SetLevel);
-		SetLevel(0);
+        level.AddOptions(ResourceManager.Instance.levels.Select(x => x.levelName).ToList());
+        level.onValueChanged.AddListener(SetLevel);
+        SetLevel(0);
 
         playerCountSlider.wholeNumbers = true;
         playerCountSlider.minValue = 1;
@@ -37,6 +40,8 @@ public class LobbyUI : MonoBehaviour {
     }
 
     private void Update() {
+        sLevel = level;
+        
         playerCountText.text = playerCountSlider.value.ToString();
     }
 
@@ -66,6 +71,22 @@ public class LobbyUI : MonoBehaviour {
         levelImage.sprite = ResourceManager.Instance.levels[id].levelIcon;
     }
 
-    public static int GetCodeLength => codeLength;
 
+    public static int GetCodeLength => codeLength;
+    public static string GetSessionCode => sLobbyCode.text;
+
+    public static int GetScene => ResourceManager.Instance.levels[sLevel.value].buildIndex;
+
+    private bool isLobbyValid;
+
+    public void ValidateLobby() {
+        isLobbyValid = string.IsNullOrEmpty(ServerInfo.LobbyName) == false;
+    }
+
+    public void TryCreateLobby(BasicSpawner launcher) {
+        if (isLobbyValid) {
+            //launcher.JoinOrCreateLobby();
+            isLobbyValid = false;
+        }
+    }
 }
