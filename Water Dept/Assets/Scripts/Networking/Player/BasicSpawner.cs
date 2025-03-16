@@ -20,17 +20,15 @@ public class BasicSpawner : MonoBehaviour, INetworkRunnerCallbacks {
 
     public static ConnectionStatus status = ConnectionStatus.DISCONNECTED;
 
-    private GameMode gameMode = GameMode.Host;
+    private GameMode gameMode;
     private LevelManager levelManager;
     private NetworkRunner _runner;
 
     private Dictionary<PlayerRef, NetworkObject> _spawnedCharacters = new();
-    private bool mouseButton0;
 
     private void Start() {
         levelManager = GetComponent<LevelManager>();
         DontDestroyOnLoad(gameObject);
-        //SceneManager.LoadScene(LevelManager.LOBBY_SCENE);
     }
 
     public void JoinOrCreateLobby() {
@@ -43,6 +41,9 @@ public class BasicSpawner : MonoBehaviour, INetworkRunnerCallbacks {
         _runner = gameObject.AddComponent<NetworkRunner>();
         var sim3D = gameObject.AddComponent<RunnerSimulatePhysics3D>();
         sim3D.ClientPhysicsSimulation = ClientPhysicsSimulation.Disabled;
+
+        gameObject.AddComponent<PlayerInputHandeler>();
+        gameObject.AddComponent<PoolObjectProvider>();
 
         _runner.ProvideInput = gameMode != GameMode.Server;
         _runner.AddCallbacks(this);
@@ -67,8 +68,7 @@ public class BasicSpawner : MonoBehaviour, INetworkRunnerCallbacks {
     private void LeaveSession() {
         if (_runner != null) {
             _runner.Shutdown();
-        }
-        else {
+        } else {
             SetConnectionStatus(ConnectionStatus.DISCONNECTED);
         }
     }
@@ -137,6 +137,7 @@ public class BasicSpawner : MonoBehaviour, INetworkRunnerCallbacks {
     }
 
     public Dictionary<PlayerRef, NetworkObject> GetSpawnedPlayers() => _spawnedCharacters;
+    public void SetGameMode(GameMode mode) => gameMode = mode;
 
     #region Networking
     public void OnPlayerJoined(NetworkRunner runner, PlayerRef player) {

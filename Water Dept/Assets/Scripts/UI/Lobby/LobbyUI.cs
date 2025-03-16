@@ -72,7 +72,6 @@ public class LobbyUI : MonoBehaviour {
     public void SetLevel(int id) {
         ServerInfo.LevelID = id;
         levelImage.sprite = ResourceManager.Instance.levels[id].levelIcon;
-        Debug.Log(ServerInfo.LevelID);
     }
 
     public static int GetCodeLength => codeLength;
@@ -88,6 +87,7 @@ public class LobbyUI : MonoBehaviour {
 
     public void TryCreateLobby(BasicSpawner launcher) {
         if (isLobbyValid) {
+            launcher.SetGameMode(Fusion.GameMode.Host);
             launcher.JoinOrCreateLobby();
             isLobbyValid = false;
         }
