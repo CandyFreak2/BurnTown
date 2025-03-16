@@ -5,7 +5,7 @@ using UnityEngine;
 
 public class Drone : NetworkBehaviour
 {
-    
+    //variables modified by DroneDeliver
     public Vector3 deliverPosition;
     public Vector3 returnPosition;
 
@@ -14,6 +14,7 @@ public class Drone : NetworkBehaviour
  
     private void FixedUpdate()
     {
+        //swaps direction if reaches destination
         if (Vector3.Distance(deliverPosition, transform.position) < 0.5f && !isReturning)
         {
             StartCoroutine(SpawnBarrel(1f));
@@ -26,6 +27,7 @@ public class Drone : NetworkBehaviour
         }
     }
 
+    //pauses at position then drops a barrel
     IEnumerator SpawnBarrel(float delay)
     {
         GetComponent<Rigidbody>().isKinematic = true;

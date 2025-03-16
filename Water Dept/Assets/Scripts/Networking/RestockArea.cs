@@ -10,6 +10,7 @@ public class RestockArea : NetworkBehaviour
 
     private int barrelCount;
 
+    [Tooltip("A drones Spawner (empty gameObject with DroneDeliver script attached)")]
     [SerializeField] private DroneDeliver droneDeliver;
 
     private void Update()
