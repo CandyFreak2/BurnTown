@@ -3,7 +3,7 @@ using System.Text;
 using TMPro;
 using UnityEngine;
 using UnityEngine.UI;
-using WebSocketSharp;
+using Fusion;
 
 public class LobbyUI : MonoBehaviour {
     [SerializeField] private TMP_Text lobbyCode;
@@ -18,6 +18,7 @@ public class LobbyUI : MonoBehaviour {
     private static TMP_Dropdown sLevel;
 
     public Button confirmButton;
+    private bool isLobbyValid;
 
     private void Start() {
         sLobbyCode = lobbyCode;
@@ -79,15 +80,13 @@ public class LobbyUI : MonoBehaviour {
 
     public static int GetScene => ResourceManager.Instance.levels[sLevel.value].buildIndex;
 
-    private bool isLobbyValid;
-
     public void ValidateLobby() {
         isLobbyValid = !string.IsNullOrEmpty(ServerInfo.LobbyName);
     }
 
     public void TryCreateLobby(BasicSpawner launcher) {
         if (isLobbyValid) {
-            launcher.SetGameMode(Fusion.GameMode.Host);
+            launcher.SetGameMode(GameMode.Host);
             launcher.JoinOrCreateLobby();
             isLobbyValid = false;
         }

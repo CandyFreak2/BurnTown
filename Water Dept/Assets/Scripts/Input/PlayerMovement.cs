@@ -155,10 +155,13 @@ public class PlayerMovement : NetworkBehaviour
         Quaternion camOffest = Quaternion.Euler(0, camTarget.rotation.eulerAngles.y, 0);
         moveDirection = kcc.TransformRotation * camOffest * ToVector3(action.MoveDirection);
 
-        if (isGrounded)
+        if (isGrounded) {
+            Debug.Log("HELP");
             kcc.Move(moveDirection * MoveSpeed);
-        else
+        }
+        else {
             kcc.Move(action.MoveDirection.normalized * AirMoveSpeed); //Simulate gravity if isn't grounded
+        }
     }
 
     private void HandleInteraction()

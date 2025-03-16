@@ -42,7 +42,6 @@ public class BasicSpawner : MonoBehaviour, INetworkRunnerCallbacks {
         var sim3D = gameObject.AddComponent<RunnerSimulatePhysics3D>();
         sim3D.ClientPhysicsSimulation = ClientPhysicsSimulation.Disabled;
 
-        gameObject.AddComponent<PlayerInputHandeler>();
         gameObject.AddComponent<PoolObjectProvider>();
 
         _runner.ProvideInput = gameMode != GameMode.Server;
@@ -57,7 +56,7 @@ public class BasicSpawner : MonoBehaviour, INetworkRunnerCallbacks {
 
         _runner.StartGame(new StartGameArgs {
             GameMode = gameMode,
-            SessionName = gameMode == GameMode.Host ? ServerInfo.LobbyName : "",
+            SessionName = gameMode == GameMode.Host ? ServerInfo.LobbyName : ServerInfo.LevelName + ClientInfo.LevelID,
             Scene = scene,
             SceneManager = gameObject.AddComponent<NetworkSceneManagerDefault>(),
             PlayerCount = ServerInfo.MaxPlayers,
