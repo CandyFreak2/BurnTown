@@ -3,6 +3,7 @@ using System.Text;
 using TMPro;
 using UnityEngine;
 using UnityEngine.UI;
+using WebSocketSharp;
 
 public class LobbyUI : MonoBehaviour {
     [SerializeField] private TMP_Text lobbyCode;
@@ -41,8 +42,10 @@ public class LobbyUI : MonoBehaviour {
 
     private void Update() {
         sLevel = level;
-        
         playerCountText.text = playerCountSlider.value.ToString();
+        ServerInfo.MaxPlayers = (int)playerCountSlider.value;
+        ServerInfo.LevelID = level.value;
+        ServerInfo.LobbyName = ServerInfo.LevelName + lobbyCode.ToString();
     }
 
     // Generates a Random Lobby Name that spits out chars at the same rate without bias
@@ -71,7 +74,6 @@ public class LobbyUI : MonoBehaviour {
         levelImage.sprite = ResourceManager.Instance.levels[id].levelIcon;
     }
 
-
     public static int GetCodeLength => codeLength;
     public static string GetSessionCode => sLobbyCode.text;
 
@@ -80,12 +82,12 @@ public class LobbyUI : MonoBehaviour {
     private bool isLobbyValid;
 
     public void ValidateLobby() {
-        isLobbyValid = string.IsNullOrEmpty(ServerInfo.LobbyName) == false;
+        isLobbyValid = !string.IsNullOrEmpty(ServerInfo.LobbyName);
     }
 
     public void TryCreateLobby(BasicSpawner launcher) {
         if (isLobbyValid) {
-            //launcher.JoinOrCreateLobby();
+            launcher.JoinOrCreateLobby();
             isLobbyValid = false;
         }
     }

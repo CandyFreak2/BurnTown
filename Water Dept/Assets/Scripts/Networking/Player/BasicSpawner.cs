@@ -1,4 +1,5 @@
 using Fusion;
+using Fusion.Addons.Physics;
 using Fusion.Sockets;
 using System;
 using System.Collections.Generic;
@@ -29,59 +30,45 @@ public class BasicSpawner : MonoBehaviour, INetworkRunnerCallbacks {
     private void Start() {
         levelManager = GetComponent<LevelManager>();
         DontDestroyOnLoad(gameObject);
-    }
-
-    async void StartGame(GameMode mode) {
-        // Create the Fusion runner and let it know that we will be providing user input
-        _runner = gameObject.AddComponent<NetworkRunner>();
-        _runner.ProvideInput = true;
-
-        // Create the NetworkSceneInfo from the current scene
-        var scene = SceneRef.FromIndex(SceneManager.GetActiveScene().buildIndex);
-        var sceneInfo = new NetworkSceneInfo();
-        if (scene.IsValid) {
-            sceneInfo.AddSceneRef(scene, LoadSceneMode.Additive);
-        }
-
-        // Start or join (depends on gamemode) a session with a specific name
-        await _runner.StartGame(new StartGameArgs() {
-            GameMode = mode,
-            SessionName = ResourceManager.Instance.levels[ServerInfo.LevelID].levelName + LobbyUI.GetSessionCode,
-            PlayerCount = ServerInfo.MaxPlayers,
-            SceneManager = gameObject.AddComponent<NetworkSceneManagerDefault>()
-        });
+        //SceneManager.LoadScene(LevelManager.LOBBY_SCENE);
     }
 
     public void JoinOrCreateLobby() {
-        SetConnectionStatus(ConnectionStatus.CONNECTING);
+        int level = ResourceManager.Instance.levels[ServerInfo.LevelID].buildIndex;
+        SceneManager.LoadScene(level);
+        /*SetConnectionStatus(ConnectionStatus.CONNECTING);
 
         if (_runner != null) {
-            //LeaveSesssion();
+            LeaveSession();
         }
-        GameObject sessionGO = new("Session");
-        DontDestroyOnLoad(sessionGO);
 
-        _runner = sessionGO.AddComponent<NetworkRunner>();
+        _runner = gameObject.AddComponent<NetworkRunner>();
+        var sim3D = gameObject.AddComponent<RunnerSimulatePhysics3D>();
+        sim3D.ClientPhysicsSimulation = ClientPhysicsSimulation.Disabled;
+
         _runner.ProvideInput = gameMode != GameMode.Server;
         _runner.AddCallbacks(this);
 
-        var scene = SceneRef.FromIndex(LobbyUI.GetScene);
-        var sceneInfo = new NetworkSceneInfo();
-        if (scene.IsValid) {
-            sceneInfo.AddSceneRef(scene, LoadSceneMode.Additive);
-        }
 
+        Debug.Log($"Created gameobject {gameObject.name} - starting game");
         _runner.StartGame(new StartGameArgs {
             GameMode = gameMode,
-            SessionName = ResourceManager.Instance.levels[ServerInfo.LevelID].levelName + LobbyUI.GetSessionCode,
-            SceneManager = levelManager,
+            SessionName = gameMode == GameMode.Host ? ServerInfo.LevelName : "",
+            SceneManager = gameObject.AddComponent<NetworkSceneManagerDefault>(),
             PlayerCount = ServerInfo.MaxPlayers,
             EnableClientSessionCreation = false
         });
+
+        Debug.Log(_runner.SessionInfo);*/
     }
 
-    private void Update() {
-        mouseButton0 = mouseButton0 | Input.GetMouseButton(0);
+    private void LeaveSession() {
+        if (_runner != null) {
+            _runner.Shutdown();
+        }
+        else {
+            SetConnectionStatus(ConnectionStatus.DISCONNECTED);
+        }
     }
 
     private void SetConnectionStatus(ConnectionStatus nStatus) {
@@ -89,7 +76,7 @@ public class BasicSpawner : MonoBehaviour, INetworkRunnerCallbacks {
 
         status = nStatus;
 
-        if (!UnityEngine.Application.isPlaying) return;
+        if (!Application.isPlaying) return;
 
         if (nStatus == ConnectionStatus.DISCONNECTED || nStatus == ConnectionStatus.FAILED) {
             SceneManager.LoadScene(0);
@@ -133,7 +120,6 @@ public class BasicSpawner : MonoBehaviour, INetworkRunnerCallbacks {
                 return ("Unknown Shutdown Reason", $"{(int)reason}");
         }
     }
-
     private static (string, string) ConnectFailedReason(NetConnectFailedReason reason) {
         switch (reason) {
             case NetConnectFailedReason.Timeout:
@@ -152,6 +138,7 @@ public class BasicSpawner : MonoBehaviour, INetworkRunnerCallbacks {
 
     #region Networking
     public void OnPlayerJoined(NetworkRunner runner, PlayerRef player) {
+        Debug.Log("Spawned Player");
         if (runner.IsServer) {
             // Create a unique position for the player
             Vector3 spawnPosition = new Vector3((player.RawEncoded % runner.Config.Simulation.PlayerCount) * 3, 1, 0);
@@ -181,8 +168,6 @@ public class BasicSpawner : MonoBehaviour, INetworkRunnerCallbacks {
         SetConnectionStatus(status);
     }
 
-    public void OnInput(NetworkRunner runner, NetworkInput input) { }
-    public void OnInputMissing(NetworkRunner runner, PlayerRef player, NetworkInput input) { }
     public void OnShutdown(NetworkRunner runner, ShutdownReason shutdownReason) {
         Debug.Log($"OnShutdown {shutdownReason}");
         SetConnectionStatus(ConnectionStatus.DISCONNECTED);
@@ -197,8 +182,19 @@ public class BasicSpawner : MonoBehaviour, INetworkRunnerCallbacks {
 
         _runner = null;
     }
-    public void OnConnectedToServer(NetworkRunner runner) { }
-    public void OnDisconnectedFromServer(NetworkRunner runner, NetDisconnectReason reason) { }
+
+    public void OnConnectedToServer(NetworkRunner runner) {
+        SetConnectionStatus(ConnectionStatus.CONNECTED);
+    }
+
+    public void OnDisconnectedFromServer(NetworkRunner runner, NetDisconnectReason reason) {
+        Debug.Log("Disconnected from server");
+        LeaveSession();
+        SetConnectionStatus(ConnectionStatus.DISCONNECTED);
+    }
+
+    public void OnInput(NetworkRunner runner, NetworkInput input) { }
+    public void OnInputMissing(NetworkRunner runner, PlayerRef player, NetworkInput input) { }
     public void OnConnectRequest(NetworkRunner runner, NetworkRunnerCallbackArgs.ConnectRequest request, byte[] token) { }
     public void OnConnectFailed(NetworkRunner runner, NetAddress remoteAddress, NetConnectFailedReason reason) { }
     public void OnUserSimulationMessage(NetworkRunner runner, SimulationMessagePtr message) { }
