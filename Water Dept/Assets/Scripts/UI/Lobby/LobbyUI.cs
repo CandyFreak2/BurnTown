@@ -37,6 +37,7 @@ public class LobbyUI : MonoBehaviour {
         playerCountSlider.onValueChanged.AddListener(x => ServerInfo.MaxPlayers = (int)x);
 
         ServerInfo.MaxPlayers = (int)playerCountSlider.value;
+        ServerInfo.LobbyName = ServerInfo.LevelName + lobbyCode.ToString();
         ServerInfo.LevelID = level.value;
     }
 

@@ -20,7 +20,7 @@ public class BasicSpawner : MonoBehaviour, INetworkRunnerCallbacks {
 
     public static ConnectionStatus status = ConnectionStatus.DISCONNECTED;
 
-    private GameMode gameMode;
+    private GameMode gameMode = GameMode.Host;
     private LevelManager levelManager;
     private NetworkRunner _runner;
 
@@ -34,9 +34,7 @@ public class BasicSpawner : MonoBehaviour, INetworkRunnerCallbacks {
     }
 
     public void JoinOrCreateLobby() {
-        int level = ResourceManager.Instance.levels[ServerInfo.LevelID].buildIndex;
-        SceneManager.LoadScene(level);
-        /*SetConnectionStatus(ConnectionStatus.CONNECTING);
+        SetConnectionStatus(ConnectionStatus.CONNECTING);
 
         if (_runner != null) {
             LeaveSession();
@@ -49,17 +47,21 @@ public class BasicSpawner : MonoBehaviour, INetworkRunnerCallbacks {
         _runner.ProvideInput = gameMode != GameMode.Server;
         _runner.AddCallbacks(this);
 
+        int level = ResourceManager.Instance.levels[ServerInfo.LevelID].buildIndex;
+        var scene = SceneRef.FromIndex(level);
+        var sceneInfo = new NetworkSceneInfo();
+        if (scene.IsValid) {
+            sceneInfo.AddSceneRef(scene, LoadSceneMode.Additive);
+        }
 
-        Debug.Log($"Created gameobject {gameObject.name} - starting game");
         _runner.StartGame(new StartGameArgs {
             GameMode = gameMode,
-            SessionName = gameMode == GameMode.Host ? ServerInfo.LevelName : "",
+            SessionName = gameMode == GameMode.Host ? ServerInfo.LobbyName : "",
+            Scene = scene,
             SceneManager = gameObject.AddComponent<NetworkSceneManagerDefault>(),
             PlayerCount = ServerInfo.MaxPlayers,
             EnableClientSessionCreation = false
         });
-
-        Debug.Log(_runner.SessionInfo);*/
     }
 
     private void LeaveSession() {
