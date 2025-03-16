@@ -103,15 +103,15 @@ public class BarrelInfo : NetworkBehaviour
 
         yield return new WaitForSeconds(delay);
 
-        Destroy(pixelBoom, pixelBoom.main.duration);
+        Destroy(pixelBoom, 2f);
         Destroy(gameObject);
     }
 
     //calls explode with delay
-    IEnumerator DelayedChainExplode(BarrelInfo barrel)
+    IEnumerator DelayedChainExplode()
     {
         yield return new WaitForSeconds(delay);
-        barrel.Explode();
+        Explode();
     }
 
     //triggers that play when an object explodes
@@ -122,12 +122,13 @@ public class BarrelInfo : NetworkBehaviour
 
         //play anim
         pixelBoom.Play();
+        pixelBoom.transform.parent = null;
         isExploded = false;
 
         //dereference components to prevent stack overf;pw
         if (gameObject.GetComponent<Rigidbody>() != null)
         {
-            Destroy(gameObject.GetComponent<Rigidbody>());
+            //Destroy(gameObject.GetComponent<Rigidbody>());
         }
 
         Destroy(gameObject.GetComponent<MeshRenderer>());
@@ -159,7 +160,9 @@ public class BarrelInfo : NetworkBehaviour
             //if barrel is horizontal and not itself blow it up after delay
             if (barr != null && barr != gameObject.GetComponent<BarrelInfo>() && !hit.CompareTag("DestructibleObject"))
             {
-                StartCoroutine(DelayedChainExplode(barr));
+                barr.isExploded = true;
+                //
+                barr.DelayedChainExplode();
             }
 
             if (hit.CompareTag("DestructibleObject"))
@@ -167,6 +170,8 @@ public class BarrelInfo : NetworkBehaviour
                 Destroy(hit.gameObject);
             }
         }
+        //sets out zone tmp
+        transform.position = new Vector3(1000,1000,1000);
     }
 
     //hell on earth :( (very very very temporary)
