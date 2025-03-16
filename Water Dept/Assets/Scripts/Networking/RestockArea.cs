@@ -14,7 +14,7 @@ public class RestockArea : NetworkBehaviour
 
     private void Update()
     {
-        Debug.Log(barrelCount);
+        //Debug.Log(barrelCount);
     }
 
     private void OnTriggerEnter(Collider other)

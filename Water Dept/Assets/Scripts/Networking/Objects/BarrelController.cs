@@ -6,9 +6,9 @@ public class BarrelController : NetworkBehaviour
     [SerializeField] private NetworkObject barrelPrefab;
     [SerializeField] private NetworkObject barrelSchematicPrefab;
 
-    [Networked] public bool isSchematicOut { get; set; }
-    [Networked] public Vector3 orientationForward { get; set; }
-    [Networked] public NetworkObject barrelSchematic { get; set; }
+    [Networked] private bool isSchematicOut { get; set; }
+    [Networked] private Vector3 orientationForward { get; set; }
+    [Networked] private NetworkObject barrelSchematic { get; set; }
 
     [Tooltip("Distance barrel is placed from player")]
     [SerializeField] public int placeDistance = 3;

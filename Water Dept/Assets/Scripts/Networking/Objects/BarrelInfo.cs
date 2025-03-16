@@ -218,8 +218,10 @@ public class BarrelInfo : NetworkBehaviour
                     if (Physics.Raycast(gameObject.transform.position, Vector3.down * 100, out ray))
                     {
                         //snaps barrel to ground
-                        if (ray.collider.GetComponent<BarrelInfo>() == null)
+                        if (ray.collider.GetComponent<BarrelInfo>() == null && !hit.gameObject.GetComponent<Collider>().isTrigger)
                         {
+                            Debug.Log(ray.collider.gameObject);
+                            
                             gameObject.GetComponent<Rigidbody>().isKinematic = true;
                             
 
@@ -229,7 +231,7 @@ public class BarrelInfo : NetworkBehaviour
                             gameObject.GetComponent<Rigidbody>().isKinematic = false;
                         }
                     }
-                    Debug.Log("SnapGround");
+                    //Debug.Log("SnapGround");
                 }
 
             }
