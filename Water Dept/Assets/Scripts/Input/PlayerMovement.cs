@@ -7,6 +7,8 @@ using System;
 using NUnit.Framework;
 using System.Collections.Generic;
 using DG.Tweening;
+using System.Collections;
+using System.Threading;
 
 public class PlayerMovement : NetworkBehaviour
 {
@@ -466,6 +468,16 @@ public class PlayerMovement : NetworkBehaviour
             
         }
     }
+
+    //disable playercontrol, player kicked, arc(dynamc, v2(lerp)) vector getdistance, land, offset, vertically < 0.5, event stun, player land trigger, designer tools :3
+    public void explosionHit(Vector3 direction, float distance)
+    {
+        Vector3 totalForce = direction.normalized * ((4f / distance) * 500);
+        totalForce.y = 0;
+        gameObject.GetComponent<SimpleKCC>().Move(totalForce, 10);
+        Debug.Log(direction.normalized * ((4f/distance) * 500));
+    }
+
 
     public bool IsHolding()
     {
