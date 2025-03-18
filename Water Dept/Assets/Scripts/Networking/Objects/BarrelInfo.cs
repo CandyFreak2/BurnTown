@@ -152,7 +152,7 @@ public class BarrelInfo : NetworkBehaviour
 
             if(hit.GetComponentInParent<PlayerMovement>())
             {
-                hit.GetComponentInParent<PlayerMovement>().explosionHit(hit.gameObject.transform.position - transform.position, 
+                hit.GetComponentInParent<PlayerMovement>().ExplosionHit(hit.gameObject.transform.position - transform.position, 
                     Vector3.Distance(hit.gameObject.transform.position, transform.position));
             }
             

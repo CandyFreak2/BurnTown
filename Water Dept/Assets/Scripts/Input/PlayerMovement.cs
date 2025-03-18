@@ -111,6 +111,12 @@ public class PlayerMovement : NetworkBehaviour
 
             previousButtons = action.Buttons;
         }
+
+        //forces
+        if (boosh)
+        {
+            SimulateExplosion();
+        }
     }
 
     private void FixedUpdate()
@@ -119,6 +125,7 @@ public class PlayerMovement : NetworkBehaviour
         playerObj.forward = Vector3.Slerp(playerObj.forward, networkedForward, Time.fixedDeltaTime * rotSpeed);
 
         barrelController.SetOrientation(playerObj.forward);
+
     }
 
     public void RotatePlayer()
@@ -470,12 +477,42 @@ public class PlayerMovement : NetworkBehaviour
     }
 
     //disable playercontrol, player kicked, arc(dynamc, v2(lerp)) vector getdistance, land, offset, vertically < 0.5, event stun, player land trigger, designer tools :3
-    public void explosionHit(Vector3 direction, float distance)
+    public void ExplosionHit(Vector3 direction, float distance)
     {
-        Vector3 totalForce = direction.normalized * ((4f / distance) * 500);
+        Vector3 totalForce = direction.normalized * ((4f / distance) * 10);
         totalForce.y = 0;
-        gameObject.GetComponent<SimpleKCC>().Move(totalForce, 10);
-        Debug.Log(direction.normalized * ((4f/distance) * 500));
+
+        forceVec = totalForce;
+        boosh = true;
+    }
+
+    private float time = 0;
+    private bool boosh = false;
+    private Vector3 forceVec = Vector3.zero;
+    public void SimulateExplosion()
+    {
+        // ExplosionForce = 1/(1+(t^2 * 10))
+        // steep bell curve at 0
+
+        float explosionForce = (1f / (1 + (Mathf.Pow(time, 2) * 10)));
+
+        Vector3 force = forceVec;
+
+        force = force * explosionForce;
+        Debug.Log(force);
+        if (time == 0) 
+        {
+            gameObject.GetComponent<SimpleKCC>().Move(Vector3.zero, 10);
+        }
+        gameObject.GetComponent<SimpleKCC>().Move(force);
+
+        if (time > 0.33f || (isGrounded && time > 0.1f))
+        {
+            time = 0;
+            boosh = false;
+        }
+
+        time += Time.deltaTime;
     }
 
 
