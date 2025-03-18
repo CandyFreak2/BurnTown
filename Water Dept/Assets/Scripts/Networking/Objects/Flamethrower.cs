@@ -9,6 +9,7 @@ public class Flamethrower : NetworkBehaviour
 {
     [Networked] private NetworkBool isShooting { get; set; }
 
+
     /*[Header("Fuel")]
     [SerializeField] GameObject fuelPrefab;
     [SerializeField] float fuelSpawnDelay = 0.2f;
@@ -18,7 +19,8 @@ public class Flamethrower : NetworkBehaviour
     [SerializeField] int heatApplied = 1;
 
     [Header("Fuel")]
-    [SerializeField] public float fuel = 10f;
+    [SerializeField] public float startFuel = 10f;
+    [Networked] public float fuel {get;set;}
 
     [Header("Raycast")]
     [SerializeField] Transform raySource;
@@ -54,6 +56,7 @@ public class Flamethrower : NetworkBehaviour
     {
         isShooting = false;
         audioProfile.activeSource = AudioPlayer.PlaySFXLoop(audioProfile.flamethrowerLoop, transform, 0);
+        fuel = startFuel;
     }
 
     public void Spray()
