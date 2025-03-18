@@ -493,7 +493,7 @@ public class PlayerMovement : NetworkBehaviour
         // ExplosionForce = 1/(1+(t^2 * 10))
         // steep bell curve at 0
 
-        float explosionForce = (1f / (1 + (Mathf.Pow(time, 2) * 10)));
+        float explosionForce = (2f / (1f + (Mathf.Pow(time, 2) * 7f)));
 
         Vector3 force = forceVec;
 
@@ -505,13 +505,19 @@ public class PlayerMovement : NetworkBehaviour
         }
         gameObject.GetComponent<SimpleKCC>().Move(force);
 
-        if (time > 0.33f || (isGrounded && time > 0.1f))
+        if (time > 3f || (isGrounded && time > 0.2f))
         {
+            Debug.Log(time);
             time = 0;
             boosh = false;
+            Debug.Log("Kill");
+        }
+        else
+        {
+            time += Time.fixedDeltaTime;
         }
 
-        time += Time.deltaTime;
+        
     }
 
 
