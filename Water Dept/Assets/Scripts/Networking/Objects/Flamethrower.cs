@@ -17,6 +17,9 @@ public class Flamethrower : NetworkBehaviour
     [Header("Damage & Fire")]
     [SerializeField] int heatApplied = 1;
 
+    [Header("Fuel")]
+    [SerializeField] public float fuel = 10f;
+
     [Header("Raycast")]
     [SerializeField] Transform raySource;
     [SerializeField] float rayAccuracy;
@@ -67,8 +70,14 @@ public class Flamethrower : NetworkBehaviour
 
     public override void FixedUpdateNetwork()
     {
+        Debug.Log(fuel);
         if(!isShooting)
             return;
+
+        if (fuel > 0)
+        {
+            fuel -= Time.fixedDeltaTime;
+        }
 
         //fuelTimer += Time.fixedDeltaTime;
         decalTimer += Time.fixedDeltaTime;
@@ -103,6 +112,11 @@ public class Flamethrower : NetworkBehaviour
                 decalTimer = 0f;
             }
 
+        }
+
+        if(fuel <= 0)
+        {
+            StopSpraying();
         }
     }
 
