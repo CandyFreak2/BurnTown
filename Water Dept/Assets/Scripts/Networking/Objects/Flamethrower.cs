@@ -20,6 +20,7 @@ public class Flamethrower : NetworkBehaviour
     [SerializeField] int heatApplied = 1;
 
     [Header("Fuel")]
+    [Tooltip("Max amount of fuel and starting fuel")]
     [SerializeField] public float startFuel = 10f;
     [Networked] public float fuel {get;set;}
 
@@ -63,24 +64,30 @@ public class Flamethrower : NetworkBehaviour
 
     public void Spray()
     {
-        fuelRep.GetComponent<MeshRenderer>().enabled = true;
+        fuelRep.SetActive(true);
         RPC_ShootFire(Object.Id);
         isShooting = true;
     }
 
     public void StopSpraying()
     {
-        fuelRep.GetComponent<MeshRenderer>().enabled = false;
+        fuelRep.SetActive(false);
         RPC_StopFire(Object.Id);
         isShooting = false;
     }
 
     public override void FixedUpdateNetwork()
     {
-        Debug.Log(fuel);
         if(!isShooting)
+        {
+            //regen fuel
+            if(fuel < startFuel)
+            {
+                fuel += Time.deltaTime / 2;
+            }
             return;
-
+        }
+        //lerp fuel indicators
         if (fuel > 0)
         {
             fuel -= Time.fixedDeltaTime;
