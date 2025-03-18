@@ -55,7 +55,7 @@ MonoBehaviour:
   pixelBoom: {fileID: 4420987862623403451}
   delay: 1
   isThrown: 0
-  explosionRadius: 3
+  explosionRadius: 7
   explosionForce: 0.0001
   wallExplosiveForce: 0.0001
   pickupSFX:
@@ -116,6 +116,10 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 448471b91d9a6cc4bbdb69ea7b4a35f3, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  _isPickedUp:
+    _value: 0
+  _carrierId:
+    Raw: 0
   holdOffset: {x: 1, y: 0.5, z: 0}
   interactableType: 1
 --- !u!54 &-5567084107334230165

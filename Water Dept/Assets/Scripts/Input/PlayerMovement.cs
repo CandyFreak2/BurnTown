@@ -7,6 +7,8 @@ using System;
 using NUnit.Framework;
 using System.Collections.Generic;
 using DG.Tweening;
+using System.Collections;
+using System.Threading;
 
 public class PlayerMovement : NetworkBehaviour
 {
@@ -109,6 +111,12 @@ public class PlayerMovement : NetworkBehaviour
 
             previousButtons = action.Buttons;
         }
+
+        //forces
+        if (boosh)
+        {
+            SimulateExplosion();
+        }
     }
 
     private void FixedUpdate()
@@ -117,6 +125,7 @@ public class PlayerMovement : NetworkBehaviour
         playerObj.forward = Vector3.Slerp(playerObj.forward, networkedForward, Time.fixedDeltaTime * rotSpeed);
 
         barrelController.SetOrientation(playerObj.forward);
+
     }
 
     public void RotatePlayer()
@@ -466,6 +475,51 @@ public class PlayerMovement : NetworkBehaviour
             
         }
     }
+
+    public void ExplosionHit(Vector3 direction, float distance)
+    {
+        Vector3 totalForce = direction.normalized * ((4f / distance) * 10);
+        totalForce.y = 0;
+
+        forceVec = totalForce;
+        boosh = true;
+    }
+
+    private float time = 0;
+    private bool boosh = false;
+    private Vector3 forceVec = Vector3.zero;
+    public void SimulateExplosion()
+    {
+        // ExplosionForce = 1/(1+(t^2 * 10))
+        // steep bell curve at 0
+
+        float explosionForce = (2f / (1f + (Mathf.Pow(time, 2) * 7f)));
+
+        Vector3 force = forceVec;
+
+        force = force * explosionForce;
+        Debug.Log(force);
+        if (time == 0) 
+        {
+            gameObject.GetComponent<SimpleKCC>().Move(Vector3.zero, 10);
+        }
+        gameObject.GetComponent<SimpleKCC>().Move(force);
+
+        if (time > 3f || (isGrounded && time > 0.2f))
+        {
+            Debug.Log(time);
+            time = 0;
+            boosh = false;
+            Debug.Log("Kill");
+        }
+        else
+        {
+            time += Time.fixedDeltaTime;
+        }
+
+        
+    }
+
 
     public bool IsHolding()
     {

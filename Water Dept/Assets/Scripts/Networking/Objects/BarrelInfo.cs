@@ -1,4 +1,5 @@
 using Fusion;
+using Fusion.Addons.SimpleKCC;
 using System.Collections;
 using UnityEngine;
 
@@ -149,6 +150,12 @@ public class BarrelInfo : NetworkBehaviour
                 rb.AddExplosionForce(explosionForce, gameObject.transform.position, explosionRadius, 3.0f);
             }
 
+            if(hit.GetComponentInParent<PlayerMovement>())
+            {
+                hit.GetComponentInParent<PlayerMovement>().ExplosionHit(hit.gameObject.transform.position - transform.position, 
+                    Vector3.Distance(hit.gameObject.transform.position, transform.position));
+            }
+            
         }
 
         //explode other barrels
