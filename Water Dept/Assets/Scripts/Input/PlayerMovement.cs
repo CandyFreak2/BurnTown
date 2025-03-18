@@ -311,10 +311,7 @@ public class PlayerMovement : NetworkBehaviour
 
         foreach (Transform child in gameObject.transform) //crazy tech bro
         {
-            if (child.name != "PlayerModelObj")
-            {
-                child.gameObject.SetActive(false);
-            }
+            child.gameObject.SetActive(false);
         }
     }
 

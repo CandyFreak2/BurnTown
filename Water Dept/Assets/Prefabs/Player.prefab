@@ -273,15 +273,22 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: bd4f9feec875c974ab3e000f8898befa, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  _isActive:
+    _value: 0
+  truckParent: {fileID: 0}
   carRB: {fileID: 0}
   camTarget: {fileID: 0}
   gravityStrength: 12
+  seatTransform: {fileID: 0}
+  _playerPos: {x: 0, y: 0, z: 0}
   frontTires: []
   backTires: []
   tireMaxAngle: 60
   tireTurnSpeed: 1
   leftTireAngle: {x: 0, y: 0, z: 0}
   rightTireAngle: {x: 0, y: 0, z: 0}
+  playerController: {fileID: 0}
+  isDriver: 0
 --- !u!114 &-6402713201429934659
 MonoBehaviour:
   m_ObjectHideFlags: 0

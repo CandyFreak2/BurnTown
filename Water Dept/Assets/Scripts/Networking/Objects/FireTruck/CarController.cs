@@ -24,23 +24,35 @@ public class CarController : NetworkBehaviour
     [SerializeField] private List<Tire> frontTires, backTires;
     public float tireMaxAngle = 70.0f;
     public float tireTurnSpeed = 1;
-    private float tireAngle = 0.0f;
+    //private float tireAngle = 0.0f;
+    private Vector3 tireAngle;
     public Vector3 leftTireAngle, rightTireAngle;
 
     private float accelerationInput;
     private float brakeInput;
-    private float steerInput;
+    [Networked] private float steerInput { get; set; }
 
     [Networked] private NetworkButtons previousButtons { get; set; }
     PlayerInputAction action;
-    
+    InputSystem_Actions.PlayerActions playerInputSystem; // raw input for driver
+    Vector2 steerDirection;
+
     public PlayerMovement playerController;
-    private bool isDriver;
+    public bool isDriver;
     private bool canExit = false;
+
+    private void Awake()
+    {
+        playerInputSystem = new InputSystem_Actions().Player;
+
+        playerInputSystem.Move.performed += ctx => steerDirection = ctx.ReadValue<Vector2>();
+        playerInputSystem.Move.canceled += ctx => steerDirection = ctx.ReadValue<Vector2>();
+    }
 
     // Start is called before the first frame update
     void Start()
     {
+        playerController = GetComponent<PlayerMovement>();
     }
 
     public override void Spawned()
@@ -49,10 +61,18 @@ public class CarController : NetworkBehaviour
         {
             //FreeCameraController.Singleton.SetTarget(camTarget);
             //GetComponentInChildren<CineSingleCamera>().SetAsActiveCamera();
-            playerController = GetComponent<PlayerMovement>();
             isSpawned = true;
         }
     }
+
+    //void IBeforeUpdate.BeforeUpdate()
+    //{
+    //    if (isDriver)
+    //    {
+    //        steerInput = steerDirection.x;
+    //        Debug.Log(steerInput);
+    //    }
+    //}
 
     private void FixedUpdate()
     {
@@ -109,6 +129,11 @@ public class CarController : NetworkBehaviour
         }
 
         steerInput = action.MoveDirection.x;
+        //if (isDriver && HasInputAuthority)
+        //{
+        //    steerInput = playerInputSystem.Move.ReadValue<Vector2>().x;
+        //}
+        Debug.Log(steerInput);
 
         // Player controls
         if (action.Buttons.WasPressed(previousButtons, InputButton.Interact) && canExit)
@@ -123,46 +148,54 @@ public class CarController : NetworkBehaviour
         //Debug.Log(steerInput);
         if (steerInput < 0.0f)
         {
+            tireAngle = new Vector3(0.0f, Mathf.Lerp(0, -tireMaxAngle, Mathf.Abs(steerInput)), 0.0f);
+
             foreach (Tire tire in frontTires)
             {
-                //tire.transform.localRotation = Quaternion.LookRotation(Vector3.Slerp(carRB.transform.forward, leftTireAngle, Mathf.Abs(steerInput)), carRB.transform.up);
+                //tire.transform.localRotation = Quaternion.LookRotation(Vector3.Slerp(truckParent.transform.forward, leftTireAngle, Mathf.Abs(steerInput)), carRB.transform.up);
+                tire.transform.localEulerAngles = tireAngle;
 
-                if (tireAngle > -(2 * tireMaxAngle))
-                {
-                    tire.transform.Rotate(0, -tireTurnSpeed, 0);
-                    tireAngle -= tireTurnSpeed;
-                }
+                //if (tireAngle > -(2 * tireMaxAngle))
+                //{
+                //    tire.transform.Rotate(0, -tireTurnSpeed, 0);
+                //    tireAngle -= tireTurnSpeed;
+                //}
             }
         }
         else if (steerInput > 0.0f)
         {
+            tireAngle = new Vector3(0.0f, Mathf.Lerp(0, tireMaxAngle, Mathf.Abs(steerInput)), 0.0f);
+
             foreach (Tire tire in frontTires)
             {
-                //tire.transform.localRotation = Quaternion.LookRotation(Vector3.Slerp(carRB.transform.forward, rightTireAngle, Mathf.Abs(steerInput)), carRB.transform.up);
+                //tire.transform.localRotation = Quaternion.LookRotation(Vector3.Slerp(truckParent.transform.forward, rightTireAngle, Mathf.Abs(steerInput)), carRB.transform.up);
+                tire.transform.localEulerAngles = tireAngle;
 
-                if (tireAngle < (2 * tireMaxAngle))
-                {
-                    tire.transform.Rotate(0, tireTurnSpeed, 0);
-                    tireAngle += tireTurnSpeed;
-                }
+                //if (tireAngle < (2 * tireMaxAngle))
+                //{
+                //    tire.transform.Rotate(0, tireTurnSpeed, 0);
+                //    tireAngle += tireTurnSpeed;
+                //}
             }
         }
         else
         {
+            tireAngle = Vector3.zero;
+
             foreach (Tire tire in frontTires)
             {
-                //tire.transform.rotation = carRB.transform.rotation;
+                tire.transform.localEulerAngles = tireAngle;
 
-                if (tireAngle > 0)
-                {
-                    tire.transform.Rotate(0, -tireTurnSpeed, 0);
-                    tireAngle -= tireTurnSpeed;
-                }
-                else if (tireAngle < 0)
-                {
-                    tire.transform.Rotate(0, tireTurnSpeed, 0);
-                    tireAngle += tireTurnSpeed;
-                }
+                //if (tireAngle > 0)
+                //{
+                //    tire.transform.Rotate(0, -tireTurnSpeed, 0);
+                //    tireAngle -= tireTurnSpeed;
+                //}
+                //else if (tireAngle < 0)
+                //{
+                //    tire.transform.Rotate(0, tireTurnSpeed, 0);
+                //    tireAngle += tireTurnSpeed;
+                //}
             }
         }
     }
@@ -196,9 +229,10 @@ public class CarController : NetworkBehaviour
     {
         isActive = true;
         playerController = _playerMovement;
-        playerController.DeactivateSystems();
+        //playerController.DeactivateSystems();
         RPC_ActivatePlayerSystems(Object.Id, false);
         playerController.enabled = false;
+        playerInputSystem.Enable();
 
         // Raise truck camera priority
         if (HasInputAuthority)
@@ -245,6 +279,7 @@ public class CarController : NetworkBehaviour
         carData.SubPassenger();
         RPC_RequestPlayerExitTruck(Object.Id);
 
+        playerInputSystem.Disable();
         seatTransform = null;
         playerController.GetOutTruck();
         //playerController = null;
@@ -341,6 +376,7 @@ public class CarController : NetworkBehaviour
             seatTransform = _data.passengerPos[numPassengers - 2];
             playerPos = seatTransform.localPosition;
         }
+        SetTireAngles();
     }
 
     public void SetTireAngles()
