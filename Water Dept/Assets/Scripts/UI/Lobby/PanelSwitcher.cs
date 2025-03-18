@@ -1,14 +1,38 @@
+using TMPro;
 using UnityEngine;
+using UnityEngine.EventSystems;
+using UnityEngine.UI;
 
 public class PanelSwitcher : MonoBehaviour {
     [SerializeField] private GameObject startPanel;
     [SerializeField] private GameObject hostPanel;
     [SerializeField] private GameObject joinPanel;
 
+    [SerializeField] private GameObject hostStart;
+    [SerializeField] private GameObject joinStart;
+
     [SerializeField] private LobbyUI codeGenerator;
+    private EventSystem eventSystem;
 
     private void Start() {
+        eventSystem = EventSystem.current;
         GoBackToMainScreen();
+    }
+
+    private void Update() {
+        if (hostPanel.activeInHierarchy) {
+            if (hostStart == null) {
+                hostStart = FindAnyObjectByType<Slider>().gameObject;
+            }
+            eventSystem.firstSelectedGameObject = hostStart;
+        }
+
+        if (joinPanel.activeInHierarchy) {
+            if (joinStart == null) {
+                joinStart = FindAnyObjectByType<TMP_InputField>().gameObject;
+            }
+            eventSystem.firstSelectedGameObject = joinStart;
+        }
     }
 
     public void GoToHostPanel() {
