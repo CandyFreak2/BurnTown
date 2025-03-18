@@ -64,6 +64,11 @@ public class PlayerMovement : NetworkBehaviour
         public List<AudioClip> onFire = new List<AudioClip>();
     }
 
+    //variables stored for explosion forces
+    private float explosionTimer = 0;
+    private bool isExploded = false;
+    private Vector3 forceVec = Vector3.zero;
+
     private void Start()
     {
         input = GetComponent<PlayerInputHandeler>();
@@ -112,8 +117,8 @@ public class PlayerMovement : NetworkBehaviour
             previousButtons = action.Buttons;
         }
 
-        //forces
-        if (boosh)
+        //explosive forces
+        if (isExploded)
         {
             SimulateExplosion();
         }
@@ -213,7 +218,11 @@ public class PlayerMovement : NetworkBehaviour
         {
             if (carriedObject.interactableType == InteractableType.Flamethrower)
             {
-                carriedObject.gameObject.GetComponent<Flamethrower>().Spray();
+                if(carriedObject.gameObject.GetComponent<Flamethrower>().fuel > 0)
+                {
+                    carriedObject.gameObject.GetComponent<Flamethrower>().Spray();
+                }
+                
             }
             else if (carriedObject.interactableType == InteractableType.Barrel)
             {
@@ -476,45 +485,44 @@ public class PlayerMovement : NetworkBehaviour
         }
     }
 
+    //Set variables from barrel and starts SimulateExplosion
     public void ExplosionHit(Vector3 direction, float distance)
     {
         Vector3 totalForce = direction.normalized * ((4f / distance) * 10);
         totalForce.y = 0;
 
         forceVec = totalForce;
-        boosh = true;
+        isExploded = true;
     }
 
-    private float time = 0;
-    private bool boosh = false;
-    private Vector3 forceVec = Vector3.zero;
+    //Create force on player based on function
     public void SimulateExplosion()
     {
         // ExplosionForce = 1/(1+(t^2 * 10))
         // steep bell curve at 0
 
-        float explosionForce = (2f / (1f + (Mathf.Pow(time, 2) * 7f)));
+        float explosionForce = (2f / (1f + (Mathf.Pow(explosionTimer, 2) * 7f)));
 
         Vector3 force = forceVec;
 
         force = force * explosionForce;
         Debug.Log(force);
-        if (time == 0) 
+        if (explosionTimer == 0) 
         {
             gameObject.GetComponent<SimpleKCC>().Move(Vector3.zero, 10);
         }
         gameObject.GetComponent<SimpleKCC>().Move(force);
 
-        if (time > 3f || (isGrounded && time > 0.2f))
+        if (explosionTimer > 3f || (isGrounded && explosionTimer > 0.2f))
         {
-            Debug.Log(time);
-            time = 0;
-            boosh = false;
+            Debug.Log(explosionTimer);
+            explosionTimer = 0;
+            isExploded = false;
             Debug.Log("Kill");
         }
         else
         {
-            time += Time.fixedDeltaTime;
+            explosionTimer += Time.fixedDeltaTime;
         }
 
         

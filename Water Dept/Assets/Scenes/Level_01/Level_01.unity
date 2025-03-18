@@ -159785,6 +159785,11 @@ PrefabInstance:
     serializedVersion: 3
     m_TransformParent: {fileID: 121596572}
     m_Modifications:
+    - target: {fileID: 498760211029367861, guid: da37d0d4cf3baf84594e695fb6cefe1a,
+        type: 3}
+      propertyPath: m_IsActive
+      value: 0
+      objectReference: {fileID: 0}
     - target: {fileID: 1002961816487231613, guid: da37d0d4cf3baf84594e695fb6cefe1a,
         type: 3}
       propertyPath: m_LocalPosition.x
@@ -159882,9 +159887,44 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 3432334790476556191, guid: da37d0d4cf3baf84594e695fb6cefe1a,
         type: 3}
+      propertyPath: NestedObjects.Array.size
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 3432334790476556191, guid: da37d0d4cf3baf84594e695fb6cefe1a,
+        type: 3}
+      propertyPath: 'NestedObjects.Array.data[0]'
+      value: 
+      objectReference: {fileID: 0}
+    - target: {fileID: 3432334790476556191, guid: da37d0d4cf3baf84594e695fb6cefe1a,
+        type: 3}
+      propertyPath: NetworkedBehaviours.Array.size
+      value: 3
+      objectReference: {fileID: 0}
+    - target: {fileID: 3432334790476556191, guid: da37d0d4cf3baf84594e695fb6cefe1a,
+        type: 3}
       propertyPath: 'NetworkedBehaviours.Array.data[2]'
       value: 
       objectReference: {fileID: 2045918363}
+    - target: {fileID: 3432334790476556191, guid: da37d0d4cf3baf84594e695fb6cefe1a,
+        type: 3}
+      propertyPath: 'NetworkedBehaviours.Array.data[3]'
+      value: 
+      objectReference: {fileID: 0}
+    - target: {fileID: 4040478633674474898, guid: da37d0d4cf3baf84594e695fb6cefe1a,
+        type: 3}
+      propertyPath: SortKey
+      value: 2892657129
+      objectReference: {fileID: 0}
+    - target: {fileID: 4982080526309646407, guid: da37d0d4cf3baf84594e695fb6cefe1a,
+        type: 3}
+      propertyPath: SortKey
+      value: 53628635
+      objectReference: {fileID: 0}
+    - target: {fileID: 5875268049657550506, guid: da37d0d4cf3baf84594e695fb6cefe1a,
+        type: 3}
+      propertyPath: fuel
+      value: 10
+      objectReference: {fileID: 0}
     - target: {fileID: 5875268049657550506, guid: da37d0d4cf3baf84594e695fb6cefe1a,
         type: 3}
       propertyPath: heatApplied
@@ -159909,6 +159949,11 @@ PrefabInstance:
         type: 3}
       propertyPath: holdOffset.y
       value: 1.2
+      objectReference: {fileID: 0}
+    - target: {fileID: 6797231194891780167, guid: da37d0d4cf3baf84594e695fb6cefe1a,
+        type: 3}
+      propertyPath: SortKey
+      value: 455012645
       objectReference: {fileID: 0}
     - target: {fileID: 7476817858956929214, guid: da37d0d4cf3baf84594e695fb6cefe1a,
         type: 3}
