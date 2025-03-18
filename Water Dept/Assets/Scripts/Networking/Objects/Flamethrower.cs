@@ -63,14 +63,14 @@ public class Flamethrower : NetworkBehaviour
 
     public void Spray()
     {
-        fuelRep.SetActive(true);
+        fuelRep.GetComponent<MeshRenderer>().enabled = true;
         RPC_ShootFire(Object.Id);
         isShooting = true;
     }
 
     public void StopSpraying()
     {
-        fuelRep.SetActive(false);
+        fuelRep.GetComponent<MeshRenderer>().enabled = false;
         RPC_StopFire(Object.Id);
         isShooting = false;
     }
