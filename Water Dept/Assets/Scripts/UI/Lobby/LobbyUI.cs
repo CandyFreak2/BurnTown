@@ -12,6 +12,7 @@ public class LobbyUI : MonoBehaviour {
     [SerializeField] private Slider playerCountSlider;
     [SerializeField] private TMP_Text playerCountText;
     [SerializeField] private static int codeLength = 4;
+    private static Slider sSlider;
 
     [SerializeField] private TMP_Dropdown level;
     [SerializeField] private Image levelImage;
@@ -22,6 +23,7 @@ public class LobbyUI : MonoBehaviour {
 
     private void Start() {
         sLobbyCode = lobbyCode;
+        sSlider = playerCountSlider;
 
         playerCountSlider.SetValueWithoutNotify(4);
         SetLobbyCode(codeLength);
@@ -38,7 +40,7 @@ public class LobbyUI : MonoBehaviour {
         playerCountSlider.onValueChanged.AddListener(x => ServerInfo.MaxPlayers = (int)x);
 
         ServerInfo.MaxPlayers = (int)playerCountSlider.value;
-        ServerInfo.LobbyName = lobbyCode.ToString();
+        ServerInfo.LobbyName = lobbyCode.text.ToString();
         ServerInfo.LevelID = level.value;
     }
 
@@ -46,6 +48,7 @@ public class LobbyUI : MonoBehaviour {
         sLevel = level;
         playerCountText.text = playerCountSlider.value.ToString();
         ServerInfo.MaxPlayers = (int)playerCountSlider.value;
+        ServerInfo.LevelID = level.value;
     }
 
     // Generates a Random Lobby Name that spits out chars at the same rate without bias

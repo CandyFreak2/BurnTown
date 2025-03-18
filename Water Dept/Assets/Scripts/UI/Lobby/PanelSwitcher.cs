@@ -8,11 +8,10 @@ public class PanelSwitcher : MonoBehaviour {
     [SerializeField] private GameObject hostPanel;
     [SerializeField] private GameObject joinPanel;
 
-    [SerializeField] private GameObject hostStart;
-    [SerializeField] private GameObject joinStart;
-
     [SerializeField] private LobbyUI codeGenerator;
     private EventSystem eventSystem;
+    private GameObject hostStart;
+    private GameObject joinStart;
 
     private void Start() {
         eventSystem = EventSystem.current;

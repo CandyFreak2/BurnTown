@@ -156,7 +156,6 @@ public class PlayerMovement : NetworkBehaviour
         moveDirection = kcc.TransformRotation * camOffest * ToVector3(action.MoveDirection);
 
         if (isGrounded) {
-            Debug.Log("HELP");
             kcc.Move(moveDirection * MoveSpeed);
         }
         else {

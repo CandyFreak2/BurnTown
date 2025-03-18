@@ -14,7 +14,7 @@ public class StartScreenManager : MonoBehaviour {
     [SerializeField] private Button confirmButton;
     private int charCount;
 
-    private bool isLobbyValid;
+    private bool isLobbyValid = false;
 
     //[Header("Collective")]
 
@@ -25,6 +25,7 @@ public class StartScreenManager : MonoBehaviour {
 
     private void Update() {
         if (codeInput.text.Length == charCount) {
+            ClientInfo.LevelID = codeInput.text;
             confirmButton.interactable = true;
         } else if (codeInput.text.Length != charCount) {
             confirmButton.interactable = false;
@@ -36,7 +37,7 @@ public class StartScreenManager : MonoBehaviour {
     }
 
     public void ValidateLobby() {
-        isLobbyValid = !ClientInfo.LevelID.IsNullOrEmpty();
+        isLobbyValid = !string.IsNullOrEmpty(ClientInfo.LevelID);
     }
 
     public void TryCreateLobby(BasicSpawner launcher) {
