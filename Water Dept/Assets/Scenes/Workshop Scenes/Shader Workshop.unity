@@ -2069,10 +2069,11 @@ MonoBehaviour:
   m_OnCullStateChanged:
     m_PersistentCalls:
       m_Calls: []
-  m_text: Singed City!
+  m_text: Singed City
   m_isRightToLeft: 0
-  m_fontAsset: {fileID: 11400000, guid: 8f586378b4e144a9851e7b34d9b748ee, type: 2}
-  m_sharedMaterial: {fileID: 2180264, guid: 8f586378b4e144a9851e7b34d9b748ee, type: 2}
+  m_fontAsset: {fileID: 11400000, guid: 3a3d463a6056d414a98d2cced6c591a2, type: 2}
+  m_sharedMaterial: {fileID: 7808098857834777254, guid: 3a3d463a6056d414a98d2cced6c591a2,
+    type: 2}
   m_fontSharedMaterials: []
   m_fontMaterial: {fileID: 0}
   m_fontMaterials: []
@@ -2096,8 +2097,8 @@ MonoBehaviour:
   m_faceColor:
     serializedVersion: 2
     rgba: 4294967295
-  m_fontSize: 15
-  m_fontSizeBase: 15
+  m_fontSize: 16.15
+  m_fontSizeBase: 16.15
   m_fontWeight: 400
   m_enableAutoSizing: 0
   m_fontSizeMin: 18
@@ -2106,8 +2107,8 @@ MonoBehaviour:
   m_HorizontalAlignment: 2
   m_VerticalAlignment: 512
   m_textAlignment: 65535
-  m_characterSpacing: 0
-  m_wordSpacing: 0
+  m_characterSpacing: 6.1
+  m_wordSpacing: -19.96
   m_lineSpacing: 0
   m_lineSpacingMax: 0
   m_paragraphSpacing: 0
@@ -2166,7 +2167,7 @@ MeshRenderer:
   m_RenderingLayerMask: 1
   m_RendererPriority: 0
   m_Materials:
-  - {fileID: 2180264, guid: 8f586378b4e144a9851e7b34d9b748ee, type: 2}
+  - {fileID: 7808098857834777254, guid: 3a3d463a6056d414a98d2cced6c591a2, type: 2}
   m_StaticBatchInfo:
     firstSubMesh: 0
     subMeshCount: 0
@@ -2196,7 +2197,7 @@ RectTransform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1701649224}
   m_LocalRotation: {x: -0.094235055, y: -0.22554031, z: -0.08297053, w: 0.96610934}
-  m_LocalPosition: {x: 0, y: 0, z: -1.61}
+  m_LocalPosition: {x: 0, y: 0, z: -1.59}
   m_LocalScale: {x: 2.1694152, y: 2.1694152, z: 2.1694152}
   m_ConstrainProportionsScale: 0
   m_Children: []
@@ -2204,7 +2205,7 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: -12.68, y: -25.509, z: -6.936}
   m_AnchorMin: {x: 0.5, y: 0.5}
   m_AnchorMax: {x: 0.5, y: 0.5}
-  m_AnchoredPosition: {x: -3.39, y: 9.01}
+  m_AnchoredPosition: {x: -3.42, y: 8.86}
   m_SizeDelta: {x: 9.859, y: 2.2343}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!1001 &1886555923
