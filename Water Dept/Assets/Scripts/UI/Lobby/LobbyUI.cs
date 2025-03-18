@@ -38,7 +38,7 @@ public class LobbyUI : MonoBehaviour {
         playerCountSlider.onValueChanged.AddListener(x => ServerInfo.MaxPlayers = (int)x);
 
         ServerInfo.MaxPlayers = (int)playerCountSlider.value;
-        ServerInfo.LobbyName = ServerInfo.LevelName + lobbyCode.ToString();
+        ServerInfo.LobbyName = lobbyCode.ToString();
         ServerInfo.LevelID = level.value;
     }
 
@@ -46,7 +46,6 @@ public class LobbyUI : MonoBehaviour {
         sLevel = level;
         playerCountText.text = playerCountSlider.value.ToString();
         ServerInfo.MaxPlayers = (int)playerCountSlider.value;
-        ServerInfo.LobbyName = ServerInfo.LevelName + lobbyCode.text.ToString();
     }
 
     // Generates a Random Lobby Name that spits out chars at the same rate without bias

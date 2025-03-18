@@ -44,7 +44,7 @@ public class BasicSpawner : MonoBehaviour, INetworkRunnerCallbacks {
 
         gameObject.AddComponent<PoolObjectProvider>();
 
-        _runner.ProvideInput = gameMode != GameMode.Server;
+        _runner.ProvideInput = true;
         _runner.AddCallbacks(this);
 
         int level = ResourceManager.Instance.levels[ServerInfo.LevelID].buildIndex;
@@ -56,7 +56,7 @@ public class BasicSpawner : MonoBehaviour, INetworkRunnerCallbacks {
 
         _runner.StartGame(new StartGameArgs {
             GameMode = gameMode,
-            SessionName = gameMode == GameMode.Host ? ServerInfo.LobbyName : ServerInfo.LevelName + ClientInfo.LevelID,
+            SessionName = gameMode == GameMode.Host ? ServerInfo.LobbyName : ClientInfo.LevelID,
             Scene = scene,
             SceneManager = gameObject.AddComponent<NetworkSceneManagerDefault>(),
             PlayerCount = ServerInfo.MaxPlayers,

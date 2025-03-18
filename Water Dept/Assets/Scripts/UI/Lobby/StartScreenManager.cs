@@ -26,8 +26,9 @@ public class StartScreenManager : MonoBehaviour {
     private void Update() {
         if (codeInput.text.Length == charCount) {
             confirmButton.interactable = true;
+        } else if (codeInput.text.Length != charCount) {
+            confirmButton.interactable = false;
         }
-        confirmButton.interactable = false;
     }
 
     public void UpdateCharLength() {
@@ -41,6 +42,7 @@ public class StartScreenManager : MonoBehaviour {
     public void TryCreateLobby(BasicSpawner launcher) {
         if (isLobbyValid) {
             ClientInfo.LevelID = codeInput.text;
+            Debug.Log("Joining lobby");
             launcher.SetGameMode(GameMode.Client);
             launcher.JoinOrCreateLobby();
             isLobbyValid = false;

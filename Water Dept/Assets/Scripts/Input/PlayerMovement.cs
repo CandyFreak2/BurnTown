@@ -96,7 +96,7 @@ public class PlayerMovement : NetworkBehaviour
     public override void FixedUpdateNetwork()
     {
         // gets input from server
-        if (GetInput(out PlayerInputAction input))
+        if (GetInput(out PlayerInputAction input) || true)
         {
             action = input;
 
