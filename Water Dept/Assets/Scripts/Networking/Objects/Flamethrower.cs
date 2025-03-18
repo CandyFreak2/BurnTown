@@ -9,6 +9,7 @@ public class Flamethrower : NetworkBehaviour
 {
     [Networked] private NetworkBool isShooting { get; set; }
 
+    [SerializeField] private GameObject fuelRep;
 
     /*[Header("Fuel")]
     [SerializeField] GameObject fuelPrefab;
@@ -57,16 +58,19 @@ public class Flamethrower : NetworkBehaviour
         isShooting = false;
         audioProfile.activeSource = AudioPlayer.PlaySFXLoop(audioProfile.flamethrowerLoop, transform, 0);
         fuel = startFuel;
+        fuelRep.GetComponent<MeshRenderer>().material.color = Color.green;
     }
 
     public void Spray()
     {
+        fuelRep.SetActive(true);
         RPC_ShootFire(Object.Id);
         isShooting = true;
     }
 
     public void StopSpraying()
     {
+        fuelRep.SetActive(false);
         RPC_StopFire(Object.Id);
         isShooting = false;
     }
@@ -80,6 +84,8 @@ public class Flamethrower : NetworkBehaviour
         if (fuel > 0)
         {
             fuel -= Time.fixedDeltaTime;
+            fuelRep.transform.localScale = new Vector3(1, Mathf.Lerp(0, 2, fuel / startFuel), 1);
+            fuelRep.GetComponent<MeshRenderer>().material.color = Color.Lerp(Color.red, Color.green, fuel / startFuel);
         }
 
         //fuelTimer += Time.fixedDeltaTime;
@@ -120,6 +126,7 @@ public class Flamethrower : NetworkBehaviour
         if(fuel <= 0)
         {
             StopSpraying();
+            fuelRep.transform.localScale = Vector3.zero;
         }
     }
 
