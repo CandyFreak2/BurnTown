@@ -86,6 +86,7 @@ public class LobbyUI : MonoBehaviour {
 
     public void TryCreateLobby(BasicSpawner launcher) {
         if (isLobbyValid) {
+            Debug.Log(ServerInfo.LobbyName);
             launcher.SetGameMode(GameMode.Host);
             launcher.JoinOrCreateLobby();
             isLobbyValid = false;

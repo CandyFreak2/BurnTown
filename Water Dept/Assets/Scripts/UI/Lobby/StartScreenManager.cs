@@ -42,7 +42,7 @@ public class StartScreenManager : MonoBehaviour {
     public void TryCreateLobby(BasicSpawner launcher) {
         if (isLobbyValid) {
             ClientInfo.LevelID = codeInput.text;
-            Debug.Log("Joining lobby");
+            Debug.Log(ClientInfo.LevelID);
             launcher.SetGameMode(GameMode.Client);
             launcher.JoinOrCreateLobby();
             isLobbyValid = false;

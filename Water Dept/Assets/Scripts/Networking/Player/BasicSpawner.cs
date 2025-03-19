@@ -56,7 +56,7 @@ public class BasicSpawner : MonoBehaviour, INetworkRunnerCallbacks {
 
         _runner.StartGame(new StartGameArgs {
             GameMode = gameMode,
-            SessionName = gameMode == GameMode.Host ? ServerInfo.LobbyName : ClientInfo.LevelID,
+            SessionName = GetSessionName(),
             Scene = scene,
             SceneManager = gameObject.AddComponent<NetworkSceneManagerDefault>(),
             PlayerCount = ServerInfo.MaxPlayers,
@@ -80,6 +80,7 @@ public class BasicSpawner : MonoBehaviour, INetworkRunnerCallbacks {
         if (!Application.isPlaying) return;
 
         if (nStatus == ConnectionStatus.DISCONNECTED || nStatus == ConnectionStatus.FAILED) {
+            // Change to have a pannel that outputs the error
             SceneManager.LoadScene(0);
         }
     }
@@ -137,6 +138,14 @@ public class BasicSpawner : MonoBehaviour, INetworkRunnerCallbacks {
 
     public Dictionary<PlayerRef, NetworkObject> GetSpawnedPlayers() => _spawnedCharacters;
     public void SetGameMode(GameMode mode) => gameMode = mode;
+    public string GetSessionName() {
+        if (gameMode == GameMode.Host) {
+            return ServerInfo.LobbyName;
+        } else if (gameMode == GameMode.Client) {
+            return ClientInfo.LevelID;
+        }
+        return "";
+    }
 
     #region Networking
     public void OnPlayerJoined(NetworkRunner runner, PlayerRef player) {
