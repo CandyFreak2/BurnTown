@@ -137,7 +137,6 @@ public class CarController : NetworkBehaviour
         //{
         //    steerInput = playerInputSystem.Move.ReadValue<Vector2>().x;
         //}
-        Debug.Log(steerInput);
 
         // Player controls
         if (action.Buttons.WasPressed(previousButtons, InputButton.Interact) && canExit)
@@ -156,7 +155,6 @@ public class CarController : NetworkBehaviour
 
             foreach (Tire tire in frontTires)
             {
-                //tire.transform.localRotation = Quaternion.LookRotation(Vector3.Slerp(truckParent.transform.forward, leftTireAngle, Mathf.Abs(steerInput)), carRB.transform.up);
                 tire.transform.localEulerAngles = tireAngle;
 
                 //if (tireAngle > -(2 * tireMaxAngle))
@@ -172,7 +170,6 @@ public class CarController : NetworkBehaviour
 
             foreach (Tire tire in frontTires)
             {
-                //tire.transform.localRotation = Quaternion.LookRotation(Vector3.Slerp(truckParent.transform.forward, rightTireAngle, Mathf.Abs(steerInput)), carRB.transform.up);
                 tire.transform.localEulerAngles = tireAngle;
 
                 //if (tireAngle < (2 * tireMaxAngle))
@@ -445,11 +442,6 @@ public class CarController : NetworkBehaviour
             backTires.Add(_backTire);
         }
     }
-
-    //public void SetDriverPos(Transform _driverPos)
-    //{
-    //    playerPos = _driverPos;
-    //}
 
     private void ExitDelay()
     {
