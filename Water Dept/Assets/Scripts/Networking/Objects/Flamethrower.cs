@@ -22,6 +22,10 @@ public class Flamethrower : NetworkBehaviour
     [Header("Fuel")]
     [Tooltip("Max amount of fuel and starting fuel")]
     [SerializeField] public float startFuel = 10f;
+    [Tooltip("Fuel amount flamethrower loses (seconds)"), Range(0, 3)]
+    public float fuelDepletionRate = 1;
+    [Tooltip("Fuel amount flamethrower regenerates (seconds)"), Range(0, 3)]
+    public float fuelRegenerationRate = 1;
     [Networked] public float fuel {get;set;}
 
     [Header("Raycast")]
@@ -83,14 +87,14 @@ public class Flamethrower : NetworkBehaviour
             //regen fuel
             if(fuel < startFuel)
             {
-                fuel += Time.deltaTime / 2;
+                fuel += Time.fixedDeltaTime * fuelRegenerationRate;
             }
             return;
         }
         //lerp fuel indicators
         if (fuel > 0)
         {
-            fuel -= Time.fixedDeltaTime;
+            fuel -= Time.fixedDeltaTime * fuelDepletionRate;
             fuelRep.transform.localScale = new Vector3(1, Mathf.Lerp(0, 2, fuel / startFuel), 1);
             fuelRep.GetComponent<MeshRenderer>().material.color = Color.Lerp(Color.red, Color.green, fuel / startFuel);
         }
