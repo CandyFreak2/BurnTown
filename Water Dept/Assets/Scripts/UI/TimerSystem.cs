@@ -1,7 +1,9 @@
 using Fusion;
 using TMPro;
 using UnityEngine;
+using UnityEngine.EventSystems;
 using UnityEngine.UI;
+using static UnityEngine.Rendering.BoolParameter;
 
 public class TimerSystem : NetworkBehaviour {
     [Networked] private TickTimer Timer { get; set; }
@@ -13,6 +15,7 @@ public class TimerSystem : NetworkBehaviour {
     [SerializeField] private float remainingTime;
 
     private bool canPause = false;
+    private int prev, current;
 
     [SerializeField] private Button pauseButton, resetButton; 
 
@@ -65,6 +68,7 @@ public class TimerSystem : NetworkBehaviour {
         // Update all player's UI timer text
         if (timerText != null) {
             timerText.text = string.Format("{0:00}:{1:00}", minutes, seconds);
+            OnTimeChange(displayTime);
         }
     }
 
@@ -92,11 +96,21 @@ public class TimerSystem : NetworkBehaviour {
         }
     }
 
+    public void OnTimeChange(float displayTime) {
+        current = (int) displayTime;
+        if (current < prev && Timer.IsRunning) {
+            prev = current;
+            EventManager.TimeChange(current);
+        }
+    }
+
     private void OnEnable() {
         EventManager.onTimerAdd += AddTime;
+        EventManager.onTimeChange += OnTimeChange;
     }
 
     private void OnDisable() {
         EventManager.onTimerAdd -= AddTime;
+        EventManager.onTimeChange -= DisplayTime;
     }
 }
