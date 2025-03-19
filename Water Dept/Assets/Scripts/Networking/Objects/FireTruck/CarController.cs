@@ -1,5 +1,6 @@
 using Fusion;
 using Fusion.Addons.SimpleKCC;
+using Fusion.Addons.Physics;
 using NUnit.Framework;
 using System.Collections;
 using System.Collections.Generic;
@@ -290,6 +291,7 @@ public class CarController : NetworkBehaviour
 
         carData.SubPassenger();
         RPC_RequestPlayerExitTruck(Object.Id);
+        Debug.Log($"Server truck position after exit: {truckParent.transform.position}");
 
         playerInputSystem.Disable();
         seatTransform = null;
@@ -346,6 +348,7 @@ public class CarController : NetworkBehaviour
             //carController.carData.SubPassenger();
             //carController.playerController.GetOutTruck();
             //carController.playerController = null;
+            RPC_UpdateTruckPos(carController.truckParent.GetComponent<NetworkObject>().Id, carController.truckParent.transform.position, carController.truckParent.transform.rotation);
             carController.seatTransform = null;
             carController.isActive = false;
         }
@@ -364,6 +367,21 @@ public class CarController : NetworkBehaviour
         else
         {
             carController.playerController.DeactivateSystems();
+        }
+    }
+
+    [Rpc(RpcSources.All, RpcTargets.All)]
+    public void RPC_UpdateTruckPos(NetworkId _truckId, Vector3 _position, Quaternion _rotation)
+    {
+        NetworkRigidbody3D truckRB = Runner.FindObject(_truckId).GetComponent<NetworkRigidbody3D>();
+        BoxCollider truckCollider = truckRB.GetComponent<BoxCollider>();
+
+        if (truckRB != null && truckCollider != null)
+        {
+            Debug.Log("Yo u working");
+            truckRB.transform.position = _position;
+            truckRB.transform.rotation = _rotation;
+            truckCollider.transform.position = _position;
         }
     }
 
