@@ -14,11 +14,13 @@ public class PlayerMovement : NetworkBehaviour
 {
     private bool isSpawned = false;
     private bool canEnter = true;
+    private bool isFiring = false;
 
     [Header("Movement")]
     public float MoveSpeed = 5.0f;
     public float AirMoveSpeed = 3.0f;
     public float maxSpeed = 5.0f;
+    public float shootSpeedPercent = 0.7f;
     [SerializeField] Transform orientation;
     [SerializeField] Transform playerObj;
     [SerializeField] Transform camTarget;
@@ -170,11 +172,21 @@ public class PlayerMovement : NetworkBehaviour
     {
         Quaternion camOffest = Quaternion.Euler(0, camTarget.rotation.eulerAngles.y, 0);
         moveDirection = kcc.TransformRotation * camOffest * ToVector3(action.MoveDirection);
-
-        if (isGrounded)
-            kcc.Move(moveDirection * MoveSpeed);
+        if(!isFiring)
+        {
+            if (isGrounded)
+                kcc.Move(moveDirection * MoveSpeed);
+            else
+                kcc.Move(action.MoveDirection.normalized * AirMoveSpeed); //Simulate gravity if isn't grounded
+        }
         else
-            kcc.Move(action.MoveDirection.normalized * AirMoveSpeed); //Simulate gravity if isn't grounded
+        {
+            if (isGrounded)
+                kcc.Move(moveDirection * (MoveSpeed * shootSpeedPercent));
+            else
+                kcc.Move(action.MoveDirection.normalized * AirMoveSpeed); //Simulate gravity if isn't grounded
+        }
+
     }
 
     private void HandleInteraction()
@@ -221,6 +233,10 @@ public class PlayerMovement : NetworkBehaviour
                 if(carriedObject.gameObject.GetComponent<Flamethrower>().fuel > 0)
                 {
                     carriedObject.gameObject.GetComponent<Flamethrower>().Spray();
+                    //limit movement
+                    isFiring = true;
+                    //push back player
+                    gameObject.GetComponent<SimpleKCC>().Move(-orientation.forward.normalized * 20);
                 }
                 
             }
@@ -237,6 +253,7 @@ public class PlayerMovement : NetworkBehaviour
             if (carriedObject.interactableType == InteractableType.Flamethrower)
             {
                 carriedObject.gameObject.GetComponent<Flamethrower>().StopSpraying();
+                isFiring = false;
             }
         }
 

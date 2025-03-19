@@ -175,7 +175,6 @@ public class BarrelInfo : NetworkBehaviour
             if (barr != null && barr != gameObject.GetComponent<BarrelInfo>() && !hit.CompareTag("DestructibleObject"))
             {
                 barr.isExploded = true;
-                //
                 barr.DelayedChainExplode();
             }
 
