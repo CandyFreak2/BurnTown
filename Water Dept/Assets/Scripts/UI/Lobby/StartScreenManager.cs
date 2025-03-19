@@ -2,7 +2,6 @@ using Fusion;
 using TMPro;
 using UnityEngine;
 using UnityEngine.UI;
-using WebSocketSharp;
 
 public class StartScreenManager : MonoBehaviour {
     [Header("Host")]

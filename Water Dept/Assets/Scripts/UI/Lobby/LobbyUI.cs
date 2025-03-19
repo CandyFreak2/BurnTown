@@ -12,7 +12,6 @@ public class LobbyUI : MonoBehaviour {
     [SerializeField] private Slider playerCountSlider;
     [SerializeField] private TMP_Text playerCountText;
     [SerializeField] private static int codeLength = 4;
-    private static Slider sSlider;
 
     [SerializeField] private TMP_Dropdown level;
     [SerializeField] private Image levelImage;
@@ -23,7 +22,6 @@ public class LobbyUI : MonoBehaviour {
 
     private void Start() {
         sLobbyCode = lobbyCode;
-        sSlider = playerCountSlider;
 
         playerCountSlider.SetValueWithoutNotify(4);
         SetLobbyCode(codeLength);

@@ -1,3 +1,4 @@
+using System.Collections;
 using TMPro;
 using UnityEngine;
 using UnityEngine.EventSystems;
@@ -10,44 +11,60 @@ public class PanelSwitcher : MonoBehaviour {
 
     [SerializeField] private LobbyUI codeGenerator;
     private EventSystem eventSystem;
-    private GameObject hostStart;
-    private GameObject joinStart;
+    private GameObject hostButton, hostStart, joinStart;
 
     private void Start() {
         eventSystem = EventSystem.current;
         GoBackToMainScreen();
     }
 
-    private void Update() {
-        if (hostPanel.activeInHierarchy) {
-            if (hostStart == null) {
-                hostStart = FindAnyObjectByType<Slider>().gameObject;
-            }
-            eventSystem.firstSelectedGameObject = hostStart;
-        }
+    private void ActivatePanel(GameObject panelToActivate, System.Func<GameObject> GetStartElement) {
+        startPanel.SetActive(false);
+        hostPanel.SetActive(false);
+        joinPanel.SetActive(false);
 
-        if (joinPanel.activeInHierarchy) {
-            if (joinStart == null) {
-                joinStart = FindAnyObjectByType<TMP_InputField>().gameObject;
+        panelToActivate.SetActive(true);
+
+        StartCoroutine(SetSelectedAfterDelay(() => {
+            GameObject startElement = GetStartElement?.Invoke();
+            if (startElement != null) {
+                eventSystem.SetSelectedGameObject(startElement);
             }
-            eventSystem.firstSelectedGameObject = joinStart;
-        }
+        }));
     }
 
     public void GoToHostPanel() {
-        startPanel.SetActive(false);
-        codeGenerator.enabled = true;
-        hostPanel.SetActive(true);
+        ActivatePanel(hostPanel, () => {
+            if (hostStart == null) {
+                hostStart = FindAnyObjectByType<Slider>().gameObject;
+            }
+            return hostStart;
+        });
+
+        codeGenerator.enabled = true; 
     }
 
     public void GoToJoinPanel() {
-        startPanel.SetActive(false);
-        joinPanel.SetActive(true);
+        ActivatePanel(joinPanel, () => {
+            if (joinStart == null) {
+                joinStart = FindAnyObjectByType<TMP_InputField>().gameObject;
+            }
+            return joinStart;
+        });
     }
 
     public void GoBackToMainScreen() {
-        hostPanel.SetActive(false);
-        joinPanel.SetActive(false);
-        startPanel.SetActive(true);
+        ActivatePanel(startPanel, () => {
+            if (hostButton == null) {
+                hostButton = FindFirstObjectByType<Button>().gameObject;
+            }
+            return hostButton;  
+        }); 
     }
+
+    private IEnumerator SetSelectedAfterDelay(System.Action action) {
+        yield return null;
+        action.Invoke();
+    }
+
 }
