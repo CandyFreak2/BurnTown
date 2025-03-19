@@ -19,7 +19,6 @@ public class CarController : NetworkBehaviour
     [SerializeField] private Transform camTarget;
     [SerializeField] private float gravityStrength = 12.0f;
     public Transform seatTransform;
-    [Networked] public Vector3 playerPos { get; set; }
 
     [SerializeField] private List<Tire> frontTires, backTires;
     public float tireMaxAngle = 70.0f;
@@ -100,6 +99,10 @@ public class CarController : NetworkBehaviour
                 TurnTires();
                 UpdateTires();
                 UpdateGravity();
+            }
+            else
+            {
+                CheckPlayerCount();
             }
 
             previousButtons = action.Buttons;
@@ -222,6 +225,15 @@ public class CarController : NetworkBehaviour
         if (carRB != null)
         {
             carRB.AddForce(Vector3.down * gravityStrength);
+        }
+    }
+
+    private void CheckPlayerCount()
+    {
+        if (carData.GetNumPassengers() == 1)
+        {
+            isDriver = true;
+            seatTransform = carData.driverPos;
         }
     }
 
@@ -368,13 +380,11 @@ public class CarController : NetworkBehaviour
         {
             isDriver = true;
             seatTransform = _data.driverPos;
-            playerPos = seatTransform.localPosition;
         }
         else
         {
             isDriver = false;
             seatTransform = _data.passengerPos[numPassengers - 2];
-            playerPos = seatTransform.localPosition;
         }
         SetTireAngles();
     }
