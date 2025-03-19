@@ -10,6 +10,8 @@ public class BarrelInfo : NetworkBehaviour
 
     [SerializeField] private ParticleSystem pixelBoom;
 
+    [Tooltip("How much firedamage burnables take from explosion")]
+    [SerializeField] public int heatDamage = 10;
     public float delay = 0.5f;
 
     public bool isThrown = false;
@@ -162,6 +164,11 @@ public class BarrelInfo : NetworkBehaviour
         Collider[] colls = Physics.OverlapBox(gameObject.transform.position, new Vector3(explosionRadius, 0.01f, explosionRadius), Quaternion.identity);
         foreach (Collider hit in colls)
         {
+            if(hit.GetComponent<Burnable>())
+            {
+                hit.GetComponent<Burnable>().AddHeatModifier(heatDamage);
+            }
+            
             BarrelInfo barr = hit.GetComponent<BarrelInfo>();
 
             //if barrel is horizontal and not itself blow it up after delay

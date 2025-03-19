@@ -528,7 +528,6 @@ public class PlayerMovement : NetworkBehaviour
         
     }
 
-
     public bool IsHolding()
     {
         return carriedObject != null;
