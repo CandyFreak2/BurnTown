@@ -17,7 +17,7 @@ public class LevelManager : NetworkSceneManagerDefault {
             }
             else if (singleton != value) {
                 Destroy(value);
-                Debug.LogError($"There should only ever be one instance of {nameof(ResourceManager)}!");
+                Debug.LogError($"There should only ever be one instance of {nameof(LevelManager)}!");
             }
         }
     }
