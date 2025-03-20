@@ -81,7 +81,7 @@ public class Burnable : NetworkBehaviour
         //used for tracking percentages
         if (showsLerp)
         {
-            render = GetComponent<Renderer>();
+            render = GetComponentInChildren<Renderer>();
             render.material.color = initialColor;
         }
     }
