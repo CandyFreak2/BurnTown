@@ -2,7 +2,6 @@ using Fusion;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
-using static Fusion.NetworkBehaviour;
 
 public class Burnable : NetworkBehaviour
 {
@@ -271,15 +270,14 @@ public class Burnable : NetworkBehaviour
         {
             //despawn obj 
             EventManager.BurnableDestroyed(burnableScore);
-            gameObject.SetActive(false);
-            if (destroyedModel != null) {
+            Runner.Despawn(Object);
+/*            if (destroyedModel != null) {
                 Runner.Spawn(destroyedModel, transform.position);
-            }
+            }*/
         }
 
-    public bool GetDisabled(float _disabledPercent)
-    {
-        return _disabledPercent > fuelRemaining / startFuel;
+    public bool GetDisabled(float _disabledPercent) {
+        return isSpawned && _disabledPercent > fuelRemaining / startFuel;
     }
 
     /// removed, for flamethrower reworks -James 03\08

@@ -17,12 +17,15 @@ public class Generator : NetworkBehaviour
     public override void FixedUpdateNetwork()
     {
         bool lastState = isDisabled;
-        isDisabled = genBurnable.GetDisabled(disabledPercent01);
+        if (!isDisabled) {
+            isDisabled = genBurnable.GetDisabled(disabledPercent01);
+        }
 
         // When isDisabled switches update objective
         if (lastState != isDisabled)
         {
             PoweredObjective.CheckAllDeactivated();
         }
+        
     }
 }
