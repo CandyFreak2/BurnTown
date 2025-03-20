@@ -18,7 +18,7 @@ public class InteractableUI : NetworkBehaviour
     [SerializeField] float tweenDuration;
     [SerializeField] Vector3 tweenMagnatude;
     [SerializeField] int tweenVibrato;
-    Tween activeTween;
+    Sequence[] activeTweens;
 
     private void OnEnable()
     {
@@ -36,6 +36,8 @@ public class InteractableUI : NetworkBehaviour
         flamethrowerUI = UIManager.Instance.GetFlamethrowerUI();
         barrelUI = UIManager.Instance.GetBarrelUI();
         firetruckUI = UIManager.Instance.GetFiretruckUI();
+
+        activeTweens = new Sequence[3];
     }
 
     // Delay updating ui so that playermovement data gets updated first then ui
@@ -49,12 +51,19 @@ public class InteractableUI : NetworkBehaviour
         }
         else
         {
-            if (activeTween != null) activeTween.Complete();
-            activeTween = flamethrowerUI.transform.DOShakeScale(tweenDuration, tweenMagnatude, tweenVibrato);
-            activeTween = barrelUI.transform.DOShakeScale(tweenDuration, tweenMagnatude, tweenVibrato);
-            activeTween = firetruckUI.transform.DOShakeScale(tweenDuration, tweenMagnatude, tweenVibrato);
-
             Invoke("UpdateUI", popupDelay);
+
+            activeTweens[0].Append(flamethrowerUI.transform.DOShakeScale(tweenDuration, tweenMagnatude, tweenVibrato));
+            activeTweens[0].Append(flamethrowerUI.transform.DOScale(Vector3.one, 0));
+            activeTweens[0].PlayForward();
+
+            activeTweens[1].Append(barrelUI.transform.DOShakeScale(tweenDuration, tweenMagnatude, tweenVibrato));
+            activeTweens[1].Append(barrelUI.transform.DOScale(Vector3.one, 0));
+            activeTweens[1].PlayForward();
+
+            activeTweens[2].Append(firetruckUI.transform.DOShakeScale(tweenDuration, tweenMagnatude, tweenVibrato));
+            activeTweens[2].Append(firetruckUI.transform.DOScale(Vector3.one, 0));
+            activeTweens[2].PlayForward();
         }
     }
 
@@ -67,8 +76,8 @@ public class InteractableUI : NetworkBehaviour
         {
             firetruckUI.SetActive(true);
 
-            if (activeTween != null) activeTween.Complete();
-            activeTween = firetruckUI.transform.DOShakeScale(tweenDuration, tweenMagnatude, tweenVibrato);
+            //if (activeTween != null) activeTween.Complete();
+            //activeTween = firetruckUI.transform.DOShakeScale(tweenDuration, tweenMagnatude, tweenVibrato);
         }
         else if (playerMovement.carriedObject == null)
         {
@@ -78,20 +87,20 @@ public class InteractableUI : NetworkBehaviour
         {
             flamethrowerUI.SetActive(true);
 
-            if (activeTween != null) activeTween.Complete();
+            //if (activeTween != null) activeTween.Complete();
 
             // Wont tween every time it shoots
             if (!isAttackPressed)
             {
-                activeTween = flamethrowerUI.transform.DOShakeScale(tweenDuration, tweenMagnatude, tweenVibrato);
+                //activeTween = flamethrowerUI.transform.DOShakeScale(tweenDuration, tweenMagnatude, tweenVibrato);
             }
         }
         else if (playerMovement.carriedObject.interactableType == InteractableType.Barrel)
         {
             barrelUI.SetActive(true);
 
-            if (activeTween != null) activeTween.Complete();
-            activeTween = barrelUI.transform.DOShakeScale(tweenDuration, tweenMagnatude, tweenVibrato);
+            //if (activeTween != null) activeTween.Complete();
+            //activeTween = barrelUI.transform.DOShakeScale(tweenDuration, tweenMagnatude, tweenVibrato);
         }
         else
         {
