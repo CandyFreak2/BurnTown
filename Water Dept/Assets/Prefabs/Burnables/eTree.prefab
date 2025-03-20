@@ -31,7 +31,7 @@ Transform:
   serializedVersion: 2
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
   m_LocalPosition: {x: 16.44, y: 0, z: 11.6}
-  m_LocalScale: {x: 1.5, y: 0.7945774, z: 1.5}
+  m_LocalScale: {x: 14, y: 14, z: 14}
   m_ConstrainProportionsScale: 1
   m_Children: []
   m_Father: {fileID: 0}
@@ -43,7 +43,7 @@ MeshFilter:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 453698788867256445}
-  m_Mesh: {fileID: 7005181771882779359, guid: eebf91b0d7884064abd5d88d3e31acb1, type: 3}
+  m_Mesh: {fileID: 8902363097372591126, guid: 839a8d2a40dac6244b1539f66c36accb, type: 3}
 --- !u!23 &2316312355434839343
 MeshRenderer:
   m_ObjectHideFlags: 0
@@ -102,17 +102,22 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   burnableScore: 3500
-  startFuel: 10
-  spreadRate: 3
+  _fuelRemaining: 0
+  heatModifier: 0
+  HeatSources: []
+  burnOnAwake: 0
+  startFuel: 8
+  heatResistance: 0
+  heatBuffer: 2
+  heatDmgCap: 999
+  heatStrength: 1
   spreadRadius: 3
-  fireResistance: 1
-  damageRate: 0.1
   _nIsBurning: 0
-  isBurning: 0
   showsLerp: 1
   initialColor: {r: 0, g: 1, b: 0, a: 1}
   startColor: {r: 1, g: 0.92156863, b: 0.015686275, a: 1}
   endColor: {r: 1, g: 0, b: 0, a: 1}
+  onFireVFX: {fileID: 0}
 --- !u!114 &4730850548071176791
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -153,4 +158,4 @@ MeshCollider:
   serializedVersion: 5
   m_Convex: 0
   m_CookingOptions: 30
-  m_Mesh: {fileID: 7005181771882779359, guid: eebf91b0d7884064abd5d88d3e31acb1, type: 3}
+  m_Mesh: {fileID: 8902363097372591126, guid: 839a8d2a40dac6244b1539f66c36accb, type: 3}
