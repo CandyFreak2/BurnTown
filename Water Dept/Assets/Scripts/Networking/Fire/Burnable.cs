@@ -66,6 +66,8 @@ public class Burnable : NetworkBehaviour
     [Header("VFX")]
     [SerializeField] ParticleSystem onFireVFX;
 
+    [Header("Destruction Model")]
+    [SerializeField] private GameObject destroyedModel;
 
     public override void Spawned()
     {
@@ -79,7 +81,7 @@ public class Burnable : NetworkBehaviour
         //used for tracking percentages
         if (showsLerp)
         {
-            render = GetComponent<Renderer>();
+            render = GetComponentInChildren<Renderer>();
             render.material.color = initialColor;
         }
     }
@@ -265,13 +267,15 @@ public class Burnable : NetworkBehaviour
         Invoke("Despawn", 0.5f);
     }
 
-    private void Despawn()
-    {
-        //despawn obj 
-        EventManager.BurnableDestroyed(burnableScore);
-        gameObject.SetActive(false);
-        Runner.Despawn(Object);
-    }
+        private void Despawn()
+        {
+            //despawn obj 
+            EventManager.BurnableDestroyed(burnableScore);
+            gameObject.SetActive(false);
+            if (destroyedModel != null) {
+                Runner.Spawn(destroyedModel, transform.position);
+            }
+        }
 
     public bool GetDisabled(float _disabledPercent)
     {

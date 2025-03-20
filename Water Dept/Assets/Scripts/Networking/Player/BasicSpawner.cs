@@ -3,30 +3,36 @@ using Fusion.Sockets;
 using System;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.EventSystems;
 using UnityEngine.SceneManagement;
+using UnityEngine.UI;
 
 public class BasicSpawner : MonoBehaviour, INetworkRunnerCallbacks
 {
-    [SerializeField] 
-    private NetworkPrefabRef _playerPrefab;
+    [SerializeField] private NetworkPrefabRef _playerPrefab;
+    [SerializeField] public Vector3 spawnPos; 
+    [SerializeField, Tooltip("Radius Multiplier for Spawn Pos")] public float spawnDistance = 3f; 
     private Dictionary<PlayerRef, NetworkObject> _spawnedCharacters = new Dictionary<PlayerRef, NetworkObject>();
     private NetworkRunner _runner;
 
+    [SerializeField] private GameObject buttonPanel;
+
     private bool mouseButton0;
 
-    public void OnPlayerJoined(NetworkRunner runner, PlayerRef player)
-    {
-        if(runner.IsServer)
-        {
+    public void OnPlayerJoined(NetworkRunner runner, PlayerRef player) {
+        if (runner.IsServer) {
+            int playerIndex = _spawnedCharacters.Count;
             // Create a unique position for the player
-            Vector3 spawnPosition = new Vector3((player.RawEncoded % runner.Config.Simulation.PlayerCount) * 3, 1, 0);
+            Vector3 spawnPosition = spawnPos + new Vector3(playerIndex * spawnDistance, 0, 0);
             NetworkObject networkPlayerObject = runner.Spawn(_playerPrefab, spawnPosition, Quaternion.identity, player);
+
             // Keep track of the player avatars for easy access
             _spawnedCharacters.Add(player, networkPlayerObject);
             runner.SetPlayerObject(player, networkPlayerObject);
         }
         UIManager.Instance.SetUI();
     }
+
     public void OnPlayerLeft(NetworkRunner runner, PlayerRef player) 
     {
         if (_spawnedCharacters.TryGetValue(player, out NetworkObject networkObject))
@@ -79,7 +85,7 @@ public class BasicSpawner : MonoBehaviour, INetworkRunnerCallbacks
     public void OnReliableDataReceived(NetworkRunner runner, PlayerRef player, ReliableKey key, ArraySegment<byte> data) { }
     public void OnReliableDataProgress(NetworkRunner runner, PlayerRef player, ReliableKey key, float progress) { }
 
-    async void StartGame(GameMode mode)
+    async void StartGame(int mode)
     {
         // Create the Fusion runner and let it know that we will be providing user input
         _runner = gameObject.AddComponent<NetworkRunner>();
@@ -96,31 +102,20 @@ public class BasicSpawner : MonoBehaviour, INetworkRunnerCallbacks
         // Start or join (depends on gamemode) a session with a specific name
         await _runner.StartGame(new StartGameArgs()
         {
-            GameMode = mode,
+            GameMode = (GameMode) mode,
             SessionName = "TutorialFGB8",
             Scene = scene,
             SceneManager = gameObject.AddComponent<NetworkSceneManagerDefault>()
         });
     }
 
-    private void Update()
-    {
-        mouseButton0 = mouseButton0 | Input.GetMouseButton(0);
+    public void TryCreateGame(int mode) {
+        StartGame(mode);
+        buttonPanel.SetActive(false);
     }
 
-    private void OnGUI()
-    {
-        if (_runner == null)
-        {
-            if (GUI.Button(new Rect(0, 0, 200, 40), "Host"))
-            {
-                StartGame(GameMode.Host);
-            }
-            if (GUI.Button(new Rect(0, 40, 200, 40), "Join"))
-            {
-                StartGame(GameMode.Client);
-            }
-        }
+    private void Update() {
+        mouseButton0 = mouseButton0 | Input.GetMouseButton(0);
     }
 
     public Dictionary<PlayerRef, NetworkObject> GetSpawnedPlayers() => _spawnedCharacters;

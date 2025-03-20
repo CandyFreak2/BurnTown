@@ -273,14 +273,21 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: bd4f9feec875c974ab3e000f8898befa, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  _isActive:
+    _value: 0
+  truckParent: {fileID: 0}
   carRB: {fileID: 0}
   camTarget: {fileID: 0}
+  gravityStrength: 12
+  seatTransform: {fileID: 0}
   frontTires: []
   backTires: []
-  tireMaxAngle: 70
+  tireMaxAngle: 60
   tireTurnSpeed: 1
   leftTireAngle: {x: 0, y: 0, z: 0}
   rightTireAngle: {x: 0, y: 0, z: 0}
+  playerController: {fileID: 0}
+  isDriver: 0
 --- !u!114 &-3036700806444132779
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -297,8 +304,6 @@ MonoBehaviour:
     type: 3}
   barrelSchematicPrefab: {fileID: 1166296274976659212, guid: 7184ed08a17892142a596b69225ebe7e,
     type: 3}
-  _isSchematicOut: 0
-  _orientation: {x: 0, y: 0, z: 0}
   placeDistance: 3
 --- !u!1 &3348894177522433908
 GameObject:

@@ -31,8 +31,8 @@ Transform:
   serializedVersion: 2
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
   m_LocalPosition: {x: 9.037628, y: 0.9276787, z: 7.230416}
-  m_LocalScale: {x: 8.684477, y: 3.5080285, z: 8.684477}
-  m_ConstrainProportionsScale: 0
+  m_LocalScale: {x: 14, y: 14, z: 14}
+  m_ConstrainProportionsScale: 1
   m_Children: []
   m_Father: {fileID: 0}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
@@ -101,13 +101,23 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: d687f89eee019c74e9f3e5c3d46719f7, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  startFuel: 30
-  spreadRate: 3
+  burnableScore: 3500
+  _fuelRemaining: 0
+  heatModifier: 0
+  HeatSources: []
+  burnOnAwake: 0
+  startFuel: 8
+  heatResistance: 0
+  heatBuffer: 2
+  heatDmgCap: 999
+  heatStrength: 1
   spreadRadius: 8
-  fireResistance: 6
-  damageRate: 0.1
   _nIsBurning: 0
-  isBurning: 0
+  showsLerp: 1
+  initialColor: {r: 0, g: 1, b: 0, a: 1}
+  startColor: {r: 1, g: 0.92156863, b: 0.015686275, a: 1}
+  endColor: {r: 1, g: 0, b: 0, a: 1}
+  onFireVFX: {fileID: 0}
 --- !u!114 &9024513864095165934
 MonoBehaviour:
   m_ObjectHideFlags: 0

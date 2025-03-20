@@ -9,19 +9,21 @@ public class RestockArea : NetworkBehaviour
     [SerializeField] public Vector3 droneDeliveryPoint;
 
     private int barrelCount;
+    private bool canSpawn = true;
 
     [Tooltip("A drones Spawner (empty gameObject with DroneDeliver script attached)")]
     [SerializeField] private DroneDeliver droneDeliver;
 
     private void Update()
     {
-        //Debug.Log(barrelCount);
+
     }
 
     private void OnTriggerEnter(Collider other)
     {
         if(other.tag == "Barrel")
         {
+            canSpawn = true;
             barrelCount++;
         }
     }
@@ -33,10 +35,12 @@ public class RestockArea : NetworkBehaviour
         {
             barrelCount--;
 
-            if(barrelCount == 0)
+            if(barrelCount == 0 && canSpawn)
             {
                 droneDeliver.sendDrone(droneDeliveryPoint);
+                canSpawn = false;
             }
         }
     }
+
 }

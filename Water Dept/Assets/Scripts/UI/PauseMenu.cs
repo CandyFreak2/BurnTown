@@ -1,12 +1,15 @@
 using Fusion;
 using System;
 using UnityEngine;
+using UnityEngine.EventSystems;
 using UnityEngine.SceneManagement;
+using UnityEngine.UI;
 
 public class PauseMenu : NetworkBehaviour {
     [SerializeField] private GameObject pauseUI;
     [SerializeField] private PlayerMovement playerMovement;
     [SerializeField] private NetworkRunner runner;
+    [SerializeField] private GameObject startButton;
 
     private bool isPanelOn = false;
     private bool isSpawned = false;
@@ -36,6 +39,7 @@ public class PauseMenu : NetworkBehaviour {
     public void TogglePause(bool input) {
         input = !input;
         pauseUI.SetActive(input);
+        EventSystem.current.SetSelectedGameObject(startButton);
 
         if (input) {
             Cursor.lockState = CursorLockMode.Locked;

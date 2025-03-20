@@ -10,6 +10,9 @@ public static class EventManager {
     public static event UnityAction<float> onTimerAdd;
     public static void TimerAdd(float increment) => onTimerAdd?.Invoke(increment);
 
+    public static event UnityAction<float> onTimeChange;
+    public static void TimeChange(float currentTime) => onTimeChange?.Invoke(currentTime);
+
     public static void BurnableDestroyed(int score) => onBurnableDestroyed?.Invoke(score);
     public static event UnityAction<int> onBurnableDestroyed;
 
