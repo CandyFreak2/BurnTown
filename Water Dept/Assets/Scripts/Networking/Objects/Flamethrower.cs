@@ -110,8 +110,15 @@ public class Flamethrower : NetworkBehaviour
         //ray cast the shot
         if (Physics.Raycast(raySource.position, raySource.forward, out RaycastHit hit, rayDistance, rayMask))
         {
+            if(hit.collider.TryGetComponent(out Burnable burn))
+            if (burn == null) 
+            {
+                burn = hit.collider.GetComponentInChildren<Burnable>(true);
+            }
+
+
             //apply fire dammage to burnables
-            if (hit.collider.TryGetComponent(out Burnable burn))
+            if (burn != null)
             {
                 if (!burn.enabled) burn.enabled = true;
                     burn.AddHeatModifier(heatApplied);
