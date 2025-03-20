@@ -13,7 +13,7 @@ GameObject:
   m_Layer: 0
   m_Name: BL Tire
   m_TagString: BackTire
-  m_Icon: {fileID: 0}
+  m_Icon: {fileID: 1206586993520771344, guid: 0000000000000000d000000000000000, type: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
   m_IsActive: 1
@@ -26,7 +26,7 @@ Transform:
   m_GameObject: {fileID: 1295557062003659758}
   serializedVersion: 2
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: -1.686, y: -2.67, z: -4.41}
+  m_LocalPosition: {x: -1.69, y: -2.43, z: -4.03}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []
@@ -65,7 +65,7 @@ GameObject:
   m_Layer: 0
   m_Name: BR Tire
   m_TagString: BackTire
-  m_Icon: {fileID: 0}
+  m_Icon: {fileID: 1206586993520771344, guid: 0000000000000000d000000000000000, type: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
   m_IsActive: 1
@@ -78,7 +78,7 @@ Transform:
   m_GameObject: {fileID: 1601628383318992276}
   serializedVersion: 2
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 1.68, y: -2.67, z: -4.41}
+  m_LocalPosition: {x: 1.68, y: -2.43, z: -4.03}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []
@@ -194,9 +194,8 @@ Transform:
   - {fileID: 3854491159692431464}
   - {fileID: 1313634534394097310}
   - {fileID: 2652806910528296905}
-  - {fileID: 8131464861548602741}
-  - {fileID: 445794036244975176}
   - {fileID: 1749059927580962553}
+  - {fileID: 445794036244975176}
   m_Father: {fileID: 0}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!54 &4768391477969633517
@@ -331,7 +330,7 @@ GameObject:
   m_Layer: 0
   m_Name: PassengerPos (1)
   m_TagString: Untagged
-  m_Icon: {fileID: 0}
+  m_Icon: {fileID: 7148428337604731935, guid: 0000000000000000d000000000000000, type: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
   m_IsActive: 1
@@ -381,37 +380,6 @@ Transform:
   m_Children: []
   m_Father: {fileID: 1749059927580962553}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
---- !u!1 &5417588649419769443
-GameObject:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  serializedVersion: 6
-  m_Component:
-  - component: {fileID: 8131464861548602741}
-  m_Layer: 0
-  m_Name: CamFollow
-  m_TagString: Untagged
-  m_Icon: {fileID: 0}
-  m_NavMeshLayer: 0
-  m_StaticEditorFlags: 0
-  m_IsActive: 1
---- !u!4 &8131464861548602741
-Transform:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 5417588649419769443}
-  serializedVersion: 2
-  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 0, y: -6.1, z: 3.9}
-  m_LocalScale: {x: 1, y: 1, z: 1}
-  m_ConstrainProportionsScale: 0
-  m_Children: []
-  m_Father: {fileID: 1245603945616768155}
-  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1 &7310782486318041851
 GameObject:
   m_ObjectHideFlags: 0
@@ -459,7 +427,7 @@ GameObject:
   m_Layer: 0
   m_Name: PassengerPos (2)
   m_TagString: Untagged
-  m_Icon: {fileID: 0}
+  m_Icon: {fileID: 7148428337604731935, guid: 0000000000000000d000000000000000, type: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
   m_IsActive: 1
@@ -490,7 +458,7 @@ GameObject:
   m_Layer: 0
   m_Name: PassengerPos
   m_TagString: Untagged
-  m_Icon: {fileID: 0}
+  m_Icon: {fileID: 7148428337604731935, guid: 0000000000000000d000000000000000, type: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
   m_IsActive: 1
@@ -522,7 +490,7 @@ GameObject:
   m_Layer: 0
   m_Name: FR Tire
   m_TagString: FrontTire
-  m_Icon: {fileID: 0}
+  m_Icon: {fileID: 1206586993520771344, guid: 0000000000000000d000000000000000, type: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
   m_IsActive: 1
@@ -535,7 +503,7 @@ Transform:
   m_GameObject: {fileID: 8397273350419712050}
   serializedVersion: 2
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 1.68, y: -2.67, z: 4.04}
+  m_LocalPosition: {x: 1.68, y: -2.518, z: 3.643}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []
@@ -574,7 +542,7 @@ GameObject:
   m_Layer: 0
   m_Name: FL Tire
   m_TagString: FrontTire
-  m_Icon: {fileID: 0}
+  m_Icon: {fileID: 1206586993520771344, guid: 0000000000000000d000000000000000, type: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
   m_IsActive: 1
@@ -587,7 +555,7 @@ Transform:
   m_GameObject: {fileID: 8539886274263462978}
   serializedVersion: 2
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: -1.686, y: -2.67, z: 4.04}
+  m_LocalPosition: {x: -1.69, y: -2.518, z: 3.643}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []
@@ -643,8 +611,8 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 9181218762468318415}
   serializedVersion: 2
-  m_LocalRotation: {x: 0.3409561, y: 0.35566992, z: -0.14122863, w: 0.85866314}
-  m_LocalPosition: {x: -15, y: 20, z: -15}
+  m_LocalRotation: {x: 0.14122966, y: -0.85866207, z: 0.34095564, w: 0.3556725}
+  m_LocalPosition: {x: 15.000088, y: 20, z: 14.999911}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []
@@ -820,17 +788,17 @@ PrefabInstance:
     - target: {fileID: -8679921383154817045, guid: f28a54885ee2b9b44bafbd242d5ba776,
         type: 3}
       propertyPath: m_LocalScale.x
-      value: 2
+      value: 0.012
       objectReference: {fileID: 0}
     - target: {fileID: -8679921383154817045, guid: f28a54885ee2b9b44bafbd242d5ba776,
         type: 3}
       propertyPath: m_LocalScale.y
-      value: 2
+      value: 0.012
       objectReference: {fileID: 0}
     - target: {fileID: -8679921383154817045, guid: f28a54885ee2b9b44bafbd242d5ba776,
         type: 3}
       propertyPath: m_LocalScale.z
-      value: 2
+      value: 0.012
       objectReference: {fileID: 0}
     - target: {fileID: -8679921383154817045, guid: f28a54885ee2b9b44bafbd242d5ba776,
         type: 3}
@@ -840,12 +808,12 @@ PrefabInstance:
     - target: {fileID: -8679921383154817045, guid: f28a54885ee2b9b44bafbd242d5ba776,
         type: 3}
       propertyPath: m_LocalPosition.y
-      value: -3.57
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: -8679921383154817045, guid: f28a54885ee2b9b44bafbd242d5ba776,
         type: 3}
       propertyPath: m_LocalPosition.z
-      value: -19.47
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: -8679921383154817045, guid: f28a54885ee2b9b44bafbd242d5ba776,
         type: 3}
@@ -887,15 +855,25 @@ PrefabInstance:
       propertyPath: m_ConstrainProportionsScale
       value: 1
       objectReference: {fileID: 0}
-    - target: {fileID: -3459314411034906274, guid: f28a54885ee2b9b44bafbd242d5ba776,
+    - target: {fileID: -8228349155505307341, guid: f28a54885ee2b9b44bafbd242d5ba776,
         type: 3}
-      propertyPath: 'm_Materials.Array.data[0]'
-      value: 
-      objectReference: {fileID: 2100000, guid: 742a1838f8c16054298bdc213aa74d6a, type: 2}
+      propertyPath: m_LocalPosition.x
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: -8228349155505307341, guid: f28a54885ee2b9b44bafbd242d5ba776,
+        type: 3}
+      propertyPath: m_LocalPosition.y
+      value: -0
+      objectReference: {fileID: 0}
+    - target: {fileID: -8228349155505307341, guid: f28a54885ee2b9b44bafbd242d5ba776,
+        type: 3}
+      propertyPath: m_LocalPosition.z
+      value: 0
+      objectReference: {fileID: 0}
     - target: {fileID: 919132149155446097, guid: f28a54885ee2b9b44bafbd242d5ba776,
         type: 3}
       propertyPath: m_Name
-      value: Firetruck (1)
+      value: Firetruck_Model
       objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects: []

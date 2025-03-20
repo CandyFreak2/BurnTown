@@ -455,6 +455,8 @@ MonoBehaviour:
   fuelRep: {fileID: 498760211029367861}
   heatApplied: 1
   startFuel: 10
+  fuelDepletionRate: 1
+  fuelRegenerationRate: 1
   _fuel: 0
   raySource: {fileID: 4418976957054803028}
   rayAccuracy: 20
@@ -558,21 +560,6 @@ PrefabInstance:
     m_Modifications:
     - target: {fileID: -8679921383154817045, guid: fb7074574035f8c4db8c62de24320399,
         type: 3}
-      propertyPath: m_LocalScale.x
-      value: 0.2
-      objectReference: {fileID: 0}
-    - target: {fileID: -8679921383154817045, guid: fb7074574035f8c4db8c62de24320399,
-        type: 3}
-      propertyPath: m_LocalScale.y
-      value: 0.2
-      objectReference: {fileID: 0}
-    - target: {fileID: -8679921383154817045, guid: fb7074574035f8c4db8c62de24320399,
-        type: 3}
-      propertyPath: m_LocalScale.z
-      value: 0.2
-      objectReference: {fileID: 0}
-    - target: {fileID: -8679921383154817045, guid: fb7074574035f8c4db8c62de24320399,
-        type: 3}
       propertyPath: m_LocalPosition.x
       value: 0
       objectReference: {fileID: 0}
@@ -621,11 +608,6 @@ PrefabInstance:
       propertyPath: m_LocalEulerAnglesHint.z
       value: 0
       objectReference: {fileID: 0}
-    - target: {fileID: -7511558181221131132, guid: fb7074574035f8c4db8c62de24320399,
-        type: 3}
-      propertyPath: 'm_Materials.Array.data[0]'
-      value: 
-      objectReference: {fileID: 2100000, guid: 43009068319237045b4c78545d154b44, type: 2}
     - target: {fileID: 919132149155446097, guid: fb7074574035f8c4db8c62de24320399,
         type: 3}
       propertyPath: m_Name
