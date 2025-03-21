@@ -1,4 +1,5 @@
 using Fusion;
+using System;
 using TMPro;
 using UnityEngine;
 using UnityEngine.UI;
@@ -35,6 +36,22 @@ public class StartScreenManager : MonoBehaviour {
         charLength.text = (charCount - codeInput.text.Length).ToString();
     }
 
+    public void AddInput(string key) {
+        if (codeInput.text.Length < charCount) {
+            string newCode = codeInput.text + key;
+            codeInput.text = newCode;
+        }
+    }
+
+    public void ClearInput() => codeInput.text = string.Empty;
+    
+    public void DeleteInput() {
+        if (codeInput.text.Length > 0) {
+            string newCode = codeInput.text.Remove(codeInput.text.Length - 1);
+            codeInput.text = newCode;
+        }
+    }
+
     public void ValidateLobby() {
         isLobbyValid = !string.IsNullOrEmpty(ClientInfo.LevelID);
     }
@@ -47,5 +64,17 @@ public class StartScreenManager : MonoBehaviour {
             launcher.JoinOrCreateLobby();
             isLobbyValid = false;
         }
+    }
+
+    private void OnEnable() {
+        EventManager.onKeyPress += AddInput;
+        EventManager.onVMClear += ClearInput;
+        EventManager.onVMDelete += DeleteInput;
+    }
+
+    private void OnDisable() {
+        EventManager.onKeyPress -= AddInput;
+        EventManager.onVMClear -= ClearInput;
+        EventManager.onVMDelete -= DeleteInput;
     }
 }

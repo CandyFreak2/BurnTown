@@ -2633,6 +2633,7 @@ RectTransform:
   m_Children:
   - {fileID: 1774165993}
   - {fileID: 1866064627}
+  - {fileID: 962177187}
   m_Father: {fileID: 1301485645}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0.5, y: 0.5}
@@ -6236,7 +6237,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 08fd9a4d86e21b1469186ce6e4ffbdbd, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  keyboardPanel: {fileID: 380867425}
+  keyboardPanel: {fileID: 1774165992}
 --- !u!1 &781035465
 GameObject:
   m_ObjectHideFlags: 0
@@ -8022,15 +8023,15 @@ RectTransform:
   m_GameObject: {fileID: 962177186}
   m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
   m_LocalPosition: {x: 0, y: 0, z: 0}
-  m_LocalScale: {x: 0.15384616, y: 0.3333333, z: 1}
+  m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children:
   - {fileID: 1419374107}
-  m_Father: {fileID: 1774165993}
+  m_Father: {fileID: 380867426}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0.5, y: 0.5}
   m_AnchorMax: {x: 0.5, y: 0.5}
-  m_AnchoredPosition: {x: -20.55384, y: -37.53331}
+  m_AnchoredPosition: {x: -119.99998, y: -172.99994}
   m_SizeDelta: {x: 250, y: 50}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!114 &962177188
@@ -8076,7 +8077,19 @@ MonoBehaviour:
   m_TargetGraphic: {fileID: 962177189}
   m_OnClick:
     m_PersistentCalls:
-      m_Calls: []
+      m_Calls:
+      - m_Target: {fileID: 772689360}
+        m_TargetAssemblyTypeName: VirtualKeyboardUI, Assembly-CSharp
+        m_MethodName: Delete
+        m_Mode: 1
+        m_Arguments:
+          m_ObjectArgument: {fileID: 0}
+          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+          m_IntArgument: 0
+          m_FloatArgument: 0
+          m_StringArgument: 
+          m_BoolArgument: 0
+        m_CallState: 2
 --- !u!114 &962177189
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -11545,7 +11558,7 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0.5, y: 0.5}
   m_AnchorMax: {x: 0.5, y: 0.5}
-  m_AnchoredPosition: {x: -850.99994, y: 458}
+  m_AnchoredPosition: {x: -850.99994, y: -453}
   m_SizeDelta: {x: 160, y: 90}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!114 &1504534920
@@ -13247,7 +13260,6 @@ RectTransform:
   m_Children:
   - {fileID: 1320539560}
   - {fileID: 496172113}
-  - {fileID: 962177187}
   m_Father: {fileID: 380867426}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0, y: 0}
@@ -13817,7 +13829,19 @@ MonoBehaviour:
   m_TargetGraphic: {fileID: 1866064629}
   m_OnClick:
     m_PersistentCalls:
-      m_Calls: []
+      m_Calls:
+      - m_Target: {fileID: 772689360}
+        m_TargetAssemblyTypeName: VirtualKeyboardUI, Assembly-CSharp
+        m_MethodName: Clear
+        m_Mode: 1
+        m_Arguments:
+          m_ObjectArgument: {fileID: 0}
+          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+          m_IntArgument: 0
+          m_FloatArgument: 0
+          m_StringArgument: 
+          m_BoolArgument: 0
+        m_CallState: 2
 --- !u!114 &1866064629
 MonoBehaviour:
   m_ObjectHideFlags: 0
