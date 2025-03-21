@@ -4,6 +4,7 @@ using Fusion.Sockets;
 using System;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.InputSystem;
 using UnityEngine.SceneManagement;
 
 public enum ConnectionStatus {
@@ -204,7 +205,19 @@ public class BasicSpawner : MonoBehaviour, INetworkRunnerCallbacks {
         SetConnectionStatus(ConnectionStatus.DISCONNECTED);
     }
 
-    public void OnInput(NetworkRunner runner, NetworkInput input) { }
+    public void OnInput(NetworkRunner runner, NetworkInput input) {
+        //if (runner.LocalPlayer == null)
+        //    return;
+
+        //var data = new NetworkInputData();
+
+        //var gamepad = Gamepad.current;
+
+        //data.direction = gamepad.leftStick.value;
+
+        //input.Set(data);
+    }
+
     public void OnInputMissing(NetworkRunner runner, PlayerRef player, NetworkInput input) { }
     public void OnConnectRequest(NetworkRunner runner, NetworkRunnerCallbackArgs.ConnectRequest request, byte[] token) { }
     public void OnConnectFailed(NetworkRunner runner, NetAddress remoteAddress, NetConnectFailedReason reason) { }
