@@ -47,7 +47,7 @@ public class PanelSwitcher : MonoBehaviour {
     public void GoToJoinPanel() {
         ActivatePanel(joinPanel, () => {
             if (joinStart == null) {
-                joinStart = FindAnyObjectByType<TMP_InputField>().gameObject;
+                joinStart = GameObject.Find("1");
             }
             return joinStart;
         });
