@@ -9,15 +9,24 @@ public class UIInputHandler : SimulationBehaviour, IBeforeUpdate, INetworkRunner
     private bool isPanelOn = false;
 
     public static Action<bool> onActionPause;
+    public static Action<bool> onActionInteract;
 
     private void Awake() {
         UIInputSystem = new InputSystem_Actions().UI;
         UIInputSystem.Pause.started += ctx => OnPause(isPanelOn);
+        UIInputSystem.Interact.started += ctx => OnInteract(false);
+        UIInputSystem.Drop.started += ctx => OnInteract(false);
+        UIInputSystem.Attack.started += ctx => OnInteract(true);
     }
 
     private void OnPause(bool input) {
         onActionPause?.Invoke(input);
         isPanelOn = !isPanelOn;
+    }
+
+    private void OnInteract(bool input)
+    {
+        onActionInteract?.Invoke(input);
     }
 
     private void OnEnable() {
