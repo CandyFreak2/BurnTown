@@ -46,6 +46,7 @@ public class TimerSystem : NetworkBehaviour {
     // Only used to update the timer's text if the timer is actually running
     public override void Render() {
         if (Timer.IsRunning) {
+            //var test = GameStateHandler.Instance.GameState;
             RPC_SyncTimer();
         }
     }

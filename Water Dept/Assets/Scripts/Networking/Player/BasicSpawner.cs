@@ -38,7 +38,12 @@ public class BasicSpawner : MonoBehaviour, INetworkRunnerCallbacks {
             LeaveSession();
         }
 
-        _runner = gameObject.AddComponent<NetworkRunner>();
+        if (!gameObject.GetComponent<NetworkRunner>()) {
+            _runner = gameObject.AddComponent<NetworkRunner>();
+        } else {
+            _runner = gameObject.GetComponent<NetworkRunner>();
+        }
+
         var sim3D = gameObject.AddComponent<RunnerSimulatePhysics3D>();
         sim3D.ClientPhysicsSimulation = ClientPhysicsSimulation.Disabled;
 
