@@ -3440,7 +3440,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   _playerPrefab:
     RawGuidValue: 2d6a5a266e8495b439e27b01846476d9
-  fireFighters: {fileID: 0}
+  spawnDistance: 3
 --- !u!4 &469294040
 Transform:
   m_ObjectHideFlags: 0
@@ -9880,7 +9880,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 1
+  m_IsActive: 0
 --- !u!224 &1301485645
 RectTransform:
   m_ObjectHideFlags: 0
@@ -12431,7 +12431,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 0
+  m_IsActive: 1
 --- !u!224 &1662232698
 RectTransform:
   m_ObjectHideFlags: 0
