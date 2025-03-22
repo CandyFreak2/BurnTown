@@ -117,8 +117,6 @@ public class PlayerInputHandeler : SimulationBehaviour, IBeforeUpdate, INetworkR
         input.Set(accumulatedInput);
         resetInput = true;
 
-        Debug.Log(accumulatedInput);
-
         //We have to reset the look delta immediately because we don't want mouse input being reused if another tick is executed during this same frame
         accumulatedInput.LookDelta = default;
     }

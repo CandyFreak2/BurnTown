@@ -5,4 +5,5 @@ public class LevelDefinitions : ScriptableObject {
     public string levelName;
     public int buildIndex;
     public Sprite levelIcon;
+    public Vector3 spawnPos;
 }

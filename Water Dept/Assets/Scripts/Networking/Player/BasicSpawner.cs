@@ -4,7 +4,6 @@ using Fusion.Sockets;
 using System;
 using System.Collections.Generic;
 using UnityEngine;
-using UnityEngine.InputSystem;
 using UnityEngine.SceneManagement;
 
 public enum ConnectionStatus {
@@ -17,7 +16,7 @@ public enum ConnectionStatus {
 public class BasicSpawner : MonoBehaviour, INetworkRunnerCallbacks {
     // Rework to contain own class
     [SerializeField] private NetworkPrefabRef _playerPrefab;
-    [SerializeField] private Firefighter fireFighters;
+    [SerializeField, Tooltip("Radius Multiplier for Spawn Pos")] private float spawnDistance = 3f;
 
     public static ConnectionStatus status = ConnectionStatus.DISCONNECTED;
 
@@ -152,20 +151,15 @@ public class BasicSpawner : MonoBehaviour, INetworkRunnerCallbacks {
     public void OnPlayerJoined(NetworkRunner runner, PlayerRef player) {
         Debug.Log("Spawned Player");
         if (runner.IsServer) {
-            // Create a unique position for the player
-            Vector3 spawnPosition = new Vector3((player.RawEncoded % runner.Config.Simulation.PlayerCount) * 3, 1, 0);
+            int playerIndex = _spawnedCharacters.Count;
+            Vector3 spawnPos = ResourceManager.Instance.levels[ServerInfo.LevelID].spawnPos;
+
+            Vector3 spawnPosition = spawnPos + new Vector3(playerIndex * spawnDistance, 0, 0);
             NetworkObject networkPlayerObject = runner.Spawn(_playerPrefab, spawnPosition, Quaternion.identity, player);
-            // Keep track of the player avatars for easy access
+
             _spawnedCharacters.Add(player, networkPlayerObject);
             runner.SetPlayerObject(player, networkPlayerObject);
         }
-        /*if (runner.IsServer) {
-            if (gameMode == GameMode.Host) {
-                runner.Spawn(managerPrefab, Vector3.zero, Quaternion.identity);
-            }
-            var fireFighter = runner.Spawn(fireFighters, Vector3.zero, Quaternion.identity, player);
-            fireFighter.GameState = Firefighter.PlayerState.LOBBY;
-        }*/
         SetConnectionStatus(ConnectionStatus.CONNECTED);
         UIManager.Instance.SetUI();
     }
