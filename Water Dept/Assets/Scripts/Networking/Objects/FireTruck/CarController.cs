@@ -288,7 +288,6 @@ public class CarController : NetworkBehaviour
 
         carData.SubPassenger();
         RPC_RequestPlayerExitTruck(Object.Id);
-        Debug.Log($"Server truck position after exit: {truckParent.transform.position}");
 
         playerInputSystem.Disable();
         seatTransform = null;
@@ -375,7 +374,6 @@ public class CarController : NetworkBehaviour
 
         if (truckRB != null && truckCollider != null)
         {
-            Debug.Log("Yo u working");
             truckRB.transform.position = _position;
             truckRB.transform.rotation = _rotation;
             truckCollider.transform.position = _position;
