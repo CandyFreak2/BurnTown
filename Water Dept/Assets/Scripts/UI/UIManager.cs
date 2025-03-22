@@ -23,6 +23,7 @@ public class UIManager : MonoBehaviour {
     [SerializeField] private GameObject flamethrowerUI;
     [SerializeField] private GameObject barrelUI;
     [SerializeField] private GameObject firetruckUI;
+    [SerializeField] private GameObject indicator;
 
     private void Awake() {
         Instance = this;
@@ -41,6 +42,7 @@ public class UIManager : MonoBehaviour {
         flamethrowerUI.SetActive(false);
         barrelUI.SetActive(false);
         firetruckUI.SetActive(false);
+        ObjectiveIndicatorList.Singleton.SetIndicator(indicator);
     }
 
     public GameObject GetPauseMenu() => pauseMenu;

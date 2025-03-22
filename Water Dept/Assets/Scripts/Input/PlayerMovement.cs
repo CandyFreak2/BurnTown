@@ -87,7 +87,7 @@ public class PlayerMovement : NetworkBehaviour
         {
             //FreeCameraController.Singleton.SetTarget(camTarget);
             GetComponentInChildren<CineSingleCamera>().SetAsActiveCamera();
-            //ObjectiveIndicatorList.Singleton.SetIndicator(indicator);
+            ObjectiveIndicatorList.Singleton.SetPlayerParent(this.gameObject);
         }
 
         isSpawned = true;

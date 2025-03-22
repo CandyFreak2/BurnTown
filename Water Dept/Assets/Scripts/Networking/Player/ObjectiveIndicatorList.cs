@@ -23,7 +23,7 @@ public class ObjectiveIndicatorList : MonoBehaviour
     private static ObjectiveIndicatorList mSingleton;
 
     [SerializeField] private GameObject indicator;
-    [SerializeField] private List<GameObject> objectives;
+    [SerializeField] private List<ObjectiveMarker> objectives;
     private int currentIndex;
 
     private bool isSpawned = false;
@@ -54,12 +54,18 @@ public class ObjectiveIndicatorList : MonoBehaviour
         }
     }
 
+    public void SetPlayerParent(GameObject _player) // needs to be called after indicator is set
+    {
+        indicator.transform.SetParent(_player.transform);
+        indicator.transform.localPosition = new Vector3(0.0f, 4.0f, 0.0f);
+    }
+
     // Update is called once per frame
     void Update()
     {
         if (isSpawned)
         {
-            if (objectives[currentIndex].GetComponent<ObjectiveMarker>().isTriggered)
+            if (objectives[currentIndex].isTriggered)
             {
                 currentIndex++;
             }
