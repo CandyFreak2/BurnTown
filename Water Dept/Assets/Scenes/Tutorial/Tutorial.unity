@@ -7596,6 +7596,11 @@ PrefabInstance:
       propertyPath: SortKey
       value: 1755498407
       objectReference: {fileID: 0}
+    - target: {fileID: 8413375456312529030, guid: e9b88506609d2734b8d79a303ac642ef,
+        type: 3}
+      propertyPath: SortKey
+      value: 2418751984
+      objectReference: {fileID: 0}
     - target: {fileID: 8684321935279942217, guid: e9b88506609d2734b8d79a303ac642ef,
         type: 3}
       propertyPath: m_Name
@@ -12617,12 +12622,6 @@ PrefabInstance:
     m_AddedGameObjects: []
     m_AddedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: c1762f0bd04b0704b8e52ca59e3da91b, type: 3}
---- !u!1 &1426163679 stripped
-GameObject:
-  m_CorrespondingSourceObject: {fileID: 972125432740984676, guid: fd085087c94b4f44a8e4396b4bb2914e,
-    type: 3}
-  m_PrefabInstance: {fileID: 2036940253}
-  m_PrefabAsset: {fileID: 0}
 --- !u!1001 &1427089039
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -12635,7 +12634,7 @@ PrefabInstance:
         type: 3}
       propertyPath: 'endGoals.Array.data[0]'
       value: 
-      objectReference: {fileID: 1879771682}
+      objectReference: {fileID: 0}
     - target: {fileID: 961710666475029248, guid: 9215399602fbdc944b426e22fde06315,
         type: 3}
       propertyPath: points.Array.data[1].delay
@@ -15771,9 +15770,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   _playerPrefab:
     RawGuidValue: 2d6a5a266e8495b439e27b01846476d9
-  spawnPos: {x: 0, y: 1, z: 0}
   spawnDistance: 3
-  buttonPanel: {fileID: 1426163679}
 --- !u!4 &1865729147
 Transform:
   m_ObjectHideFlags: 0
@@ -16269,6 +16266,11 @@ PrefabInstance:
       propertyPath: SortKey
       value: 1755498407
       objectReference: {fileID: 0}
+    - target: {fileID: 8413375456312529030, guid: e9b88506609d2734b8d79a303ac642ef,
+        type: 3}
+      propertyPath: SortKey
+      value: 3184406971
+      objectReference: {fileID: 0}
     - target: {fileID: 9043431212836570915, guid: e9b88506609d2734b8d79a303ac642ef,
         type: 3}
       propertyPath: PoweredObjective
@@ -16279,18 +16281,6 @@ PrefabInstance:
     m_AddedGameObjects: []
     m_AddedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: e9b88506609d2734b8d79a303ac642ef, type: 3}
---- !u!114 &1879771682 stripped
-MonoBehaviour:
-  m_CorrespondingSourceObject: {fileID: 897384129722318089, guid: e9b88506609d2734b8d79a303ac642ef,
-    type: 3}
-  m_PrefabInstance: {fileID: 1879771681}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 0}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: d687f89eee019c74e9f3e5c3d46719f7, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
 --- !u!4 &1879771683 stripped
 Transform:
   m_CorrespondingSourceObject: {fileID: 7186175873163537871, guid: e9b88506609d2734b8d79a303ac642ef,
@@ -16664,7 +16654,7 @@ PrefabInstance:
         type: 3}
       propertyPath: m_FirstSelected
       value: 
-      objectReference: {fileID: 2036940254}
+      objectReference: {fileID: 2036940255}
     - target: {fileID: 3328198504419574230, guid: fd085087c94b4f44a8e4396b4bb2914e,
         type: 3}
       propertyPath: m_Name
@@ -16726,16 +16716,11 @@ PrefabInstance:
       value: 0
       objectReference: {fileID: 0}
     m_RemovedComponents: []
-    m_RemovedGameObjects: []
+    m_RemovedGameObjects:
+    - {fileID: 972125432740984676, guid: fd085087c94b4f44a8e4396b4bb2914e, type: 3}
     m_AddedGameObjects: []
     m_AddedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: fd085087c94b4f44a8e4396b4bb2914e, type: 3}
---- !u!1 &2036940254 stripped
-GameObject:
-  m_CorrespondingSourceObject: {fileID: 8176641413655248847, guid: fd085087c94b4f44a8e4396b4bb2914e,
-    type: 3}
-  m_PrefabInstance: {fileID: 2036940253}
-  m_PrefabAsset: {fileID: 0}
 --- !u!1 &2036940255 stripped
 GameObject:
   m_CorrespondingSourceObject: {fileID: 4620012050718815089, guid: fd085087c94b4f44a8e4396b4bb2914e,
