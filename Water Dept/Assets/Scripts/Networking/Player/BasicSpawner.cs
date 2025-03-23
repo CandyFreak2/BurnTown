@@ -21,13 +21,11 @@ public class BasicSpawner : MonoBehaviour, INetworkRunnerCallbacks {
     public static ConnectionStatus status = ConnectionStatus.DISCONNECTED;
 
     private GameMode gameMode;
-    private LevelManager levelManager;
     private NetworkRunner _runner;
 
     private Dictionary<PlayerRef, NetworkObject> _spawnedCharacters = new();
 
     private void Start() {
-        levelManager = GetComponent<LevelManager>();
         DontDestroyOnLoad(gameObject);
     }
 
@@ -175,7 +173,6 @@ public class BasicSpawner : MonoBehaviour, INetworkRunnerCallbacks {
             _spawnedCharacters.Remove(player);
         }
 
-        Firefighter.RemovePlayer(runner, player);
         SetConnectionStatus(status);
     }
 

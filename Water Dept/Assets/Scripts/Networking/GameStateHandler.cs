@@ -20,10 +20,10 @@ public class GameStateHandler : MonoBehaviour {
         }
     }
    
-    private static GameStateHandler singleton;
-    private GameState state = GameState.NOT_STARTED;
+    public static GameStateHandler singleton;
+    [SerializeField] private GameState state = GameState.NOT_STARTED;
 
-    public GameState GetGameState() => state;
+    public GameState GetGameState => state;
     public void SetGameState(GameState nState) => state = nState;
 
     private void Awake() {

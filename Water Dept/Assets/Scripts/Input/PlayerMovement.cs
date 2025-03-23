@@ -4,12 +4,8 @@ using Fusion.Addons.SimpleKCC;
 using TMPro;
 using Unity.Cinemachine;
 using System;
-using NUnit.Framework;
 using System.Collections.Generic;
 using DG.Tweening;
-using System.Collections;
-using System.Threading;
-
 public class PlayerMovement : NetworkBehaviour
 {
     private bool isSpawned = false;
@@ -70,6 +66,9 @@ public class PlayerMovement : NetworkBehaviour
     private float explosionTimer = 0;
     private bool isExploded = false;
     private Vector3 forceVec = Vector3.zero;
+
+    // Jerry being lazy and not wanting to create a new script...
+    public bool IsReady { get; set; }
 
     private void Start()
     {

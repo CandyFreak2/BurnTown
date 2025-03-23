@@ -13,7 +13,7 @@ public class ScoreSystem : NetworkBehaviour {
         scoreText.text = SCORE_HEADER + overallScore.ToString("C0");
     }
 
-    public void FixedUpdateNetworked() {
+    public override void FixedUpdateNetwork() {
         if (scoreText != null && isReset) {
             isReset = false;
             overallScore = 0;
