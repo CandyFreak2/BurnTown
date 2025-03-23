@@ -75,6 +75,38 @@ MonoBehaviour:
   m_FillOrigin: 0
   m_UseSpriteMesh: 0
   m_PixelsPerUnitMultiplier: 1
+--- !u!1 &1009604685938763663
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 8508703003678263864}
+  m_Layer: 0
+  m_Name: Indicator
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &8508703003678263864
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1009604685938763663}
+  serializedVersion: 2
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children:
+  - {fileID: 7064596230275065885}
+  m_Father: {fileID: 8561776201339651973}
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1 &1432249323419788933
 GameObject:
   m_ObjectHideFlags: 0
@@ -1303,7 +1335,7 @@ Transform:
   m_Children:
   - {fileID: 4433461179485109038}
   - {fileID: 4659060700439423026}
-  - {fileID: 7064596230275065885}
+  - {fileID: 8508703003678263864}
   - {fileID: 3678742323612596778}
   m_Father: {fileID: 0}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
@@ -1395,7 +1427,7 @@ GameObject:
   - component: {fileID: 6140860139962361464}
   - component: {fileID: 2677772865899514920}
   m_Layer: 0
-  m_Name: Indicator
+  m_Name: IndicatorVisual
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -1409,13 +1441,13 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 4382950175229535219}
   serializedVersion: 2
-  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 0, y: 0, z: 0}
+  m_LocalRotation: {x: 0.7071068, y: 0, z: 0, w: 0.7071068}
+  m_LocalPosition: {x: 0, y: 0, z: 5}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []
-  m_Father: {fileID: 8561776201339651973}
-  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+  m_Father: {fileID: 8508703003678263864}
+  m_LocalEulerAnglesHint: {x: 90, y: 0, z: 0}
 --- !u!33 &6125237876824576845
 MeshFilter:
   m_ObjectHideFlags: 0
@@ -3450,7 +3482,7 @@ MonoBehaviour:
   flamethrowerUI: {fileID: 8073132862220373518}
   barrelUI: {fileID: 3488956241363134507}
   firetruckUI: {fileID: 5891434907543451060}
-  indicator: {fileID: 4382950175229535219}
+  indicator: {fileID: 1009604685938763663}
 --- !u!1 &7592187379253249662
 GameObject:
   m_ObjectHideFlags: 0
@@ -4161,6 +4193,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   indicator: {fileID: 0}
   objectives:
+  - {fileID: 0}
   - {fileID: 0}
 --- !u!1 &9100754891263152335
 GameObject:

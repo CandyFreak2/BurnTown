@@ -65,19 +65,32 @@ public class ObjectiveIndicatorList : MonoBehaviour
     {
         if (isSpawned)
         {
+            UpdateIndicator();
+        }
+    }
+
+    private void UpdateIndicator()
+    {
+        if (currentIndex < objectives.Count)
+        {
+            indicator.transform.forward = GetDirectionToObj();
+
             if (objectives[currentIndex].isTriggered)
             {
                 currentIndex++;
             }
-
-            if (currentIndex < objectives.Count)
-            {
-                indicator.transform.forward = (objectives[currentIndex].transform.position - indicator.transform.position).normalized;
-            }
-            else
-            {
-                indicator.transform.rotation = Quaternion.identity;
-            }
         }
+        else
+        {
+            indicator.SetActive(false);
+        }
+    }
+
+    private Vector3 GetDirectionToObj()
+    {
+        Vector3 objPos = objectives[currentIndex].transform.position;
+        Vector3 indicatorPos = indicator.transform.position;
+
+        return new Vector3(objPos.x -  indicatorPos.x, 0.0f, objPos.z - indicatorPos.z).normalized;
     }
 }

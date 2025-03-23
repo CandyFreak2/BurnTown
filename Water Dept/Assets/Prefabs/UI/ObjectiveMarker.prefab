@@ -11,6 +11,7 @@ GameObject:
   - component: {fileID: 6668631231725220296}
   - component: {fileID: 1078445916932636522}
   - component: {fileID: 9030167762489440047}
+  - component: {fileID: 8026095258934570131}
   m_Layer: 0
   m_Name: ObjectiveMarker
   m_TagString: Untagged
@@ -48,7 +49,7 @@ BoxCollider:
     serializedVersion: 2
     m_Bits: 0
   m_LayerOverridePriority: 0
-  m_IsTrigger: 0
+  m_IsTrigger: 1
   m_ProvidesContacts: 0
   m_Enabled: 1
   serializedVersion: 3
@@ -69,4 +70,23 @@ MonoBehaviour:
   playerLayer:
     serializedVersion: 2
     m_Bits: 64
-  isTriggered: 0
+  _isTriggered: 0
+--- !u!114 &8026095258934570131
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 4542162771374652994}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: -1552182283, guid: e725a070cec140c4caffb81624c8c787, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  SortKey: 3465366936
+  ObjectInterest: 1
+  Flags: 262145
+  NestedObjects: []
+  NetworkedBehaviours:
+  - {fileID: 9030167762489440047}
+  ForceRemoteRenderTimeframe: 0
