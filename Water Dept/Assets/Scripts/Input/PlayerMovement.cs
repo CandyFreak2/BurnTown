@@ -34,8 +34,7 @@ public class PlayerMovement : NetworkBehaviour
     [Networked] public Interactable carriedObject { get; set; }
     [SerializeField] private TextMeshPro pickupText;
     [SerializeField] private CarController truckController;
-
-    [SerializeField] private GameObject indicator;
+    [Networked] public PlayerRef playerRef { get; set; }
 
     PlayerInputHandeler input;
     PlayerInputAction action;
@@ -88,6 +87,7 @@ public class PlayerMovement : NetworkBehaviour
             //FreeCameraController.Singleton.SetTarget(camTarget);
             GetComponentInChildren<CineSingleCamera>().SetAsActiveCamera();
             ObjectiveIndicatorList.Singleton.SetPlayerParent(this.gameObject);
+            playerRef = Runner.LocalPlayer;
         }
 
         isSpawned = true;
