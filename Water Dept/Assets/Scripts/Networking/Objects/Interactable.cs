@@ -109,7 +109,6 @@ public class Interactable : NetworkBehaviour
 
         if (/*HasStateAuthority &&*/ interactable != null)
         {
-            Debug.Log("Yoooo in rpc");
             //interactable.isPickedUp = true;
             //interactable.carrierId = _playerId;
 

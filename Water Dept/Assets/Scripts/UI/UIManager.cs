@@ -20,6 +20,9 @@ public class UIManager : MonoBehaviour {
     [SerializeField] private TextMeshProUGUI scoreText;
     [SerializeField] private TextMeshProUGUI timerText;
     [SerializeField] private GameObject pauseMenu;
+    [SerializeField] private GameObject flamethrowerUI;
+    [SerializeField] private GameObject barrelUI;
+    [SerializeField] private GameObject firetruckUI;
 
     private void Awake() {
         Instance = this;
@@ -35,7 +38,13 @@ public class UIManager : MonoBehaviour {
         scoreText.enabled = true; 
         timerText.enabled = true;
         pauseMenu.SetActive(false);
+        flamethrowerUI.SetActive(false);
+        barrelUI.SetActive(false);
+        firetruckUI.SetActive(false);
     }
 
     public GameObject GetPauseMenu() => pauseMenu;
+    public GameObject GetFlamethrowerUI() => flamethrowerUI;
+    public GameObject GetBarrelUI() => barrelUI;
+    public GameObject GetFiretruckUI() => firetruckUI;
 }

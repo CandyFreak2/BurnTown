@@ -9,6 +9,7 @@ public class Flamethrower : NetworkBehaviour
 {
     [Networked] private NetworkBool isShooting { get; set; }
 
+
     /*[Header("Fuel")]
     [SerializeField] GameObject fuelPrefab;
     [SerializeField] float fuelSpawnDelay = 0.2f;
@@ -16,6 +17,18 @@ public class Flamethrower : NetworkBehaviour
 
     [Header("Damage & Fire")]
     [SerializeField] int heatApplied = 1;
+
+    [Header("Fuel")]
+    [Tooltip("Max amount of fuel and starting fuel")]
+    [SerializeField] public float startFuel = 10f;
+    [Tooltip("Fuel amount flamethrower loses (seconds)"), Range(0, 3)]
+    public float fuelDepletionRate = 1;
+    [Tooltip("Fuel amount flamethrower regenerates (seconds)"), Range(0, 3)]
+    public float fuelRegenerationRate = 1;
+    [Networked] public float fuel {get;set;}
+    [SerializeField] private GameObject fuelBarElements;
+    [SerializeField] private Transform fuelBarAnchor;
+    [SerializeField] private MeshRenderer fuelBarMesh;
 
     [Header("Raycast")]
     [SerializeField] Transform raySource;
@@ -51,10 +64,13 @@ public class Flamethrower : NetworkBehaviour
     {
         isShooting = false;
         audioProfile.activeSource = AudioPlayer.PlaySFXLoop(audioProfile.flamethrowerLoop, transform, 0);
+        fuel = startFuel;
+        fuelBarMesh.material.color = Color.green;
     }
 
     public void Spray()
     {
+        fuelBarElements.SetActive(true);
         RPC_ShootFire(Object.Id);
         isShooting = true;
     }
@@ -67,7 +83,9 @@ public class Flamethrower : NetworkBehaviour
 
     public override void FixedUpdateNetwork()
     {
-        if(!isShooting)
+        FuelUpdate();
+
+        if (!isShooting)
             return;
 
         //fuelTimer += Time.fixedDeltaTime;
@@ -81,8 +99,15 @@ public class Flamethrower : NetworkBehaviour
         //ray cast the shot
         if (Physics.Raycast(raySource.position, raySource.forward, out RaycastHit hit, rayDistance, rayMask))
         {
+            if(hit.collider.TryGetComponent(out Burnable burn))
+            if (burn == null) 
+            {
+                burn = hit.collider.GetComponentInChildren<Burnable>(true);
+            }
+
+
             //apply fire dammage to burnables
-            if (hit.collider.TryGetComponent(out Burnable burn))
+            if (burn != null)
             {
                 if (!burn.enabled) burn.enabled = true;
                     burn.AddHeatModifier(heatApplied);
@@ -103,6 +128,12 @@ public class Flamethrower : NetworkBehaviour
                 decalTimer = 0f;
             }
 
+        }
+
+        if(fuel <= 0)
+        {
+            StopSpraying();
+            fuelBarAnchor.localScale = Vector3.zero;
         }
     }
 
@@ -142,6 +173,26 @@ public class Flamethrower : NetworkBehaviour
             //audio stop
             if (audioProfile.activeFade != null) StopCoroutine(audioProfile.activeFade);
             audioProfile.activeFade = StartCoroutine(AudioPlayer.FadeAudioOut(audioProfile.activeSource, audioProfile.fadeDuration));
+        }
+    }
+
+    private void FuelUpdate()
+    {
+        //regen fuel
+        fuel = isShooting ? fuel - Time.fixedDeltaTime * fuelDepletionRate : fuel + Time.fixedDeltaTime * fuelRegenerationRate;
+        fuel = Mathf.Clamp(fuel, 0, startFuel);
+
+        //lerp fuel indicators
+        if (fuel > 0)
+        {
+            fuelBarAnchor.localScale = new Vector3(1, Mathf.Lerp(0, 1, fuel / startFuel), 1);
+            fuelBarMesh.material.color = Color.Lerp(Color.red, Color.green, fuel / startFuel);
+        }
+
+        //disable when full
+        if(fuel >= startFuel)
+        {
+            fuelBarElements.SetActive(false);
         }
     }
 }

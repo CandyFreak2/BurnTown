@@ -1,4 +1,5 @@
 using Fusion;
+using Fusion.Addons.SimpleKCC;
 using System.Collections;
 using UnityEngine;
 
@@ -9,6 +10,8 @@ public class BarrelInfo : NetworkBehaviour
 
     [SerializeField] private ParticleSystem pixelBoom;
 
+    [Tooltip("How much firedamage burnables take from explosion")]
+    [SerializeField] public int heatDamage = 10;
     public float delay = 0.5f;
 
     public bool isThrown = false;
@@ -103,15 +106,15 @@ public class BarrelInfo : NetworkBehaviour
 
         yield return new WaitForSeconds(delay);
 
-        Destroy(pixelBoom, pixelBoom.main.duration);
+        Destroy(pixelBoom, 2f);
         Destroy(gameObject);
     }
 
     //calls explode with delay
-    IEnumerator DelayedChainExplode(BarrelInfo barrel)
+    IEnumerator DelayedChainExplode()
     {
         yield return new WaitForSeconds(delay);
-        barrel.Explode();
+        Explode();
     }
 
     //triggers that play when an object explodes
@@ -122,12 +125,13 @@ public class BarrelInfo : NetworkBehaviour
 
         //play anim
         pixelBoom.Play();
+        pixelBoom.transform.parent = null;
         isExploded = false;
 
         //dereference components to prevent stack overf;pw
         if (gameObject.GetComponent<Rigidbody>() != null)
         {
-            Destroy(gameObject.GetComponent<Rigidbody>());
+            //Destroy(gameObject.GetComponent<Rigidbody>());
         }
 
         Destroy(gameObject.GetComponent<MeshRenderer>());
@@ -148,18 +152,30 @@ public class BarrelInfo : NetworkBehaviour
                 rb.AddExplosionForce(explosionForce, gameObject.transform.position, explosionRadius, 3.0f);
             }
 
+            if(hit.GetComponentInParent<PlayerMovement>())
+            {
+                hit.GetComponentInParent<PlayerMovement>().ExplosionHit(hit.gameObject.transform.position - transform.position, 
+                    Vector3.Distance(hit.gameObject.transform.position, transform.position));
+            }
+            
         }
 
         //explode other barrels
         Collider[] colls = Physics.OverlapBox(gameObject.transform.position, new Vector3(explosionRadius, 0.01f, explosionRadius), Quaternion.identity);
         foreach (Collider hit in colls)
         {
+            if(hit.GetComponent<Burnable>())
+            {
+                hit.GetComponent<Burnable>().AddHeatModifier(heatDamage);
+            }
+            
             BarrelInfo barr = hit.GetComponent<BarrelInfo>();
 
             //if barrel is horizontal and not itself blow it up after delay
             if (barr != null && barr != gameObject.GetComponent<BarrelInfo>() && !hit.CompareTag("DestructibleObject"))
             {
-                StartCoroutine(DelayedChainExplode(barr));
+                barr.isExploded = true;
+                barr.DelayedChainExplode();
             }
 
             if (hit.CompareTag("DestructibleObject"))
@@ -167,6 +183,8 @@ public class BarrelInfo : NetworkBehaviour
                 Destroy(hit.gameObject);
             }
         }
+        //sets out zone tmp
+        transform.position = new Vector3(1000,1000,1000);
     }
 
     //hell on earth :( (very very very temporary)
@@ -175,6 +193,7 @@ public class BarrelInfo : NetworkBehaviour
     {
         if (isThrown)
         {
+            timer = 0;
             isThrown = false;
             isAirborne = true;
         }
@@ -182,27 +201,26 @@ public class BarrelInfo : NetworkBehaviour
         {
             timer += Time.deltaTime;
             //if collides with something mid air, blow up
-            Collider[] colliders = Physics.OverlapSphere(gameObject.transform.position - new Vector3(0, 0.5f, 0), throwSnapRadius);
-            foreach (Collider hit in colliders)
-            {
-                if (timer > 0.2f && hit.GetComponent<BarrelInfo>() && hit.GetComponent<BarrelInfo>() != gameObject.GetComponent<BarrelInfo>() && isAirborne)
-                {
-                    gameObject.GetComponent<Rigidbody>().isKinematic = true;
-                    
+            //Collider[] colliders = Physics.OverlapSphere(gameObject.transform.position - new Vector3(0, 0.5f, 0), throwSnapRadius);
+            //foreach (Collider hit in colliders)
+            //{
+            //    if (timer > 0.2f && hit.GetComponent<BarrelInfo>() && hit.GetComponent<BarrelInfo>() != gameObject.GetComponent<BarrelInfo>() && isAirborne)
+            //    {
+            //        gameObject.GetComponent<Rigidbody>().isKinematic = true;
 
-                    transform.position = hit.transform.position + new Vector3(0, 1, 0);
+            //        transform.position = hit.transform.position + new Vector3(0, 1.4f, 0);
 
-                    isAirborne = false;
-                    // links head/ tail chain components of barrelInfo on place
-                    if (gameObject.GetComponent<BarrelInfo>() != null)
-                    {
-                        tail = hit.gameObject;
-                        hit.gameObject.GetComponent<BarrelInfo>().head = gameObject;
-                    }
-                    gameObject.GetComponent<Rigidbody>().isKinematic = false;
-                    Debug.Log("SnapBox");
-                }
-            }
+            //        isAirborne = false;
+            //        // links head/ tail chain components of barrelInfo on place
+            //        if (gameObject.GetComponent<BarrelInfo>() != null)
+            //        {
+            //            tail = hit.gameObject;
+            //            hit.gameObject.GetComponent<BarrelInfo>().head = gameObject;
+            //        }
+            //        gameObject.GetComponent<Rigidbody>().isKinematic = false;
+            //        Debug.Log("SnapBox");
+            //    }
+            //}
             Collider[] colliders2 = Physics.OverlapSphere(gameObject.transform.position - new Vector3(0, 0.5f, 0), 0.5f);
             foreach (Collider hit in colliders2)
             {
@@ -213,17 +231,20 @@ public class BarrelInfo : NetworkBehaviour
                     if (Physics.Raycast(gameObject.transform.position, Vector3.down * 100, out ray))
                     {
                         //snaps barrel to ground
-                        if (ray.collider.GetComponent<BarrelInfo>() == null)
+                        if (ray.collider.GetComponent<BarrelInfo>() == null && !hit.gameObject.GetComponent<Collider>().isTrigger)
                         {
+                            Debug.Log(ray.collider.gameObject);
+                            
                             gameObject.GetComponent<Rigidbody>().isKinematic = true;
-                            gameObject.GetComponent<Rigidbody>().isKinematic = false;
+                            
 
                             float dist = Vector3.Distance(gameObject.transform.position, ray.point);
                             gameObject.transform.position -= Vector3.up * dist - new Vector3(0, 0.5f, 0);
                             isAirborne = false;
+                            gameObject.GetComponent<Rigidbody>().isKinematic = false;
                         }
                     }
-                    Debug.Log("SnapGround");
+                    //Debug.Log("SnapGround");
                 }
 
             }

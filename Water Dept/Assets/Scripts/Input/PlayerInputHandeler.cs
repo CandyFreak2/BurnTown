@@ -113,7 +113,10 @@ public class PlayerInputHandeler : SimulationBehaviour, IBeforeUpdate, INetworkR
 
     void INetworkRunnerCallbacks.OnInput(NetworkRunner runner, NetworkInput input) {
         // Send package to server
-        accumulatedInput.MoveDirection.Normalize();
+        if (accumulatedInput.MoveDirection.magnitude > 1)
+        {
+            accumulatedInput.MoveDirection.Normalize();
+        }
         input.Set(accumulatedInput);
         resetInput = true;
 

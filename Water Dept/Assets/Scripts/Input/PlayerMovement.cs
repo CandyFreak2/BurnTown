@@ -7,16 +7,20 @@ using System;
 using NUnit.Framework;
 using System.Collections.Generic;
 using DG.Tweening;
+using System.Collections;
+using System.Threading;
 
 public class PlayerMovement : NetworkBehaviour
 {
     private bool isSpawned = false;
     private bool canEnter = true;
+    private bool isFiring = false;
 
     [Header("Movement")]
     public float MoveSpeed = 5.0f;
     public float AirMoveSpeed = 3.0f;
     public float maxSpeed = 5.0f;
+    public float shootSpeedPercent = 0.7f;
     [SerializeField] Transform orientation;
     [SerializeField] Transform playerObj;
     [SerializeField] Transform camTarget;
@@ -39,7 +43,7 @@ public class PlayerMovement : NetworkBehaviour
     [SerializeField] SimpleKCC kcc;
 
     //Barrel interactions
-    tempBarrel barrelController;
+    BarrelController barrelController;
 
     [Header("Ground Check")]
     [SerializeField] Transform groundCheck;
@@ -62,10 +66,15 @@ public class PlayerMovement : NetworkBehaviour
         public List<AudioClip> onFire = new List<AudioClip>();
     }
 
+    //variables stored for explosion forces
+    private float explosionTimer = 0;
+    private bool isExploded = false;
+    private Vector3 forceVec = Vector3.zero;
+
     private void Start()
     {
         input = GetComponent<PlayerInputHandeler>();
-        barrelController = GetComponent<tempBarrel>();
+        barrelController = GetComponent<BarrelController>();
         //input.onInputSignal += RecieveInput;
         rb.mass = Mass;
     }
@@ -109,12 +118,21 @@ public class PlayerMovement : NetworkBehaviour
 
             previousButtons = action.Buttons;
         }
+
+        //explosive forces
+        if (isExploded)
+        {
+            SimulateExplosion();
+        }
     }
 
     private void FixedUpdate()
     {
         if (isSpawned)
         playerObj.forward = Vector3.Slerp(playerObj.forward, networkedForward, Time.fixedDeltaTime * rotSpeed);
+
+        barrelController.SetOrientation(playerObj.forward);
+
     }
 
     public void RotatePlayer()
@@ -154,16 +172,27 @@ public class PlayerMovement : NetworkBehaviour
     {
         Quaternion camOffest = Quaternion.Euler(0, camTarget.rotation.eulerAngles.y, 0);
         moveDirection = kcc.TransformRotation * camOffest * ToVector3(action.MoveDirection);
-
-        if (isGrounded)
-            kcc.Move(moveDirection * MoveSpeed);
+        if(!isFiring)
+        {
+            if (isGrounded)
+                kcc.Move(moveDirection * MoveSpeed);
+            else
+                kcc.Move(action.MoveDirection.normalized * AirMoveSpeed); //Simulate gravity if isn't grounded
+        }
         else
-            kcc.Move(action.MoveDirection.normalized * AirMoveSpeed); //Simulate gravity if isn't grounded
+        {
+            if (isGrounded)
+                kcc.Move(moveDirection * (MoveSpeed * shootSpeedPercent));
+            else
+                kcc.Move(action.MoveDirection.normalized * AirMoveSpeed); //Simulate gravity if isn't grounded
+        }
+
     }
 
     private void HandleInteraction()
     {
         GameObject nearestInteractable = GetNearestInteractable();
+
         //Pickup hose // barrel
         if (action.Buttons.WasPressed(previousButtons, InputButton.Interact) && !IsHolding() && nearestInteractable != null && CanPickup(nearestInteractable))
         {
@@ -174,7 +203,8 @@ public class PlayerMovement : NetworkBehaviour
             if (nearestInteractable.tag == "Barrel")
             {
                 AudioPlayer.PlaySFX(nearestInteractable.gameObject.GetComponent<BarrelInfo>().pickupSFX, playerObj.position, 0.1f);
-                barrelController.BarrelSchematics(playerObj);
+                
+                barrelController.RPC_ToggleBarrel(Object.Id);
             }
         }
 
@@ -188,8 +218,11 @@ public class PlayerMovement : NetworkBehaviour
         //Drop hose
         if (action.Buttons.WasPressed(previousButtons, InputButton.Drop) && IsHolding())
         {
+            if(carriedObject.interactableType == InteractableType.Barrel)
+            {
+                barrelController.RPC_PlaceBarrel(Object.Id);
+            }
             RPC_RequestDrop(Object.Id);
-            barrelController.KillSchematic();
         }
 
         // Fire hose // throw barrel
@@ -197,14 +230,20 @@ public class PlayerMovement : NetworkBehaviour
         {
             if (carriedObject.interactableType == InteractableType.Flamethrower)
             {
-                carriedObject.gameObject.GetComponent<Flamethrower>().Spray();
+                if(carriedObject.gameObject.GetComponent<Flamethrower>().fuel > 0)
+                {
+                    carriedObject.gameObject.GetComponent<Flamethrower>().Spray();
+                    //limit movement
+                    isFiring = true;
+                    //push back player
+                    gameObject.GetComponent<SimpleKCC>().Move(-orientation.forward.normalized * 20);
+                }
+                
             }
             else if (carriedObject.interactableType == InteractableType.Barrel)
             {
-                barrelController.BarrelThrow(playerObj);
-                Destroy(carriedObject.gameObject);
-                //RPC_RequestDrop(Object.Id);
-
+                RPC_RequestDrop(Object.Id);
+                barrelController.RPC_ThrowBarrel(Object.Id);
             }
         }
 
@@ -214,16 +253,17 @@ public class PlayerMovement : NetworkBehaviour
             if (carriedObject.interactableType == InteractableType.Flamethrower)
             {
                 carriedObject.gameObject.GetComponent<Flamethrower>().StopSpraying();
+                isFiring = false;
             }
         }
 
-        //if holding barrel and throw, throw barrel! Boom!
+        //if holding barrel and throw, throw barrel
         if (action.Buttons.WasPressed(previousButtons, InputButton.Throw) && !IsHolding() && nearestInteractable != null)
         {
             //if barrel is picked up, queue schematic
             if (nearestInteractable.tag == "Barrel")
             {
-                barrelController.BarrelSchematics(playerObj);
+                //barrelController.BarrelSchematics(playerObj);
             }
 
         }
@@ -242,8 +282,17 @@ public class PlayerMovement : NetworkBehaviour
                 if (collider.gameObject.tag == "FireTruck")
                 {
                     nearestInteractable = collider.gameObject;
-                    pickupText.text = "North Button / E to Enter Fire Truck";
-                    return nearestInteractable;
+                    CarData truckData = nearestInteractable.GetComponent<CarData>();
+                    if (truckData.GetNumPassengers() < truckData.GetMaxPassengers())
+                    {
+                        pickupText.text = "North Button / E to Enter Fire Truck";
+                        return nearestInteractable;
+                    }
+                    else
+                    {
+                        pickupText.text = "Fire Truck Full";
+                        return null;
+                    }
                 }
                 else if (collider.gameObject.tag == "FireHoseHead")
                 {
@@ -321,18 +370,23 @@ public class PlayerMovement : NetworkBehaviour
         //truckController = _truck.GetComponent<CarController>();
 
         truckController.enabled = true;
+        truckController.isActive = true;
+        CarData truckData = _truck.GetComponent<CarData>();
 
-        if (truckController != null)
+        if (truckData != null)
         {
             // set data
-            truckController.SetTruckParent(_truck);
-            truckController.SetCarRB(_truck.GetComponent<Rigidbody>());
-            truckController.SetFrontTires(_truck.transform.Find("FL Tire").gameObject.GetComponent<Tire>());
-            truckController.SetFrontTires(_truck.transform.Find("FR Tire").gameObject.GetComponent<Tire>());
-            truckController.SetBackTires(_truck.transform.Find("BL Tire").gameObject.GetComponent<Tire>());
-            truckController.SetBackTires(_truck.transform.Find("BR Tire").gameObject.GetComponent<Tire>());
-            truckController.SetTireAngles();
-            truckController.SetDriverPos(_truck.transform.Find("DriverPos").gameObject.transform);
+            //truckController.SetTruckParent(_truck);
+            //truckController.SetCarRB(_truck.GetComponent<Rigidbody>());
+            //truckController.SetFrontTires(_truck.transform.Find("FL Tire").gameObject.GetComponent<Tire>());
+            //truckController.SetFrontTires(_truck.transform.Find("FR Tire").gameObject.GetComponent<Tire>());
+            //truckController.SetBackTires(_truck.transform.Find("BL Tire").gameObject.GetComponent<Tire>());
+            //truckController.SetBackTires(_truck.transform.Find("BR Tire").gameObject.GetComponent<Tire>());
+            //truckController.SetTireAngles();
+            //truckController.SetDriverPos(_truck.transform.Find("DriverPos").gameObject.transform);
+            truckData.AddPassenger();
+            truckController.SetData(truckData);
+            transform.SetParent(truckController.seatTransform);
 
             // lower player camera priority
             if (HasInputAuthority)
@@ -351,6 +405,8 @@ public class PlayerMovement : NetworkBehaviour
     public void GetOutTruck()
     {
         truckController.enabled = false;
+        truckController.isActive = false;
+        transform.SetParent(null);
 
         // raise player camera priority
         if (HasInputAuthority)
@@ -387,18 +443,23 @@ public class PlayerMovement : NetworkBehaviour
         {
             CarController playerTruckController = player.truckController;
             playerTruckController.enabled = true;
+            playerTruckController.isActive = true;
+            CarData truckData = truck.GetComponent<CarData>();
 
             if (playerTruckController != null)
             {
                 // set data
-                playerTruckController.SetTruckParent(truck);
-                playerTruckController.SetCarRB(truck.GetComponent<Rigidbody>());
-                playerTruckController.SetFrontTires(truck.transform.Find("FL Tire").gameObject.GetComponent<Tire>());
-                playerTruckController.SetFrontTires(truck.transform.Find("FR Tire").gameObject.GetComponent<Tire>());
-                playerTruckController.SetBackTires(truck.transform.Find("BL Tire").gameObject.GetComponent<Tire>());
-                playerTruckController.SetBackTires(truck.transform.Find("BR Tire").gameObject.GetComponent<Tire>());
-                playerTruckController.SetTireAngles();
-                playerTruckController.SetDriverPos(truck.transform.Find("DriverPos").gameObject.transform);
+                //playerTruckController.SetTruckParent(truck);
+                //playerTruckController.SetCarRB(truck.GetComponent<Rigidbody>());
+                //playerTruckController.SetFrontTires(truck.transform.Find("FL Tire").gameObject.GetComponent<Tire>());
+                //playerTruckController.SetFrontTires(truck.transform.Find("FR Tire").gameObject.GetComponent<Tire>());
+                //playerTruckController.SetBackTires(truck.transform.Find("BL Tire").gameObject.GetComponent<Tire>());
+                //playerTruckController.SetBackTires(truck.transform.Find("BR Tire").gameObject.GetComponent<Tire>());
+                //playerTruckController.SetTireAngles();
+                //playerTruckController.SetDriverPos(truck.transform.Find("DriverPos").gameObject.transform);
+                //truckData.AddPassenger();
+                RPC_SetTruckData(_truckId, _playerId);
+                RPC_UpdateTransform(_playerId);
 
                 // change player input to car input
                 playerTruckController.PlayerEnterTruck(player);
@@ -413,10 +474,49 @@ public class PlayerMovement : NetworkBehaviour
         PlayerMovement player = Runner.FindObject(_playerId).GetComponent<PlayerMovement>();
 
         player.truckController.enabled = false;
+        player.truckController.isActive = false;
+        RPC_UpdateTransform(_playerId);
 
         // Add delay to player being able to enter so player doesn't instantly leave off of exit input
         player.canEnter = false;
         player.Invoke("EnterDelay", 0.5f);
+    }
+
+    // Updates player truck data to everybody
+    [Rpc(RpcSources.All, RpcTargets.All)]
+    public void RPC_SetTruckData(NetworkId _truckId, NetworkId _playerId)
+    {
+        PlayerMovement player = Runner.FindObject(_playerId).GetComponent<PlayerMovement>();
+
+        if (player != null)
+        {
+            CarController playerTruckController = player.truckController;
+            CarData truckData = Runner.FindObject(_truckId).GetComponent<CarData>();
+
+            playerTruckController.SetData(truckData);
+        }
+    }
+
+    // Updates player transform to everybody
+    [Rpc(RpcSources.All, RpcTargets.All)]
+    public void RPC_UpdateTransform(NetworkId _playerId)
+    {
+        PlayerMovement player = Runner.FindObject(_playerId).GetComponent<PlayerMovement>();
+
+        if (player != null)
+        {
+            CarController playerTruckController = player.truckController;
+
+            if (playerTruckController.seatTransform != null && playerTruckController.isActive)
+            {
+                player.DeactivateSystems();
+                player.transform.SetParent(playerTruckController.seatTransform);
+            }
+            else
+            {
+                player.transform.SetParent(null);
+            }
+        }
     }
 
     // Asks server very nicely if client can pick up object
@@ -442,14 +542,67 @@ public class PlayerMovement : NetworkBehaviour
         PlayerMovement player = Runner.FindObject(_playerId).GetComponent<PlayerMovement>();
         if (player.IsHolding() && player.carriedObject.GetCarrierId() == _playerId)
         {
-            player.carriedObject.Drop();
-            if (player.carriedObject.interactableType == InteractableType.Flamethrower)
+            if (player.carriedObject.interactableType == InteractableType.Barrel)
             {
-                player.carriedObject.gameObject.GetComponent<Flamethrower>().StopSpraying();
+                player.carriedObject.Drop();
+                Runner.Despawn(player.carriedObject.gameObject.GetComponent<NetworkObject>());
+                player.carriedObject = null;
             }
-            player.carriedObject.gameObject.GetComponent<NetworkObject>().RemoveInputAuthority();
-            player.carriedObject = null;
+            else 
+            {
+                player.carriedObject.Drop();
+                if (player.carriedObject.interactableType == InteractableType.Flamethrower)
+                {
+                    player.carriedObject.gameObject.GetComponent<Flamethrower>().StopSpraying();
+                }
+                player.carriedObject.gameObject.GetComponent<NetworkObject>().RemoveInputAuthority();
+                player.carriedObject = null;
+            }
+            
         }
+    }
+
+    //Set variables from barrel and starts SimulateExplosion
+    public void ExplosionHit(Vector3 direction, float distance)
+    {
+        Vector3 totalForce = direction.normalized * ((4f / distance) * 10);
+        totalForce.y = 0;
+
+        forceVec = totalForce;
+        isExploded = true;
+    }
+
+    //Create force on player based on function
+    public void SimulateExplosion()
+    {
+        // ExplosionForce = 1/(1+(t^2 * 10))
+        // steep bell curve at 0
+
+        float explosionForce = (2f / (1f + (Mathf.Pow(explosionTimer, 2) * 7f)));
+
+        Vector3 force = forceVec;
+
+        force = force * explosionForce;
+        Debug.Log(force);
+        if (explosionTimer == 0) 
+        {
+            gameObject.GetComponent<SimpleKCC>().Move(Vector3.zero, 10);
+        }
+        gameObject.GetComponent<SimpleKCC>().Move(force);
+
+        if (explosionTimer > 3f || (isGrounded && explosionTimer > 0.2f))
+        {
+            Debug.Log(explosionTimer);
+            explosionTimer = 0;
+            isExploded = false;
+            Debug.Log("Kill");
+        }
+        else
+        {
+            explosionTimer += Time.fixedDeltaTime;
+        }
+
+        
     }
 
     public bool IsHolding()
