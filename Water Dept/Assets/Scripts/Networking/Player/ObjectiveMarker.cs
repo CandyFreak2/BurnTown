@@ -5,7 +5,7 @@ public class ObjectiveMarker : NetworkBehaviour
 {
     [SerializeField] private LayerMask playerLayer;
     private int playerLayerValue;
-    [Networked] public bool isTriggered { get; set; }
+    public bool isTriggered { get; private set; }
 
     private void Start()
     {
@@ -37,9 +37,16 @@ public class ObjectiveMarker : NetworkBehaviour
         NetworkObject inputAuth = Runner.FindObject(_otherId);
         Debug.Log("In Rpc tho ");
 
-        if (objectiveMarker != null && inputAuth != null && inputAuth.HasInputAuthority)
+        
+
+        if (objectiveMarker != null && inputAuth != null && inputAuth.HasInputAuthority && Runner.IsClient)
         {
-            Debug.Log("In if tho");
+            Debug.Log("In client if tho");
+            objectiveMarker.isTriggered = true;
+        }
+        else if (objectiveMarker != null && inputAuth != null && inputAuth.HasStateAuthority && inputAuth.HasInputAuthority && !Runner.IsClient)
+        {
+            Debug.Log("In host if tho");
             objectiveMarker.isTriggered = true;
         }
     }

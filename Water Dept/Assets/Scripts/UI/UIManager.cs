@@ -42,7 +42,7 @@ public class UIManager : MonoBehaviour {
         flamethrowerUI.SetActive(false);
         barrelUI.SetActive(false);
         firetruckUI.SetActive(false);
-        ObjectiveIndicatorList.Singleton.SetIndicator(indicator);
+        //ObjectiveIndicatorList.Singleton.SetIndicator(indicator);
     }
 
     public GameObject GetPauseMenu() => pauseMenu;
