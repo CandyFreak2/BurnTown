@@ -1,0 +1,145 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!319 &31900000
+AvatarMask:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_Name: Body_Full
+  m_Mask: 01000000010000000100000001000000010000000100000001000000010000000100000000000000000000000000000000000000
+  m_Elements:
+  - m_Path: 
+    m_Weight: 1
+  - m_Path: Char_Geo
+    m_Weight: 1
+  - m_Path: Char_Geo/head
+    m_Weight: 1
+  - m_Path: Char_Geo/polySurface9
+    m_Weight: 1
+  - m_Path: Char_Geo/polySurface11
+    m_Weight: 1
+  - m_Path: Char_Geo/polySurface19
+    m_Weight: 1
+  - m_Path: extra_Geo
+    m_Weight: 1
+  - m_Path: extra_Geo/Fire_Barrel
+    m_Weight: 1
+  - m_Path: extra_Geo/Fire_Barrel/Master_ctrl
+    m_Weight: 1
+  - m_Path: extra_Geo/Fire_Barrel/Master_ctrl/Offset_ctrl
+    m_Weight: 1
+  - m_Path: extra_Geo/Fire_Barrel/Master_ctrl/Offset_ctrl/pCylinder35
+    m_Weight: 1
+  - m_Path: extra_Geo/Flamer_rig
+    m_Weight: 1
+  - m_Path: extra_Geo/Flamer_rig/Flamer_ctrl
+    m_Weight: 1
+  - m_Path: extra_Geo/Flamer_rig/Flamer_ctrl/Flamer_geo
+    m_Weight: 1
+  - m_Path: extra_Geo/Oxy_Tank_tube
+    m_Weight: 1
+  - m_Path: skeleton
+    m_Weight: 1
+  - m_Path: skeleton/root
+    m_Weight: 1
+  - m_Path: skeleton/root/DEF_pelvis_jnt
+    m_Weight: 1
+  - m_Path: skeleton/root/DEF_pelvis_jnt/DEF_chest
+    m_Weight: 1
+  - m_Path: skeleton/root/DEF_pelvis_jnt/DEF_chest/DEF_clavical_l
+    m_Weight: 1
+  - m_Path: skeleton/root/DEF_pelvis_jnt/DEF_chest/DEF_clavical_l/DEF_upperarm_l
+    m_Weight: 1
+  - m_Path: skeleton/root/DEF_pelvis_jnt/DEF_chest/DEF_clavical_l/DEF_upperarm_l/DEF_lowerarm_l
+    m_Weight: 1
+  - m_Path: skeleton/root/DEF_pelvis_jnt/DEF_chest/DEF_clavical_l/DEF_upperarm_l/DEF_lowerarm_l/DEF_hand_l
+    m_Weight: 1
+  - m_Path: skeleton/root/DEF_pelvis_jnt/DEF_chest/DEF_clavical_l/DEF_upperarm_l/DEF_lowerarm_l/DEF_hand_l/DEF_index_l_01
+    m_Weight: 1
+  - m_Path: skeleton/root/DEF_pelvis_jnt/DEF_chest/DEF_clavical_l/DEF_upperarm_l/DEF_lowerarm_l/DEF_hand_l/DEF_index_l_01/DEF_index_l_02
+    m_Weight: 1
+  - m_Path: skeleton/root/DEF_pelvis_jnt/DEF_chest/DEF_clavical_l/DEF_upperarm_l/DEF_lowerarm_l/DEF_hand_l/DEF_index_l_01/DEF_index_l_02/DEF_index_l_03
+    m_Weight: 1
+  - m_Path: skeleton/root/DEF_pelvis_jnt/DEF_chest/DEF_clavical_l/DEF_upperarm_l/DEF_lowerarm_l/DEF_hand_l/DEF_middle_l_01
+    m_Weight: 1
+  - m_Path: skeleton/root/DEF_pelvis_jnt/DEF_chest/DEF_clavical_l/DEF_upperarm_l/DEF_lowerarm_l/DEF_hand_l/DEF_middle_l_01/DEF_middle_l_02
+    m_Weight: 1
+  - m_Path: skeleton/root/DEF_pelvis_jnt/DEF_chest/DEF_clavical_l/DEF_upperarm_l/DEF_lowerarm_l/DEF_hand_l/DEF_middle_l_01/DEF_middle_l_02/DEF_middle_l_03
+    m_Weight: 1
+  - m_Path: skeleton/root/DEF_pelvis_jnt/DEF_chest/DEF_clavical_l/DEF_upperarm_l/DEF_lowerarm_l/DEF_hand_l/DEF_pinky_l_01
+    m_Weight: 1
+  - m_Path: skeleton/root/DEF_pelvis_jnt/DEF_chest/DEF_clavical_l/DEF_upperarm_l/DEF_lowerarm_l/DEF_hand_l/DEF_pinky_l_01/DEF_pinky_l_02
+    m_Weight: 1
+  - m_Path: skeleton/root/DEF_pelvis_jnt/DEF_chest/DEF_clavical_l/DEF_upperarm_l/DEF_lowerarm_l/DEF_hand_l/DEF_pinky_l_01/DEF_pinky_l_02/DEF_pinky_l_03
+    m_Weight: 1
+  - m_Path: skeleton/root/DEF_pelvis_jnt/DEF_chest/DEF_clavical_l/DEF_upperarm_l/DEF_lowerarm_l/DEF_hand_l/DEF_ring_l_01
+    m_Weight: 1
+  - m_Path: skeleton/root/DEF_pelvis_jnt/DEF_chest/DEF_clavical_l/DEF_upperarm_l/DEF_lowerarm_l/DEF_hand_l/DEF_ring_l_01/DEF_ring_l_02
+    m_Weight: 1
+  - m_Path: skeleton/root/DEF_pelvis_jnt/DEF_chest/DEF_clavical_l/DEF_upperarm_l/DEF_lowerarm_l/DEF_hand_l/DEF_ring_l_01/DEF_ring_l_02/DEF_ring_l_03
+    m_Weight: 1
+  - m_Path: skeleton/root/DEF_pelvis_jnt/DEF_chest/DEF_clavical_l/DEF_upperarm_l/DEF_lowerarm_l/DEF_hand_l/DEF_Thumb_l_01
+    m_Weight: 1
+  - m_Path: skeleton/root/DEF_pelvis_jnt/DEF_chest/DEF_clavical_l/DEF_upperarm_l/DEF_lowerarm_l/DEF_hand_l/DEF_Thumb_l_01/DEF_Thumb_l_02
+    m_Weight: 1
+  - m_Path: skeleton/root/DEF_pelvis_jnt/DEF_chest/DEF_clavical_l/DEF_upperarm_l/DEF_lowerarm_l/DEF_hand_l/DEF_Thumb_l_01/DEF_Thumb_l_02/DEF_Thumb_l_03
+    m_Weight: 1
+  - m_Path: skeleton/root/DEF_pelvis_jnt/DEF_chest/DEF_cravicar_r
+    m_Weight: 1
+  - m_Path: skeleton/root/DEF_pelvis_jnt/DEF_chest/DEF_cravicar_r/DEF_upperarm_r
+    m_Weight: 1
+  - m_Path: skeleton/root/DEF_pelvis_jnt/DEF_chest/DEF_cravicar_r/DEF_upperarm_r/DEF_lowerarm_r
+    m_Weight: 1
+  - m_Path: skeleton/root/DEF_pelvis_jnt/DEF_chest/DEF_cravicar_r/DEF_upperarm_r/DEF_lowerarm_r/DEF_hand_r
+    m_Weight: 1
+  - m_Path: skeleton/root/DEF_pelvis_jnt/DEF_chest/DEF_cravicar_r/DEF_upperarm_r/DEF_lowerarm_r/DEF_hand_r/DEF_index_r_01
+    m_Weight: 1
+  - m_Path: skeleton/root/DEF_pelvis_jnt/DEF_chest/DEF_cravicar_r/DEF_upperarm_r/DEF_lowerarm_r/DEF_hand_r/DEF_index_r_01/DEF_index_r_02
+    m_Weight: 1
+  - m_Path: skeleton/root/DEF_pelvis_jnt/DEF_chest/DEF_cravicar_r/DEF_upperarm_r/DEF_lowerarm_r/DEF_hand_r/DEF_index_r_01/DEF_index_r_02/DEF_index_r_03
+    m_Weight: 1
+  - m_Path: skeleton/root/DEF_pelvis_jnt/DEF_chest/DEF_cravicar_r/DEF_upperarm_r/DEF_lowerarm_r/DEF_hand_r/DEF_middle_r_01
+    m_Weight: 1
+  - m_Path: skeleton/root/DEF_pelvis_jnt/DEF_chest/DEF_cravicar_r/DEF_upperarm_r/DEF_lowerarm_r/DEF_hand_r/DEF_middle_r_01/DEF_middle_r_02
+    m_Weight: 1
+  - m_Path: skeleton/root/DEF_pelvis_jnt/DEF_chest/DEF_cravicar_r/DEF_upperarm_r/DEF_lowerarm_r/DEF_hand_r/DEF_middle_r_01/DEF_middle_r_02/DEF_middle_r_03
+    m_Weight: 1
+  - m_Path: skeleton/root/DEF_pelvis_jnt/DEF_chest/DEF_cravicar_r/DEF_upperarm_r/DEF_lowerarm_r/DEF_hand_r/DEF_pinky_r_01
+    m_Weight: 1
+  - m_Path: skeleton/root/DEF_pelvis_jnt/DEF_chest/DEF_cravicar_r/DEF_upperarm_r/DEF_lowerarm_r/DEF_hand_r/DEF_pinky_r_01/DEF_pinky_r_02
+    m_Weight: 1
+  - m_Path: skeleton/root/DEF_pelvis_jnt/DEF_chest/DEF_cravicar_r/DEF_upperarm_r/DEF_lowerarm_r/DEF_hand_r/DEF_pinky_r_01/DEF_pinky_r_02/DEF_pinky_r_03
+    m_Weight: 1
+  - m_Path: skeleton/root/DEF_pelvis_jnt/DEF_chest/DEF_cravicar_r/DEF_upperarm_r/DEF_lowerarm_r/DEF_hand_r/DEF_ring_r_01
+    m_Weight: 1
+  - m_Path: skeleton/root/DEF_pelvis_jnt/DEF_chest/DEF_cravicar_r/DEF_upperarm_r/DEF_lowerarm_r/DEF_hand_r/DEF_ring_r_01/DEF_ring_r_02
+    m_Weight: 1
+  - m_Path: skeleton/root/DEF_pelvis_jnt/DEF_chest/DEF_cravicar_r/DEF_upperarm_r/DEF_lowerarm_r/DEF_hand_r/DEF_ring_r_01/DEF_ring_r_02/DEF_ring_r_03
+    m_Weight: 1
+  - m_Path: skeleton/root/DEF_pelvis_jnt/DEF_chest/DEF_cravicar_r/DEF_upperarm_r/DEF_lowerarm_r/DEF_hand_r/DEF_Thumb_r_01
+    m_Weight: 1
+  - m_Path: skeleton/root/DEF_pelvis_jnt/DEF_chest/DEF_cravicar_r/DEF_upperarm_r/DEF_lowerarm_r/DEF_hand_r/DEF_Thumb_r_01/DEF_Thumb_r_02
+    m_Weight: 1
+  - m_Path: skeleton/root/DEF_pelvis_jnt/DEF_chest/DEF_cravicar_r/DEF_upperarm_r/DEF_lowerarm_r/DEF_hand_r/DEF_Thumb_r_01/DEF_Thumb_r_02/DEF_Thumb_r_03
+    m_Weight: 1
+  - m_Path: skeleton/root/DEF_pelvis_jnt/DEF_chest/DEF_neck_01
+    m_Weight: 1
+  - m_Path: skeleton/root/DEF_pelvis_jnt/DEF_chest/DEF_neck_01/DEF_head
+    m_Weight: 1
+  - m_Path: skeleton/root/DEF_pelvis_jnt/MCH_IK_thigh_l
+    m_Weight: 1
+  - m_Path: skeleton/root/DEF_pelvis_jnt/MCH_IK_thigh_l/MCH_IK_knee_l
+    m_Weight: 1
+  - m_Path: skeleton/root/DEF_pelvis_jnt/MCH_IK_thigh_l/MCH_IK_knee_l/MCH_IK_heel_l
+    m_Weight: 1
+  - m_Path: skeleton/root/DEF_pelvis_jnt/MCH_IK_thigh_l/MCH_IK_knee_l/MCH_IK_heel_l/MCH_IK_toe_l
+    m_Weight: 1
+  - m_Path: skeleton/root/DEF_pelvis_jnt/MCH_IK_thigh_r
+    m_Weight: 1
+  - m_Path: skeleton/root/DEF_pelvis_jnt/MCH_IK_thigh_r/MCH_IK_knee_r
+    m_Weight: 1
+  - m_Path: skeleton/root/DEF_pelvis_jnt/MCH_IK_thigh_r/MCH_IK_knee_r/MCH_IK_heel_r
+    m_Weight: 1
+  - m_Path: skeleton/root/DEF_pelvis_jnt/MCH_IK_thigh_r/MCH_IK_knee_r/MCH_IK_heel_r/MCH_IK_toe_r
+    m_Weight: 1

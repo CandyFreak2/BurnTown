@@ -4,6 +4,7 @@ using Fusion.Addons.Physics;
 
 public enum InteractableType
 {
+    None = -1,
     Flamethrower,
     Barrel
 }
