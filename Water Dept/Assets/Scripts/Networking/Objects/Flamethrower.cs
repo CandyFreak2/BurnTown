@@ -4,6 +4,7 @@ using System.Collections;
 using Fusion;
 using DG.Tweening;
 using System;
+using UnityEngine.InputSystem;
 
 public class Flamethrower : NetworkBehaviour
 {
@@ -73,12 +74,16 @@ public class Flamethrower : NetworkBehaviour
         fuelBarElements.SetActive(true);
         RPC_ShootFire(Object.Id);
         isShooting = true;
+
+        Gamepad.current.SetMotorSpeeds(0.25f, 0.75f);
+        InputSystem.ResumeHaptics();
     }
 
     public void StopSpraying()
     {
         RPC_StopFire(Object.Id);
         isShooting = false;
+        InputSystem.PauseHaptics();
     }
 
     public override void FixedUpdateNetwork()
