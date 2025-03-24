@@ -72,7 +72,7 @@ public class ObjectiveIndicatorList : MonoBehaviour
 
     private void UpdateIndicator()
     {
-        if (currentIndex < objectives.Count)
+        if (objectives.Count > 0 && currentIndex < objectives.Count)
         {
             indicator.transform.forward = GetDirectionToObj();
 

@@ -127,31 +127,16 @@ PrefabInstance:
     serializedVersion: 3
     m_TransformParent: {fileID: 0}
     m_Modifications:
-    - target: {fileID: 1690101718462119660, guid: fd085087c94b4f44a8e4396b4bb2914e,
+    - target: {fileID: 1341123183325899837, guid: fd085087c94b4f44a8e4396b4bb2914e,
         type: 3}
-      propertyPath: m_OnClick.m_PersistentCalls.m_Calls.Array.data[0].m_Target
-      value: 
-      objectReference: {fileID: 1865729146}
-    - target: {fileID: 2002011164751453239, guid: fd085087c94b4f44a8e4396b4bb2914e,
-        type: 3}
-      propertyPath: m_OnClick.m_PersistentCalls.m_Calls.Array.data[0].m_Target
-      value: 
-      objectReference: {fileID: 1865729146}
-    - target: {fileID: 2990188135101988940, guid: fd085087c94b4f44a8e4396b4bb2914e,
-        type: 3}
-      propertyPath: m_FirstSelected
-      value: 
-      objectReference: {fileID: 2061782821}
+      propertyPath: SortKey
+      value: 356302906
+      objectReference: {fileID: 0}
     - target: {fileID: 3328198504419574230, guid: fd085087c94b4f44a8e4396b4bb2914e,
         type: 3}
       propertyPath: m_Name
       value: Player UI
       objectReference: {fileID: 0}
-    - target: {fileID: 7872648768925046600, guid: fd085087c94b4f44a8e4396b4bb2914e,
-        type: 3}
-      propertyPath: startButton
-      value: 
-      objectReference: {fileID: 2061782821}
     - target: {fileID: 8561776201339651973, guid: fd085087c94b4f44a8e4396b4bb2914e,
         type: 3}
       propertyPath: m_LocalPosition.x
@@ -203,8 +188,7 @@ PrefabInstance:
       value: 0
       objectReference: {fileID: 0}
     m_RemovedComponents: []
-    m_RemovedGameObjects:
-    - {fileID: 972125432740984676, guid: fd085087c94b4f44a8e4396b4bb2914e, type: 3}
+    m_RemovedGameObjects: []
     m_AddedGameObjects: []
     m_AddedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: fd085087c94b4f44a8e4396b4bb2914e, type: 3}
@@ -119225,12 +119209,6 @@ Mesh:
     offset: 0
     size: 0
     path: 
---- !u!1 &2061782821 stripped
-GameObject:
-  m_CorrespondingSourceObject: {fileID: 4620012050718815089, guid: fd085087c94b4f44a8e4396b4bb2914e,
-    type: 3}
-  m_PrefabInstance: {fileID: 1944521}
-  m_PrefabAsset: {fileID: 0}
 --- !u!1001 &2062444252
 PrefabInstance:
   m_ObjectHideFlags: 0
