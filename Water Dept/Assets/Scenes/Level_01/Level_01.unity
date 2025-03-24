@@ -126714,8 +126714,18 @@ PrefabInstance:
     m_Modifications:
     - target: {fileID: 4822720347459125860, guid: c5c3509357cbddc4cbaddd41b29d44ac,
         type: 3}
+      propertyPath: state
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 4822720347459125860, guid: c5c3509357cbddc4cbaddd41b29d44ac,
+        type: 3}
       propertyPath: triggerState
       value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 4822720347459125860, guid: c5c3509357cbddc4cbaddd41b29d44ac,
+        type: 3}
+      propertyPath: _timeToComplete
+      value: 5
       objectReference: {fileID: 0}
     - target: {fileID: 5357176895840517855, guid: c5c3509357cbddc4cbaddd41b29d44ac,
         type: 3}
