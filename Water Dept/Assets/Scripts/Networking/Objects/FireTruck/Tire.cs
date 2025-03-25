@@ -95,15 +95,12 @@ public class Tire : NetworkBehaviour
         //Projects linear velocity on forward vector to get speed of car
         float carSpeed = Vector3.Dot(_carForward, carRB.linearVelocity);
 
-        //Acceleration force
-        if (_accelerationInput > 0.0f)
+        //Braking force
+        if (_brakingInput > 0.0f)
         {
-            //Speed as float 0-1 based on how close to top speed
-            float normalizedSpeed = Mathf.Clamp01(Mathf.Abs(carSpeed) / topSpeed);
+            float powerToTire = brakeStrength * _brakingInput;
 
-            float powerToTire = PowerToTiresLookup(normalizedSpeed) * _accelerationInput; //change 1.0f to a lookup curve that uses normalizedSpeed
-
-            accelerationForce = accelerationDirection * powerToTire * powerMultiplier;
+            accelerationForce = -accelerationDirection * powerToTire;
         }
 
         //Rolling friction force
@@ -120,12 +117,15 @@ public class Tire : NetworkBehaviour
             accelerationForce = accelerationDirection * frictionStrength;
         }
 
-        //Braking force
-        if (_brakingInput > 0.0f)
+        //Acceleration force
+        if (_accelerationInput > 0.0f)
         {
-            float powerToTire = brakeStrength * _brakingInput;
+            //Speed as float 0-1 based on how close to top speed
+            float normalizedSpeed = Mathf.Clamp01(Mathf.Abs(carSpeed) / topSpeed);
 
-            accelerationForce = -accelerationDirection * powerToTire;
+            float powerToTire = PowerToTiresLookup(normalizedSpeed) * _accelerationInput; //change 1.0f to a lookup curve that uses normalizedSpeed
+
+            accelerationForce = accelerationDirection * powerToTire * powerMultiplier;
         }
     }
 

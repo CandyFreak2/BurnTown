@@ -163,6 +163,7 @@ MonoBehaviour:
   MoveSpeed: 7
   AirMoveSpeed: 3
   maxSpeed: 5
+  shootSpeedPercent: 0.7
   orientation: {fileID: 8537246583243309382}
   playerObj: {fileID: 4569886283134892048}
   camTarget: {fileID: 562206555851054493}
@@ -278,7 +279,7 @@ MonoBehaviour:
   truckParent: {fileID: 0}
   carRB: {fileID: 0}
   camTarget: {fileID: 0}
-  gravityStrength: 12
+  gravityStrength: 15
   seatTransform: {fileID: 0}
   frontTires: []
   backTires: []
