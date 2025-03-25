@@ -11,7 +11,7 @@ public class BarrelController : NetworkBehaviour
     [Networked] private NetworkObject barrelSchematic { get; set; }
 
     [Tooltip("Distance barrel is placed from player")]
-    [SerializeField] public int placeDistance = 3;
+    [SerializeField] public float placeDistance = 3;
 
     private void FixedUpdate()
     {
@@ -26,8 +26,11 @@ public class BarrelController : NetworkBehaviour
     private void SnapPosition(NetworkObject obj)
     {
         //get initial position in front of player
+        
         obj.transform.position = (gameObject.GetComponent<Transform>().transform.position) + orientationForward * placeDistance;
-
+        Debug.Log("T: " + gameObject.GetComponent<Transform>().transform.position);
+        Debug.Log("oF: " + orientationForward);
+        Debug.Log("pD: " + placeDistance);
         RaycastHit hit;
 
         if (Physics.Raycast(obj.transform.position + new Vector3(0, 100f, 0), Vector3.down, out hit))
