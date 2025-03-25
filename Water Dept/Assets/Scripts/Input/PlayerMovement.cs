@@ -12,6 +12,13 @@ using System.Threading;
 
 public class PlayerMovement : NetworkBehaviour
 {
+    //I need these for animations to work -James
+    public InteractableType HeldInteractable { get { return carriedObject == null ? InteractableType.None : carriedObject.interactableType; } }
+    public bool IsFiring => isFiring;
+    public bool IsStunned => isExploded;
+    public event Action onThrowBarrel;
+    //
+
     private bool isSpawned = false;
     private bool canEnter = true;
     private bool isFiring = false;
@@ -244,6 +251,7 @@ public class PlayerMovement : NetworkBehaviour
             {
                 RPC_RequestDrop(Object.Id);
                 barrelController.RPC_ThrowBarrel(Object.Id);
+                onThrowBarrel?.Invoke();
             }
         }
 
