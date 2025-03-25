@@ -29,7 +29,7 @@ public class StartZone : NetworkBehaviour {
 
     private void OnTriggerExit(Collider other) {
         if (isSpawned && GameStateHandler.Instance.GetGameState == GameStateHandler.GameState.NOT_STARTED) {
-            if (other.CompareTag("Player")) {
+            if (other.CompareTag("Player") && !players.Contains(other.gameObject)) {
                 players.Add(other.gameObject);
                 other.GetComponentInParent<PlayerMovement>().IsReady = true;
                 EventManager.StartZoneExit();
