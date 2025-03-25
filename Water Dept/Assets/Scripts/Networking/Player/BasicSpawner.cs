@@ -21,13 +21,11 @@ public class BasicSpawner : MonoBehaviour, INetworkRunnerCallbacks {
     public static ConnectionStatus status = ConnectionStatus.DISCONNECTED;
 
     private GameMode gameMode;
-    private LevelManager levelManager;
     private NetworkRunner _runner;
 
     private Dictionary<PlayerRef, NetworkObject> _spawnedCharacters = new();
 
     private void Start() {
-        levelManager = GetComponent<LevelManager>();
         DontDestroyOnLoad(gameObject);
     }
 
@@ -38,7 +36,12 @@ public class BasicSpawner : MonoBehaviour, INetworkRunnerCallbacks {
             LeaveSession();
         }
 
-        _runner = gameObject.AddComponent<NetworkRunner>();
+        if (!gameObject.GetComponent<NetworkRunner>()) {
+            _runner = gameObject.AddComponent<NetworkRunner>();
+        } else {
+            _runner = gameObject.GetComponent<NetworkRunner>();
+        }
+
         var sim3D = gameObject.AddComponent<RunnerSimulatePhysics3D>();
         sim3D.ClientPhysicsSimulation = ClientPhysicsSimulation.Disabled;
 
@@ -170,7 +173,6 @@ public class BasicSpawner : MonoBehaviour, INetworkRunnerCallbacks {
             _spawnedCharacters.Remove(player);
         }
 
-        Firefighter.RemovePlayer(runner, player);
         SetConnectionStatus(status);
     }
 

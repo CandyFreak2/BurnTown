@@ -1,9 +1,7 @@
 using Fusion;
 using TMPro;
 using UnityEngine;
-using UnityEngine.EventSystems;
 using UnityEngine.UI;
-using static UnityEngine.Rendering.BoolParameter;
 
 public class TimerSystem : NetworkBehaviour {
     [Networked] private TickTimer Timer { get; set; }
@@ -28,17 +26,21 @@ public class TimerSystem : NetworkBehaviour {
 
     public override void Spawned() {
         remainingTime = duration;
-        Timer = TickTimer.CreateFromSeconds(Runner, remainingTime);
         canStart = true;
     }
 
-    public void FixedUpdateNetworked() {
-        if (canStart && !canPause) {
-            if (Timer.Expired(Runner)) {
-                Debug.Log("Game Ended");
-                Timer = TickTimer.None;
-                EventManager.TimerEnd();
-                canStart = false;
+    public override void FixedUpdateNetwork() {
+        if (GameStateHandler.Instance.GetGameState == GameStateHandler.GameState.STARTED) {
+            if (!Timer.IsRunning) {
+                Timer = TickTimer.CreateFromSeconds(Runner, remainingTime);
+            } if (canStart && !canPause) {
+                if (Timer.ExpiredOrNotRunning(Runner)) {
+                    Debug.Log("Game Ended");
+                    Timer = TickTimer.None;
+                    GameStateHandler.Instance.SetGameState(GameStateHandler.GameState.END);
+                    EventManager.TimerEnd();
+                    canStart = false;
+                }
             }
         }
     }
