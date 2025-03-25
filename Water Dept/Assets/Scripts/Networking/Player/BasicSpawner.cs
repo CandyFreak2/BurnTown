@@ -156,9 +156,8 @@ public class BasicSpawner : MonoBehaviour, INetworkRunnerCallbacks {
 
             Vector3 spawnPosition = spawnPos + new Vector3(playerIndex * spawnDistance, 0, 0);
             NetworkObject networkPlayerObject = runner.Spawn(_playerPrefab, spawnPosition, Quaternion.identity, player);
-            networkPlayerObject.GetComponent<PlayerSkin>().SetPlayerSkin(player.AsIndex);
-            Debug.Log(player.AsIndex);
-
+            //networkPlayerObject.GetComponent<PlayerSkin>().SetPlayerSkin(player.AsIndex - 1);
+            
             _spawnedCharacters.Add(player, networkPlayerObject);
             runner.SetPlayerObject(player, networkPlayerObject);
         }

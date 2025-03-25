@@ -332,7 +332,6 @@ MonoBehaviour:
   - {fileID: 2100000, guid: 06e8fc9e65cc7394398cab188bb3526e, type: 2}
   - {fileID: 2100000, guid: 45af62504df0dcb418dcd54cd3dd8bef, type: 2}
   - {fileID: 2100000, guid: 3fe6057e84140ad42bec6a98058e0c06, type: 2}
-  debugMaterial: 0
   debugTrigger: 0
 --- !u!1 &3348894177522433908
 GameObject:
@@ -833,8 +832,8 @@ Transform:
   m_GameObject: {fileID: 9079952605251689177}
   serializedVersion: 2
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 0, y: 0, z: 1.09}
-  m_LocalScale: {x: 0.43, y: 1, z: 2.12}
+  m_LocalPosition: {x: 0, y: 0.801, z: 1.09}
+  m_LocalScale: {x: 0.2, y: 0.2, z: 2.12}
   m_ConstrainProportionsScale: 0
   m_Children: []
   m_Father: {fileID: 8537246583243309382}
@@ -995,6 +994,11 @@ PrefabInstance:
         type: 3}
       propertyPath: m_Name
       value: Character_T-Pose
+      objectReference: {fileID: 0}
+    - target: {fileID: 6300400477465423232, guid: a6ce7a3412cd1f5488b6a95b9e40539e,
+        type: 3}
+      propertyPath: m_IsActive
+      value: 1
       objectReference: {fileID: 0}
     - target: {fileID: 6416141923479947535, guid: a6ce7a3412cd1f5488b6a95b9e40539e,
         type: 3}
