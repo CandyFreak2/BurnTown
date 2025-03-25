@@ -34,7 +34,7 @@ public class TimerSystem : NetworkBehaviour {
             if (!Timer.IsRunning) {
                 Timer = TickTimer.CreateFromSeconds(Runner, remainingTime);
             } if (canStart && !canPause) {
-                if (Timer.Expired(Runner)) {
+                if (Timer.ExpiredOrNotRunning(Runner)) {
                     Debug.Log("Game Ended");
                     Timer = TickTimer.None;
                     EventManager.TimerEnd();
