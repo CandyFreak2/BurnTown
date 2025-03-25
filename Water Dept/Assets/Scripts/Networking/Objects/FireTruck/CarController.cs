@@ -99,7 +99,7 @@ public class CarController : NetworkBehaviour
             {
                 TurnTires();
                 UpdateTires();
-                UpdateGravity();
+                //UpdateGravity();
             }
             else
             {
@@ -252,7 +252,7 @@ public class CarController : NetworkBehaviour
         }
 
         // RB
-        carRB.useGravity = false;
+        carRB.useGravity = true;
 
         // Add delay to player being able to exit so player doesn't instantly leave off of enter input
         canExit = false;
