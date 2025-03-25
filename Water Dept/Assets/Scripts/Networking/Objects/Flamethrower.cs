@@ -7,8 +7,8 @@ using System;
 
 public class Flamethrower : NetworkBehaviour
 {
-    [Networked] private NetworkBool isShooting { get; set; }
-
+    //[Networked] private NetworkBool isShooting { get; set; }
+    private bool isShooting;
 
     /*[Header("Fuel")]
     [SerializeField] GameObject fuelPrefab;
@@ -25,7 +25,8 @@ public class Flamethrower : NetworkBehaviour
     public float fuelDepletionRate = 1;
     [Tooltip("Fuel amount flamethrower regenerates (seconds)"), Range(0, 3)]
     public float fuelRegenerationRate = 1;
-    [Networked] public float fuel {get;set;}
+    //[Networked] public float fuel { get; set; }
+    public float fuel;
     [SerializeField] private GameObject fuelBarElements;
     [SerializeField] private Transform fuelBarAnchor;
     [SerializeField] private MeshRenderer fuelBarMesh;
@@ -66,22 +67,21 @@ public class Flamethrower : NetworkBehaviour
         audioProfile.activeSource = AudioPlayer.PlaySFXLoop(audioProfile.flamethrowerLoop, transform, 0);
         fuel = startFuel;
         fuelBarMesh.material.color = Color.green;
+        fuelBarElements.SetActive(false);
     }
 
     public void Spray()
     {
         fuelBarElements.SetActive(true);
         RPC_ShootFire(Object.Id);
-        isShooting = true;
     }
 
     public void StopSpraying()
     {
         RPC_StopFire(Object.Id);
-        isShooting = false;
     }
 
-    public override void FixedUpdateNetwork()
+    public void FixedUpdate() //IS THIS STUPID? YES! DOES IT WORK? ALSO YES!
     {
         FuelUpdate();
 
@@ -142,6 +142,8 @@ public class Flamethrower : NetworkBehaviour
     public void RPC_ShootFire(NetworkId _hoseId)
     {
         Flamethrower firehose = Runner.FindObject(_hoseId).GetComponent<Flamethrower>();
+        firehose.isShooting = true;
+        firehose.fuel = fuel;
 
         if (firehose != null)
         {
@@ -164,6 +166,8 @@ public class Flamethrower : NetworkBehaviour
     public void RPC_StopFire(NetworkId _hoseId)
     {
         Flamethrower firehose = Runner.FindObject(_hoseId).GetComponent<Flamethrower>();
+        firehose.isShooting = false;
+        firehose.fuel = fuel;
 
         if (firehose != null)
         {
