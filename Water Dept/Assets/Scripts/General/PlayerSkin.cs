@@ -21,23 +21,23 @@ public class PlayerSkin : NetworkBehaviour
     {
         if(debugTrigger)
         {
-            debugTrigger = false;
             SetPlayerSkin(debugMaterial);
+            debugTrigger = false;
         }
     }
 
     /// <summary> Set's the player's skin to a given material. Also updates the player on other people's screens using an RPC call </summary>
     public void SetPlayerSkin(int index)
     {
-        index = Mathf.Clamp(index, 0, skins.Count);
-        if (Object.HasInputAuthority)
+        index = Mathf.Clamp(index, 0, skins.Count - 1);
+        if (Object.HasInputAuthority || debugTrigger)
         {
             //Tell host to issue the command
             RPC_SendPlayerSkin(index);
         }
     }
 
-    [Rpc(RpcSources.InputAuthority, RpcTargets.StateAuthority, HostMode = RpcHostMode.SourceIsHostPlayer)]
+    [Rpc(RpcSources.All, RpcTargets.StateAuthority, HostMode = RpcHostMode.SourceIsHostPlayer)]
     private void RPC_SendPlayerSkin(int index, RpcInfo info = default)
     {
         //Host relays the command to all clients
