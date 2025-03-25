@@ -30,8 +30,7 @@ Transform:
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children:
-  - {fileID: 3342607950071427992}
-  - {fileID: 2070308175233577707}
+  - {fileID: 5523881874526385720}
   m_Father: {fileID: 1002961816487231613}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!114 &5183883069105803387
@@ -58,7 +57,7 @@ GameObject:
   - component: {fileID: 8166728729180558889}
   - component: {fileID: 4180535811369845006}
   m_Layer: 0
-  m_Name: Fuel
+  m_Name: Fuel Remaining
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -132,6 +131,39 @@ MeshRenderer:
   m_SortingLayer: 0
   m_SortingOrder: 0
   m_AdditionalVertexStreams: {fileID: 0}
+--- !u!1 &1187821916715340654
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 5523881874526385720}
+  m_Layer: 0
+  m_Name: Fuel Bar
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &5523881874526385720
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1187821916715340654}
+  serializedVersion: 2
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: 0, y: 4, z: 0}
+  m_LocalScale: {x: 0.5, y: 1, z: 0.5}
+  m_ConstrainProportionsScale: 0
+  m_Children:
+  - {fileID: 3342607950071427992}
+  - {fileID: 2070308175233577707}
+  m_Father: {fileID: 5897245891762172472}
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1 &1342242028468376009
 GameObject:
   m_ObjectHideFlags: 0
@@ -159,11 +191,11 @@ Transform:
   m_GameObject: {fileID: 1342242028468376009}
   serializedVersion: 2
   m_LocalRotation: {x: -0.000000119209275, y: 0.38268304, z: -0.00000013411044, w: 0.92387974}
-  m_LocalPosition: {x: -0, y: 4.5, z: 0}
-  m_LocalScale: {x: 0.99, y: 1.98, z: 0.99}
-  m_ConstrainProportionsScale: 1
+  m_LocalPosition: {x: 0, y: 1, z: 0}
+  m_LocalScale: {x: 1.01, y: 2.01, z: 1.01}
+  m_ConstrainProportionsScale: 0
   m_Children: []
-  m_Father: {fileID: 5897245891762172472}
+  m_Father: {fileID: 5523881874526385720}
   m_LocalEulerAnglesHint: {x: 0, y: 45, z: 0}
 --- !u!33 &7602514829646967125
 MeshFilter:
@@ -589,7 +621,7 @@ MonoBehaviour:
   fuelDepletionRate: 1
   fuelRegenerationRate: 1
   _fuel: 0
-  fuelBarElements: {fileID: 416263656999589049}
+  fuelBarElements: {fileID: 1187821916715340654}
   fuelBarAnchor: {fileID: 2070308175233577707}
   fuelBarMesh: {fileID: 4180535811369845006}
   raySource: {fileID: 4418976957054803028}
@@ -708,13 +740,13 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 6541684849237151569}
   serializedVersion: 2
-  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 0, y: 3.5, z: 0}
+  m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children:
   - {fileID: 249617703872675722}
-  m_Father: {fileID: 5897245891762172472}
+  m_Father: {fileID: 5523881874526385720}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1001 &4196789133993414406
 PrefabInstance:
