@@ -11,7 +11,7 @@ public class BarrelController : NetworkBehaviour
     [Networked] private NetworkObject barrelSchematic { get; set; }
 
     [Tooltip("Distance barrel is placed from player")]
-    [SerializeField] public int placeDistance = 3;
+    [SerializeField] public float placeDistance = 3;
 
     private void FixedUpdate()
     {
