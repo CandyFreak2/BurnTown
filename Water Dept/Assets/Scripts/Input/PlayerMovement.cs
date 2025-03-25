@@ -215,13 +215,9 @@ public class PlayerMovement : NetworkBehaviour
             pickupText.text = "";
         }
 
-        //Drop hose
+        //Drop hose // Barrel
         if (action.Buttons.WasPressed(previousButtons, InputButton.Drop) && IsHolding())
         {
-            if(carriedObject.interactableType == InteractableType.Barrel)
-            {
-                barrelController.RPC_PlaceBarrel(Object.Id);
-            }
             RPC_RequestDrop(Object.Id);
         }
 
@@ -303,6 +299,8 @@ public class PlayerMovement : NetworkBehaviour
                 else if (collider.gameObject.tag == "Barrel")
                 {
                     nearestInteractable = collider.gameObject;
+                    Debug.Log(collider.gameObject.transform.position);
+                    Debug.Log(collider.GetComponent<Interactable>().interactableCollider.transform.position);
                     pickupText.text = "North Button / E to Pickup Barrel";
                     return nearestInteractable;
                 }
@@ -544,21 +542,16 @@ public class PlayerMovement : NetworkBehaviour
         {
             if (player.carriedObject.interactableType == InteractableType.Barrel)
             {
-                player.carriedObject.Drop();
-                Runner.Despawn(player.carriedObject.gameObject.GetComponent<NetworkObject>());
-                player.carriedObject = null;
+                player.barrelController.RPC_PlaceBarrel(_playerId, player.carriedObject.GetComponent<NetworkObject>());
             }
-            else 
+
+            player.carriedObject.Drop();
+            if (player.carriedObject.interactableType == InteractableType.Flamethrower)
             {
-                player.carriedObject.Drop();
-                if (player.carriedObject.interactableType == InteractableType.Flamethrower)
-                {
-                    player.carriedObject.gameObject.GetComponent<Flamethrower>().StopSpraying();
-                }
-                player.carriedObject.gameObject.GetComponent<NetworkObject>().RemoveInputAuthority();
-                player.carriedObject = null;
+                player.carriedObject.gameObject.GetComponent<Flamethrower>().StopSpraying();
             }
-            
+            player.carriedObject.gameObject.GetComponent<NetworkObject>().RemoveInputAuthority();
+            player.carriedObject = null;
         }
     }
 

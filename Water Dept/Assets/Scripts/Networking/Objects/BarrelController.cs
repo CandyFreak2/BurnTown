@@ -23,14 +23,15 @@ public class BarrelController : NetworkBehaviour
     }
 
     //assigns a barrels position to snap to the ground and/or a barrel nearby
-    private void SnapPosition(NetworkObject obj)
+    public Vector3 SnapPosition(NetworkObject obj)
     {
         //get initial position in front of player
-        
+        if(obj == null)
+        {
+            return Vector3.zero;
+        }
         obj.transform.position = (gameObject.GetComponent<Transform>().transform.position) + orientationForward * placeDistance;
-        Debug.Log("T: " + gameObject.GetComponent<Transform>().transform.position);
-        Debug.Log("oF: " + orientationForward);
-        Debug.Log("pD: " + placeDistance);
+
         RaycastHit hit;
 
         if (Physics.Raycast(obj.transform.position + new Vector3(0, 100f, 0), Vector3.down, out hit))
@@ -54,6 +55,8 @@ public class BarrelController : NetworkBehaviour
                 }
             }
         }
+
+        return obj.transform.position;
     }
 
     //stores the players orientation (called from PlayerMovement)
@@ -81,26 +84,26 @@ public class BarrelController : NetworkBehaviour
     }
 
     [Rpc(RpcSources.All, RpcTargets.StateAuthority)]
-    public void RPC_PlaceBarrel(NetworkId playerScript)
+    public void RPC_PlaceBarrel(NetworkId playerScript, NetworkObject barr)
     {
         RPC_ToggleBarrel(playerScript);
 
         BarrelController pBarrelController = Runner.FindObject(playerScript).GetComponent<BarrelController>();
 
-        pBarrelController.barrelSchematic = Runner.Spawn(barrelPrefab);
+        pBarrelController.barrelSchematic = barr;
         pBarrelController.SnapPosition(barrelSchematic);
     }
 
     [Rpc(RpcSources.All, RpcTargets.StateAuthority)]
     public void RPC_ThrowBarrel(NetworkId playerScript)
     {
-        RPC_ToggleBarrel(playerScript);
+        //RPC_ToggleBarrel(playerScript);
         
         BarrelController pBarrelController = Runner.FindObject(playerScript).GetComponent<BarrelController>();
 
-        pBarrelController.barrelSchematic = Runner.Spawn(barrelPrefab);
-        pBarrelController.SnapPosition(barrelSchematic);
-
+        //pBarrelController.barrelSchematic = barr;
+        //pBarrelController.SnapPosition(barrelSchematic);
+        
         pBarrelController.barrelSchematic.GetComponent<BarrelInfo>().isThrown = true;
         pBarrelController.barrelSchematic.GetComponent<Rigidbody>().AddForce((orientationForward + new Vector3(0, 1, 0)) * 500);
 
