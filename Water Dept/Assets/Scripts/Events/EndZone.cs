@@ -1,20 +1,24 @@
 using Fusion;
-using Unity.Burst.CompilerServices;
 using UnityEngine;
 
 public class EndZone : NetworkBehaviour {
     public enum EndConditions {
         RADIUS,
-        FIRETRUCK,
-        TIMER_END
+        FIRETRUCK
     }
 
     public EndConditions state = EndConditions.RADIUS;
 
+    [Header("Radius Conditions")]
     [Networked] private TickTimer Timer { get; set; }
-    [Networked, SerializeField] private float timeToComplete { get; set; }
+    [Tooltip("TTC in Seconds"), Networked, SerializeField] private float timeToComplete { get; set; }
     private int playersInRadius = 0;
+
+    [Header("Firetruck Conditions")]
+    [Tooltip("Only need if firetruck option is selected"), SerializeField] private CarData firetruck;
+    
     private bool canStart = false;
+
 
     public override void Spawned() {
         canStart = true;
@@ -28,11 +32,20 @@ public class EndZone : NetworkBehaviour {
                         Timer = TickTimer.CreateFromSeconds(Runner, timeToComplete);
                     } else if (Timer.ExpiredOrNotRunning(Runner)) {
                         Timer = TickTimer.None;
-                        EventManager.TimerEnd();
                         GameStateHandler.Instance.SetGameState(GameStateHandler.GameState.END);
-                        
-                        // UnityEvent that gets called onTrigger when for enter, exit and trigger
+                        EventManager.EndZoneTrigger();
                     }
+                }
+
+                if (state == EndConditions.FIRETRUCK) {
+                    if (firetruck == null) {
+                        Debug.LogWarning(gameObject.name + "needs Firetruck's Car Data");
+                    } else if (firetruck != null) {
+                        if (firetruck.GetNumPassengers() == ServerInfo.MaxPlayers) {
+                            GameStateHandler.Instance.SetGameState(GameStateHandler.GameState.END);
+                            EventManager.EndZoneTrigger();
+                        }
+                    } 
                 }
             }
         }
@@ -50,14 +63,5 @@ public class EndZone : NetworkBehaviour {
             playersInRadius--;
             EventManager.EndZoneExit();
         }
-    }
-
-
-    private void OnTriggerStay(Collider other) {
-        //if (other.CompareTag("Player") && state == EndConditions.RADIUS) {
-        //    playersInRadius++;
-        //    Debug.Log(playersInRadius);
-        //}
-
     }
 }
