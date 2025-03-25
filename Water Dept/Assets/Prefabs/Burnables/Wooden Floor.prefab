@@ -119,7 +119,7 @@ GameObject:
   - component: {fileID: 4997217086749186391}
   - component: {fileID: 4610629987021996167}
   - component: {fileID: 1087588565873994909}
-  - component: {fileID: 895179654513859029}
+  - component: {fileID: 7320509005664686402}
   m_Layer: 0
   m_Name: Wooden Floor
   m_TagString: Untagged
@@ -193,20 +193,27 @@ MonoBehaviour:
   NetworkedBehaviours:
   - {fileID: 4610629987021996167}
   ForceRemoteRenderTimeframe: 0
---- !u!114 &895179654513859029
-MonoBehaviour:
+--- !u!65 &7320509005664686402
+BoxCollider:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 7873259158025951610}
+  m_Material: {fileID: 0}
+  m_IncludeLayers:
+    serializedVersion: 2
+    m_Bits: 0
+  m_ExcludeLayers:
+    serializedVersion: 2
+    m_Bits: 0
+  m_LayerOverridePriority: 0
+  m_IsTrigger: 0
+  m_ProvidesContacts: 0
   m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 1541381998, guid: e725a070cec140c4caffb81624c8c787, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  Guid:
-    RawGuidValue: bd7bf61218bb72f4b8e166cf3803b4c0
+  serializedVersion: 3
+  m_Size: {x: 0.33333424, y: 3.8165264, z: 0.33050463}
+  m_Center: {x: 0.00000033378603, y: 1.4082632, z: 0.1347477}
 --- !u!1001 &990871396436386074
 PrefabInstance:
   m_ObjectHideFlags: 0
