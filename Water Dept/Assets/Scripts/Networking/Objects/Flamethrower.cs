@@ -4,11 +4,12 @@ using System.Collections;
 using Fusion;
 using DG.Tweening;
 using System;
+using UnityEngine.InputSystem;
 
 public class Flamethrower : NetworkBehaviour
 {
-    [Networked] private NetworkBool isShooting { get; set; }
-
+    //[Networked] private NetworkBool isShooting { get; set; }
+    private bool isShooting;
 
     /*[Header("Fuel")]
     [SerializeField] GameObject fuelPrefab;
@@ -25,7 +26,8 @@ public class Flamethrower : NetworkBehaviour
     public float fuelDepletionRate = 1;
     [Tooltip("Fuel amount flamethrower regenerates (seconds)"), Range(0, 3)]
     public float fuelRegenerationRate = 1;
-    [Networked] public float fuel {get;set;}
+    //[Networked] public float fuel { get; set; }
+    public float fuel;
     [SerializeField] private GameObject fuelBarElements;
     [SerializeField] private Transform fuelBarAnchor;
     [SerializeField] private MeshRenderer fuelBarMesh;
@@ -60,28 +62,39 @@ public class Flamethrower : NetworkBehaviour
         [HideInInspector] public AudioSource activeSource;
     }
 
+    [Header("Audio")]
+    [SerializeField] float rumbleMultiplier = 0.5f;
     public override void Spawned()
     {
         isShooting = false;
         audioProfile.activeSource = AudioPlayer.PlaySFXLoop(audioProfile.flamethrowerLoop, transform, 0);
         fuel = startFuel;
         fuelBarMesh.material.color = Color.green;
+        fuelBarElements.SetActive(false);
     }
 
     public void Spray()
     {
         fuelBarElements.SetActive(true);
         RPC_ShootFire(Object.Id);
-        isShooting = true;
+
+        if(HasInputAuthority)
+        {
+            Gamepad.current.SetMotorSpeeds(0.25f * rumbleMultiplier, 0.75f * rumbleMultiplier);
+            InputSystem.ResumeHaptics();
+        }
     }
 
     public void StopSpraying()
     {
         RPC_StopFire(Object.Id);
-        isShooting = false;
+        if (HasInputAuthority)
+        {
+            InputSystem.PauseHaptics();
+        }
     }
 
-    public override void FixedUpdateNetwork()
+    public void FixedUpdate() //IS THIS STUPID? YES! DOES IT WORK? ALSO YES!
     {
         FuelUpdate();
 
@@ -125,6 +138,7 @@ public class Flamethrower : NetworkBehaviour
                 Transform decal = decalPool.GetPooledObject().transform;
                 decal.position = hit.point;
                 decal.forward = -hit.normal;
+                Debug.Log(hit.normal);
                 decalTimer = 0f;
             }
 
@@ -142,6 +156,8 @@ public class Flamethrower : NetworkBehaviour
     public void RPC_ShootFire(NetworkId _hoseId)
     {
         Flamethrower firehose = Runner.FindObject(_hoseId).GetComponent<Flamethrower>();
+        firehose.isShooting = true;
+        firehose.fuel = fuel;
 
         if (firehose != null)
         {
@@ -164,6 +180,8 @@ public class Flamethrower : NetworkBehaviour
     public void RPC_StopFire(NetworkId _hoseId)
     {
         Flamethrower firehose = Runner.FindObject(_hoseId).GetComponent<Flamethrower>();
+        firehose.isShooting = false;
+        firehose.fuel = fuel;
 
         if (firehose != null)
         {

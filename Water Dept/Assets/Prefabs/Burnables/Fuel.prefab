@@ -115,12 +115,14 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   burnableScore: 0
   _fuelRemaining: 0
+  heatModifier: 0
   HeatSources: []
   burnOnAwake: 1
   startFuel: 5
   heatResistance: 0
-  heatStrength: 1
   heatBuffer: 0
+  heatDmgCap: 999
+  heatStrength: 1
   spreadRadius: 2
   _nIsBurning: 0
   showsLerp: 1
@@ -128,6 +130,7 @@ MonoBehaviour:
   startColor: {r: 1, g: 0.29008803, b: 0.015686274, a: 1}
   endColor: {r: 1, g: 0, b: 0, a: 1}
   onFireVFX: {fileID: 5376514768591416105}
+  destroyedModel: {fileID: 0}
 --- !u!114 &1288095238760657742
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -210,6 +213,11 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 4269215873629458677, guid: ed0ec57b29d994745b54217131e7cfb8,
         type: 3}
+      propertyPath: looping
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 4269215873629458677, guid: ed0ec57b29d994745b54217131e7cfb8,
+        type: 3}
       propertyPath: lengthInSec
       value: 1
       objectReference: {fileID: 0}
@@ -221,7 +229,12 @@ PrefabInstance:
     - target: {fileID: 4269215873629458677, guid: ed0ec57b29d994745b54217131e7cfb8,
         type: 3}
       propertyPath: InitialModule.startLifetime.scalar
-      value: 1
+      value: 0.2
+      objectReference: {fileID: 0}
+    - target: {fileID: 7981112598627152828, guid: ed0ec57b29d994745b54217131e7cfb8,
+        type: 3}
+      propertyPath: looping
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 7981112598627152828, guid: ed0ec57b29d994745b54217131e7cfb8,
         type: 3}

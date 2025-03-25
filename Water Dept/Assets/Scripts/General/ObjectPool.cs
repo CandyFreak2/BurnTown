@@ -40,8 +40,10 @@ public class ObjectPool : MonoBehaviour
             index = 0;
 
         GameObject obj = pooledObjects[index];
-        obj.SetActive(true);
         obj.transform.parent = null;
+        obj.transform.localScale = Vector3.one;
+        obj.SetActive(true);
+        obj.GetComponent<PooledObject>().EnableEvents();
 
         index++;
         return obj;
