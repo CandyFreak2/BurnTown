@@ -13,7 +13,6 @@ public class PlayerSkin : NetworkBehaviour {
     [Header("Debug")]
     [SerializeField] bool debugTrigger;
 
-
     public override void Spawned() {
         SetPlayerSkin(Runner.LocalPlayer.AsIndex - 1);
     }
