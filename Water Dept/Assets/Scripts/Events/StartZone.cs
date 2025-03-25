@@ -14,23 +14,25 @@ public class StartZone : NetworkBehaviour {
         if (GameStateHandler.Instance.GetGameState == GameStateHandler.GameState.NOT_STARTED) {
             if (players.Count == ServerInfo.MaxPlayers && IsAllTrue(players)) {
                 GameStateHandler.Instance.SetGameState(GameStateHandler.GameState.STARTED);
+                EventManager.StartZoneTrigger();
             }
         }
     }
 
     public bool IsAllTrue(List<GameObject> collection) {
-    for(int i = 0; i < collection.Count; i++)
-        if(!collection[i].GetComponentInParent<PlayerMovement>().IsReady) {
-            return false;
-        }
-    return true;
-}
+        for (int i = 0; i < collection.Count; i++)
+            if (!collection[i].GetComponentInParent<PlayerMovement>().IsReady) {
+                return false;
+            }
+        return true;
+    }
 
     private void OnTriggerExit(Collider other) {
         if (isSpawned && GameStateHandler.Instance.GetGameState == GameStateHandler.GameState.NOT_STARTED) {
             if (other.CompareTag("Player")) {
                 players.Add(other.gameObject);
                 other.GetComponentInParent<PlayerMovement>().IsReady = true;
+                EventManager.StartZoneExit();
             }
         }
     }

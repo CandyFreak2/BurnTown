@@ -28,7 +28,7 @@ public class EndZone : NetworkBehaviour {
                         Timer = TickTimer.CreateFromSeconds(Runner, timeToComplete);
                     } else if (Timer.ExpiredOrNotRunning(Runner)) {
                         Timer = TickTimer.None;
-                        Debug.Log("Timer Ended");
+                        EventManager.TimerEnd();
                         GameStateHandler.Instance.SetGameState(GameStateHandler.GameState.END);
                         
                         // UnityEvent that gets called onTrigger when for enter, exit and trigger
@@ -41,13 +41,14 @@ public class EndZone : NetworkBehaviour {
     private void OnTriggerEnter(Collider other) {
         if (state == EndConditions.RADIUS && other.CompareTag("Player")) {
             playersInRadius++;
-            Debug.Log(playersInRadius);
+            EventManager.EndZoneEnter();
         }
     }
 
     private void OnTriggerExit(Collider other) {
         if (state == EndConditions.RADIUS && other.CompareTag("Player")) {
             playersInRadius--;
+            EventManager.EndZoneExit();
         }
     }
 
