@@ -150,6 +150,7 @@ public class BasicSpawner : MonoBehaviour, INetworkRunnerCallbacks {
     #region Networking
     public void OnPlayerJoined(NetworkRunner runner, PlayerRef player) {
         Debug.Log("Spawned Player");
+        UIManager.Instance.SetUI();
         if (runner.IsServer) {
             int playerIndex = _spawnedCharacters.Count;
             Vector3 spawnPos = ResourceManager.Instance.levels[ServerInfo.LevelID].spawnPos;
@@ -161,7 +162,6 @@ public class BasicSpawner : MonoBehaviour, INetworkRunnerCallbacks {
             runner.SetPlayerObject(player, networkPlayerObject);
         }
         SetConnectionStatus(ConnectionStatus.CONNECTED);
-        UIManager.Instance.SetUI();
     }
 
     public void OnPlayerLeft(NetworkRunner runner, PlayerRef player) {
