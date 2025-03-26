@@ -21,7 +21,7 @@ public class Interactable : NetworkBehaviour
 
     private Rigidbody rb;
     private NetworkRigidbody3D networkRB;
-    private Collider interactableCollider;
+    public Collider interactableCollider;
 
     [SerializeField]
     private Vector3 holdOffset = new Vector3(1.0f, 0.5f, 0.0f);
@@ -67,13 +67,13 @@ public class Interactable : NetworkBehaviour
                 Drop();
             }
         }
+
     }
 
     public void PickUp(NetworkId _playerId)
     {
         if (/*HasStateAuthority &&*/ !isPickedUp)
         {
-
             isPickedUp = true;
             carrierId = _playerId;
 
