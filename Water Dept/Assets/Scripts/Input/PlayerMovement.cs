@@ -96,7 +96,6 @@ public class PlayerMovement : NetworkBehaviour
             GetComponentInChildren<CineSingleCamera>().SetAsActiveCamera();
             objIndicator.SetActive(true);
             ObjectiveIndicatorList.Singleton.SetIndicator(objIndicator);
-            ObjectiveIndicatorList.Singleton.SetPlayerParent(this.gameObject);
         }
 
         playerRef = Object.InputAuthority;

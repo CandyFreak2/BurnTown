@@ -55,12 +55,6 @@ public class ObjectiveIndicatorList : MonoBehaviour
         }
     }
 
-    public void SetPlayerParent(GameObject _player) // needs to be called after indicator is set
-    {
-        indicator.transform.SetParent(_player.transform);
-        indicator.transform.localPosition = new Vector3(0.0f, 4.0f, 0.0f);
-    }
-
     // Update is called once per frame
     void Update()
     {
