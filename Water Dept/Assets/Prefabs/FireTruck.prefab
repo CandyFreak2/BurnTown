@@ -26,7 +26,7 @@ Transform:
   m_GameObject: {fileID: 1295557062003659758}
   serializedVersion: 2
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: -1.69, y: -2.43, z: -4.03}
+  m_LocalPosition: {x: -1.69, y: -2.8, z: -4.03}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []
@@ -46,12 +46,12 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   carRB: {fileID: 4768391477969633517}
   suspensionRestLength: 0.5
-  suspensionStrength: 8
-  suspensionDamping: 6
-  powerMultiplier: 5
+  suspensionStrength: 160
+  suspensionDamping: 120
+  powerMultiplier: 30
   topSpeed: 60
-  brakeStrength: 1.7
-  tireGripFactor: 0.5
+  brakeStrength: 12
+  tireGripFactor: 0.8
 --- !u!1 &1601628383318992276
 GameObject:
   m_ObjectHideFlags: 0
@@ -78,7 +78,7 @@ Transform:
   m_GameObject: {fileID: 1601628383318992276}
   serializedVersion: 2
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 1.68, y: -2.43, z: -4.03}
+  m_LocalPosition: {x: 1.68, y: -2.8, z: -4.03}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []
@@ -98,12 +98,12 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   carRB: {fileID: 4768391477969633517}
   suspensionRestLength: 0.5
-  suspensionStrength: 8
-  suspensionDamping: 6
-  powerMultiplier: 5
+  suspensionStrength: 160
+  suspensionDamping: 120
+  powerMultiplier: 30
   topSpeed: 60
-  brakeStrength: 1.7
-  tireGripFactor: 0.5
+  brakeStrength: 12
+  tireGripFactor: 0.8
 --- !u!1 &2040709483166779140
 GameObject:
   m_ObjectHideFlags: 0
@@ -206,10 +206,10 @@ Rigidbody:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 2231294426090905358}
   serializedVersion: 4
-  m_Mass: 1
+  m_Mass: 20
   m_Drag: 0
   m_AngularDrag: 0.05
-  m_CenterOfMass: {x: 0, y: -0.98, z: 0}
+  m_CenterOfMass: {x: 0, y: -0.95, z: 0}
   m_InertiaTensor: {x: 1, y: 1, z: 1}
   m_InertiaRotation: {x: 0, y: 0, z: 0, w: 1}
   m_IncludeLayers:
@@ -244,8 +244,8 @@ BoxCollider:
   m_ProvidesContacts: 0
   m_Enabled: 1
   serializedVersion: 3
-  m_Size: {x: 5, y: 5.5, z: 16.5}
-  m_Center: {x: 0, y: -0.1, z: 0}
+  m_Size: {x: 5, y: 5.5, z: 14.716034}
+  m_Center: {x: 0, y: -0.099999905, z: -0.10220075}
 --- !u!114 &615215578933300217
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -259,6 +259,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   carRB: {fileID: 4768391477969633517}
+  networkCarRB: {fileID: 2467624447809652897}
   frontTires:
   - {fileID: 5595848358408308924}
   - {fileID: 3962749562720211918}
@@ -503,7 +504,7 @@ Transform:
   m_GameObject: {fileID: 8397273350419712050}
   serializedVersion: 2
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 1.68, y: -2.518, z: 3.643}
+  m_LocalPosition: {x: 1.68, y: -2.8, z: 3.643}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []
@@ -523,12 +524,12 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   carRB: {fileID: 4768391477969633517}
   suspensionRestLength: 0.5
-  suspensionStrength: 8
-  suspensionDamping: 6
-  powerMultiplier: 4
+  suspensionStrength: 160
+  suspensionDamping: 120
+  powerMultiplier: 20
   topSpeed: 60
-  brakeStrength: 1.3
-  tireGripFactor: 0.5
+  brakeStrength: 10
+  tireGripFactor: 0.8
 --- !u!1 &8539886274263462978
 GameObject:
   m_ObjectHideFlags: 0
@@ -555,7 +556,7 @@ Transform:
   m_GameObject: {fileID: 8539886274263462978}
   serializedVersion: 2
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: -1.69, y: -2.518, z: 3.643}
+  m_LocalPosition: {x: -1.69, y: -2.8, z: 3.643}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []
@@ -575,12 +576,12 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   carRB: {fileID: 4768391477969633517}
   suspensionRestLength: 0.5
-  suspensionStrength: 8
-  suspensionDamping: 6
-  powerMultiplier: 4
+  suspensionStrength: 160
+  suspensionDamping: 120
+  powerMultiplier: 20
   topSpeed: 60
-  brakeStrength: 1.3
-  tireGripFactor: 0.5
+  brakeStrength: 10
+  tireGripFactor: 0.8
 --- !u!1 &9181218762468318415
 GameObject:
   m_ObjectHideFlags: 0
@@ -611,8 +612,8 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 9181218762468318415}
   serializedVersion: 2
-  m_LocalRotation: {x: 0.14122966, y: -0.85866207, z: 0.34095564, w: 0.3556725}
-  m_LocalPosition: {x: 15.000088, y: 20, z: 14.999911}
+  m_LocalRotation: {x: 0.34095618, y: -0.35566983, z: 0.14122866, w: 0.8586631}
+  m_LocalPosition: {x: 15.000004, y: 20, z: -15}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []

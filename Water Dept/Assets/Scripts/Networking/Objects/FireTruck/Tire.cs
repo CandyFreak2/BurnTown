@@ -24,7 +24,7 @@ public class Tire : NetworkBehaviour
     public float powerMultiplier = 3.0f;
     public float topSpeed = 60;
     public float brakeStrength = 0.8f;
-    private float frictionStrength = 0.0f;
+    private float frictionStrength = 0.3f;
 
     //Steering variables
     private Vector3 steeringForce;
@@ -95,6 +95,28 @@ public class Tire : NetworkBehaviour
         //Projects linear velocity on forward vector to get speed of car
         float carSpeed = Vector3.Dot(_carForward, carRB.linearVelocity);
 
+        //Braking force
+        if (_brakingInput > 0.0f)
+        {
+            float powerToTire = brakeStrength * _brakingInput;
+
+            accelerationForce += -accelerationDirection * powerToTire;
+        }
+
+        //Rolling friction force
+        else if (carSpeed < 0.0001f && carSpeed > -0.001f) //Prevents oscilatting friction forces when speed is very low
+        {
+            accelerationForce = Vector3.zero;
+        }
+        else if (carSpeed < -0.0001f)
+        {
+            accelerationForce += -accelerationDirection * frictionStrength;
+        }
+        else if (carSpeed > -0.001f)
+        {
+            accelerationForce += accelerationDirection * frictionStrength;
+        }
+
         //Acceleration force
         if (_accelerationInput > 0.0f)
         {
@@ -103,29 +125,7 @@ public class Tire : NetworkBehaviour
 
             float powerToTire = PowerToTiresLookup(normalizedSpeed) * _accelerationInput; //change 1.0f to a lookup curve that uses normalizedSpeed
 
-            accelerationForce = accelerationDirection * powerToTire * powerMultiplier;
-        }
-
-        //Rolling friction force
-        else if (carSpeed < 0.1f && carSpeed > -0.1f) //Prevents oscilatting friction forces when speed is very low
-        {
-            accelerationForce = Vector3.zero;
-        }
-        else if (carSpeed > 0.1f)
-        {
-            accelerationForce = -accelerationDirection * frictionStrength;
-        }
-        else if (carSpeed < -0.1f)
-        {
-            accelerationForce = accelerationDirection * frictionStrength;
-        }
-
-        //Braking force
-        if (_brakingInput > 0.0f)
-        {
-            float powerToTire = brakeStrength * _brakingInput;
-
-            accelerationForce = -accelerationDirection * powerToTire;
+            accelerationForce += accelerationDirection * powerToTire * powerMultiplier;
         }
     }
 
@@ -140,7 +140,7 @@ public class Tire : NetworkBehaviour
         float steeringVelocity = Vector3.Dot(steeringDirection, tireWorldVelocity);
 
         //Apply grip factor and negate to get the correct force to apply
-        float deltaVelocity = -steeringVelocity * tireGripFactor;
+        float deltaVelocity = -steeringVelocity * tireGripFactor * powerMultiplier;
 
         steeringForce = steeringDirection * deltaVelocity;
     }

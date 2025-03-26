@@ -1,16 +1,19 @@
 using System.Collections.Generic;
 using Fusion;
+using Fusion.Addons.Physics;
 using UnityEngine;
 
 public class CarData : NetworkBehaviour
 {
     [SerializeField] public Rigidbody carRB;
+    [SerializeField] public NetworkRigidbody3D networkCarRB;
     [SerializeField] public List<Tire> frontTires, backTires;
 
     [SerializeField] public Transform driverPos;
     [SerializeField] public List<Transform> passengerPos;
-    [Networked] public int numPassengers { set; get; } // change to private
+    [Networked] private int numPassengers { set; get; } // change to private
     private int maxPassengers;
+    [Networked] public Vector3 truckPos { set; get; }
 
     // Start is called once before the first execution of Update after the MonoBehaviour is created
     void Start()
@@ -22,6 +25,14 @@ public class CarData : NetworkBehaviour
     void Update()
     {
         
+    }
+
+    public override void FixedUpdateNetwork()
+    {
+        if (HasStateAuthority)
+        {
+            truckPos = transform.position;
+        }
     }
 
     public override void Spawned()
