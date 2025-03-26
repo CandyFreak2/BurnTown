@@ -70,6 +70,6 @@ public class PlayerAnimationController : MonoBehaviour
 
     public void FootStepTrigger()
     {
-        AudioPlayer.PlaySFX(_playerScript.sfxProfile.footstep, transform.position, 0.2f);
+        AudioPlayer.PlaySFX(_playerScript.sfxProfile.footstep, transform.position, 0.2f, _playerScript.sfxProfile.footstepVol);
     }
 }

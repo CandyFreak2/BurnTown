@@ -66,6 +66,7 @@ public class PlayerMovement : NetworkBehaviour
     public PlayerSFXProfile sfxProfile;
     [Serializable] public class PlayerSFXProfile
     {
+        [UnityEngine.Range(0f, 1f)] public float footstepVol;
         public List<AudioClip> footstep = new List<AudioClip>();
         public List<AudioClip> equipItem = new List<AudioClip>();
         public List<AudioClip> dropItem = new List<AudioClip>();
