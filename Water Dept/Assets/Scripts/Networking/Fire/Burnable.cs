@@ -85,14 +85,16 @@ public class Burnable : NetworkBehaviour
         }
     }
 
-    private void Update()
+    //cannot get fuel remaining. It does not exists locally. It belongs to the network and can only be gotten from a networked update
+    /*private void Update()
     {
         Effects();
-    }
+    }*/
 
     public override void FixedUpdateNetwork()
     {
         HandleBurn();
+        Effects();
     }
 
 
@@ -127,7 +129,7 @@ public class Burnable : NetworkBehaviour
         TakeFireDamageTick();
 
         if(!startedBurning && heatBuffer <= 0 && fuelRemaining < startFuel)
-            RPC_BurningStarted();
+            RPC_BurningStartedSignal();
 
         if (!stoppedBurning && fuelRemaining <= 0)
             RPC_BurningStopped();
@@ -146,6 +148,11 @@ public class Burnable : NetworkBehaviour
                 //DealFireDamage(obj.GetComponent<Burnable>());
                 target.enabled = true;
                 target.AddHeat(Runner.FindObject(Object.Id).GetComponent<Burnable>());
+            }
+
+            if (obj.TryGetComponent(out BarrelInfo barrel))
+            {
+                barrel.Explode();
             }
         }
     }
@@ -238,11 +245,14 @@ public class Burnable : NetworkBehaviour
         target.nIsBurning = true;
     }
 
+    //gives host the authority on what burns
+    [Rpc(RpcSources.StateAuthority, RpcTargets.StateAuthority, HostMode = RpcHostMode.SourceIsHostPlayer)]
+    private void RPC_BurningStartedSignal(RpcInfo info = default) => RPC_BurningStartedRelay(info.Source);
 
-    [Rpc(RpcSources.All, RpcTargets.All)] 
-    private void RPC_BurningStarted() => Runner.FindObject(Object.Id)?.GetComponent<Burnable>().BurningStarted();
-    private void BurningStarted() //do not call, use RPC
+    [Rpc(RpcSources.StateAuthority, RpcTargets.All, HostMode = RpcHostMode.SourceIsServer)]
+    private void RPC_BurningStartedRelay(PlayerRef messageSource)
     {
+        //SHOULD NOT CALL RPC LIKE THIS BUT NETWORKED OBJ WONT TAKE MY NICE LIST   ):<
         startedBurning = true;
         nIsBurning = true;
         onFireVFX.Play();

@@ -1,15 +1,15 @@
 using Fusion;
-using System;
+using TMPro;
 using UnityEngine;
 using UnityEngine.EventSystems;
 using UnityEngine.SceneManagement;
-using UnityEngine.UI;
 
 public class PauseMenu : NetworkBehaviour {
     [SerializeField] private GameObject pauseUI;
     [SerializeField] private PlayerMovement playerMovement;
     [SerializeField] private NetworkRunner runner;
     [SerializeField] private GameObject startButton;
+    [SerializeField] private TMP_Text lobbyCode;
 
     private bool isPanelOn = false;
     private bool isSpawned = false;
@@ -30,6 +30,7 @@ public class PauseMenu : NetworkBehaviour {
         if (isSpawned && pauseUI == null && runner == null) {
             runner = FindAnyObjectByType<NetworkRunner>();
             pauseUI = UIManager.Instance.GetPauseMenu();
+            lobbyCode.text = ServerInfo.LobbyName;
 
             pauseUI.SetActive(isPanelOn);
             isPanelOn = pauseUI.activeInHierarchy;

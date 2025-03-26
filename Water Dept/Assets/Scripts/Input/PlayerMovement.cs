@@ -4,14 +4,17 @@ using Fusion.Addons.SimpleKCC;
 using TMPro;
 using Unity.Cinemachine;
 using System;
-using NUnit.Framework;
 using System.Collections.Generic;
 using DG.Tweening;
-using System.Collections;
-using System.Threading;
-
 public class PlayerMovement : NetworkBehaviour
 {
+    //I need these for animations to work -James
+    public InteractableType HeldInteractable { get { return carriedObject == null ? InteractableType.None : carriedObject.interactableType; } }
+    public bool IsFiring => isFiring;
+    public bool IsStunned => isExploded;
+    public event Action onThrowBarrel;
+    //
+
     private bool isSpawned = false;
     private bool canEnter = true;
     private bool isFiring = false;
@@ -33,9 +36,9 @@ public class PlayerMovement : NetworkBehaviour
 
     [Networked] public Interactable carriedObject { get; set; }
     [SerializeField] private TextMeshPro pickupText;
+    [SerializeField] private GameObject objIndicator;
     [SerializeField] private CarController truckController;
-
-    [SerializeField] private GameObject indicator;
+    [Networked] public PlayerRef playerRef { get; set; }
 
     PlayerInputHandeler input;
     PlayerInputAction action;
@@ -71,6 +74,9 @@ public class PlayerMovement : NetworkBehaviour
     private bool isExploded = false;
     private Vector3 forceVec = Vector3.zero;
 
+    // Jerry being lazy and not wanting to create a new script...
+    public bool IsReady { get; set; }
+
     private void Start()
     {
         input = GetComponent<PlayerInputHandeler>();
@@ -87,9 +93,12 @@ public class PlayerMovement : NetworkBehaviour
         {
             //FreeCameraController.Singleton.SetTarget(camTarget);
             GetComponentInChildren<CineSingleCamera>().SetAsActiveCamera();
-            //ObjectiveIndicatorList.Singleton.SetIndicator(indicator);
+            objIndicator.SetActive(true);
+            ObjectiveIndicatorList.Singleton.SetIndicator(objIndicator);
+            ObjectiveIndicatorList.Singleton.SetPlayerParent(this.gameObject);
         }
 
+        playerRef = Object.InputAuthority;
         isSpawned = true;
     }
 
@@ -244,6 +253,7 @@ public class PlayerMovement : NetworkBehaviour
             {
                 RPC_RequestDrop(Object.Id);
                 barrelController.RPC_ThrowBarrel(Object.Id);
+                onThrowBarrel?.Invoke();
             }
         }
 
