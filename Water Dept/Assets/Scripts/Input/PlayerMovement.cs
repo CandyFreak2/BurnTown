@@ -6,6 +6,7 @@ using Unity.Cinemachine;
 using System;
 using System.Collections.Generic;
 using DG.Tweening;
+using static Unity.Collections.Unicode;
 public class PlayerMovement : NetworkBehaviour
 {
     //I need these for animations to work -James
@@ -605,13 +606,12 @@ public class PlayerMovement : NetworkBehaviour
             gameObject.GetComponent<SimpleKCC>().Move(Vector3.zero, 10);
         }
         gameObject.GetComponent<SimpleKCC>().Move(force);
+        
 
         if (explosionTimer > 3f || (isGrounded && explosionTimer > 0.2f))
         {
-            Debug.Log(explosionTimer);
             explosionTimer = 0;
             isExploded = false;
-            Debug.Log("Kill");
         }
         else
         {

@@ -16,6 +16,9 @@ public static class EventManager {
     public static void BurnableDestroyed(int score) => onBurnableDestroyed?.Invoke(score);
     public static event UnityAction<int> onBurnableDestroyed;
 
+    public static void PlayerStunned(bool isStunned) => onPlayerStunned?.Invoke(isStunned);
+    public static event UnityAction<bool> onPlayerStunned;
+
     // State Manager Triggers
     public static event UnityAction onStartZoneEnter;
     public static void StartZoneEnter() => onStartZoneEnter?.Invoke();
