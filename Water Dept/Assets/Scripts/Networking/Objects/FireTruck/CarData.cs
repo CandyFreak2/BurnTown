@@ -1,10 +1,12 @@
 using System.Collections.Generic;
 using Fusion;
+using Fusion.Addons.Physics;
 using UnityEngine;
 
 public class CarData : NetworkBehaviour
 {
     [SerializeField] public Rigidbody carRB;
+    [SerializeField] public NetworkRigidbody3D networkCarRB;
     [SerializeField] public List<Tire> frontTires, backTires;
 
     [SerializeField] public Transform driverPos;

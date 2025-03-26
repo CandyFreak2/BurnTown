@@ -17,6 +17,7 @@ public class CarController : NetworkBehaviour
     private CarData carData;
     public GameObject truckParent;
     [SerializeField] private Rigidbody carRB;
+    [SerializeField] private NetworkRigidbody3D networkedCarRB;
     [SerializeField] private Transform camTarget;
     [SerializeField] private float gravityStrength = 12.0f;
     public Transform seatTransform;
@@ -277,13 +278,16 @@ public class CarController : NetworkBehaviour
         playerController.enabled = true;
         //playerController.ReactivateSystems();
         RPC_ActivatePlayerSystems(Object.Id, true);
-        if (seatTransform.localPosition.x < 0)
+        if (seatTransform != null)
         {
-            playerController.GetComponent<SimpleKCC>().SetPosition(seatTransform.position - seatTransform.right);
-        }
-        else
-        {
-            playerController.GetComponent<SimpleKCC>().SetPosition(seatTransform.position + seatTransform.right);
+            if (seatTransform.localPosition.x < 0)
+            {
+                playerController.GetComponent<SimpleKCC>().SetPosition(seatTransform.position - seatTransform.right);
+            }
+            else
+            {
+                playerController.GetComponent<SimpleKCC>().SetPosition(seatTransform.position + seatTransform.right);
+            }
         }
 
         carData.SubPassenger();
@@ -333,18 +337,21 @@ public class CarController : NetworkBehaviour
             carController.playerController.enabled = true;
             carController.playerController.ReactivateSystems();
             //RPC_ActivatePlayerSystems(_truckId, true);
-            if (carController.seatTransform.localPosition.x < 0)
+            if (carController.seatTransform != null)
             {
-                carController.playerController.GetComponent<SimpleKCC>().SetPosition(seatTransform.position - seatTransform.right);
-            }
-            else
-            {
-                carController.playerController.GetComponent<SimpleKCC>().SetPosition(seatTransform.position + seatTransform.right);
+                if (carController.seatTransform.localPosition.x < 0)
+                {
+                    carController.playerController.GetComponent<SimpleKCC>().SetPosition(carController.seatTransform.position - carController.seatTransform.right);
+                }
+                else
+                {
+                    carController.playerController.GetComponent<SimpleKCC>().SetPosition(carController.seatTransform.position + carController.seatTransform.right);
+                }
             }
             //carController.carData.SubPassenger();
             //carController.playerController.GetOutTruck();
             //carController.playerController = null;
-            RPC_UpdateTruckPos(carController.truckParent.GetComponent<NetworkObject>().Id, carController.truckParent.transform.position, carController.truckParent.transform.rotation);
+            RPC_UpdateTruckPos(Object.Id);
             carController.seatTransform = null;
             carController.isActive = false;
         }
@@ -366,18 +373,25 @@ public class CarController : NetworkBehaviour
         }
     }
 
-    [Rpc(RpcSources.All, RpcTargets.All)]
-    public void RPC_UpdateTruckPos(NetworkId _truckId, Vector3 _position, Quaternion _rotation)
+    [Rpc(RpcSources.StateAuthority, RpcTargets.All)]
+    public void RPC_UpdateTruckPos(NetworkId _truckId)
     {
-        NetworkRigidbody3D truckRB = Runner.FindObject(_truckId).GetComponent<NetworkRigidbody3D>();
-        BoxCollider truckCollider = truckRB.GetComponent<BoxCollider>();
+        CarController carController = Runner.FindObject(_truckId).GetComponent<CarController>();
 
-        if (truckRB != null && truckCollider != null)
+        if (carController != null)
         {
-            truckRB.transform.position = _position;
-            truckRB.transform.rotation = _rotation;
-            truckCollider.transform.position = _position;
+            carController.StartCoroutine(UpdateTruckPos());
         }
+
+        //NetworkRigidbody3D truckRB = Runner.FindObject(_truckId).GetComponent<NetworkRigidbody3D>();
+        //BoxCollider truckCollider = truckRB.GetComponent<BoxCollider>();
+
+        //if (truckRB != null && truckCollider != null)
+        //{
+        //    truckRB.transform.position = _position;
+        //    truckRB.transform.rotation = _rotation;
+        //    truckCollider.transform.position = _position;
+        //}
     }
 
     public void SetData(CarData _data)
@@ -385,6 +399,7 @@ public class CarController : NetworkBehaviour
         carData = _data;
         truckParent = _data.gameObject;
         carRB = _data.carRB;
+        networkedCarRB = _data.networkCarRB;
         frontTires = _data.frontTires;
         backTires = _data.backTires;
 
@@ -415,6 +430,16 @@ public class CarController : NetworkBehaviour
         Debug.DrawLine(carRB.transform.position, carRB.transform.position + rightTireAngle * 10, Color.red, 5.0f);
     }
 
+    private IEnumerator UpdateTruckPos()
+    {
+        yield return new WaitForSeconds(0.5f);
+        carRB.isKinematic = true;
+        networkedCarRB.RBIsKinematic = true;
+        yield return new WaitForSeconds(0.25f);
+        carRB.isKinematic = false;
+        networkedCarRB.RBIsKinematic = false;
+    }
+
     public void SetTruckParent(GameObject _truck)
     {
         truckParent = _truck;
@@ -439,6 +464,16 @@ public class CarController : NetworkBehaviour
         {
             backTires.Add(_backTire);
         }
+    }
+
+    public Rigidbody GetCarRB()
+    {
+        return carRB;
+    }
+
+    public NetworkRigidbody3D GetCarRBNetworked()
+    {
+        return networkedCarRB;
     }
 
     private void ExitDelay()

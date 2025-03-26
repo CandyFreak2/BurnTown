@@ -404,7 +404,7 @@ public class PlayerMovement : NetworkBehaviour
 
     public void GetOutTruck()
     {
-        truckController.enabled = false;
+        //truckController.enabled = false;
         truckController.isActive = false;
         transform.SetParent(null);
 
@@ -473,7 +473,7 @@ public class PlayerMovement : NetworkBehaviour
     {
         PlayerMovement player = Runner.FindObject(_playerId).GetComponent<PlayerMovement>();
 
-        player.truckController.enabled = false;
+        //player.truckController.enabled = false;
         player.truckController.isActive = false;
         RPC_UpdateTransform(_playerId);
 

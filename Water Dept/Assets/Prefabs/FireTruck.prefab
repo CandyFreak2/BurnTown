@@ -47,7 +47,7 @@ MonoBehaviour:
   carRB: {fileID: 4768391477969633517}
   suspensionRestLength: 0.5
   suspensionStrength: 160
-  suspensionDamping: 60
+  suspensionDamping: 120
   powerMultiplier: 30
   topSpeed: 60
   brakeStrength: 12
@@ -99,7 +99,7 @@ MonoBehaviour:
   carRB: {fileID: 4768391477969633517}
   suspensionRestLength: 0.5
   suspensionStrength: 160
-  suspensionDamping: 60
+  suspensionDamping: 120
   powerMultiplier: 30
   topSpeed: 60
   brakeStrength: 12
@@ -244,8 +244,8 @@ BoxCollider:
   m_ProvidesContacts: 0
   m_Enabled: 1
   serializedVersion: 3
-  m_Size: {x: 5, y: 5.5, z: 16.5}
-  m_Center: {x: 0, y: -0.1, z: 0}
+  m_Size: {x: 5, y: 5.5, z: 14.716034}
+  m_Center: {x: 0, y: -0.099999905, z: -0.10220075}
 --- !u!114 &615215578933300217
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -259,6 +259,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   carRB: {fileID: 4768391477969633517}
+  networkCarRB: {fileID: 2467624447809652897}
   frontTires:
   - {fileID: 5595848358408308924}
   - {fileID: 3962749562720211918}
@@ -524,7 +525,7 @@ MonoBehaviour:
   carRB: {fileID: 4768391477969633517}
   suspensionRestLength: 0.5
   suspensionStrength: 160
-  suspensionDamping: 60
+  suspensionDamping: 120
   powerMultiplier: 20
   topSpeed: 60
   brakeStrength: 10
@@ -576,7 +577,7 @@ MonoBehaviour:
   carRB: {fileID: 4768391477969633517}
   suspensionRestLength: 0.5
   suspensionStrength: 160
-  suspensionDamping: 60
+  suspensionDamping: 120
   powerMultiplier: 20
   topSpeed: 60
   brakeStrength: 10
