@@ -78,7 +78,7 @@ public class Flamethrower : NetworkBehaviour
         fuelBarElements.SetActive(true);
         RPC_ShootFire(Object.Id);
 
-        if(HasInputAuthority)
+        if(HasInputAuthority && Gamepad.all.Count > 0)
         {
             Gamepad.current.SetMotorSpeeds(0.25f * rumbleMultiplier, 0.75f * rumbleMultiplier);
             InputSystem.ResumeHaptics();
@@ -88,7 +88,8 @@ public class Flamethrower : NetworkBehaviour
     public void StopSpraying()
     {
         RPC_StopFire(Object.Id);
-        if (HasInputAuthority)
+
+        if (HasInputAuthority && Gamepad.all.Count > 0)
         {
             InputSystem.PauseHaptics();
         }
