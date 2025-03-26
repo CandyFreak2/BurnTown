@@ -83,6 +83,10 @@ public class Flamethrower : NetworkBehaviour
             Gamepad.current.SetMotorSpeeds(0.25f * rumbleMultiplier, 0.75f * rumbleMultiplier);
             InputSystem.ResumeHaptics();
         }
+        isShooting = true;
+
+        Gamepad.current.SetMotorSpeeds(0.25f, 0.75f);
+        InputSystem.ResumeHaptics();
     }
 
     public void StopSpraying()
@@ -92,6 +96,8 @@ public class Flamethrower : NetworkBehaviour
         {
             InputSystem.PauseHaptics();
         }
+        isShooting = false;
+        InputSystem.PauseHaptics();
     }
 
     public void FixedUpdate() //IS THIS STUPID? YES! DOES IT WORK? ALSO YES!
