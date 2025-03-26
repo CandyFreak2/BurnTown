@@ -39,14 +39,14 @@ public class TestPlayerMovement : MonoBehaviour
         if (Input.GetKeyDown(KeyCode.Mouse0) && isHolding == true)
         {
             //sprays water
-            fireHose.GetComponent<FireHouse>().Spray();
+            fireHose.GetComponent<Flamethrower>().Spray();
             //apply backward force
-            WaterForce();
+            //WaterForce();
         }
         else if (Input.GetKeyUp(KeyCode.Mouse0) && isHolding == true)
         {
             //stops spraying water after half a second
-            fireHose.GetComponent<FireHouse>().StartCoroutine(fireHose.GetComponent<FireHouse>().StopSpraying());
+            fireHose.GetComponent<Flamethrower>().StopSpraying();
             //stop force
             StopWaterForce();
         }
@@ -87,10 +87,10 @@ public class TestPlayerMovement : MonoBehaviour
         fireHose.transform.position = hand.transform.position;
     }
 
-    void WaterForce()
+    /*void WaterForce()
     {
-        rb.AddForce(-transform.forward * fireHose.GetComponent<FireHouse>().waterForce, ForceMode.Impulse);
-    }
+        rb.AddForce(-transform.forward * fireHose.GetComponent<Flamethrower>().waterForce, ForceMode.Impulse);
+    }*/
 
     void StopWaterForce()
     {

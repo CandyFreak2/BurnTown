@@ -14,6 +14,7 @@ public class PlayerInputHandeler : SimulationBehaviour, IBeforeUpdate, INetworkR
     float interactPress;
     float dropPress;
     float shootPress;
+    float brakePress;
 
     public PlayerInputAction accumulatedInput = new PlayerInputAction();
     private bool resetInput = false;
@@ -28,14 +29,17 @@ public class PlayerInputHandeler : SimulationBehaviour, IBeforeUpdate, INetworkR
         playerInputSystem.Look.performed += ctx => lookDelta = ctx.ReadValue<Vector2>();
         playerInputSystem.Look.canceled += ctx => lookDelta = ctx.ReadValue<Vector2>();
 
-        //interact
+        // Interact
         playerInputSystem.Interact.started += ctx => interactPress = ctx.ReadValue<float>();
 
         // Drop
-        playerInputSystem.Crouch.started += ctx => dropPress = ctx.ReadValue<float>();
+        playerInputSystem.Drop.started += ctx => dropPress = ctx.ReadValue<float>();
         
-        //shoot
+        // Shoot
         playerInputSystem.Attack.performed += ctx => shootPress = ctx.ReadValue<float>();
+
+        //Brake
+        playerInputSystem.Brake.performed += ctx => brakePress = ctx.ReadValue<float>();
 
         //clear input
         playerInputSystem.Move.canceled += ctx => moveDirection = ctx.ReadValue<Vector2>();
@@ -73,12 +77,15 @@ public class PlayerInputHandeler : SimulationBehaviour, IBeforeUpdate, INetworkR
         bool interactDown = (playerInputSystem.Interact.ReadValue<float>() > 0.0f);
         buttons.Set(InputButton.Interact, interactDown);
 
-        bool dropDown = (playerInputSystem.Crouch.ReadValue<float>() > 0.0f);
+        bool dropDown = (playerInputSystem.Drop.ReadValue<float>() > 0.0f);
         buttons.Set(InputButton.Drop, dropDown);
 
         // shootpress returns 0, attack.readvalue returns 1
         bool shootDown = (playerInputSystem.Attack.ReadValue<float>() > 0.0f);
         buttons.Set(InputButton.Shoot, shootDown);
+
+        bool brakeDown = (playerInputSystem.Brake.ReadValue<float>() > 0.0f);
+        buttons.Set(InputButton.Brake, brakeDown);
 
         // Change cursor lock state if enter or esc pressed
         //if (keyboard != null && (keyboard.enterKey.wasPressedThisFrame || keyboard.numpadEnterKey.wasPressedThisFrame || keyboard.escapeKey.wasPressedThisFrame))
@@ -106,7 +113,10 @@ public class PlayerInputHandeler : SimulationBehaviour, IBeforeUpdate, INetworkR
 
     void INetworkRunnerCallbacks.OnInput(NetworkRunner runner, NetworkInput input) {
         // Send package to server
-        accumulatedInput.MoveDirection.Normalize();
+        if (accumulatedInput.MoveDirection.magnitude > 1)
+        {
+            accumulatedInput.MoveDirection.Normalize();
+        }
         input.Set(accumulatedInput);
         resetInput = true;
 
@@ -164,4 +174,10 @@ public class PlayerInputHandeler : SimulationBehaviour, IBeforeUpdate, INetworkR
     }
 
     void INetworkRunnerCallbacks.OnUserSimulationMessage(NetworkRunner runner, SimulationMessagePtr message) { }
+
+    // Tutorial Getters
+    public bool IsPlayerMovingUp { get { return playerInputSystem.Move.ReadValue<Vector2>().y > 0; } }
+    public bool IsPlayerMovingDown { get { return playerInputSystem.Move.ReadValue<Vector2>().y < 0; } }
+    public bool IsPlayerMovingLeft { get { return playerInputSystem.Move.ReadValue<Vector2>().x < 0; } }
+    public bool IsPlayerMovingRight { get { return playerInputSystem.Move.ReadValue<Vector2>().x > 0; } }
 }

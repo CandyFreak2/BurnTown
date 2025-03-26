@@ -1,13 +1,14 @@
+using Fusion;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-public class Tire : MonoBehaviour
+public class Tire : NetworkBehaviour
 {
     [SerializeField]
     private Rigidbody carRB;
 
-    private Vector3 accForces = Vector3.zero;
+    [Networked] private Vector3 accForces { get; set; }
 
     //Collision data
     private RaycastHit tireRay;
@@ -20,9 +21,10 @@ public class Tire : MonoBehaviour
 
     //Acceleration variables
     private Vector3 accelerationForce;
-    public float topSpeed = 100;
+    public float powerMultiplier = 3.0f;
+    public float topSpeed = 60;
     public float brakeStrength = 0.8f;
-    private float frictionStrength = 0.3f;
+    private float frictionStrength = 0.0f;
 
     //Steering variables
     private Vector3 steeringForce;
@@ -30,10 +32,14 @@ public class Tire : MonoBehaviour
 
     private void Start()
     {
-
         suspensionForce = Vector3.zero;
         accelerationForce = Vector3.zero;
         steeringForce = Vector3.zero;
+    }
+
+    public override void Spawned()
+    {
+        accForces = Vector3.zero;
     }
 
     public void UpdateForces(float _accelerationInput, float _brakeInput, Vector3 _carForward)
@@ -95,9 +101,9 @@ public class Tire : MonoBehaviour
             //Speed as float 0-1 based on how close to top speed
             float normalizedSpeed = Mathf.Clamp01(Mathf.Abs(carSpeed) / topSpeed);
 
-            float powerToTire = 1.0f * _accelerationInput; //change 1.0f to a lookup curve that uses normalizedSpeed
+            float powerToTire = PowerToTiresLookup(normalizedSpeed) * _accelerationInput; //change 1.0f to a lookup curve that uses normalizedSpeed
 
-            accelerationForce = accelerationDirection * powerToTire;
+            accelerationForce = accelerationDirection * powerToTire * powerMultiplier;
         }
 
         //Rolling friction force
@@ -137,5 +143,21 @@ public class Tire : MonoBehaviour
         float deltaVelocity = -steeringVelocity * tireGripFactor;
 
         steeringForce = steeringDirection * deltaVelocity;
+    }
+
+    private float PowerToTiresLookup(float _normalizedSpeed)
+    {
+        if (_normalizedSpeed < 0.5f)
+        {
+            return Mathf.Sqrt(_normalizedSpeed / 2) + 0.5f;
+        }
+        else if (_normalizedSpeed < 1.0f)
+        {
+            return 1.0f;
+        }
+        else
+        {
+            return 0.0f;
+        }
     }
 }

@@ -1,17 +1,18 @@
 using Fusion;
 using System;
 using UnityEngine;
+using UnityEngine.EventSystems;
 using UnityEngine.SceneManagement;
+using UnityEngine.UI;
 
-public class PauseMenu : MonoBehaviour {
+public class PauseMenu : NetworkBehaviour {
     [SerializeField] private GameObject pauseUI;
-
-    public event Action<bool> OnPauseStateChanged;
+    [SerializeField] private PlayerMovement playerMovement;
+    [SerializeField] private NetworkRunner runner;
+    [SerializeField] private GameObject startButton;
 
     private bool isPanelOn = false;
-    private NetworkRunner runner;
-
-    [SerializeField] private PlayerMovement playerMovement;
+    private bool isSpawned = false;
 
     private void OnEnable() {
         UIInputHandler.onActionPause += TogglePause;
@@ -21,24 +22,36 @@ public class PauseMenu : MonoBehaviour {
         UIInputHandler.onActionPause -= TogglePause;
     }
 
-    private void Start() {
-        runner = FindAnyObjectByType<NetworkRunner>();
-        playerMovement = GetComponentInParent<PlayerMovement>();
-
-        pauseUI.SetActive(isPanelOn);
-        isPanelOn = pauseUI.activeInHierarchy;
+    public override void Spawned() {
+        isSpawned = true;
     }
 
-    public void TogglePause() {
-        isPanelOn = !isPanelOn;
-        pauseUI.SetActive(isPanelOn);
+    private void FixedUpdate() {
+        if (isSpawned && pauseUI == null && runner == null) {
+            runner = FindAnyObjectByType<NetworkRunner>();
+            pauseUI = UIManager.Instance.GetPauseMenu();
 
-        if (isPanelOn) {
+            pauseUI.SetActive(isPanelOn);
+            isPanelOn = pauseUI.activeInHierarchy;
+        }
+    }
+
+    public void TogglePause(bool input) {
+        input = !input;
+        pauseUI.SetActive(input);
+        EventSystem.current.SetSelectedGameObject(startButton);
+
+        if (input) {
             Cursor.lockState = CursorLockMode.Locked;
         }
 
-        OnPauseStateChanged?.Invoke(isPanelOn);
-        playerMovement.enabled = !isPanelOn;
+        RPC_SetInputState(input);
+    }
+
+    [Rpc(HostMode = RpcHostMode.SourceIsHostPlayer)]
+    public void RPC_SetInputState(bool enable, RpcInfo info = default) {
+        playerMovement = runner.GetPlayerObject(info.Source).GetComponent<PlayerMovement>();
+        playerMovement.enabled = !enable;
     }
 
     public void Resume() {
