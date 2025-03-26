@@ -246,8 +246,8 @@ public class PlayerMovement : NetworkBehaviour
             }
             else if (carriedObject.interactableType == InteractableType.Barrel)
             {
-                RPC_RequestDrop(Object.Id);
-                barrelController.RPC_ThrowBarrel(Object.Id);
+                //RPC_RequestDrop(Object.Id);
+                //barrelController.RPC_ThrowBarrel(Object.Id);
             }
         }
 
