@@ -278,10 +278,9 @@ public class PlayerMovement : NetworkBehaviour
             Collider[] interactableObjects = Physics.OverlapSphere(kcc.transform.position, 3.5f);
             foreach (Collider collider in interactableObjects)
             {
-                // First object in list that is a flamethrower gets picked up ++ Or barrel
-                if (collider.gameObject.tag == "FireTruck")
+                if (truckController.GetDistanceToNearestTruck() < 9.0f)
                 {
-                    nearestInteractable = collider.gameObject;
+                    nearestInteractable = truckController.GetClosestTruck();
                     CarData truckData = nearestInteractable.GetComponent<CarData>();
                     if (truckData.GetNumPassengers() < truckData.GetMaxPassengers())
                     {
@@ -376,14 +375,6 @@ public class PlayerMovement : NetworkBehaviour
         if (truckData != null)
         {
             // set data
-            //truckController.SetTruckParent(_truck);
-            //truckController.SetCarRB(_truck.GetComponent<Rigidbody>());
-            //truckController.SetFrontTires(_truck.transform.Find("FL Tire").gameObject.GetComponent<Tire>());
-            //truckController.SetFrontTires(_truck.transform.Find("FR Tire").gameObject.GetComponent<Tire>());
-            //truckController.SetBackTires(_truck.transform.Find("BL Tire").gameObject.GetComponent<Tire>());
-            //truckController.SetBackTires(_truck.transform.Find("BR Tire").gameObject.GetComponent<Tire>());
-            //truckController.SetTireAngles();
-            //truckController.SetDriverPos(_truck.transform.Find("DriverPos").gameObject.transform);
             truckData.AddPassenger();
             truckController.SetData(truckData);
             transform.SetParent(truckController.seatTransform);
@@ -404,7 +395,6 @@ public class PlayerMovement : NetworkBehaviour
 
     public void GetOutTruck()
     {
-        //truckController.enabled = false;
         truckController.isActive = false;
         transform.SetParent(null);
 
@@ -424,7 +414,6 @@ public class PlayerMovement : NetworkBehaviour
 
     public void PickUpObject(Interactable _object)
     {
-        //Debug.Log(_object.CanBePickedUp());
         if (_object != null && _object.CanBePickedUp())
         {
             RPC_RequestPickUp(_object.Object.Id, Object.Id);
@@ -449,15 +438,6 @@ public class PlayerMovement : NetworkBehaviour
             if (playerTruckController != null)
             {
                 // set data
-                //playerTruckController.SetTruckParent(truck);
-                //playerTruckController.SetCarRB(truck.GetComponent<Rigidbody>());
-                //playerTruckController.SetFrontTires(truck.transform.Find("FL Tire").gameObject.GetComponent<Tire>());
-                //playerTruckController.SetFrontTires(truck.transform.Find("FR Tire").gameObject.GetComponent<Tire>());
-                //playerTruckController.SetBackTires(truck.transform.Find("BL Tire").gameObject.GetComponent<Tire>());
-                //playerTruckController.SetBackTires(truck.transform.Find("BR Tire").gameObject.GetComponent<Tire>());
-                //playerTruckController.SetTireAngles();
-                //playerTruckController.SetDriverPos(truck.transform.Find("DriverPos").gameObject.transform);
-                //truckData.AddPassenger();
                 RPC_SetTruckData(_truckId, _playerId);
                 RPC_UpdateTransform(_playerId);
 

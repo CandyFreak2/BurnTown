@@ -41,6 +41,8 @@ public class CarController : NetworkBehaviour
     public PlayerMovement playerController;
     public bool isDriver;
     private bool canExit = false;
+    private CarData[] trucks;
+    private int closestTruckIndex = 0;
 
     private void Awake()
     {
@@ -62,18 +64,10 @@ public class CarController : NetworkBehaviour
         {
             //FreeCameraController.Singleton.SetTarget(camTarget);
             //GetComponentInChildren<CineSingleCamera>().SetAsActiveCamera();
+            trucks = FindObjectsByType<CarData>(FindObjectsSortMode.None);
             isSpawned = true;
         }
     }
-
-    //void IBeforeUpdate.BeforeUpdate()
-    //{
-    //    if (isDriver)
-    //    {
-    //        steerInput = steerDirection.x;
-    //        Debug.Log(steerInput);
-    //    }
-    //}
 
     private void FixedUpdate()
     {
@@ -157,12 +151,6 @@ public class CarController : NetworkBehaviour
             foreach (Tire tire in frontTires)
             {
                 tire.transform.localEulerAngles = tireAngle;
-
-                //if (tireAngle > -(2 * tireMaxAngle))
-                //{
-                //    tire.transform.Rotate(0, -tireTurnSpeed, 0);
-                //    tireAngle -= tireTurnSpeed;
-                //}
             }
         }
         else if (steerInput > 0.0f)
@@ -172,12 +160,6 @@ public class CarController : NetworkBehaviour
             foreach (Tire tire in frontTires)
             {
                 tire.transform.localEulerAngles = tireAngle;
-
-                //if (tireAngle < (2 * tireMaxAngle))
-                //{
-                //    tire.transform.Rotate(0, tireTurnSpeed, 0);
-                //    tireAngle += tireTurnSpeed;
-                //}
             }
         }
         else
@@ -187,17 +169,6 @@ public class CarController : NetworkBehaviour
             foreach (Tire tire in frontTires)
             {
                 tire.transform.localEulerAngles = tireAngle;
-
-                //if (tireAngle > 0)
-                //{
-                //    tire.transform.Rotate(0, -tireTurnSpeed, 0);
-                //    tireAngle -= tireTurnSpeed;
-                //}
-                //else if (tireAngle < 0)
-                //{
-                //    tire.transform.Rotate(0, tireTurnSpeed, 0);
-                //    tireAngle += tireTurnSpeed;
-                //}
             }
         }
     }
@@ -273,10 +244,7 @@ public class CarController : NetworkBehaviour
             camera.Priority = -1;
         }
 
-        //truckParent.GetComponent<Collider>().transform.localPosition = Vector3.zero;
-
         playerController.enabled = true;
-        //playerController.ReactivateSystems();
         RPC_ActivatePlayerSystems(Object.Id, true);
         if (seatTransform != null)
         {
@@ -296,7 +264,6 @@ public class CarController : NetworkBehaviour
         playerInputSystem.Disable();
         seatTransform = null;
         playerController.GetOutTruck();
-        //playerController = null;
         isActive = false;
     }
 
@@ -312,7 +279,6 @@ public class CarController : NetworkBehaviour
             carController.isActive = true;
             carController.playerController = player;
             carController.playerController.DeactivateSystems();
-            //RPC_ActivatePlayerSystems(_playerId, false);
             carController.playerController.enabled = false;
 
 
@@ -336,7 +302,6 @@ public class CarController : NetworkBehaviour
             carController.carRB.useGravity = true;
             carController.playerController.enabled = true;
             carController.playerController.ReactivateSystems();
-            //RPC_ActivatePlayerSystems(_truckId, true);
             if (carController.seatTransform != null)
             {
                 if (carController.seatTransform.localPosition.x < 0)
@@ -348,10 +313,6 @@ public class CarController : NetworkBehaviour
                     carController.playerController.GetComponent<SimpleKCC>().SetPosition(carController.seatTransform.position + carController.seatTransform.right);
                 }
             }
-            //carController.carData.SubPassenger();
-            //carController.playerController.GetOutTruck();
-            //carController.playerController = null;
-            RPC_UpdateTruckPos(Object.Id);
             carController.seatTransform = null;
             carController.isActive = false;
         }
@@ -371,27 +332,6 @@ public class CarController : NetworkBehaviour
         {
             carController.playerController.DeactivateSystems();
         }
-    }
-
-    [Rpc(RpcSources.StateAuthority, RpcTargets.All)]
-    public void RPC_UpdateTruckPos(NetworkId _truckId)
-    {
-        CarController carController = Runner.FindObject(_truckId).GetComponent<CarController>();
-
-        if (carController != null)
-        {
-            carController.StartCoroutine(UpdateTruckPos());
-        }
-
-        //NetworkRigidbody3D truckRB = Runner.FindObject(_truckId).GetComponent<NetworkRigidbody3D>();
-        //BoxCollider truckCollider = truckRB.GetComponent<BoxCollider>();
-
-        //if (truckRB != null && truckCollider != null)
-        //{
-        //    truckRB.transform.position = _position;
-        //    truckRB.transform.rotation = _rotation;
-        //    truckCollider.transform.position = _position;
-        //}
     }
 
     public void SetData(CarData _data)
@@ -430,14 +370,22 @@ public class CarController : NetworkBehaviour
         Debug.DrawLine(carRB.transform.position, carRB.transform.position + rightTireAngle * 10, Color.red, 5.0f);
     }
 
-    private IEnumerator UpdateTruckPos()
+    public float GetDistanceToNearestTruck()
     {
-        yield return new WaitForSeconds(0.5f);
-        carRB.isKinematic = true;
-        networkedCarRB.RBIsKinematic = true;
-        yield return new WaitForSeconds(0.25f);
-        carRB.isKinematic = false;
-        networkedCarRB.RBIsKinematic = false;
+        float minDistance = Vector3.Distance(trucks[0].truckPos, transform.position);
+
+        for (int i = 0; i < trucks.Length; i++)
+        {
+            Mathf.Min(minDistance, Vector3.Distance(trucks[i].truckPos, transform.position));
+            closestTruckIndex = i;
+        }
+
+        return minDistance;
+    }
+
+    public GameObject GetClosestTruck()
+    {
+        return trucks[closestTruckIndex].gameObject;
     }
 
     public void SetTruckParent(GameObject _truck)
