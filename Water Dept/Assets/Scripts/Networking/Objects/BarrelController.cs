@@ -83,7 +83,7 @@ public class BarrelController : NetworkBehaviour
         }
     }
 
-    [Rpc(RpcSources.All, RpcTargets.StateAuthority)]
+    [Rpc(RpcSources.All, RpcTargets.All)]
     public void RPC_PlaceBarrel(NetworkId playerScript, NetworkObject barr)
     {
         RPC_ToggleBarrel(playerScript);
@@ -92,12 +92,13 @@ public class BarrelController : NetworkBehaviour
 
         pBarrelController.barrelSchematic = barr;
         pBarrelController.SnapPosition(barrelSchematic);
+
     }
 
-    [Rpc(RpcSources.All, RpcTargets.StateAuthority)]
+    [Rpc(RpcSources.All, RpcTargets.All)]
     public void RPC_ThrowBarrel(NetworkId playerScript)
     {
-        //RPC_ToggleBarrel(playerScript);
+        RPC_ToggleBarrel(playerScript);
         
         BarrelController pBarrelController = Runner.FindObject(playerScript).GetComponent<BarrelController>();
 

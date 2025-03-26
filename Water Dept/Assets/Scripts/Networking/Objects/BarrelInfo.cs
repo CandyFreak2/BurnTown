@@ -1,4 +1,5 @@
 using Fusion;
+using Fusion.Addons.Physics;
 using Fusion.Addons.SimpleKCC;
 using System.Collections;
 using UnityEngine;
@@ -200,27 +201,6 @@ public class BarrelInfo : NetworkBehaviour
         else if (isAirborne)
         {
             timer += Time.deltaTime;
-            //if collides with something mid air, blow up
-            //Collider[] colliders = Physics.OverlapSphere(gameObject.transform.position - new Vector3(0, 0.5f, 0), throwSnapRadius);
-            //foreach (Collider hit in colliders)
-            //{
-            //    if (timer > 0.2f && hit.GetComponent<BarrelInfo>() && hit.GetComponent<BarrelInfo>() != gameObject.GetComponent<BarrelInfo>() && isAirborne)
-            //    {
-            //        gameObject.GetComponent<Rigidbody>().isKinematic = true;
-
-            //        transform.position = hit.transform.position + new Vector3(0, 1.4f, 0);
-
-            //        isAirborne = false;
-            //        // links head/ tail chain components of barrelInfo on place
-            //        if (gameObject.GetComponent<BarrelInfo>() != null)
-            //        {
-            //            tail = hit.gameObject;
-            //            hit.gameObject.GetComponent<BarrelInfo>().head = gameObject;
-            //        }
-            //        gameObject.GetComponent<Rigidbody>().isKinematic = false;
-            //        Debug.Log("SnapBox");
-            //    }
-            //}
             Collider[] colliders2 = Physics.OverlapSphere(gameObject.transform.position - new Vector3(0, 0.5f, 0), 0.5f);
             foreach (Collider hit in colliders2)
             {
@@ -233,22 +213,18 @@ public class BarrelInfo : NetworkBehaviour
                         //snaps barrel to ground
                         if (ray.collider.GetComponent<BarrelInfo>() == null && !hit.gameObject.GetComponent<Collider>().isTrigger)
                         {
-                            Debug.Log(ray.collider.gameObject);
-                            
                             gameObject.GetComponent<Rigidbody>().isKinematic = true;
                             
-
                             float dist = Vector3.Distance(gameObject.transform.position, ray.point);
                             gameObject.transform.position -= Vector3.up * dist - new Vector3(0, 0.5f, 0);
                             isAirborne = false;
                             gameObject.GetComponent<Rigidbody>().isKinematic = false;
+                            
                         }
                     }
-                    //Debug.Log("SnapGround");
                 }
 
             }
-
 
         }
     }

@@ -9,6 +9,7 @@ using System.Collections.Generic;
 using DG.Tweening;
 using System.Collections;
 using System.Threading;
+using Fusion.Addons.Physics;
 
 public class PlayerMovement : NetworkBehaviour
 {
@@ -218,7 +219,14 @@ public class PlayerMovement : NetworkBehaviour
         //Drop hose // Barrel
         if (action.Buttons.WasPressed(previousButtons, InputButton.Drop) && IsHolding())
         {
-            RPC_RequestDrop(Object.Id);
+            if(carriedObject.interactableType == InteractableType.Barrel)
+            {
+                RPC_RequestDropBarrel(Object.Id);
+            }
+            else
+            {
+                RPC_RequestDrop(Object.Id);
+            }
         }
 
         // Fire hose // throw barrel
@@ -299,8 +307,6 @@ public class PlayerMovement : NetworkBehaviour
                 else if (collider.gameObject.tag == "Barrel")
                 {
                     nearestInteractable = collider.gameObject;
-                    Debug.Log(collider.gameObject.transform.position);
-                    Debug.Log(collider.GetComponent<Interactable>().interactableCollider.transform.position);
                     pickupText.text = "North Button / E to Pickup Barrel";
                     return nearestInteractable;
                 }
@@ -540,16 +546,25 @@ public class PlayerMovement : NetworkBehaviour
         PlayerMovement player = Runner.FindObject(_playerId).GetComponent<PlayerMovement>();
         if (player.IsHolding() && player.carriedObject.GetCarrierId() == _playerId)
         {
-            if (player.carriedObject.interactableType == InteractableType.Barrel)
-            {
-                player.barrelController.RPC_PlaceBarrel(_playerId, player.carriedObject.GetComponent<NetworkObject>());
-            }
-
             player.carriedObject.Drop();
             if (player.carriedObject.interactableType == InteractableType.Flamethrower)
             {
                 player.carriedObject.gameObject.GetComponent<Flamethrower>().StopSpraying();
             }
+            player.carriedObject.gameObject.GetComponent<NetworkObject>().RemoveInputAuthority();
+            player.carriedObject = null;
+        }
+    }
+
+    // Asks server very nicely if client can drop object
+    [Rpc(RpcSources.All, RpcTargets.StateAuthority)] // Only run by host
+    public void RPC_RequestDropBarrel(NetworkId _playerId)
+    {
+        PlayerMovement player = Runner.FindObject(_playerId).GetComponent<PlayerMovement>();
+        if (player.IsHolding() && player.carriedObject.GetCarrierId() == _playerId)
+        {
+            player.barrelController.RPC_PlaceBarrel(_playerId, player.carriedObject.GetComponent<NetworkObject>());
+            player.carriedObject.Drop();
             player.carriedObject.gameObject.GetComponent<NetworkObject>().RemoveInputAuthority();
             player.carriedObject = null;
         }
@@ -595,7 +610,6 @@ public class PlayerMovement : NetworkBehaviour
             explosionTimer += Time.fixedDeltaTime;
         }
 
-        
     }
 
     public bool IsHolding()

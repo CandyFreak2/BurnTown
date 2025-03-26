@@ -73,7 +73,6 @@ public class Interactable : NetworkBehaviour
     {
         if (/*HasStateAuthority &&*/ !isPickedUp)
         {
-
             isPickedUp = true;
             carrierId = _playerId;
 
