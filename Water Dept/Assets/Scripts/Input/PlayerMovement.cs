@@ -59,8 +59,8 @@ public class PlayerMovement : NetworkBehaviour
     //[SerializeField] float AirDrag = 7.0f;
 
     [Header("Audio")]
-    [SerializeField] PlayerSFXProfile sfxProfile;
-    [Serializable] private class PlayerSFXProfile
+    public PlayerSFXProfile sfxProfile;
+    [Serializable] public class PlayerSFXProfile
     {
         public List<AudioClip> footstep = new List<AudioClip>();
         public List<AudioClip> equipItem = new List<AudioClip>();
