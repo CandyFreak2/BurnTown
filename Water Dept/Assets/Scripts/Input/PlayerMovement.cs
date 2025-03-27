@@ -579,7 +579,7 @@ public class PlayerMovement : NetworkBehaviour
         Vector3 force = forceVec;
 
         force = force * explosionForce;
-        Debug.Log(force);
+
         if (explosionTimer == 0) 
         {
             gameObject.GetComponent<SimpleKCC>().Move(Vector3.zero, 10);
