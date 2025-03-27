@@ -11,6 +11,11 @@ public class GaslinePoint : NetworkBehaviour {
         isSpawned = true;
     }
 
+    public void setFire()
+    {
+        isOnFire = true;
+    }
+
     private void OnTriggerEnter(Collider other) {
         if (other.CompareTag("Flame") && isSpawned) {
             isOnFire = true;
