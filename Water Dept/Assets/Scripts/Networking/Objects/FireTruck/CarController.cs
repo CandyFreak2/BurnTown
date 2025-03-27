@@ -224,7 +224,7 @@ public class CarController : NetworkBehaviour
         }
 
         // RB
-        carRB.useGravity = true;
+        carRB.isKinematic = false;
 
         // Add delay to player being able to exit so player doesn't instantly leave off of enter input
         canExit = false;
@@ -235,7 +235,7 @@ public class CarController : NetworkBehaviour
 
     private void PlayerExitTruck()
     {
-        carRB.useGravity = true;
+        carRB.isKinematic = true;
 
         // lower truck camera priority
         if (HasInputAuthority)
@@ -283,7 +283,7 @@ public class CarController : NetworkBehaviour
 
 
             // RB
-            //carController.carRB.useGravity = false;
+            carController.carRB.isKinematic = false;
 
             // Add delay to player being able to exit so player doesn't instantly leave off of enter input
             carController.canExit = false;
@@ -299,7 +299,7 @@ public class CarController : NetworkBehaviour
 
         if (carController != null)
         {
-            carController.carRB.useGravity = true;
+            carController.carRB.isKinematic = true;
             carController.playerController.enabled = true;
             carController.playerController.ReactivateSystems();
             if (carController.seatTransform != null)
