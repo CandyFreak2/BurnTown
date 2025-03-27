@@ -6,6 +6,7 @@ using UnityEngine.UI;
 using Fusion;
 
 public class LobbyUI : MonoBehaviour {
+    public GameObject loadingScreen;
     [SerializeField] private TMP_Text lobbyCode;
     private static TMP_Text sLobbyCode;
 
@@ -90,5 +91,10 @@ public class LobbyUI : MonoBehaviour {
             launcher.JoinOrCreateLobby();
             isLobbyValid = false;
         }
+    }
+
+    public void ShowLoadScreen()
+    {
+        loadingScreen.SetActive(true);
     }
 }

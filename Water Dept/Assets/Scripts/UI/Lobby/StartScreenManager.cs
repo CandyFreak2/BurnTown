@@ -16,6 +16,8 @@ public class StartScreenManager : MonoBehaviour {
 
     private bool isLobbyValid = false;
 
+    public GameObject loadScreen;
+
     //[Header("Collective")]
 
     private void Start() {
@@ -63,6 +65,7 @@ public class StartScreenManager : MonoBehaviour {
             launcher.SetGameMode(GameMode.Client);
             launcher.JoinOrCreateLobby();
             isLobbyValid = false;
+            loadScreen.SetActive(true);
         }
     }
 

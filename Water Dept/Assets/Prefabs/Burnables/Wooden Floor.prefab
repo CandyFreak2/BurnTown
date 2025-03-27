@@ -120,6 +120,8 @@ GameObject:
   - component: {fileID: 4610629987021996167}
   - component: {fileID: 1087588565873994909}
   - component: {fileID: 7320509005664686402}
+  - component: {fileID: 6405676637723769569}
+  - component: {fileID: 6979129500288549461}
   m_Layer: 0
   m_Name: Wooden Floor
   m_TagString: Untagged
@@ -135,9 +137,9 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 7873259158025951610}
   serializedVersion: 2
-  m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
   m_LocalPosition: {x: 17.4, y: 9, z: 56}
-  m_LocalScale: {x: 15, y: 0.1, z: 20}
+  m_LocalScale: {x: 15, y: 0.1, z: 23.508}
   m_ConstrainProportionsScale: 0
   m_Children:
   - {fileID: 4066065174528138322}
@@ -192,6 +194,7 @@ MonoBehaviour:
   NestedObjects: []
   NetworkedBehaviours:
   - {fileID: 4610629987021996167}
+  - {fileID: 6979129500288549461}
   ForceRemoteRenderTimeframe: 0
 --- !u!65 &7320509005664686402
 BoxCollider:
@@ -214,6 +217,56 @@ BoxCollider:
   serializedVersion: 3
   m_Size: {x: 0.33333424, y: 3.8165264, z: 0.33050463}
   m_Center: {x: 0.00000033378603, y: 1.4082632, z: 0.1347477}
+--- !u!54 &6405676637723769569
+Rigidbody:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 7873259158025951610}
+  serializedVersion: 4
+  m_Mass: 1
+  m_Drag: 0
+  m_AngularDrag: 0.05
+  m_CenterOfMass: {x: 0, y: 0, z: 0}
+  m_InertiaTensor: {x: 1, y: 1, z: 1}
+  m_InertiaRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_IncludeLayers:
+    serializedVersion: 2
+    m_Bits: 0
+  m_ExcludeLayers:
+    serializedVersion: 2
+    m_Bits: 0
+  m_ImplicitCom: 1
+  m_ImplicitTensor: 1
+  m_UseGravity: 1
+  m_IsKinematic: 0
+  m_Interpolate: 0
+  m_Constraints: 0
+  m_CollisionDetection: 0
+--- !u!114 &6979129500288549461
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 7873259158025951610}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 0a591d221a634417e9827eb58e17de84, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  _stateAuthorityChangeErrorCorrectionDelta: 0.15
+  SyncScale: 0
+  SyncParent: 1
+  _interpolationTarget: {fileID: 0}
+  UsePreciseRotation: 0
+  UseRenderSleepThresholds: 1
+  RenderThresholds:
+    UseEnergy: 1
+    Position: 0.01
+    Rotation: 0.01
+    Scale: 0.01
 --- !u!1001 &990871396436386074
 PrefabInstance:
   m_ObjectHideFlags: 0
