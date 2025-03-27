@@ -57,10 +57,17 @@ public class Burnable : NetworkBehaviour
 
     [Header("Colors")]
     [SerializeField] private bool showsLerp = true;
+    [SerializeField, Range(0f, 1f), Tooltip("Smoothes the color transition, Low values = smoother")] 
+    private float colorStepSmoothing = 0.05f;
+    [SerializeField, Range(0f, 1f), Tooltip("Reaches max color at this ratio of fuel expended")]
+    private float colorStepMax = 0.8f;
+
     [SerializeField] private Color initialColor = Color.green;
     [SerializeField] private Color startColor = Color.yellow;
     [SerializeField] private Color endColor = Color.red;
     private Renderer render;
+    private VFXController vfxControler;
+    private float burnVisOpacity;
 
     [Header("VFX")]
     [SerializeField] ParticleSystem onFireVFX;
@@ -80,6 +87,7 @@ public class Burnable : NetworkBehaviour
         //used for tracking percentages
         if (showsLerp)
         {
+            vfxControler = GetComponentInChildren<VFXController>();
             render = GetComponentInChildren<Renderer>();
             render.material.color = initialColor;
         }
@@ -105,7 +113,16 @@ public class Burnable : NetworkBehaviour
         {
             //lerp between start and end color based on % of fuel remaining
             if(showsLerp)
-                render.material.color = Color.Lerp(endColor, startColor, ((float)fuelRemaining / (float)startFuel));
+            {
+                if(render != null)
+                    render.material.color = Color.Lerp(endColor, startColor, ((float)fuelRemaining / (float)startFuel));
+
+                if (vfxControler != null)
+                {
+                    burnVisOpacity = Mathf.InverseLerp((float)startFuel, 0, (float)fuelRemaining * colorStepMax);
+                    vfxControler.Opacity = Mathf.Lerp(vfxControler.Opacity, burnVisOpacity, colorStepSmoothing); //stupid, but adds nice smoothing
+                }
+            }
         }
     }
 
