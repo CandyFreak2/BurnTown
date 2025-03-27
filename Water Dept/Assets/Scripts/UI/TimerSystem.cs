@@ -12,7 +12,7 @@ public class TimerSystem : NetworkBehaviour {
     [SerializeField] private TMP_Text timerText;
     [SerializeField] private float remainingTime;
 
-    private bool canPause = false;
+    private bool canPause = false, playedCutscene;
     private int prev, current;
 
     [SerializeField] private Button pauseButton, resetButton; 
@@ -31,6 +31,10 @@ public class TimerSystem : NetworkBehaviour {
 
     public override void FixedUpdateNetwork() {
         if (GameStateHandler.Instance.GetGameState == GameStateHandler.GameState.STARTED) {
+            if (!playedCutscene) {
+                EventManager.TimerStart();
+                playedCutscene = true;
+            }
             if (!Timer.IsRunning) {
                 Timer = TickTimer.CreateFromSeconds(Runner, remainingTime);
             } if (canStart && !canPause) {
