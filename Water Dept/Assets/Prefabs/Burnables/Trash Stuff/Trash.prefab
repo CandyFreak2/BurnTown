@@ -45,7 +45,7 @@ MeshFilter:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 7253036844930044120}
-  m_Mesh: {fileID: 10202, guid: 0000000000000000e000000000000000, type: 0}
+  m_Mesh: {fileID: 3523802474862856229, guid: 915b6fa063e68564e8b3cf5a99eea00c, type: 3}
 --- !u!23 &237217674421956407
 MeshRenderer:
   m_ObjectHideFlags: 0
@@ -69,7 +69,7 @@ MeshRenderer:
   m_RenderingLayerMask: 1
   m_RendererPriority: 0
   m_Materials:
-  - {fileID: 2100000, guid: 31321ba15b8f8eb4c954353edc038b1d, type: 2}
+  - {fileID: 2100000, guid: 4f1ef37ae953c484bbc5d5e4049147e5, type: 2}
   m_StaticBatchInfo:
     firstSubMesh: 0
     subMeshCount: 0
@@ -110,8 +110,8 @@ BoxCollider:
   m_ProvidesContacts: 0
   m_Enabled: 1
   serializedVersion: 3
-  m_Size: {x: 1, y: 1, z: 1}
-  m_Center: {x: 0, y: 0, z: 0}
+  m_Size: {x: 0.67, y: 0.73, z: 0.69}
+  m_Center: {x: 0, y: -0.09, z: 0}
 --- !u!54 &6789456815456585511
 Rigidbody:
   m_ObjectHideFlags: 0
@@ -153,20 +153,24 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   burnableScore: 1
   _fuelRemaining: 0
-  HeatSources: []
   heatModifier: 0
+  HeatSources: []
   burnOnAwake: 0
   startFuel: 10
   heatResistance: 0
-  heatStrength: 1
   heatBuffer: 1
+  heatDmgCap: 999
+  heatStrength: 1
   spreadRadius: 3
   _nIsBurning: 0
   showsLerp: 1
+  colorStepSmoothing: 0.05
+  colorStepMax: 0.8
   initialColor: {r: 0.4528302, g: 0.4528302, b: 0.4528302, a: 1}
   startColor: {r: 1, g: 0.56351566, b: 0.015686274, a: 1}
   endColor: {r: 1, g: 0, b: 0, a: 1}
   onFireVFX: {fileID: 5971381314825315898}
+  destroyedModel: {fileID: 0}
 --- !u!114 &7665528197390418716
 MonoBehaviour:
   m_ObjectHideFlags: 0
