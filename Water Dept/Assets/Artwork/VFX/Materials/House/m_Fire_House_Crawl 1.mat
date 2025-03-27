@@ -21,14 +21,14 @@ Material:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_Name: m_Fire_House_Crawl 1
-  m_Shader: {fileID: -6465566751694194690, guid: 322dc9148dfe01f4098182f5caa5305b,
+  m_Shader: {fileID: -6465566751694194690, guid: 9c46deec188061e439103a5448296473,
     type: 3}
   m_Parent: {fileID: 0}
   m_ModifiedSerializedProperties: 0
   m_ValidKeywords:
-  - _ALPHAMODULATE_ON
   - _SURFACE_TYPE_TRANSPARENT
-  m_InvalidKeywords: []
+  m_InvalidKeywords:
+  - _RECEIVE_SHADOWS_OFF
   m_LightmapFlags: 0
   m_EnableInstancingVariants: 0
   m_DoubleSidedGI: 0
@@ -44,8 +44,8 @@ Material:
     serializedVersion: 3
     m_TexEnvs:
     - _Albedo:
-        m_Texture: {fileID: 2800000, guid: 1f68c29adc1b3024d9bf2b596c810e5a, type: 3}
-        m_Scale: {x: 2, y: 2}
+        m_Texture: {fileID: 2800000, guid: 8a697c2b44cb8694895af36fa45f039e, type: 3}
+        m_Scale: {x: 3, y: 3}
         m_Offset: {x: 0, y: 0}
     - _Alberto:
         m_Texture: {fileID: 0}
@@ -64,7 +64,7 @@ Material:
         m_Scale: {x: 1, y: 1}
         m_Offset: {x: 0, y: 0}
     - _Base_Map:
-        m_Texture: {fileID: 2800000, guid: 767830114c2c8b84eb7a135ec287c1fd, type: 3}
+        m_Texture: {fileID: 2800000, guid: 4c093dacfba2af346a41926fec564e17, type: 3}
         m_Scale: {x: 1, y: 1}
         m_Offset: {x: 0, y: 0}
     - _BumpMap:
@@ -84,11 +84,11 @@ Material:
         m_Scale: {x: 1, y: 1}
         m_Offset: {x: 0, y: 0}
     - _Detail_Map:
-        m_Texture: {fileID: 2800000, guid: 6afc13c4fcba5b349b30dd6127f447b1, type: 3}
+        m_Texture: {fileID: 2800000, guid: 767830114c2c8b84eb7a135ec287c1fd, type: 3}
         m_Scale: {x: 1, y: 1}
         m_Offset: {x: 0, y: 0}
     - _Detail_Mask:
-        m_Texture: {fileID: 2800000, guid: 43401b97805bcbe429d231526fd12f25, type: 3}
+        m_Texture: {fileID: 2800000, guid: 9bd757ea95176e94980b75ceabc88e09, type: 3}
         m_Scale: {x: 4, y: 4}
         m_Offset: {x: 0, y: 0}
     - _Displacement_Map:
@@ -108,7 +108,7 @@ Material:
         m_Scale: {x: 4, y: 4}
         m_Offset: {x: 0, y: 0}
     - _Distortion_Map:
-        m_Texture: {fileID: 2800000, guid: 7b30b858a7d6aef48b347d1286f0c40b, type: 3}
+        m_Texture: {fileID: 2800000, guid: ef0b47c2c0a995d46bb4737c98a356b5, type: 3}
         m_Scale: {x: 1, y: 1}
         m_Offset: {x: 0, y: 0}
     - _EMISSION_COLOR_MAP:
@@ -189,20 +189,20 @@ Material:
     - _BUILTIN_ZWrite: 0
     - _BUILTIN_ZWriteControl: 0
     - _BUMP_MAP_STRENGTH: 0.3
-    - _Blend: 3
+    - _Blend: 0
     - _BlendModePreserveSpecular: 0
     - _Bloom: 10
     - _BumpScale: 1
     - _CastShadows: 0
     - _ClearCoatMask: 0
     - _ClearCoatSmoothness: 0
-    - _ColorStrength: 1
+    - _ColorStrength: 50
     - _Cull: 2
     - _Cutoff: 0.5
     - _DetailAlbedoMapScale: 1
     - _DetailNormalMapScale: 1
-    - _Distortion_Amount: 0.001
-    - _DstBlend: 0
+    - _Distortion_Amount: 0.021
+    - _DstBlend: 10
     - _DstBlendAlpha: 10
     - _EMISSION_WEIGHT: 1
     - _Edge_Intersection_Distance: 0
@@ -227,7 +227,7 @@ Material:
     - _Smoothness: 0
     - _SmoothnessTextureChannel: 0
     - _SpecularHighlights: 1
-    - _SrcBlend: 2
+    - _SrcBlend: 5
     - _SrcBlendAlpha: 1
     - _Surface: 1
     - _TRANSPARENCY: 0
@@ -240,20 +240,20 @@ Material:
     - _BASE_COLOR: {r: 1, g: 1, b: 1, a: 1}
     - _BackFace_Color: {r: 1, g: 1, b: 1, a: 0}
     - _BaseColor: {r: 1, g: 1, b: 1, a: 1}
-    - _BaseMap_Scroll: {r: 0, g: 0, b: 0, a: 0}
-    - _BaseMap_Tiling: {r: 5, g: 5, b: 0, a: 0}
+    - _BaseMap_Scroll: {r: 0.2, g: 0.2, b: 0, a: 0}
+    - _BaseMap_Tiling: {r: 12, g: 12, b: 0, a: 0}
     - _Color: {r: 1, g: 1, b: 1, a: 1}
     - _Detail_Scroll: {r: 0.02, g: 0.01, b: 0, a: 0}
-    - _Detail_Speed: {r: 0, g: 0, b: 0, a: 0}
-    - _Detail_Tiling: {r: 3, g: 3, b: 0, a: 0}
-    - _Displacement_Scroll: {r: 1, g: 1, b: 0, a: 0}
+    - _Detail_Speed: {r: 0, g: -0.01, b: 0, a: 0}
+    - _Detail_Tiling: {r: 1, g: 1, b: 0, a: 0}
+    - _Displacement_Scroll: {r: 0.5, g: 0.5, b: 0, a: 0}
     - _Displacement_Tiling: {r: 1, g: 1, b: 0, a: 0}
     - _Dissolve_Scroll: {r: 0, g: 0, b: 0, a: 0}
     - _Dissolve_Speed: {r: 0, g: 0, b: 0, a: 0}
     - _Dissolve_Tiling: {r: 1, g: 1, b: 0, a: 0}
     - _Distortion_Scroll: {r: 0, g: 0, b: 0, a: 0}
-    - _Distortion_Speed: {r: 0, g: 0, b: 0, a: 0}
-    - _Distortion_Tiling: {r: 1, g: 1, b: 0, a: 0}
+    - _Distortion_Speed: {r: 0.002, g: 0.01, b: 0, a: 0}
+    - _Distortion_Tiling: {r: 2, g: 1, b: 0, a: 0}
     - _EMISSION_COLOR: {r: 0, g: 0, b: 0, a: 0}
     - _EmissionColor: {r: 0, g: 0, b: 0, a: 1}
     - _REFLECTIONS_COLOR: {r: 1, g: 1, b: 1, a: 1}
