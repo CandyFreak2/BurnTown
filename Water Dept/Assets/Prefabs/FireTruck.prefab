@@ -220,8 +220,8 @@ Rigidbody:
     m_Bits: 0
   m_ImplicitCom: 0
   m_ImplicitTensor: 1
-  m_UseGravity: 0
-  m_IsKinematic: 0
+  m_UseGravity: 1
+  m_IsKinematic: 1
   m_Interpolate: 0
   m_Constraints: 0
   m_CollisionDetection: 0
@@ -271,7 +271,7 @@ MonoBehaviour:
   - {fileID: 2775799917461370702}
   - {fileID: 8541504176339054803}
   - {fileID: 5827985545805330910}
-  _numPassengers: 0
+  _truckPos: {x: 0, y: 0, z: 0}
 --- !u!114 &2467624447809652897
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -612,8 +612,8 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 9181218762468318415}
   serializedVersion: 2
-  m_LocalRotation: {x: 0.34095618, y: -0.35566983, z: 0.14122866, w: 0.8586631}
-  m_LocalPosition: {x: 15.000004, y: 20, z: -15}
+  m_LocalRotation: {x: 0.1412296, y: -0.85866207, z: 0.34095564, w: 0.3556724}
+  m_LocalPosition: {x: 15.000088, y: 20, z: 14.999911}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []
