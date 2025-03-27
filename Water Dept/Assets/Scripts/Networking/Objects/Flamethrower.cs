@@ -120,6 +120,10 @@ public class Flamethrower : NetworkBehaviour
                 burn = hit.collider.GetComponentInChildren<Burnable>(true);
             }
 
+            if(hit.collider.GetComponent<GaslinePoint>())
+            {
+                hit.collider.GetComponent<GaslinePoint>().setFire();
+            }
 
             //apply fire dammage to burnables
             if (burn != null)
