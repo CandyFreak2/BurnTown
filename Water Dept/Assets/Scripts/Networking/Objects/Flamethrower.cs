@@ -80,8 +80,10 @@ public class Flamethrower : NetworkBehaviour
 
         if(HasInputAuthority)
         {
-            Gamepad.current.SetMotorSpeeds(0.25f * rumbleMultiplier, 0.75f * rumbleMultiplier);
-            InputSystem.ResumeHaptics();
+            if (Gamepad.current != null) {
+                Gamepad.current.SetMotorSpeeds(0.25f * rumbleMultiplier, 0.75f * rumbleMultiplier);
+                InputSystem.ResumeHaptics();
+            }
         }
     }
 
@@ -138,7 +140,6 @@ public class Flamethrower : NetworkBehaviour
                 Transform decal = decalPool.GetPooledObject().transform;
                 decal.position = hit.point;
                 decal.forward = -hit.normal;
-                Debug.Log(hit.normal);
                 decalTimer = 0f;
             }
 
