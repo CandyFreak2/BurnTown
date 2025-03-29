@@ -17,7 +17,6 @@ public class CarController : NetworkBehaviour
     private CarData carData;
     public GameObject truckParent;
     [SerializeField] private Rigidbody carRB;
-    [SerializeField] private NetworkRigidbody3D networkedCarRB;
     [SerializeField] private Transform camTarget;
     [SerializeField] private float gravityStrength = 12.0f;
     public Transform seatTransform;
@@ -73,7 +72,7 @@ public class CarController : NetworkBehaviour
     {
         if (isSpawned && isActive)
         {
-
+            
             transform.localPosition = Vector3.zero/*truckParent.transform.position + truckParent.transform.TransformDirection(playerPos)*/;
             //player.transform.rotation = playerPos.rotation;
         }
@@ -339,7 +338,6 @@ public class CarController : NetworkBehaviour
         carData = _data;
         truckParent = _data.gameObject;
         carRB = _data.carRB;
-        networkedCarRB = _data.networkCarRB;
         frontTires = _data.frontTires;
         backTires = _data.backTires;
 
@@ -417,11 +415,6 @@ public class CarController : NetworkBehaviour
     public Rigidbody GetCarRB()
     {
         return carRB;
-    }
-
-    public NetworkRigidbody3D GetCarRBNetworked()
-    {
-        return networkedCarRB;
     }
 
     private void ExitDelay()

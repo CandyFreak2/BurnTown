@@ -45,9 +45,9 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   carRB: {fileID: 4768391477969633517}
-  suspensionRestLength: 0.5
-  suspensionStrength: 160
-  suspensionDamping: 120
+  suspensionRestLength: 0.8
+  suspensionStrength: 85
+  suspensionDamping: 75
   powerMultiplier: 30
   topSpeed: 60
   brakeStrength: 12
@@ -97,9 +97,9 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   carRB: {fileID: 4768391477969633517}
-  suspensionRestLength: 0.5
-  suspensionStrength: 160
-  suspensionDamping: 120
+  suspensionRestLength: 0.8
+  suspensionStrength: 85
+  suspensionDamping: 75
   powerMultiplier: 30
   topSpeed: 60
   brakeStrength: 12
@@ -196,6 +196,7 @@ Transform:
   - {fileID: 2652806910528296905}
   - {fileID: 1749059927580962553}
   - {fileID: 445794036244975176}
+  - {fileID: 7669321806888003676}
   m_Father: {fileID: 0}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!54 &4768391477969633517
@@ -217,7 +218,7 @@ Rigidbody:
     m_Bits: 0
   m_ExcludeLayers:
     serializedVersion: 2
-    m_Bits: 0
+    m_Bits: 64
   m_ImplicitCom: 0
   m_ImplicitTensor: 1
   m_UseGravity: 1
@@ -244,8 +245,8 @@ BoxCollider:
   m_ProvidesContacts: 0
   m_Enabled: 1
   serializedVersion: 3
-  m_Size: {x: 5, y: 5.5, z: 14.716034}
-  m_Center: {x: 0, y: -0.099999905, z: -0.10220075}
+  m_Size: {x: 5, y: 5.5, z: 14.515202}
+  m_Center: {x: 0, y: -0.099999905, z: -0.20261669}
 --- !u!114 &615215578933300217
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -259,7 +260,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   carRB: {fileID: 4768391477969633517}
-  networkCarRB: {fileID: 2467624447809652897}
+  killzone: {fileID: 6472798120567889666}
   frontTires:
   - {fileID: 5595848358408308924}
   - {fileID: 3962749562720211918}
@@ -381,6 +382,59 @@ Transform:
   m_Children: []
   m_Father: {fileID: 1749059927580962553}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!1 &6472798120567889666
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 7669321806888003676}
+  - component: {fileID: 8181070929540949012}
+  m_Layer: 0
+  m_Name: Killzone
+  m_TagString: FireTruckKillzone
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 0
+--- !u!4 &7669321806888003676
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 6472798120567889666}
+  serializedVersion: 2
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: 0, y: -2.13, z: 7.74}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children: []
+  m_Father: {fileID: 1245603945616768155}
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!65 &8181070929540949012
+BoxCollider:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 6472798120567889666}
+  m_Material: {fileID: 0}
+  m_IncludeLayers:
+    serializedVersion: 2
+    m_Bits: 0
+  m_ExcludeLayers:
+    serializedVersion: 2
+    m_Bits: 0
+  m_LayerOverridePriority: 0
+  m_IsTrigger: 1
+  m_ProvidesContacts: 0
+  m_Enabled: 1
+  serializedVersion: 3
+  m_Size: {x: 4.54, y: 1, z: 1}
+  m_Center: {x: 0, y: 0, z: 0}
 --- !u!1 &7310782486318041851
 GameObject:
   m_ObjectHideFlags: 0
@@ -504,7 +558,7 @@ Transform:
   m_GameObject: {fileID: 8397273350419712050}
   serializedVersion: 2
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 1.68, y: -2.8, z: 3.643}
+  m_LocalPosition: {x: 1.68, y: -2.8, z: 5.76}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []
@@ -523,9 +577,9 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   carRB: {fileID: 4768391477969633517}
-  suspensionRestLength: 0.5
-  suspensionStrength: 160
-  suspensionDamping: 120
+  suspensionRestLength: 0.8
+  suspensionStrength: 85
+  suspensionDamping: 75
   powerMultiplier: 20
   topSpeed: 60
   brakeStrength: 10
@@ -556,7 +610,7 @@ Transform:
   m_GameObject: {fileID: 8539886274263462978}
   serializedVersion: 2
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: -1.69, y: -2.8, z: 3.643}
+  m_LocalPosition: {x: -1.69, y: -2.8, z: 5.76}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []
@@ -575,9 +629,9 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   carRB: {fileID: 4768391477969633517}
-  suspensionRestLength: 0.5
-  suspensionStrength: 160
-  suspensionDamping: 120
+  suspensionRestLength: 0.8
+  suspensionStrength: 85
+  suspensionDamping: 75
   powerMultiplier: 20
   topSpeed: 60
   brakeStrength: 10

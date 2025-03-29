@@ -313,7 +313,6 @@ MonoBehaviour:
     _value: 0
   truckParent: {fileID: 0}
   carRB: {fileID: 0}
-  networkedCarRB: {fileID: 0}
   camTarget: {fileID: 0}
   gravityStrength: 12
   seatTransform: {fileID: 0}
@@ -997,7 +996,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 0
+  m_IsActive: 1
 --- !u!4 &7653641477119427669
 Transform:
   m_ObjectHideFlags: 0
@@ -1222,7 +1221,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 1
+  m_IsActive: 0
 --- !u!4 &7575329876075184613
 Transform:
   m_ObjectHideFlags: 0
