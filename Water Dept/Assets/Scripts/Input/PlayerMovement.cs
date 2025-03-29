@@ -583,18 +583,16 @@ public class PlayerMovement : NetworkBehaviour
         if (explosionTimer == 0) 
         {
             gameObject.GetComponent<SimpleKCC>().Move(Vector3.zero, 10);
+            
         }
         gameObject.GetComponent<SimpleKCC>().Move(force);
-        
+        explosionTimer += Time.fixedDeltaTime;
 
-        if (explosionTimer > 3f || (isGrounded && explosionTimer > 0.2f))
+        if (isGrounded && isExploded && explosionTimer > 1f)
         {
-            explosionTimer = 0;
             isExploded = false;
-        }
-        else
-        {
-            explosionTimer += Time.fixedDeltaTime;
+            explosionTimer = 0f;
+            EventManager.PlayerStunned(false);
         }
 
     }
