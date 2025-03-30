@@ -1,3 +1,4 @@
+using DG.Tweening;
 using Fusion;
 using System.Collections;
 using System.Collections.Generic;
@@ -13,6 +14,7 @@ public class Burnable : NetworkBehaviour
 
     [Header("Burning Effects")]
     [SerializeField, Networked] private int fuelRemaining { get; set; }
+    private int localFuelRemaining;
 
     [SerializeField, Tooltip("Increased by non-burnables like the flamethrower, decreases by 1 each seccond")]
     protected int heatModifier = 0;
@@ -66,18 +68,26 @@ public class Burnable : NetworkBehaviour
     [SerializeField] private Color startColor = Color.yellow;
     [SerializeField] private Color endColor = Color.red;
     private Renderer render;
-    private VFXController vfxControler;
     private float burnVisOpacity;
 
     [Header("VFX")]
+    [SerializeField] VFXController vfxControler;
     [SerializeField] ParticleSystem onFireVFX;
 
-    [Header("Destruction Model")]
-    [SerializeField] private GameObject destroyedModel;
+    [Header("Destruction")]
+    [SerializeField] bool despawnOnDeath = true;
+    [SerializeField] bool destroyedByImpact;
+    [SerializeField] Transform activeModel;
+    [SerializeField] Transform activeModelSubAnchor;
+    [SerializeField] Transform destroyedModel;
+    [SerializeField] ParticleSystem destructionVFX;
+    private bool startedCollapse;
+    private bool finishedCollapse;
 
     public override void Spawned()
     {
         fuelRemaining = startFuel;
+        localFuelRemaining = startFuel;
         isSpawned = true;
         nIsBurning = burnOnAwake;
 
@@ -87,7 +97,6 @@ public class Burnable : NetworkBehaviour
         //used for tracking percentages
         if (showsLerp)
         {
-            vfxControler = GetComponentInChildren<VFXController>();
             render = GetComponentInChildren<Renderer>();
             render.material.color = initialColor;
         }
@@ -119,7 +128,7 @@ public class Burnable : NetworkBehaviour
 
                 if (vfxControler != null)
                 {
-                    burnVisOpacity = Mathf.InverseLerp((float)startFuel, 0, (float)fuelRemaining * colorStepMax);
+                    burnVisOpacity = Mathf.InverseLerp((float)startFuel, 0, (float)localFuelRemaining * colorStepMax);
                     vfxControler.Opacity = Mathf.Lerp(vfxControler.Opacity, burnVisOpacity, colorStepSmoothing); //stupid, but adds nice smoothing
                 }
             }
@@ -189,6 +198,8 @@ public class Burnable : NetworkBehaviour
 
         heatModifier -= heartBeat;
         heatModifier = Mathf.Clamp(heatModifier, 0, heatDmgCap);
+
+        localFuelRemaining = fuelRemaining;
     }
     int GetCurrentHeat()
     {
@@ -281,27 +292,78 @@ public class Burnable : NetworkBehaviour
     private void BurningStopped() //do not call, use RPC
     {
         stoppedBurning = true;
+        TriggerDestroyBurnable();
+    }
 
+    /// <summary>Trigger the destruction of the object. It will try to collapse, else it will just despawn, but only if the destroyedByRamming bool is true</summary>
+    /// <param name="info">Idk what this does -James</param>
+    [Rpc(RpcSources.All, RpcTargets.StateAuthority, HostMode = RpcHostMode.SourceIsHostPlayer)]
+    public void RPC_TriggerDestroySignal(RpcInfo info = default) => RPC_TriggerDestroyRelay(info.Source);
+
+    [Rpc(RpcSources.StateAuthority, RpcTargets.All, HostMode = RpcHostMode.SourceIsServer)]
+    private void RPC_TriggerDestroyRelay(PlayerRef messageSource)
+    {
+        if (destroyedByImpact)
+            TriggerDestroyBurnable();
+    }
+
+    public void TriggerDestroyBurnable()
+    {
         //detatch VFX
         onFireVFX.Stop();
         Destroy(onFireVFX.gameObject, 10); //magic 10, VFX should be stopped and destroyed waaaaaayyy after they're done, but it's hard to tell when that is
         onFireVFX.transform.parent = null;
 
+        //this will not work if triggered by RPC call
         nIsBurning = false;
 
-        //it's annoying to have to delay this but the client fucks up without it. We should avoid removing objects from scene in the future
-        Invoke("Despawn", 0.5f);
+        if (despawnOnDeath)
+            TriggerDespawn();
+        else
+            TriggerCollapse(6f);
+    }
+    
+    //it's annoying to have to delay this but the client fucks up without it. We should avoid removing objects from scene in the future
+    public void TriggerDespawn()
+    {
+        EventManager.BurnableDestroyed(burnableScore);
+        Invoke("Despawn", 0.2f);
+    }
+    private void Despawn()
+    {
+        Runner.Despawn(Object);
     }
 
-        private void Despawn()
-        {
-            //despawn obj 
-            EventManager.BurnableDestroyed(burnableScore);
-            Runner.Despawn(Object);
-/*            if (destroyedModel != null) {
-                Runner.Spawn(destroyedModel, transform.position);
-            }*/
-        }
+    public void TriggerCollapse(float duration)
+    {
+        if(startedCollapse) 
+            return;
+
+        startedCollapse = true;
+        StartCoroutine(Collapse(duration));
+    }
+
+    private IEnumerator Collapse(float duration)
+    {
+        EventManager.BurnableDestroyed(burnableScore);
+        destroyedModel.gameObject.SetActive(true);
+
+        
+
+        //play vfx
+        destructionVFX.Play();
+
+        //shake and collapse
+        activeModelSubAnchor.DOShakePosition(duration, 0.2f, 20, 90, false, false);
+        activeModel.DOLocalMove(Vector3.down * 14f, duration - 1f);
+
+        yield return new WaitForSeconds(duration);
+
+        finishedCollapse = true;
+        GetComponent<Collider>().enabled = false;
+        activeModel.gameObject.SetActive(false);
+        enabled = false;
+    }
 
     public bool GetDisabled(float _disabledPercent) {
         return isSpawned && _disabledPercent > fuelRemaining / startFuel;
