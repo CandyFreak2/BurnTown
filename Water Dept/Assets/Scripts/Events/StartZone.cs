@@ -6,15 +6,32 @@ public class StartZone : NetworkBehaviour {
     private NetworkBool isSpawned { get; set; }
     [SerializeField] private List<GameObject> players = new();
 
+    [Header("Timer")]
+    [Networked] public TickTimer Timer { get; set; }
+    [Tooltip("Duration (Seconds)"), SerializeField] private float duration;
+    [SerializeField] private int playersInRadius = 0;
+
     public override void Spawned() {
         isSpawned = true;
     }
 
     public void FixedUpdate() {
         if (GameStateHandler.Instance.GetGameState == GameStateHandler.GameState.NOT_STARTED) {
-            if (players.Count == ServerInfo.MaxPlayers && IsAllTrue(players)) {
+            if (players.Count >= ServerInfo.MaxPlayers && IsAllTrue(players)) {
                 GameStateHandler.Instance.SetGameState(GameStateHandler.GameState.STARTED);
                 EventManager.StartZoneTrigger();
+            }
+        }
+
+        if (isSpawned) {
+            if (playersInRadius >= ServerInfo.MaxPlayers && !Timer.IsRunning) {
+                Timer = TickTimer.CreateFromSeconds(Runner, duration);
+                EventManager.StartZoneTimerStart();
+            }
+
+            if (playersInRadius < ServerInfo.MaxPlayers && Timer.IsRunning) {
+                Timer = TickTimer.None;
+                EventManager.StartZoneTimerReset();
             }
         }
     }
@@ -27,13 +44,24 @@ public class StartZone : NetworkBehaviour {
         return true;
     }
 
-    private void OnTriggerExit(Collider other) {
-        if (isSpawned && GameStateHandler.Instance.GetGameState == GameStateHandler.GameState.NOT_STARTED) {
-            if (other.CompareTag("Player") && !players.Contains(other.gameObject)) {
-                players.Add(other.gameObject);
-                other.GetComponentInParent<PlayerMovement>().IsReady = true;
-                EventManager.StartZoneExit();
+    private void OnTriggerEnter(Collider other) {
+        if (isSpawned) {
+            if (other.CompareTag("Player")) {
+                playersInRadius++;
+                if (!players.Contains(other.gameObject) && GameStateHandler.Instance.GetGameState == GameStateHandler.GameState.NOT_STARTED) {
+                    players.Add(other.gameObject);
+                    other.GetComponentInParent<PlayerMovement>().IsReady = true;
+                    EventManager.StartZoneExit();
+                }
             }
         }
     }
+
+    private void OnTriggerExit(Collider other) {
+        if (isSpawned && other.CompareTag("Player")) {
+            playersInRadius--;
+        }
+    }
+
+    public float GetTimeLeft => Timer.RemainingTime(Runner) ?? 0;
 }

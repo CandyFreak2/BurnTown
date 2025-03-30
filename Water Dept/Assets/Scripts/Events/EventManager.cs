@@ -35,6 +35,12 @@ public static class EventManager {
     public static event UnityAction onStartZoneTrigger;
     public static void StartZoneTrigger() => onStartZoneTrigger?.Invoke();
 
+    public static event UnityAction onStartZoneTimerStart;
+    public static void StartZoneTimerStart() => onStartZoneTimerStart?.Invoke();
+
+    public static event UnityAction onStartZoneTimerReset;
+    public static void StartZoneTimerReset() => onStartZoneTimerReset?.Invoke();
+
     public static event UnityAction onEndZoneEnter;
     public static void EndZoneEnter() => onEndZoneEnter?.Invoke();
 

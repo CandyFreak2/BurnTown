@@ -36,7 +36,7 @@ public class TimerSystem : NetworkBehaviour {
                 playedCutscene = true;
             }
             if (!Timer.IsRunning) {
-                Timer = TickTimer.CreateFromSeconds(Runner, remainingTime);
+                //Timer = TickTimer.CreateFromSeconds(Runner, remainingTime);
             } if (canStart && !canPause) {
                 if (Timer.ExpiredOrNotRunning(Runner)) {
                     Debug.Log("Game Ended");
