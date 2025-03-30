@@ -41,14 +41,14 @@ public static class EventManager {
     public static event UnityAction onStartZoneTimerReset;
     public static void StartZoneTimerReset() => onStartZoneTimerReset?.Invoke();
 
-    public static event UnityAction onEndZoneEnter;
-    public static void EndZoneEnter() => onEndZoneEnter?.Invoke();
+    public static event UnityAction<EndConditions> onEndZoneEnter;
+    public static void EndZoneEnter(EndConditions condition) => onEndZoneEnter?.Invoke(condition);
 
-    public static event UnityAction onEndZoneExit;
-    public static void EndZoneExit() => onEndZoneExit?.Invoke();
+    public static event UnityAction<EndConditions> onEndZoneExit;
+    public static void EndZoneExit(EndConditions condition) => onEndZoneExit?.Invoke(condition);
 
-    public static event UnityAction onEndZoneTrigger;
-    public static void EndZoneTrigger() => onEndZoneTrigger?.Invoke();
+    public static event UnityAction<EndConditions> onEndZoneTrigger;
+    public static void EndZoneTrigger(EndConditions condition) => onEndZoneTrigger?.Invoke(condition);
 
     // UI Lobby System
     public static event UnityAction<string> onKeyPress;

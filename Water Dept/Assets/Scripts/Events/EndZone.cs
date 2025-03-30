@@ -1,11 +1,12 @@
 using Fusion;
 using UnityEngine;
 
+public enum EndConditions {
+    RADIUS,
+    FIRETRUCK
+}
+
 public class EndZone : NetworkBehaviour {
-    public enum EndConditions {
-        RADIUS,
-        FIRETRUCK
-    }
 
     public EndConditions state = EndConditions.RADIUS;
 
@@ -33,7 +34,7 @@ public class EndZone : NetworkBehaviour {
                     } else if (Timer.ExpiredOrNotRunning(Runner)) {
                         Timer = TickTimer.None;
                         GameStateHandler.Instance.SetGameState(GameStateHandler.GameState.END);
-                        EventManager.EndZoneTrigger();
+                        EventManager.EndZoneTrigger(state);
                     }
                 }
 
@@ -43,7 +44,7 @@ public class EndZone : NetworkBehaviour {
                     } else if (firetruck != null) {
                         if (firetruck.GetNumPassengers() == ServerInfo.MaxPlayers) {
                             GameStateHandler.Instance.SetGameState(GameStateHandler.GameState.END);
-                            EventManager.EndZoneTrigger();
+                            EventManager.EndZoneTrigger(state);
                         }
                     } 
                 }
@@ -54,14 +55,14 @@ public class EndZone : NetworkBehaviour {
     private void OnTriggerEnter(Collider other) {
         if (state == EndConditions.RADIUS && other.CompareTag("Player")) {
             playersInRadius++;
-            EventManager.EndZoneEnter();
+            EventManager.EndZoneEnter(state);
         }
     }
 
     private void OnTriggerExit(Collider other) {
         if (state == EndConditions.RADIUS && other.CompareTag("Player")) {
             playersInRadius--;
-            EventManager.EndZoneExit();
+            EventManager.EndZoneExit(state);
         }
     }
 }
