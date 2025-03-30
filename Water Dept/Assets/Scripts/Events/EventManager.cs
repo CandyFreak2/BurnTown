@@ -1,6 +1,12 @@
 using UnityEngine.Events;
 
 public static class EventManager {
+    public static void PlayerJoin() => onPlayerJoin?.Invoke();
+    public static event UnityAction onPlayerJoin;
+
+    public static void PlayerLeave() => onPlayerLeave?.Invoke();
+    public static event UnityAction onPlayerLeave;
+
     public static void TimerStart() => onTimerStart?.Invoke();
     public static event UnityAction onTimerStart;
 

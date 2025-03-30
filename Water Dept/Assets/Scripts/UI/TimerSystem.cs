@@ -41,7 +41,6 @@ public class TimerSystem : NetworkBehaviour {
                 if (Timer.ExpiredOrNotRunning(Runner)) {
                     Debug.Log("Game Ended");
                     Timer = TickTimer.None;
-                    GameStateHandler.Instance.SetGameState(GameStateHandler.GameState.END);
                     EventManager.TimerEnd();
                     canStart = false;
                 }

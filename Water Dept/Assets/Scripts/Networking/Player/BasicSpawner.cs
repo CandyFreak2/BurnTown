@@ -165,6 +165,7 @@ public class BasicSpawner : MonoBehaviour, INetworkRunnerCallbacks {
             runner.SetPlayerObject(player, networkPlayerObject);
         }
         SetConnectionStatus(ConnectionStatus.CONNECTED);
+        EventManager.PlayerJoin();
     }
 
     public void OnPlayerLeft(NetworkRunner runner, PlayerRef player) {
@@ -189,6 +190,7 @@ public class BasicSpawner : MonoBehaviour, INetworkRunnerCallbacks {
         }
 
         _runner = null;
+        EventManager.PlayerLeave();
     }
 
     public void OnConnectedToServer(NetworkRunner runner) {
