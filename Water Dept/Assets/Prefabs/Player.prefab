@@ -216,7 +216,11 @@ MonoBehaviour:
   Mass: 1
   Drag: 5
   sfxProfile:
-    footstep: []
+    footstep:
+    - {fileID: 8300000, guid: f05983f3e7992b2408abbe60f3339830, type: 3}
+    - {fileID: 8300000, guid: 4ad8bf4b81b553d43a575799f24ee5f1, type: 3}
+    - {fileID: 8300000, guid: 7066ff844b651464fadd6ebb8e11345e, type: 3}
+    - {fileID: 8300000, guid: 1cda3ad892cf0274ba036b4544b9b12a, type: 3}
     equipItem:
     - {fileID: 8300000, guid: 65e1bfce2d6c5354bbcdb7f6b21dfc13, type: 3}
     - {fileID: 8300000, guid: cd194bd7c1394c04e9d0de81a8bd36ef, type: 3}
@@ -1428,7 +1432,7 @@ PrefabInstance:
     - target: {fileID: 919132149155446097, guid: a6ce7a3412cd1f5488b6a95b9e40539e,
         type: 3}
       propertyPath: m_Name
-      value: New_Character_T-Pose
+      value: Character_T-Pose
       objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
@@ -1489,6 +1493,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 1e9c9db8597d7894ca8586528bfc4f45, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  manualSpeedTweak: 0.7
 --- !u!1001 &2142020603068217448
 PrefabInstance:
   m_ObjectHideFlags: 0
