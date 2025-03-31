@@ -4,7 +4,7 @@ using UnityEngine;
 using UnityEngine.UI;
 
 public class TimerSystem : NetworkBehaviour {
-    [Networked] private TickTimer Timer { get; set; }
+    [Networked] private CustomTickTimer Timer { get; set; }
     [Networked] private NetworkBool canStart { get; set; }
 
     [Header("Time Syncing")]
@@ -15,7 +15,7 @@ public class TimerSystem : NetworkBehaviour {
     private bool canPause = false, playedCutscene;
     private int prev, current;
 
-    [SerializeField] private Button pauseButton, resetButton; 
+    [SerializeField] private Button pauseButton, resetButton;
 
     private void Awake() {
         if (Application.isEditor) {
@@ -27,39 +27,46 @@ public class TimerSystem : NetworkBehaviour {
     public override void Spawned() {
         remainingTime = duration;
         canStart = true;
+        StartTimer();
+
+    }
+
+    public void StartTimer() {
+        if (Runner.IsServer && canStart) {
+            Timer = CustomTickTimer.CreateFromTicks(Runner, 999);
+        }
     }
 
     public override void FixedUpdateNetwork() {
-        if (GameStateHandler.Instance.GetGameState == GameStateHandler.GameState.STARTED) {
+        Debug.Log($"Elapsed {Timer.ElapsedTicks(Runner)} ticks.");
+
+        if (Timer.Expired(Runner)) {
+            // Execute Logic
+
+            // Reset timer
+            Timer = default;
+
+            Debug.Log("Timer Finished on tick: " + Runner.Tick);
+        }
+
+
+        /*if (GameStateHandler.Instance.GetGameState == GameStateHandler.GameState.STARTED) {
             if (!playedCutscene) {
                 EventManager.TimerStart();
                 playedCutscene = true;
             }
             if (!Timer.IsRunning) {
                 //Timer = TickTimer.CreateFromSeconds(Runner, remainingTime);
-            } if (canStart && !canPause) {
-                if (Timer.ExpiredOrNotRunning(Runner)) {
+            }
+            if (canStart && !canPause) {
+                if (Timer.Expired(Runner)) {
                     Debug.Log("Game Ended");
-                    Timer = TickTimer.None;
+                    //Timer = TickTimer.None;
                     EventManager.TimerEnd();
                     canStart = false;
                 }
             }
-        }
-    }
-
-    // Only used to update the timer's text if the timer is actually running
-    public override void Render() {
-        if (Timer.IsRunning) {
-            RPC_SyncTimer();
-        }
-    }
-
-    public void RPC_SyncTimer() {
-        if (Timer.IsRunning) {
-            remainingTime = Timer.RemainingTime(Runner) ?? 0;
-            DisplayTime(remainingTime);
-        }
+        }*/
     }
 
     // Update the timer text across all players' UI
@@ -77,32 +84,8 @@ public class TimerSystem : NetworkBehaviour {
         }
     }
 
-    public void PauseTimer() {
-        if (Timer.IsRunning) {
-            Timer = TickTimer.None; 
-            canPause = !canPause;
-        }
-    }
-
-    public void ResetTimer() {
-        if (canPause || !Timer.IsRunning) {
-            duration = remainingTime;
-            Timer = TickTimer.CreateFromSeconds(Runner, remainingTime); 
-            canPause = false;
-            canStart = true;
-        }
-    }
-
-    public void AddTime(float increment) {
-        if (Timer.IsRunning) {
-            Timer = TickTimer.None;
-            remainingTime += increment;
-            Timer = TickTimer.CreateFromSeconds(Runner, remainingTime);
-        }
-    }
-
     public void OnTimeChange(float displayTime) {
-        current = (int) displayTime;
+        current = (int)displayTime;
         if (current < prev && Timer.IsRunning) {
             prev = current;
             EventManager.TimeChange(current);
@@ -110,12 +93,10 @@ public class TimerSystem : NetworkBehaviour {
     }
 
     private void OnEnable() {
-        EventManager.onTimerAdd += AddTime;
         EventManager.onTimeChange += OnTimeChange;
     }
 
     private void OnDisable() {
-        EventManager.onTimerAdd -= AddTime;
         EventManager.onTimeChange -= DisplayTime;
     }
 }
