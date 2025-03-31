@@ -990,7 +990,7 @@ GameObject:
   - component: {fileID: 3067663646347601555}
   - component: {fileID: 2964898168452225242}
   m_Layer: 5
-  m_Name: FlamethrowerUI (3)
+  m_Name: FlamethrowerShoot
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -1005,15 +1005,15 @@ RectTransform:
   m_GameObject: {fileID: 2532584911039255487}
   m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
   m_LocalPosition: {x: 0, y: 0, z: 0}
-  m_LocalScale: {x: 1, y: 1, z: 1}
-  m_ConstrainProportionsScale: 0
+  m_LocalScale: {x: 0.25, y: 0.25, z: 0.25}
+  m_ConstrainProportionsScale: 1
   m_Children: []
   m_Father: {fileID: 8764363586165161758}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0.5, y: 0.5}
   m_AnchorMax: {x: 0.5, y: 0.5}
   m_AnchoredPosition: {x: -20, y: 0}
-  m_SizeDelta: {x: 100, y: 100}
+  m_SizeDelta: {x: 2438, y: 2016.5879}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!222 &3067663646347601555
 CanvasRenderer:
@@ -1043,7 +1043,7 @@ MonoBehaviour:
   m_OnCullStateChanged:
     m_PersistentCalls:
       m_Calls: []
-  m_Sprite: {fileID: 0}
+  m_Sprite: {fileID: 21300000, guid: ec7e4686bfffcc04c9d472bdea7ad508, type: 3}
   m_Type: 0
   m_PreserveAspect: 0
   m_FillCenter: 1
@@ -1537,7 +1537,7 @@ GameObject:
   - component: {fileID: 4571184873193005382}
   - component: {fileID: 5789212335340507320}
   m_Layer: 5
-  m_Name: FlamethrowerUI (1)
+  m_Name: FlamethrowerIcon
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -1552,15 +1552,15 @@ RectTransform:
   m_GameObject: {fileID: 4520902423054586598}
   m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
   m_LocalPosition: {x: 0, y: 0, z: 0}
-  m_LocalScale: {x: 1, y: 1, z: 1}
-  m_ConstrainProportionsScale: 0
+  m_LocalScale: {x: 0.25, y: 0.25, z: 0.25}
+  m_ConstrainProportionsScale: 1
   m_Children: []
   m_Father: {fileID: 8764363586165161758}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0.5, y: 0.5}
   m_AnchorMax: {x: 0.5, y: 0.5}
-  m_AnchoredPosition: {x: -300, y: 0}
-  m_SizeDelta: {x: 100, y: 100}
+  m_AnchoredPosition: {x: -352.32227, y: 0}
+  m_SizeDelta: {x: 758, y: 250.0729}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!222 &4571184873193005382
 CanvasRenderer:
@@ -1590,7 +1590,8 @@ MonoBehaviour:
   m_OnCullStateChanged:
     m_PersistentCalls:
       m_Calls: []
-  m_Sprite: {fileID: 0}
+  m_Sprite: {fileID: -478349796276514957, guid: 95a9fcf011df7ae4a98a19e6610bce82,
+    type: 3}
   m_Type: 0
   m_PreserveAspect: 0
   m_FillCenter: 1
@@ -3855,7 +3856,7 @@ GameObject:
   - component: {fileID: 8910354525020089720}
   - component: {fileID: 1108021460821581413}
   m_Layer: 5
-  m_Name: FlamethrowerUI (2)
+  m_Name: FlamethrowerDrop
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -3870,15 +3871,15 @@ RectTransform:
   m_GameObject: {fileID: 8569002640603721162}
   m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
   m_LocalPosition: {x: 0, y: 0, z: 0}
-  m_LocalScale: {x: 1, y: 1, z: 1}
-  m_ConstrainProportionsScale: 0
+  m_LocalScale: {x: 0.25, y: 0.25, z: 0.25}
+  m_ConstrainProportionsScale: 1
   m_Children: []
   m_Father: {fileID: 8764363586165161758}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0.5, y: 0.5}
   m_AnchorMax: {x: 0.5, y: 0.5}
-  m_AnchoredPosition: {x: -160, y: 0}
-  m_SizeDelta: {x: 100, y: 100}
+  m_AnchoredPosition: {x: -175.92416, y: 11.374407}
+  m_SizeDelta: {x: 2438, y: 2016.5879}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!222 &8910354525020089720
 CanvasRenderer:
@@ -3908,7 +3909,7 @@ MonoBehaviour:
   m_OnCullStateChanged:
     m_PersistentCalls:
       m_Calls: []
-  m_Sprite: {fileID: 0}
+  m_Sprite: {fileID: 21300000, guid: a83511841f0e45d42b5e32c13253e098, type: 3}
   m_Type: 0
   m_PreserveAspect: 0
   m_FillCenter: 1
@@ -4285,6 +4286,19 @@ MonoBehaviour:
   tweenDuration: 0.5
   tweenMagnatude: {x: 0.4, y: 0.2, z: 0.3}
   tweenVibrato: 10
+  buttonSprites:
+  - defaultSprite: {fileID: 21300000, guid: 107cc6899db77d748b09e96716670b65, type: 3}
+    pressedSprite: {fileID: 21300000, guid: fe04acdab36c00941a8110512a2480ca, type: 3}
+  - defaultSprite: {fileID: 21300000, guid: a83511841f0e45d42b5e32c13253e098, type: 3}
+    pressedSprite: {fileID: 21300000, guid: f0b30e3152087744e9be3190fe9f4f44, type: 3}
+  - defaultSprite: {fileID: 21300000, guid: 26b496fce12b832489905327eff74dce, type: 3}
+    pressedSprite: {fileID: 21300000, guid: 5faa57487c7b55a429802e2865d37669, type: 3}
+  - defaultSprite: {fileID: 21300000, guid: 2232f2cb0cc25474e80a563ff2dd98f1, type: 3}
+    pressedSprite: {fileID: 21300000, guid: 093f3faa3d271ee4592509f86b61b727, type: 3}
+  - defaultSprite: {fileID: 21300000, guid: ec7e4686bfffcc04c9d472bdea7ad508, type: 3}
+    pressedSprite: {fileID: 21300000, guid: 8cf7711184fce9040bf2e965fde6836b, type: 3}
+  - defaultSprite: {fileID: 21300000, guid: ec7e4686bfffcc04c9d472bdea7ad508, type: 3}
+    pressedSprite: {fileID: 21300000, guid: e3d690b81ef8d0a48b892b9752373571, type: 3}
 --- !u!1 &9009715963766121745
 GameObject:
   m_ObjectHideFlags: 0

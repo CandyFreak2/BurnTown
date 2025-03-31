@@ -500,6 +500,15 @@ public partial class @InputSystem_Actions: IInputActionCollection2, IDisposable
                     ""initialStateCheck"": false
                 },
                 {
+                    ""name"": ""Brake"",
+                    ""type"": ""Button"",
+                    ""id"": ""59ffabbb-d863-4c07-9dc4-fd1c333d783a"",
+                    ""expectedControlType"": """",
+                    ""processors"": """",
+                    ""interactions"": """",
+                    ""initialStateCheck"": false
+                },
+                {
                     ""name"": ""Attack"",
                     ""type"": ""Value"",
                     ""id"": ""bf2eb153-8ae5-45c9-adea-daf39f63f9c7"",
@@ -782,6 +791,28 @@ public partial class @InputSystem_Actions: IInputActionCollection2, IDisposable
                     ""action"": ""Navigate"",
                     ""isComposite"": false,
                     ""isPartOfComposite"": true
+                },
+                {
+                    ""name"": """",
+                    ""id"": ""ad8becf3-afbc-42f3-a870-f84e61569ca0"",
+                    ""path"": ""<Gamepad>/leftTrigger"",
+                    ""interactions"": """",
+                    ""processors"": """",
+                    ""groups"": "";Gamepad"",
+                    ""action"": ""Brake"",
+                    ""isComposite"": false,
+                    ""isPartOfComposite"": false
+                },
+                {
+                    ""name"": """",
+                    ""id"": ""c8aaea18-6682-4100-8621-68bc29160297"",
+                    ""path"": ""<Mouse>/rightButton"",
+                    ""interactions"": """",
+                    ""processors"": """",
+                    ""groups"": "";Keyboard&Mouse"",
+                    ""action"": ""Brake"",
+                    ""isComposite"": false,
+                    ""isPartOfComposite"": false
                 },
                 {
                     ""name"": """",
@@ -1497,6 +1528,7 @@ public partial class @InputSystem_Actions: IInputActionCollection2, IDisposable
         // UI
         m_UI = asset.FindActionMap("UI", throwIfNotFound: true);
         m_UI_Navigate = m_UI.FindAction("Navigate", throwIfNotFound: true);
+        m_UI_Brake = m_UI.FindAction("Brake", throwIfNotFound: true);
         m_UI_Attack = m_UI.FindAction("Attack", throwIfNotFound: true);
         m_UI_Drop = m_UI.FindAction("Drop", throwIfNotFound: true);
         m_UI_Interact = m_UI.FindAction("Interact", throwIfNotFound: true);
@@ -1697,6 +1729,7 @@ public partial class @InputSystem_Actions: IInputActionCollection2, IDisposable
     private readonly InputActionMap m_UI;
     private List<IUIActions> m_UIActionsCallbackInterfaces = new List<IUIActions>();
     private readonly InputAction m_UI_Navigate;
+    private readonly InputAction m_UI_Brake;
     private readonly InputAction m_UI_Attack;
     private readonly InputAction m_UI_Drop;
     private readonly InputAction m_UI_Interact;
@@ -1715,6 +1748,7 @@ public partial class @InputSystem_Actions: IInputActionCollection2, IDisposable
         private @InputSystem_Actions m_Wrapper;
         public UIActions(@InputSystem_Actions wrapper) { m_Wrapper = wrapper; }
         public InputAction @Navigate => m_Wrapper.m_UI_Navigate;
+        public InputAction @Brake => m_Wrapper.m_UI_Brake;
         public InputAction @Attack => m_Wrapper.m_UI_Attack;
         public InputAction @Drop => m_Wrapper.m_UI_Drop;
         public InputAction @Interact => m_Wrapper.m_UI_Interact;
@@ -1740,6 +1774,9 @@ public partial class @InputSystem_Actions: IInputActionCollection2, IDisposable
             @Navigate.started += instance.OnNavigate;
             @Navigate.performed += instance.OnNavigate;
             @Navigate.canceled += instance.OnNavigate;
+            @Brake.started += instance.OnBrake;
+            @Brake.performed += instance.OnBrake;
+            @Brake.canceled += instance.OnBrake;
             @Attack.started += instance.OnAttack;
             @Attack.performed += instance.OnAttack;
             @Attack.canceled += instance.OnAttack;
@@ -1786,6 +1823,9 @@ public partial class @InputSystem_Actions: IInputActionCollection2, IDisposable
             @Navigate.started -= instance.OnNavigate;
             @Navigate.performed -= instance.OnNavigate;
             @Navigate.canceled -= instance.OnNavigate;
+            @Brake.started -= instance.OnBrake;
+            @Brake.performed -= instance.OnBrake;
+            @Brake.canceled -= instance.OnBrake;
             @Attack.started -= instance.OnAttack;
             @Attack.performed -= instance.OnAttack;
             @Attack.canceled -= instance.OnAttack;
@@ -1988,6 +2028,7 @@ public partial class @InputSystem_Actions: IInputActionCollection2, IDisposable
     public interface IUIActions
     {
         void OnNavigate(InputAction.CallbackContext context);
+        void OnBrake(InputAction.CallbackContext context);
         void OnAttack(InputAction.CallbackContext context);
         void OnDrop(InputAction.CallbackContext context);
         void OnInteract(InputAction.CallbackContext context);
