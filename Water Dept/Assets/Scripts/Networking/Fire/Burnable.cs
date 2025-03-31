@@ -2,6 +2,7 @@ using DG.Tweening;
 using Fusion;
 using System.Collections;
 using System.Collections.Generic;
+using Unity.Mathematics;
 using UnityEngine;
 
 public class Burnable : NetworkBehaviour
@@ -215,6 +216,10 @@ public class Burnable : NetworkBehaviour
         return heat;
     }
 
+    //
+    // NETWORKED HEAT 
+    //
+
     ///<summary>A function for taking damage from incoming fire sources</summary>  -James 03/08
     public void AddHeat(Burnable source)
     {
@@ -286,8 +291,7 @@ public class Burnable : NetworkBehaviour
         onFireVFX.Play();
     }
 
-
-    [Rpc(RpcSources.All, RpcTargets.All)] 
+    [Rpc(RpcSources.All, RpcTargets.All)]
     private void RPC_BurningStopped() => Runner.FindObject(Object.Id)?.GetComponent<Burnable>().BurningStopped();
     private void BurningStopped() //do not call, use RPC
     {
@@ -295,36 +299,49 @@ public class Burnable : NetworkBehaviour
         TriggerDestroyBurnable();
     }
 
-    /// <summary>Trigger the destruction of the object. It will try to collapse, else it will just despawn, but only if the destroyedByRamming bool is true</summary>
-    /// <param name="info">Idk what this does -James</param>
-    [Rpc(RpcSources.All, RpcTargets.StateAuthority, HostMode = RpcHostMode.SourceIsHostPlayer)]
-    public void RPC_TriggerDestroySignal(RpcInfo info = default) => RPC_TriggerDestroyRelay(info.Source);
+    //
+    // DESTRUCTION 
+    //
 
-    [Rpc(RpcSources.StateAuthority, RpcTargets.All, HostMode = RpcHostMode.SourceIsServer)]
-    private void RPC_TriggerDestroyRelay(PlayerRef messageSource)
+    /// <summary>Trigger the destruction of the object. It will try to collapse unless it is set to despawn, but only if the destroyedByRamming bool is true</summary>
+    /// <param name="overrideImpactSettings"> ignore objects impact settings -James</param>
+    public void DestroyObjectImpact(bool overrideImpactSettings = false) => DestroyObjectImpact(6f, overrideImpactSettings);
+    /// <summary>Trigger the destruction of the object. The duration is how long it will crumble for</summary>
+    public void DestroyObjectImpact(float duration, bool overrideImpactSettings = false)
     {
-        if (destroyedByImpact)
-            TriggerDestroyBurnable();
+        if (destroyedByImpact || overrideImpactSettings)
+        {
+            RPC_TriggerDestroySignal(duration);
+        }
     }
 
-    public void TriggerDestroyBurnable()
+    [Rpc(RpcSources.All, RpcTargets.StateAuthority, HostMode = RpcHostMode.SourceIsHostPlayer)]
+    private void RPC_TriggerDestroySignal(float duration, RpcInfo info = default) => RPC_TriggerDestroyRelay(duration, info.Source);
+
+    [Rpc(RpcSources.StateAuthority, RpcTargets.All, HostMode = RpcHostMode.SourceIsServer)]
+    private void RPC_TriggerDestroyRelay(float duration, PlayerRef messageSource)
+    {
+        TriggerDestroyBurnable(duration);
+    }
+
+    private void TriggerDestroyBurnable(float duration = 4f)
     {
         //detatch VFX
         onFireVFX.Stop();
         Destroy(onFireVFX.gameObject, 10); //magic 10, VFX should be stopped and destroyed waaaaaayyy after they're done, but it's hard to tell when that is
         onFireVFX.transform.parent = null;
 
-        //this will not work if triggered by RPC call
+        //this will not work if triggered by RPC call... ugggghhhh
         nIsBurning = false;
 
         if (despawnOnDeath)
             TriggerDespawn();
         else
-            TriggerCollapse(6f);
+            TriggerCollapse(duration);
     }
     
     //it's annoying to have to delay this but the client fucks up without it. We should avoid removing objects from scene in the future
-    public void TriggerDespawn()
+    private void TriggerDespawn()
     {
         EventManager.BurnableDestroyed(burnableScore);
         Invoke("Despawn", 0.2f);
@@ -345,25 +362,28 @@ public class Burnable : NetworkBehaviour
 
     private IEnumerator Collapse(float duration)
     {
+        duration = Mathf.Clamp(duration, 1.2f, Mathf.Infinity);
+
         EventManager.BurnableDestroyed(burnableScore);
         destroyedModel.gameObject.SetActive(true);
 
-        
-
-        //play vfx
+        //play vfx and shake for 1 sec
         destructionVFX.Play();
+        activeModelSubAnchor.DOShakePosition(duration, 0.2f, 20, 90, false);
+        yield return new WaitForSeconds(1f);
 
-        //shake and collapse
-        activeModelSubAnchor.DOShakePosition(duration, 0.2f, 20, 90, false, false);
-        activeModel.DOLocalMove(Vector3.down * 14f, duration - 1f);
-
+        //Collapse, disable hitbox, and wait untill finished
+        activeModel.DOLocalMove(Vector3.down * 14f, duration);
+        GetComponent<Collider>().enabled = false;
         yield return new WaitForSeconds(duration);
 
+        //disable this script and the model
         finishedCollapse = true;
-        GetComponent<Collider>().enabled = false;
         activeModel.gameObject.SetActive(false);
         enabled = false;
     }
+
+
 
     public bool GetDisabled(float _disabledPercent) {
         return isSpawned && _disabledPercent > fuelRemaining / startFuel;
