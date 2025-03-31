@@ -30,7 +30,7 @@ public class PlayerMovement : NetworkBehaviour
     [SerializeField] Transform camTarget;
     [SerializeField] float rotSpeed = 7.0f;
     [Networked] private Vector3 networkedForward { get; set; }
-
+    public float stunDuration = 4f;
     //movement input
     private Vector3 moveDirection = Vector3.zero;
     [Networked] private NetworkButtons previousButtons { get; set; }
@@ -72,7 +72,7 @@ public class PlayerMovement : NetworkBehaviour
 
     //variables stored for explosion forces
     private float explosionTimer = 0;
-    private bool isExploded = false;
+    [Networked] private bool isExploded { get; set; } = false; ///Altered to sync with the network
     private Vector3 forceVec = Vector3.zero;
 
     // Jerry being lazy and not wanting to create a new script...
@@ -181,6 +181,10 @@ public class PlayerMovement : NetworkBehaviour
     {
         Quaternion camOffest = Quaternion.Euler(0, camTarget.rotation.eulerAngles.y, 0);
         moveDirection = kcc.TransformRotation * camOffest * ToVector3(action.MoveDirection);
+
+        if (isExploded)
+            return;
+
         if(!isFiring)
         {
             if (isGrounded)
@@ -587,7 +591,7 @@ public class PlayerMovement : NetworkBehaviour
         gameObject.GetComponent<SimpleKCC>().Move(force);
         
 
-        if (explosionTimer > 3f || (isGrounded && explosionTimer > 0.2f))
+        if (explosionTimer > stunDuration) // || (isGrounded && explosionTimer > 0.2f))
         {
             explosionTimer = 0;
             isExploded = false;
@@ -595,6 +599,7 @@ public class PlayerMovement : NetworkBehaviour
         else
         {
             explosionTimer += Time.fixedDeltaTime;
+            isExploded = true; //duplicate to sync with clients
         }
 
     }
