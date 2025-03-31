@@ -34,22 +34,45 @@ public struct CustomTickTimer : INetworkStruct {
     }
 
     public int ElapsedTicks(NetworkRunner runner) {
-        if (runner == false || runner.IsRunning == false)
+        if (runner == false || runner.IsRunning == false) {
             return 0;
+        }
 
-        if (IsRunning == false || Expired(runner))
+        if (IsRunning == false || Expired(runner)) {
             return 0;
+        }
 
         return runner.Tick - _initialTick;
     }
 
     public static CustomTickTimer CreateFromSeconds(NetworkRunner runner, float delayInSeconds) {
-        if (/*BehaviourUtils.IsNotAlive(runner) ||*/ !runner.IsRunning) {
+        if (!runner.IsRunning) {
             return default;
         }
 
         CustomTickTimer result = default;
         result._target = (int)runner.Tick + Mathf.CeilToInt(delayInSeconds / runner.DeltaTime);
         return result;
+    }
+
+    public int? RemainingTicks(NetworkRunner runner) {
+        if (!runner.IsRunning) {
+            return null;
+        }
+
+        if (IsRunning) {
+            return Mathf.Max(0, _target + (int)runner.Tick);
+        }
+
+        return null;
+    }
+
+    public float? RemainingTime(NetworkRunner runner) {
+        int? num = RemainingTicks(runner);
+        if (num.HasValue) {
+            return num.Value * runner.DeltaTime;
+        }
+
+        return null;
     }
 }

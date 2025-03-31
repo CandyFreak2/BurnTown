@@ -8,65 +8,42 @@ public class TimerSystem : NetworkBehaviour {
     [Networked] private NetworkBool canStart { get; set; }
 
     [Header("Time Syncing")]
-    [Tooltip("Duration (Seconds)"), SerializeField] private float duration;
     [SerializeField] private TMP_Text timerText;
     [SerializeField] private float remainingTime;
+    private float duration = 0;
 
     private bool canPause = false, playedCutscene;
     private int prev, current;
 
-    [SerializeField] private Button pauseButton, resetButton;
-
-    private void Awake() {
-        if (Application.isEditor) {
-            pauseButton.gameObject.SetActive(true);
-            resetButton.gameObject.SetActive(true);
-        }
-    }
-
     public override void Spawned() {
         remainingTime = duration;
         canStart = true;
-        StartTimer();
-
     }
 
-    public void StartTimer() {
-        if (Runner.IsServer && canStart) {
-            Timer = CustomTickTimer.CreateFromTicks(Runner, 999);
+    // Only used to update the timer's text if the timer is actually running
+    public override void Render() {
+        if (Timer.IsRunning) {
+            RPC_SyncTimer();
+        }
+    }
+
+    public void RPC_SyncTimer() {
+        if (Timer.IsRunning) {
+            remainingTime = Timer.RemainingTime(Runner) ?? 0;
+            DisplayTime(remainingTime);
         }
     }
 
     public override void FixedUpdateNetwork() {
-        Debug.Log($"Elapsed {Timer.ElapsedTicks(Runner)} ticks.");
-
-        if (Timer.Expired(Runner)) {
-            // Execute Logic
-
-            // Reset timer
-            Timer = default;
-
-            Debug.Log("Timer Finished on tick: " + Runner.Tick);
-        }
-
-
-        /*if (GameStateHandler.Instance.GetGameState == GameStateHandler.GameState.STARTED) {
+        if (GameStateHandler.Instance.GetGameState == GameStateHandler.GameState.STARTED) {
             if (!playedCutscene) {
                 EventManager.TimerStart();
                 playedCutscene = true;
             }
             if (!Timer.IsRunning) {
-                //Timer = TickTimer.CreateFromSeconds(Runner, remainingTime);
+                Timer = CustomTickTimer.CreateFromSeconds(Runner, remainingTime);
             }
-            if (canStart && !canPause) {
-                if (Timer.Expired(Runner)) {
-                    Debug.Log("Game Ended");
-                    //Timer = TickTimer.None;
-                    EventManager.TimerEnd();
-                    canStart = false;
-                }
-            }
-        }*/
+        }
     }
 
     // Update the timer text across all players' UI
@@ -97,6 +74,6 @@ public class TimerSystem : NetworkBehaviour {
     }
 
     private void OnDisable() {
-        EventManager.onTimeChange -= DisplayTime;
+        EventManager.onTimeChange -= OnTimeChange;
     }
 }
