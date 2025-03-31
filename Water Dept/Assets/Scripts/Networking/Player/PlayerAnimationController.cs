@@ -1,5 +1,7 @@
 using Fusion.Addons.SimpleKCC;
+using NUnit.Framework;
 using UnityEngine;
+using System.Collections.Generic;
 
 public class PlayerAnimationController : MonoBehaviour
 {
@@ -12,6 +14,7 @@ public class PlayerAnimationController : MonoBehaviour
     private bool holdingBarrel;
     private bool stunned;
 
+    public float manualSpeedTweak = 1f;
 
     private void Awake()
     {
@@ -39,7 +42,7 @@ public class PlayerAnimationController : MonoBehaviour
         stunned = false;
 
         //Get current values
-        playerSpeed = _playerKCC.RealSpeed;
+        playerSpeed = (_playerKCC.RealSpeed / _playerScript.maxSpeed) * manualSpeedTweak;
         stunned = _playerScript.IsStunned;
 
         switch(_playerScript.HeldInteractable)
@@ -63,5 +66,10 @@ public class PlayerAnimationController : MonoBehaviour
     {
         _playerAnimator.SetTrigger("Throw");
         holdingBarrel = false; //idk if this line does anything
+    }
+
+    public void FootStepTrigger()
+    {
+        AudioPlayer.PlaySFX(_playerScript.sfxProfile.footstep, transform.position, 0.2f);
     }
 }
