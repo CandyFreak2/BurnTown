@@ -13,9 +13,17 @@ public class PanelSwitcher : MonoBehaviour {
     private EventSystem eventSystem;
     private GameObject hostButton, hostStart, joinStart;
 
+    [Header("Camera Manager Reference")]
+    [SerializeField] CameraManager cameraManager;
+    public GameObject buttonHost, buttonJoin, buttonPlay, buttonCredits, buttonQuit;
+
     private void Start() {
         eventSystem = EventSystem.current;
         GoBackToMainScreen();
+
+        //turn of button visibility
+        buttonHost.SetActive(false);
+        buttonJoin.SetActive(false);
     }
 
     private void ActivatePanel(GameObject panelToActivate, System.Func<GameObject> GetStartElement) {
@@ -54,6 +62,19 @@ public class PanelSwitcher : MonoBehaviour {
     }
 
     public void GoBackToMainScreen() {
+        //switch camera POV to main screen
+        cameraManager.SwitchActiveCamera(cameraManager.mainCam);
+
+        //turn buttons off
+        buttonHost.SetActive(false);
+        buttonJoin.SetActive(false);
+
+        //make main menu buttons interactable
+        //disable interaction with buttons from main screen
+        buttonPlay.GetComponent<Button>().interactable = true;
+        buttonCredits.GetComponent<Button>().interactable = true;
+        buttonQuit.GetComponent<Button>().interactable = true;
+
         ActivatePanel(startPanel, () => {
             if (hostButton == null) {
                 hostButton = FindFirstObjectByType<Button>().gameObject;
@@ -67,4 +88,15 @@ public class PanelSwitcher : MonoBehaviour {
         action.Invoke();
     }
 
+    public void LobbyCamSwitch()
+    {
+        cameraManager.SwitchActiveCamera(cameraManager.lobbyCam);
+        buttonHost.SetActive(true);
+        buttonJoin.SetActive(true);
+
+        //disable interaction with buttons from main screen
+        buttonPlay.GetComponent<Button>().interactable = false;
+        buttonCredits.GetComponent<Button>().interactable = false;
+        buttonQuit.GetComponent<Button>().interactable = false;
+    }
 }
