@@ -4,7 +4,7 @@ using System.Collections.Generic;
 
 public class PlayerSkin : NetworkBehaviour {
     [Header("Models")]
-    [SerializeField] List<SkinnedMeshRenderer> playerSkins;
+    [SerializeField] List<SkinnedMeshRenderer> playerMesh;
     [SerializeField] List<MeshRenderer> playerModels;
 
     [Header("Skins")]
