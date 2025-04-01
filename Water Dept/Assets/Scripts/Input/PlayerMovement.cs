@@ -527,7 +527,6 @@ public class PlayerMovement : NetworkBehaviour
             player.carriedObject = interactable;
             player.carriedObject.gameObject.GetComponent<NetworkObject>().AssignInputAuthority(player.Object.InputAuthority);
             player.carriedObject.PickUp(Object.Id);
-            player.carriedObject.transform.DOShakeScale(0.5f, 0.8f);
         }
     }
 
