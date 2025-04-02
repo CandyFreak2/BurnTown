@@ -12,7 +12,7 @@ public class TimerSystem : NetworkBehaviour {
     [SerializeField] private float remainingTime;
     private float duration = 0;
 
-    private bool canPause = false, playedCutscene;
+    private bool playedCutscene;
     private int prev, current;
 
     public override void Spawned() {
@@ -40,8 +40,8 @@ public class TimerSystem : NetworkBehaviour {
                 EventManager.TimerStart();
                 playedCutscene = true;
             }
-            if (!Timer.IsRunning) {
-                Timer = CustomTickTimer.CreateFromSeconds(Runner, remainingTime);
+            if (!Timer.IsRunning && canStart) {
+                Timer = CustomTickTimer.CreateFromSeconds(Runner, 0);
             }
         }
     }
