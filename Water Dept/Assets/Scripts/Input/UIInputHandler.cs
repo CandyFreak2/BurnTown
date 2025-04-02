@@ -16,12 +16,12 @@ public class UIInputHandler : SimulationBehaviour, IBeforeUpdate, INetworkRunner
         UIInputSystem.Pause.started += ctx => OnPause(isPanelOn);
         UIInputSystem.Interact.started += ctx => OnInteract(InputButton.Interact);
         UIInputSystem.Drop.started += ctx => OnInteract(InputButton.Drop);
-        UIInputSystem.Attack.started += ctx => OnInteract(InputButton.Shoot);
-        UIInputSystem.Brake.started += ctx => OnInteract(InputButton.Brake);
+        UIInputSystem.Attack.started += ctx => OnInteract(InputButton.ShootDown);
+        UIInputSystem.Brake.started += ctx => OnInteract(InputButton.BrakeDown);
         UIInputSystem.Interact.canceled += ctx => OnInteract(InputButton.Interact);
         UIInputSystem.Drop.canceled += ctx => OnInteract(InputButton.Drop);
-        UIInputSystem.Attack.canceled += ctx => OnInteract(InputButton.Shoot);
-        UIInputSystem.Brake.canceled += ctx => OnInteract(InputButton.Brake);
+        UIInputSystem.Attack.canceled += ctx => OnInteract(InputButton.ShootUp);
+        UIInputSystem.Brake.canceled += ctx => OnInteract(InputButton.BrakeUp);
     }
 
     private void OnPause(bool input) {
