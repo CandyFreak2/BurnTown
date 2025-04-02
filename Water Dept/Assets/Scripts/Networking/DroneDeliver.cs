@@ -14,6 +14,6 @@ public class DroneDeliver : NetworkBehaviour
         drone.GetComponent<Drone>().deliverPosition = deliveryPosition;
         drone.GetComponent<Drone>().returnPosition = transform.position;
 
-        drone.GetComponent<Rigidbody>().AddForce((deliveryPosition - transform.position)* 20);   
+        drone.GetComponent<Rigidbody>().AddForce((deliveryPosition - transform.position)* 20);  
     }
 }

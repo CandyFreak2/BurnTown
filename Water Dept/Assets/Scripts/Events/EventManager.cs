@@ -1,6 +1,12 @@
 using UnityEngine.Events;
 
 public static class EventManager {
+    public static void PlayerJoin() => onPlayerJoin?.Invoke();
+    public static event UnityAction onPlayerJoin;
+
+    public static void PlayerLeave() => onPlayerLeave?.Invoke();
+    public static event UnityAction onPlayerLeave;
+
     public static void TimerStart() => onTimerStart?.Invoke();
     public static event UnityAction onTimerStart;
 
@@ -29,14 +35,20 @@ public static class EventManager {
     public static event UnityAction onStartZoneTrigger;
     public static void StartZoneTrigger() => onStartZoneTrigger?.Invoke();
 
-    public static event UnityAction onEndZoneEnter;
-    public static void EndZoneEnter() => onEndZoneEnter?.Invoke();
+    public static event UnityAction onStartZoneTimerStart;
+    public static void StartZoneTimerStart() => onStartZoneTimerStart?.Invoke();
 
-    public static event UnityAction onEndZoneExit;
-    public static void EndZoneExit() => onEndZoneExit?.Invoke();
+    public static event UnityAction onStartZoneTimerReset;
+    public static void StartZoneTimerReset() => onStartZoneTimerReset?.Invoke();
 
-    public static event UnityAction onEndZoneTrigger;
-    public static void EndZoneTrigger() => onEndZoneTrigger?.Invoke();
+    public static event UnityAction<EndConditions> onEndZoneEnter;
+    public static void EndZoneEnter(EndConditions condition) => onEndZoneEnter?.Invoke(condition);
+
+    public static event UnityAction<EndConditions> onEndZoneExit;
+    public static void EndZoneExit(EndConditions condition) => onEndZoneExit?.Invoke(condition);
+
+    public static event UnityAction<EndConditions> onEndZoneTrigger;
+    public static void EndZoneTrigger(EndConditions condition) => onEndZoneTrigger?.Invoke(condition);
 
     // UI Lobby System
     public static event UnityAction<string> onKeyPress;
