@@ -478,6 +478,15 @@
                     "initialStateCheck": false
                 },
                 {
+                    "name": "Brake",
+                    "type": "Button",
+                    "id": "59ffabbb-d863-4c07-9dc4-fd1c333d783a",
+                    "expectedControlType": "",
+                    "processors": "",
+                    "interactions": "",
+                    "initialStateCheck": false
+                },
+                {
                     "name": "Attack",
                     "type": "Value",
                     "id": "bf2eb153-8ae5-45c9-adea-daf39f63f9c7",
@@ -760,6 +769,28 @@
                     "action": "Navigate",
                     "isComposite": false,
                     "isPartOfComposite": true
+                },
+                {
+                    "name": "",
+                    "id": "ad8becf3-afbc-42f3-a870-f84e61569ca0",
+                    "path": "<Gamepad>/leftTrigger",
+                    "interactions": "",
+                    "processors": "",
+                    "groups": ";Gamepad",
+                    "action": "Brake",
+                    "isComposite": false,
+                    "isPartOfComposite": false
+                },
+                {
+                    "name": "",
+                    "id": "c8aaea18-6682-4100-8621-68bc29160297",
+                    "path": "<Mouse>/rightButton",
+                    "interactions": "",
+                    "processors": "",
+                    "groups": ";Keyboard&Mouse",
+                    "action": "Brake",
+                    "isComposite": false,
+                    "isPartOfComposite": false
                 },
                 {
                     "name": "",

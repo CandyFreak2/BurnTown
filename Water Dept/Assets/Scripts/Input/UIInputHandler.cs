@@ -9,14 +9,19 @@ public class UIInputHandler : SimulationBehaviour, IBeforeUpdate, INetworkRunner
     private bool isPanelOn = false;
 
     public static Action<bool> onActionPause;
-    public static Action<bool> onActionInteract;
+    public static Action<InputButton> onActionInteract;
 
     private void Awake() {
         UIInputSystem = new InputSystem_Actions().UI;
         UIInputSystem.Pause.started += ctx => OnPause(isPanelOn);
-        UIInputSystem.Interact.started += ctx => OnInteract(false);
-        UIInputSystem.Drop.started += ctx => OnInteract(false);
-        UIInputSystem.Attack.started += ctx => OnInteract(true);
+        UIInputSystem.Interact.started += ctx => OnInteract(InputButton.Interact);
+        UIInputSystem.Drop.started += ctx => OnInteract(InputButton.Drop);
+        UIInputSystem.Attack.started += ctx => OnInteract(InputButton.ShootDown);
+        UIInputSystem.Brake.started += ctx => OnInteract(InputButton.BrakeDown);
+        UIInputSystem.Interact.canceled += ctx => OnInteract(InputButton.Interact);
+        UIInputSystem.Drop.canceled += ctx => OnInteract(InputButton.Drop);
+        UIInputSystem.Attack.canceled += ctx => OnInteract(InputButton.ShootUp);
+        UIInputSystem.Brake.canceled += ctx => OnInteract(InputButton.BrakeUp);
     }
 
     private void OnPause(bool input) {
@@ -24,7 +29,7 @@ public class UIInputHandler : SimulationBehaviour, IBeforeUpdate, INetworkRunner
         isPanelOn = !isPanelOn;
     }
 
-    private void OnInteract(bool input)
+    private void OnInteract(InputButton input)
     {
         onActionInteract?.Invoke(input);
     }
