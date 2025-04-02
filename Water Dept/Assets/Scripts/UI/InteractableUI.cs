@@ -4,15 +4,18 @@ using DG.Tweening;
 using Fusion;
 using UnityEngine;
 using UnityEngine.UI;
-using static Unity.Collections.Unicode;
 
 public class InteractableUI : NetworkBehaviour
 {
     private GameObject flamethrowerUI;
-    private Image flamethrowerShoot, flamethrowerDrop;
+    private bool isShooting = false;
+    [SerializeField] private Animator flamethrowerIconAnim;
 
     private GameObject barrelUI;
+    private Image barrelIcon;
+
     private GameObject firetruckUI;
+    private Image firetruckIcon;
 
     private PlayerMovement playerMovement;
 
@@ -32,7 +35,7 @@ public class InteractableUI : NetworkBehaviour
         public Sprite defaultSprite, pressedSprite;
     }
     public List<ButtonUI> buttonSprites;
-    private Dictionary<string, ButtonUI> spriteMap;
+    public static Dictionary<string, ButtonUI> spriteMap;
     
 
     private void OnEnable()
@@ -61,7 +64,7 @@ public class InteractableUI : NetworkBehaviour
     {
         spriteMap = new Dictionary<string, ButtonUI>();
 
-        if (buttonSprites.Count >= 6)
+        if (buttonSprites.Count >= 7)
         { 
             spriteMap.Add("AButton", buttonSprites[0]);
             spriteMap.Add("BButton", buttonSprites[1]);
@@ -69,6 +72,8 @@ public class InteractableUI : NetworkBehaviour
             spriteMap.Add("YButton", buttonSprites[3]);
             spriteMap.Add("RTButton", buttonSprites[4]);
             spriteMap.Add("LTButton", buttonSprites[5]);
+            spriteMap.Add("BarrelIcon", buttonSprites[6]);
+            spriteMap.Add("FiretruckIcon", buttonSprites[7]);
         }
         else
         {
@@ -76,8 +81,8 @@ public class InteractableUI : NetworkBehaviour
         }
 
         // Initialize ui image refrences
-        flamethrowerShoot = flamethrowerUI.transform.Find("FlamethrowerShoot")?.GetComponent<Image>();
-        flamethrowerDrop = flamethrowerUI.transform.Find("FlamethrowerDrop")?.GetComponent<Image>();
+        barrelIcon = barrelUI.transform.Find("BarrelIcon")?.GetComponent<Image>();
+        firetruckIcon = firetruckUI.transform.Find("FiretruckIcon")?.GetComponent<Image>();
     }
 
     // Delay updating ui so that playermovement data gets updated first then ui
@@ -85,7 +90,7 @@ public class InteractableUI : NetworkBehaviour
     {
         inputPressed = _input;
 
-        if (inputPressed == InputButton.Shoot)
+        if (inputPressed == InputButton.Shoot || inputPressed == InputButton.Brake)
         {
             Invoke("UpdateUI", popupDelay);
         }
@@ -122,9 +127,10 @@ public class InteractableUI : NetworkBehaviour
     {
         RPC_SetPlayerState();
 
-        if (!playerMovement.enabled)
+        if (!playerMovement.enabled) //Should prolly change this check with stun disabling playermovement too
         {
             firetruckUI.SetActive(true);
+            UpdateFiretruckUI();
         }
         else if (playerMovement.carriedObject == null)
         {
@@ -138,6 +144,7 @@ public class InteractableUI : NetworkBehaviour
         else if (playerMovement.carriedObject.interactableType == InteractableType.Barrel)
         {
             barrelUI.SetActive(true);
+            UpdateBarrelUI();
         }
         else
         {
@@ -148,8 +155,6 @@ public class InteractableUI : NetworkBehaviour
     private void DeactivateAllUI()
     {
         // Reset button sprites
-        flamethrowerShoot.sprite = spriteMap["RTButton"].defaultSprite;
-        flamethrowerDrop.sprite = spriteMap["BButton"].defaultSprite;
 
         flamethrowerUI.SetActive(false);
         barrelUI.SetActive(false);
@@ -158,31 +163,40 @@ public class InteractableUI : NetworkBehaviour
 
     private void UpdateFlamethrowerUI()
     {
-        // Toggle trigger sprite
+        // Toggle flamethrower sprite animation
         if (inputPressed == InputButton.Shoot)
         {
-            if (flamethrowerShoot.sprite == spriteMap["RTButton"].defaultSprite)
-            {
-                flamethrowerShoot.sprite = spriteMap["RTButton"].pressedSprite;
-            }
-            else
-            {
-                flamethrowerShoot.sprite = spriteMap["RTButton"].defaultSprite;
-            }
-
-            // Could do on fire icon in here just not sure how to do that animation
+            isShooting = !isShooting;
+            flamethrowerIconAnim.SetBool("isShooting", isShooting);
         }
+    }
 
-        // Toggle drop sprite
-        else if (inputPressed == InputButton.Drop)
+    private void UpdateBarrelUI()
+    {
+        if (inputPressed == InputButton.Drop)
         {
-            if (flamethrowerDrop.sprite == spriteMap["BButton"].defaultSprite)
+            if (barrelIcon.sprite == spriteMap["BarrelIcon"].defaultSprite)
             {
-                flamethrowerDrop.sprite = spriteMap["BButton"].pressedSprite;
+                barrelIcon.sprite = spriteMap["BarrelIcon"].pressedSprite;
             }
             else
             {
-                flamethrowerDrop.sprite = spriteMap["BButton"].defaultSprite;
+                barrelIcon.sprite = spriteMap["BarrelIcon"].defaultSprite;
+            }
+        }
+    }
+
+    private void UpdateFiretruckUI()
+    {
+        if (inputPressed == InputButton.Shoot || inputPressed == InputButton.Brake)
+        {
+            if (firetruckIcon.sprite == spriteMap["FiretruckIcon"].defaultSprite)
+            {
+                firetruckIcon.sprite = spriteMap["FiretruckIcon"].pressedSprite;
+            }
+            else
+            {
+                firetruckIcon.sprite = spriteMap["FiretruckIcon"].defaultSprite;
             }
         }
     }
