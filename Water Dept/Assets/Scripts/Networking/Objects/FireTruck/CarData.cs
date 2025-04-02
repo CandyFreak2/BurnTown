@@ -41,14 +41,13 @@ public class CarData : NetworkBehaviour
     private void UpdateKillzone()
     {
         carSpeed = carRB.linearVelocity.magnitude;
-        Debug.Log(carSpeed);
 
         if (!atKillSpeed && carSpeed >= 5.0f)
         {
             killzone.SetActive(true);
             atKillSpeed = true;
         }
-        else if (atKillSpeed && carSpeed < 5.0f)
+        else if (atKillSpeed && carSpeed < 0.0f) // change back
         {
             killzone.SetActive(false);
             atKillSpeed = false;
