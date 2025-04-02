@@ -26,7 +26,7 @@ Transform:
   m_GameObject: {fileID: 1295557062003659758}
   serializedVersion: 2
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: -1.69, y: -2.8, z: -4.03}
+  m_LocalPosition: {x: -1.69, y: -3.1200001, z: -4.03}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []
@@ -46,11 +46,11 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   carRB: {fileID: 4768391477969633517}
   suspensionRestLength: 0.8
-  suspensionStrength: 85
-  suspensionDamping: 75
-  powerMultiplier: 30
+  suspensionStrength: 2000
+  suspensionDamping: 700
+  powerMultiplier: 500
   topSpeed: 60
-  brakeStrength: 12
+  brakeStrength: 250
   tireGripFactor: 0.8
 --- !u!1 &1601628383318992276
 GameObject:
@@ -78,7 +78,7 @@ Transform:
   m_GameObject: {fileID: 1601628383318992276}
   serializedVersion: 2
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 1.68, y: -2.8, z: -4.03}
+  m_LocalPosition: {x: 1.68, y: -3.1200001, z: -4.03}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []
@@ -98,11 +98,11 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   carRB: {fileID: 4768391477969633517}
   suspensionRestLength: 0.8
-  suspensionStrength: 85
-  suspensionDamping: 75
-  powerMultiplier: 30
+  suspensionStrength: 2000
+  suspensionDamping: 700
+  powerMultiplier: 500
   topSpeed: 60
-  brakeStrength: 12
+  brakeStrength: 250
   tireGripFactor: 0.8
 --- !u!1 &2040709483166779140
 GameObject:
@@ -207,7 +207,7 @@ Rigidbody:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 2231294426090905358}
   serializedVersion: 4
-  m_Mass: 20
+  m_Mass: 500
   m_Drag: 0
   m_AngularDrag: 0.05
   m_CenterOfMass: {x: 0, y: -0.95, z: 0}
@@ -246,7 +246,7 @@ BoxCollider:
   m_Enabled: 1
   serializedVersion: 3
   m_Size: {x: 5, y: 5.5, z: 14.515202}
-  m_Center: {x: 0, y: -0.099999905, z: -0.20261669}
+  m_Center: {x: 0, y: 0, z: -0.20261669}
 --- !u!114 &615215578933300217
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -260,7 +260,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   carRB: {fileID: 4768391477969633517}
-  killzone: {fileID: 6472798120567889666}
+  killzone: {fileID: 8181070929540949012}
   frontTires:
   - {fileID: 5595848358408308924}
   - {fileID: 3962749562720211918}
@@ -409,7 +409,7 @@ Transform:
   m_GameObject: {fileID: 6472798120567889666}
   serializedVersion: 2
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 0, y: -2.13, z: 7.74}
+  m_LocalPosition: {x: 0, y: -2.74, z: 7.74}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []
@@ -571,7 +571,7 @@ Transform:
   m_GameObject: {fileID: 8397273350419712050}
   serializedVersion: 2
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 1.68, y: -2.8, z: 5.76}
+  m_LocalPosition: {x: 1.68, y: -3.1200001, z: 5.76}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []
@@ -591,11 +591,11 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   carRB: {fileID: 4768391477969633517}
   suspensionRestLength: 0.8
-  suspensionStrength: 85
-  suspensionDamping: 75
-  powerMultiplier: 20
+  suspensionStrength: 2000
+  suspensionDamping: 700
+  powerMultiplier: 450
   topSpeed: 60
-  brakeStrength: 10
+  brakeStrength: 200
   tireGripFactor: 0.8
 --- !u!1 &8539886274263462978
 GameObject:
@@ -623,7 +623,7 @@ Transform:
   m_GameObject: {fileID: 8539886274263462978}
   serializedVersion: 2
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: -1.69, y: -2.8, z: 5.76}
+  m_LocalPosition: {x: -1.69, y: -3.12, z: 5.76}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []
@@ -643,11 +643,11 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   carRB: {fileID: 4768391477969633517}
   suspensionRestLength: 0.8
-  suspensionStrength: 85
-  suspensionDamping: 75
-  powerMultiplier: 20
+  suspensionStrength: 2000
+  suspensionDamping: 700
+  powerMultiplier: 450
   topSpeed: 60
-  brakeStrength: 10
+  brakeStrength: 200
   tireGripFactor: 0.8
 --- !u!1 &9181218762468318415
 GameObject:
