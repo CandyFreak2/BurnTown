@@ -8,7 +8,6 @@ using UnityEngine.UI;
 public class InteractableUI : NetworkBehaviour
 {
     private GameObject flamethrowerUI;
-    private bool isShooting = false;
     [SerializeField] private Animator flamethrowerIconAnim;
 
     private GameObject barrelUI;
@@ -90,7 +89,7 @@ public class InteractableUI : NetworkBehaviour
     {
         inputPressed = _input;
 
-        if (inputPressed == InputButton.Shoot || inputPressed == InputButton.Brake)
+        if (inputPressed == InputButton.ShootDown || inputPressed == InputButton.ShootUp || inputPressed == InputButton.BrakeDown || inputPressed == InputButton.BrakeUp)
         {
             Invoke("UpdateUI", popupDelay);
         }
@@ -164,10 +163,14 @@ public class InteractableUI : NetworkBehaviour
     private void UpdateFlamethrowerUI()
     {
         // Toggle flamethrower sprite animation
-        if (inputPressed == InputButton.Shoot)
+        if (inputPressed == InputButton.ShootDown)
         {
-            isShooting = !isShooting;
-            flamethrowerIconAnim.SetBool("isShooting", isShooting);
+            flamethrowerIconAnim.SetBool("isShooting", true);
+        }
+
+        else if (inputPressed == InputButton.ShootUp)
+        {
+            flamethrowerIconAnim.SetBool("isShooting", false);
         }
     }
 
@@ -188,16 +191,15 @@ public class InteractableUI : NetworkBehaviour
 
     private void UpdateFiretruckUI()
     {
-        if (inputPressed == InputButton.Shoot || inputPressed == InputButton.Brake)
+        // Toggle Firetuck icon sprite
+        if (inputPressed == InputButton.ShootDown || inputPressed == InputButton.BrakeDown)
         {
-            if (firetruckIcon.sprite == spriteMap["FiretruckIcon"].defaultSprite)
-            {
-                firetruckIcon.sprite = spriteMap["FiretruckIcon"].pressedSprite;
-            }
-            else
-            {
-                firetruckIcon.sprite = spriteMap["FiretruckIcon"].defaultSprite;
-            }
+            firetruckIcon.sprite = spriteMap["FiretruckIcon"].pressedSprite;
+        }
+
+        else if (inputPressed == InputButton.ShootUp || inputPressed == InputButton.BrakeUp)
+        {
+            firetruckIcon.sprite = spriteMap["FiretruckIcon"].defaultSprite;
         }
     }
 
