@@ -16,7 +16,10 @@ public class VFXController : MonoBehaviour
     {
         //vfx = transform.GetComponentsInChildren<ParticleSystem>().ToList();
         foreach (var emitter in emitterVFX)
+        {
             emitterRate.Add(emitter.emission.rateOverTimeMultiplier);
+            emitter.Play();
+        }
     }
 
     private void FixedUpdate()

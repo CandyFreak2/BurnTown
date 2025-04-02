@@ -157,6 +157,7 @@ MonoBehaviour:
   HeatSources: []
   burnOnAwake: 0
   spreadSource: {fileID: 5125666945234525588}
+  receiverPoint: {fileID: 5125666945234525588}
   startFuel: 10
   heatResistance: 0
   heatBuffer: 1
@@ -177,9 +178,11 @@ MonoBehaviour:
   startColor: {r: 1, g: 0.56351566, b: 0.015686274, a: 1}
   endColor: {r: 1, g: 0, b: 0, a: 1}
   vfxControler: {fileID: 0}
-  onFireVFX: {fileID: 5971381314825315898}
+  onFireVFX:
+  - {fileID: 5971381314825315898}
   despawnOnDeath: 1
   destroyedByImpact: 0
+  destroyedDuration: 0
   activeModel: {fileID: 0}
   activeModelSubAnchor: {fileID: 0}
   destroyedModel: {fileID: 0}
@@ -211,10 +214,30 @@ PrefabInstance:
     serializedVersion: 3
     m_TransformParent: {fileID: 5125666945234525588}
     m_Modifications:
+    - target: {fileID: 122068770842325883, guid: dcffeeeeb26f0ab418336c2779f00a8c,
+        type: 3}
+      propertyPath: EmissionModule.rateOverTime.scalar
+      value: 0.5
+      objectReference: {fileID: 0}
     - target: {fileID: 961762408205275243, guid: dcffeeeeb26f0ab418336c2779f00a8c,
         type: 3}
       propertyPath: m_Name
       value: VFX_BoxFire_Small
+      objectReference: {fileID: 0}
+    - target: {fileID: 3827635482907629621, guid: dcffeeeeb26f0ab418336c2779f00a8c,
+        type: 3}
+      propertyPath: m_LocalScale.x
+      value: 0.65103
+      objectReference: {fileID: 0}
+    - target: {fileID: 3827635482907629621, guid: dcffeeeeb26f0ab418336c2779f00a8c,
+        type: 3}
+      propertyPath: m_LocalScale.y
+      value: 0.65103
+      objectReference: {fileID: 0}
+    - target: {fileID: 3827635482907629621, guid: dcffeeeeb26f0ab418336c2779f00a8c,
+        type: 3}
+      propertyPath: m_LocalScale.z
+      value: 0.65103
       objectReference: {fileID: 0}
     - target: {fileID: 3827635482907629621, guid: dcffeeeeb26f0ab418336c2779f00a8c,
         type: 3}
@@ -224,7 +247,7 @@ PrefabInstance:
     - target: {fileID: 3827635482907629621, guid: dcffeeeeb26f0ab418336c2779f00a8c,
         type: 3}
       propertyPath: m_LocalPosition.y
-      value: 0
+      value: -0.1012
       objectReference: {fileID: 0}
     - target: {fileID: 3827635482907629621, guid: dcffeeeeb26f0ab418336c2779f00a8c,
         type: 3}

@@ -31,6 +31,9 @@ public class Burnable : NetworkBehaviour
     [SerializeField, Tooltip("Where does the fire spread from")]
     protected Transform spreadSource;
 
+    [SerializeField, Tooltip("Where does fire spread to this object target")]
+    protected Transform receiverPoint;
+
     [SerializeField, Tooltip("The health of the object, takes damage from surrounding fire and itself")] 
     protected int startFuel = 10;
 
@@ -89,7 +92,7 @@ public class Burnable : NetworkBehaviour
 
     [Header("VFX")]
     [SerializeField] VFXController vfxControler;
-    [SerializeField] ParticleSystem onFireVFX;
+    [SerializeField] List<ParticleSystem> onFireVFX;
 
     [Header("Destruction")]
     [SerializeField] bool despawnOnDeath = true;
@@ -106,6 +109,8 @@ public class Burnable : NetworkBehaviour
     {
         if (spreadSource == null)
             spreadSource = transform;
+        if (receiverPoint == null)
+            receiverPoint = spreadSource == null ? transform : spreadSource.transform;
     }
 
     private void OnDrawGizmosSelected()
@@ -199,21 +204,22 @@ public class Burnable : NetworkBehaviour
     ///Gets the array of burnables in a radius and adds the source to them
     private void SpreadFire()
     {
-        Collider[] objArr = Physics.OverlapSphere(spreadSource.position, spreadRadius);
+        Collider[] objArr = Physics.OverlapSphere(spreadSource.position, spreadRadius, overlapMask);
         foreach (var obj in objArr)
         {
             if (!obj.gameObject.TryGetComponent(out Burnable check_1) && !obj.gameObject.TryGetComponent(out BarrelInfo check_2) )
                 continue;
 
-            //Skip obj if over pen limit, (!System will break if obj has overlapping colliders!) //always add +1 because it will usually hit itself
-            RaycastHit[] hits = Physics.RaycastAll(spreadSource.position, obj.transform.position - spreadSource.position, Vector3.Distance(spreadSource.position, obj.transform.position));
+            //Skip obj if over pen limit, (!System will break if obj is using multiple colliders!) //always add +1 because it will usually hit itself
+            Vector3 targetPos = check_1 == null ? obj.transform.position : check_1.receiverPoint.position;
+            RaycastHit[] hits = Physics.RaycastAll(spreadSource.position, targetPos - spreadSource.position, Vector3.Distance(spreadSource.position, obj.transform.position));
             if (hits.Length > wallPenetration + 1)
             {
-                Debug.DrawLine(spreadSource.position, obj.transform.position, Color.black, 2f);
+                Debug.DrawLine(spreadSource.position, targetPos, Color.black, 2f);
                 continue;
             }
 
-            Debug.DrawLine(spreadSource.position, obj.transform.position, Color.red, 2f);
+            Debug.DrawLine(spreadSource.position, targetPos, Color.red, 2f);
 
             if (obj.TryGetComponent(out Burnable target))
             {
@@ -231,18 +237,21 @@ public class Burnable : NetworkBehaviour
 
     private void FinalSpread()
     {
-        Collider[] objArr = Physics.OverlapSphere(spreadSource.position, finalSpreadRadius);
+        Collider[] objArr = Physics.OverlapSphere(spreadSource.position, finalSpreadRadius, overlapMask);
         foreach (var obj in objArr)
         {
+            if (!obj.gameObject.TryGetComponent(out Burnable check_1) && !obj.gameObject.TryGetComponent(out BarrelInfo check_2))
+                continue;
 
-            //Ehhhhhh dont really wanna add raycasting to this. But it'd stop fire from spreading through walls
-            RaycastHit[] hits = Physics.RaycastAll(spreadSource.position, obj.transform.position - spreadSource.position, finalSpreadRadius);
-            if (hits.Length > 0 && hits[0].collider.gameObject != obj.gameObject)
+            //Skip obj if over pen limit, (!System will break if obj is using multiple colliders!) //always add +1 because it will usually hit itself
+            Vector3 targetPos = check_1 == null ? obj.transform.position : check_1.receiverPoint.position;
+            RaycastHit[] hits = Physics.RaycastAll(spreadSource.position, targetPos - spreadSource.position, Vector3.Distance(spreadSource.position, obj.transform.position));
+            if (hits.Length > wallPenetration + 1)
             {
-                Debug.DrawLine(spreadSource.position, hits[0].collider.transform.position, Color.black, 2f);
+                Debug.DrawLine(spreadSource.position, targetPos, Color.black, 2f);
                 continue;
             }
-            
+
             Debug.DrawLine(spreadSource.position, obj.transform.position, Color.yellow, 2f);
 
             if (obj.TryGetComponent(out Burnable target))
@@ -252,7 +261,6 @@ public class Burnable : NetworkBehaviour
             }
         }
     }
-
     private void TakeFireDamageTick()
     {
         //Debug.Log(gameObject.name + "'s current heat is " + CurrentHeat);
@@ -357,7 +365,8 @@ public class Burnable : NetworkBehaviour
         //SHOULD NOT CALL RPC LIKE THIS BUT NETWORKED OBJ WONT TAKE MY NICE LIST   ):<
         startedBurning = true;
         nIsBurning = true;
-        onFireVFX.Play();
+        foreach (var fire in onFireVFX)
+            fire.Play();
     }
 
     [Rpc(RpcSources.All, RpcTargets.All)]
@@ -397,9 +406,12 @@ public class Burnable : NetworkBehaviour
     private void TriggerDestroyBurnable(float duration)
     {
         //detatch VFX
-        onFireVFX.Stop();
-        Destroy(onFireVFX.gameObject, 10); //magic 10, VFX should be stopped and destroyed waaaaaayyy after they're done, but it's hard to tell when that is
-        onFireVFX.transform.parent = null;
+        foreach (var fire in onFireVFX)
+        {
+            fire.Stop();
+            Destroy(fire.gameObject, 10); //magic 10, VFX should be stopped and destroyed waaaaaayyy after they're done, but it's hard to tell when that is
+            fire.transform.parent = null;
+        }
 
         //this will not work if triggered by RPC call... ugggghhhh
         nIsBurning = false;
@@ -418,6 +430,12 @@ public class Burnable : NetworkBehaviour
     }
     private void Despawn()
     {
+        if (destructionVFX != null)
+        {
+            destructionVFX.Play();
+            destructionVFX.transform.parent = null;
+        }
+        
         Runner.Despawn(Object);
     }
 
