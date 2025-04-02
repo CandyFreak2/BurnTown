@@ -30603,7 +30603,7 @@ PrefabInstance:
     - target: {fileID: 9149129715507774516, guid: fdd7726ba11e5c24fbb0a96f893847ba,
         type: 3}
       propertyPath: m_LocalPosition.x
-      value: -10
+      value: -90.67
       objectReference: {fileID: 0}
     - target: {fileID: 9149129715507774516, guid: fdd7726ba11e5c24fbb0a96f893847ba,
         type: 3}
@@ -48247,6 +48247,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   droneDeliveryPoint: {x: 45, y: 0.6306862, z: -8}
+  barrelList: []
   droneDeliver: {fileID: 795779623}
 --- !u!65 &1097885994
 BoxCollider:
@@ -49367,6 +49368,7 @@ Transform:
   m_Children:
   - {fileID: 1419875459}
   - {fileID: 1097885991}
+  - {fileID: 1005493531}
   m_Father: {fileID: 0}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1001 &1140277173
@@ -60689,6 +60691,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   droneDeliveryPoint: {x: -1.5999999, y: 0.6306862, z: -1.5}
+  barrelList: []
   droneDeliver: {fileID: 795779623}
 --- !u!114 &1419875463
 MonoBehaviour:

@@ -41,7 +41,8 @@ public class CarData : NetworkBehaviour
     private void UpdateKillzone()
     {
         carSpeed = carRB.linearVelocity.magnitude;
-        Debug.Log(carSpeed);
+        // Get this shit outta here - Jerry
+        //Debug.Log(carSpeed);
 
         if (!atKillSpeed && carSpeed >= 5.0f)
         {

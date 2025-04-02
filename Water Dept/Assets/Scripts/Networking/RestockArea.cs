@@ -21,7 +21,8 @@ public class RestockArea : NetworkBehaviour
 
     private void Update()
     {
-        Debug.Log(barrelList.Count);
+        // Get this shit outta here - Jerry :3
+        //Debug.Log(barrelList.Count);
     }
 
     private void OnTriggerEnter(Collider other)
