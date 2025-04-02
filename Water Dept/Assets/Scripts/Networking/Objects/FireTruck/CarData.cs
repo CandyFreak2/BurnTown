@@ -6,7 +6,7 @@ using UnityEngine;
 public class CarData : NetworkBehaviour
 {
     [SerializeField] public Rigidbody carRB;
-    [SerializeField] public NetworkRigidbody3D networkCarRB;
+    [SerializeField] public GameObject killzone;
     [SerializeField] public List<Tire> frontTires, backTires;
 
     [SerializeField] public Transform driverPos;
@@ -14,6 +14,8 @@ public class CarData : NetworkBehaviour
     [Networked] private int numPassengers { set; get; } // change to private
     private int maxPassengers;
     [Networked] public Vector3 truckPos { set; get; }
+    [Networked] private float carSpeed { get; set; }
+    private bool atKillSpeed = false;
 
     // Start is called once before the first execution of Update after the MonoBehaviour is created
     void Start()
@@ -32,6 +34,24 @@ public class CarData : NetworkBehaviour
         if (HasStateAuthority)
         {
             truckPos = transform.position;
+            UpdateKillzone();
+        }
+    }
+
+    private void UpdateKillzone()
+    {
+        carSpeed = carRB.linearVelocity.magnitude;
+        Debug.Log(carSpeed);
+
+        if (!atKillSpeed && carSpeed >= 5.0f)
+        {
+            killzone.SetActive(true);
+            atKillSpeed = true;
+        }
+        else if (atKillSpeed && carSpeed < 5.0f)
+        {
+            killzone.SetActive(false);
+            atKillSpeed = false;
         }
     }
 
