@@ -156,12 +156,19 @@ MonoBehaviour:
   heatModifier: 0
   HeatSources: []
   burnOnAwake: 0
+  spreadSource: {fileID: 5125666945234525588}
   startFuel: 10
   heatResistance: 0
   heatBuffer: 1
   heatDmgCap: 999
   heatStrength: 1
   spreadRadius: 3
+  finalHeatStrength: 0
+  finalSpreadRadius: 0
+  wallPenetration: 0
+  overlapMask:
+    serializedVersion: 2
+    m_Bits: 1
   _nIsBurning: 0
   showsLerp: 1
   colorStepSmoothing: 0.05
@@ -169,8 +176,14 @@ MonoBehaviour:
   initialColor: {r: 0, g: 0, b: 0, a: 1}
   startColor: {r: 1, g: 0.56351566, b: 0.015686274, a: 1}
   endColor: {r: 1, g: 0, b: 0, a: 1}
+  vfxControler: {fileID: 0}
   onFireVFX: {fileID: 5971381314825315898}
+  despawnOnDeath: 1
+  destroyedByImpact: 0
+  activeModel: {fileID: 0}
+  activeModelSubAnchor: {fileID: 0}
   destroyedModel: {fileID: 0}
+  destructionVFX: {fileID: 0}
 --- !u!114 &7665528197390418716
 MonoBehaviour:
   m_ObjectHideFlags: 0
