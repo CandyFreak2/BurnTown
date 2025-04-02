@@ -119,6 +119,7 @@ Transform:
   m_Children:
   - {fileID: 8999148390465916275}
   - {fileID: 1002289275851737070}
+  - {fileID: 8694019913410145542}
   m_Father: {fileID: 0}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!114 &8788793531047324669
@@ -138,19 +139,37 @@ MonoBehaviour:
   heatModifier: 0
   HeatSources: []
   burnOnAwake: 0
+  spreadSource: {fileID: 8694019913410145542}
+  receiverPoint: {fileID: 8694019913410145542}
   startFuel: 8
   heatResistance: 0
   heatBuffer: 2
   heatDmgCap: 999
   heatStrength: 1
   spreadRadius: 10
+  finalHeatStrength: 2
+  finalSpreadRadius: 0
+  wallPenetration: 0
+  overlapMask:
+    serializedVersion: 2
+    m_Bits: 1
   _nIsBurning: 0
   showsLerp: 1
+  colorStepSmoothing: 0.05
+  colorStepMax: 0.8
   initialColor: {r: 0, g: 1, b: 0, a: 1}
   startColor: {r: 1, g: 0.92156863, b: 0.015686275, a: 1}
   endColor: {r: 1, g: 0, b: 0, a: 1}
-  onFireVFX: {fileID: 4127278709303012512}
+  vfxControler: {fileID: 0}
+  onFireVFX:
+  - {fileID: 4127278709303012512}
+  despawnOnDeath: 1
+  destroyedByImpact: 0
+  destroyedDuration: 0
+  activeModel: {fileID: 0}
+  activeModelSubAnchor: {fileID: 0}
   destroyedModel: {fileID: 0}
+  destructionVFX: {fileID: 0}
 --- !u!114 &5011693737508282806
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -170,6 +189,37 @@ MonoBehaviour:
   NetworkedBehaviours:
   - {fileID: 8788793531047324669}
   ForceRemoteRenderTimeframe: 0
+--- !u!1 &5720525325831666266
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 8694019913410145542}
+  m_Layer: 0
+  m_Name: SpreadSource
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &8694019913410145542
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 5720525325831666266}
+  serializedVersion: 2
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: 0, y: 4, z: 4}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children: []
+  m_Father: {fileID: 4650083864392811780}
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1001 &3897308437251955941
 PrefabInstance:
   m_ObjectHideFlags: 0
