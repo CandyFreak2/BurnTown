@@ -224,6 +224,7 @@ public class CarController : NetworkBehaviour
 
         // RB
         carRB.isKinematic = false;
+        carRB.AddForce(Vector3.up * 4000);
 
         // Add delay to player being able to exit so player doesn't instantly leave off of enter input
         canExit = false;
