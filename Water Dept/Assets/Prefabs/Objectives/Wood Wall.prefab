@@ -9919,6 +9919,7 @@ MonoBehaviour:
   HeatSources: []
   burnOnAwake: 0
   spreadSource: {fileID: 4546301700093729240}
+  receiverPoint: {fileID: 4546301700093729240}
   startFuel: 8
   heatResistance: 0
   heatBuffer: 2
@@ -9939,7 +9940,8 @@ MonoBehaviour:
   startColor: {r: 0.41568628, g: 0.31764707, b: 0.17254902, a: 1}
   endColor: {r: 1, g: 0, b: 0, a: 1}
   vfxControler: {fileID: 3102296439256494559}
-  onFireVFX: {fileID: 558549975800308899}
+  onFireVFX:
+  - {fileID: 558549975800308899}
   despawnOnDeath: 0
   destroyedByImpact: 1
   destroyedDuration: 2
