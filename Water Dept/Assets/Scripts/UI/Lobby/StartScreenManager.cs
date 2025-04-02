@@ -1,24 +1,19 @@
 using Fusion;
-using System;
 using TMPro;
 using UnityEngine;
+using UnityEngine.EventSystems;
 using UnityEngine.UI;
 
 public class StartScreenManager : MonoBehaviour {
-    [Header("Host")]
-
 
     [Header("Join")]
     [SerializeField] private TMP_InputField codeInput;
     [SerializeField] private TMP_Text charLength;
     [SerializeField] private Button confirmButton;
+    [SerializeField] private GameObject loadScreen;
     private int charCount;
 
     private bool isLobbyValid = false;
-
-    public GameObject loadScreen;
-
-    //[Header("Collective")]
 
     private void Start() {
         charCount = LobbyUI.GetCodeLength;
@@ -61,11 +56,11 @@ public class StartScreenManager : MonoBehaviour {
     public void TryCreateLobby(BasicSpawner launcher) {
         if (isLobbyValid) {
             ClientInfo.LevelID = codeInput.text;
-            Debug.Log(ClientInfo.LevelID);
             launcher.SetGameMode(GameMode.Client);
             launcher.JoinOrCreateLobby();
             isLobbyValid = false;
             loadScreen.SetActive(true);
+            EventSystem.current.SetSelectedGameObject(null);
         }
     }
 

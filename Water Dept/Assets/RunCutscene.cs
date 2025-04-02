@@ -4,11 +4,11 @@ using UnityEngine.Playables;
 public class RunCutscene : MonoBehaviour
 {
     private void OnEnable() {
-        EventManager.onTimerStart += Run;
+        EventManager.onPlayerJoin += Run;
     }
 
     private void OnDisable() {
-        EventManager.onTimerStart -= Run;
+        EventManager.onPlayerJoin -= Run;
     }
 
     public void Run() {
