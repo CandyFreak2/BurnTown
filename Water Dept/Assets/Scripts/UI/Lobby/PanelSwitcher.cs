@@ -1,5 +1,4 @@
 using System.Collections;
-using TMPro;
 using UnityEngine;
 using UnityEngine.EventSystems;
 using UnityEngine.UI;
@@ -24,6 +23,9 @@ public class PanelSwitcher : MonoBehaviour {
         //turn of button visibility
         buttonHost.SetActive(false);
         buttonJoin.SetActive(false);
+        buttonPlay.SetActive(false);
+        buttonCredits.SetActive(false);
+        buttonQuit.SetActive(false);
     }
 
     private void ActivatePanel(GameObject panelToActivate, System.Func<GameObject> GetStartElement) {
@@ -63,7 +65,7 @@ public class PanelSwitcher : MonoBehaviour {
 
     public void GoBackToMainScreen() {
         //switch camera POV to main screen
-        cameraManager.SwitchActiveCamera(cameraManager.mainCam);
+        cameraManager.SwitchActiveCamera(cameraManager.startCam);
 
         //turn buttons off
         buttonHost.SetActive(false);
@@ -77,7 +79,7 @@ public class PanelSwitcher : MonoBehaviour {
 
         ActivatePanel(startPanel, () => {
             if (hostButton == null) {
-                hostButton = FindFirstObjectByType<Button>().gameObject;
+                hostButton = buttonPlay;
             }
             return hostButton;  
         }); 
@@ -93,6 +95,7 @@ public class PanelSwitcher : MonoBehaviour {
         cameraManager.SwitchActiveCamera(cameraManager.lobbyCam);
         buttonHost.SetActive(true);
         buttonJoin.SetActive(true);
+        EventSystem.current.SetSelectedGameObject(buttonHost);
 
         //disable interaction with buttons from main screen
         buttonPlay.GetComponent<Button>().interactable = false;

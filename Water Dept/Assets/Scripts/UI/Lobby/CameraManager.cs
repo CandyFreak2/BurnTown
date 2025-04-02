@@ -1,5 +1,6 @@
 using UnityEngine;
 using Unity.Cinemachine;
+using System.Collections.Generic;
 
 public class CameraManager : MonoBehaviour
 {
@@ -10,6 +11,7 @@ public class CameraManager : MonoBehaviour
 
     [Header("References")]
     [SerializeField] GameObject startTXT;
+    [SerializeField] private List<GameObject> buttons;
 
     private CinemachineCamera currentCam;
 
@@ -35,6 +37,7 @@ public class CameraManager : MonoBehaviour
             {
                 SwitchActiveCamera(mainCam);
                 startTXT.SetActive(false);
+                buttons.ForEach(n => n.SetActive(true));
             }
         }
     }
