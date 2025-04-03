@@ -163,6 +163,12 @@ MonoBehaviour:
   vfxControler: {fileID: 0}
   onFireVFX:
   - {fileID: 4127278709303012512}
+  audioProfile:
+    fadeDuration: 0.5
+    DestructSFX:
+    - {fileID: 8300000, guid: 369479e1b75380b448392d146b244aff, type: 3}
+    BurningSFX:
+    - {fileID: 8300000, guid: 1d620eb3465df094aa0ae7f68210df98, type: 3}
   despawnOnDeath: 1
   destroyedByImpact: 0
   destroyedDuration: 0
@@ -184,7 +190,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   SortKey: 485612669
   ObjectInterest: 1
-  Flags: 1
+  Flags: 262145
   NestedObjects: []
   NetworkedBehaviours:
   - {fileID: 8788793531047324669}
