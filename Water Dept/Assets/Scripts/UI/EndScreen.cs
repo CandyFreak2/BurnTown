@@ -99,7 +99,7 @@ public class EndScreen : NetworkBehaviour
 
     //bleeeghhhhh networking :(
 
-    public void TriggerEndScreen()
+    public void TriggerEndScreen(EndConditions conditions)
     {
         Debug.Log("END SCREEN TRIGGER");
         endTimeline.Play();
