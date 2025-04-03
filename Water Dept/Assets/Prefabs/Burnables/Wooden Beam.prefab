@@ -11,7 +11,7 @@ GameObject:
   - component: {fileID: 4827358829407113957}
   - component: {fileID: 4827625402649054739}
   - component: {fileID: 7100946691638049002}
-  - component: {fileID: 6325639206486687881}
+  - component: {fileID: 5177642757307493816}
   m_Layer: 0
   m_Name: Wooden Beam
   m_TagString: Untagged
@@ -29,7 +29,7 @@ Transform:
   serializedVersion: 2
   m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
   m_LocalPosition: {x: 0, y: 0, z: 0}
-  m_LocalScale: {x: 4, y: 2, z: 4}
+  m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children:
   - {fileID: 8502123726332837702}
@@ -77,6 +77,9 @@ MonoBehaviour:
   vfxControler: {fileID: 0}
   onFireVFX:
   - {fileID: 5815517458772770438}
+  audioProfile:
+    fadeDuration: 0
+    DestructSFX: []
   despawnOnDeath: 1
   destroyedByImpact: 0
   destroyedDuration: 0
@@ -103,7 +106,7 @@ MonoBehaviour:
   NetworkedBehaviours:
   - {fileID: 4827625402649054739}
   ForceRemoteRenderTimeframe: 0
---- !u!65 &6325639206486687881
+--- !u!65 &5177642757307493816
 BoxCollider:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
@@ -122,8 +125,8 @@ BoxCollider:
   m_ProvidesContacts: 0
   m_Enabled: 1
   serializedVersion: 3
-  m_Size: {x: 0.3191216, y: 3, z: 0.37326333}
-  m_Center: {x: 0.003877312, y: 1.5, z: 0.1314946}
+  m_Size: {x: 0.5, y: 4.5, z: 0.5}
+  m_Center: {x: 0, y: 2.23, z: 0.19}
 --- !u!1 &9190546333210154182
 GameObject:
   m_ObjectHideFlags: 0
@@ -135,7 +138,6 @@ GameObject:
   - component: {fileID: 8502123726332837702}
   - component: {fileID: 313941950277458019}
   - component: {fileID: 4856790318901119285}
-  - component: {fileID: 6118667732698130332}
   m_Layer: 0
   m_Name: Borderwall_Edge
   m_TagString: Untagged
@@ -153,8 +155,8 @@ Transform:
   serializedVersion: 2
   m_LocalRotation: {x: 0, y: -0, z: -0, w: 1}
   m_LocalPosition: {x: -0, y: 0, z: 0}
-  m_LocalScale: {x: 0.01, y: 0.01, z: 0.01}
-  m_ConstrainProportionsScale: 1
+  m_LocalScale: {x: 0.15, y: 0.15, z: 0.15}
+  m_ConstrainProportionsScale: 0
   m_Children: []
   m_Father: {fileID: 4827358829407113957}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
@@ -165,7 +167,7 @@ MeshFilter:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 9190546333210154182}
-  m_Mesh: {fileID: 1661803276787413475, guid: 1396be1e3ad11cd409d4001f7e7fc3c7, type: 3}
+  m_Mesh: {fileID: 1661803276787413475, guid: 15783b7aca5661d4badbfe1764fa6682, type: 3}
 --- !u!23 &4856790318901119285
 MeshRenderer:
   m_ObjectHideFlags: 0
@@ -211,27 +213,6 @@ MeshRenderer:
   m_SortingLayer: 0
   m_SortingOrder: 0
   m_AdditionalVertexStreams: {fileID: 0}
---- !u!65 &6118667732698130332
-BoxCollider:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 9190546333210154182}
-  m_Material: {fileID: 0}
-  m_IncludeLayers:
-    serializedVersion: 2
-    m_Bits: 0
-  m_ExcludeLayers:
-    serializedVersion: 2
-    m_Bits: 0
-  m_LayerOverridePriority: 0
-  m_IsTrigger: 0
-  m_ProvidesContacts: 0
-  m_Enabled: 1
-  serializedVersion: 3
-  m_Size: {x: 34.330444, y: 303.62753, z: 33.27217}
-  m_Center: {x: 0, y: 151.81377, z: 13.082771}
 --- !u!1001 &5838198623988485629
 PrefabInstance:
   m_ObjectHideFlags: 0

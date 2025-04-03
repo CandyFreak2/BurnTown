@@ -11,7 +11,6 @@ GameObject:
   - component: {fileID: 4066065174528138322}
   - component: {fileID: 3791670591416678324}
   - component: {fileID: 437725552194757902}
-  - component: {fileID: 5634918562650807542}
   m_Layer: 0
   m_Name: Borderwall_Edge
   m_TagString: Untagged
@@ -41,7 +40,7 @@ MeshFilter:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1545586649128637993}
-  m_Mesh: {fileID: 1661803276787413475, guid: 1396be1e3ad11cd409d4001f7e7fc3c7, type: 3}
+  m_Mesh: {fileID: 3983573526256384480, guid: 1538647c1f8bbe8468d010b80e8b934c, type: 3}
 --- !u!23 &437725552194757902
 MeshRenderer:
   m_ObjectHideFlags: 0
@@ -87,27 +86,6 @@ MeshRenderer:
   m_SortingLayer: 0
   m_SortingOrder: 0
   m_AdditionalVertexStreams: {fileID: 0}
---- !u!65 &5634918562650807542
-BoxCollider:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1545586649128637993}
-  m_Material: {fileID: 0}
-  m_IncludeLayers:
-    serializedVersion: 2
-    m_Bits: 0
-  m_ExcludeLayers:
-    serializedVersion: 2
-    m_Bits: 0
-  m_LayerOverridePriority: 0
-  m_IsTrigger: 0
-  m_ProvidesContacts: 0
-  m_Enabled: 1
-  serializedVersion: 3
-  m_Size: {x: 34.330444, y: 303.62753, z: 33.27217}
-  m_Center: {x: 0, y: 151.81377, z: 13.082771}
 --- !u!1 &7873259158025951610
 GameObject:
   m_ObjectHideFlags: 0
@@ -187,6 +165,9 @@ MonoBehaviour:
   vfxControler: {fileID: 0}
   onFireVFX:
   - {fileID: 896749243217613409}
+  audioProfile:
+    fadeDuration: 0
+    DestructSFX: []
   despawnOnDeath: 1
   destroyedByImpact: 0
   destroyedDuration: 0
