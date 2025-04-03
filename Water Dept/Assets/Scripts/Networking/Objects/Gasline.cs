@@ -29,6 +29,11 @@ public class Gasline : NetworkBehaviour {
     [Header("Prefabs")]
     public GameObject flamePrefab;
     public GameObject firePrefab;
+    public GameObject fireZoneFlamePrefab; //Joel added this to visualize collider to set barrels on fire
+
+
+    [Header("Fire Zone Parameters")]
+    public GameObject fireZone;
 
     private NetworkObject flameVisual, fireVisual;
     [Networked] private NetworkBool canSpawnFlame { get; set; }
@@ -97,9 +102,10 @@ public class Gasline : NetworkBehaviour {
             if (currentIndex == GetPointLength() && (Vector3.Distance(flameVisual.transform.position, GetPointPosition(currentIndex)) < tolerance))
             {
                 foreach (Burnable b in endGoals) {
-                    if (b.gameObject.activeSelf) {
-                        b.nIsBurning = true;
-                    }
+                    b.nIsBurning = true;
+
+                    fireZone.SetActive(true); //enables firezone gameObject that has collider, is located by the end point
+                    fireZoneFlamePrefab.SetActive(true); //turns on vfx flame which has play on awake enabled
                 }
             }
 
