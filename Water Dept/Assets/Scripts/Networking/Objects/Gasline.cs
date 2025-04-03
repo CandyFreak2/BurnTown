@@ -29,6 +29,11 @@ public class Gasline : NetworkBehaviour {
     [Header("Prefabs")]
     public GameObject flamePrefab;
     public GameObject firePrefab;
+    public GameObject fireZoneFlamePrefab; //Joel added this to visualize collider to set barrels on fire
+
+
+    [Header("Fire Zone Parameters")]
+    public GameObject fireZone;
 
     private NetworkObject flameVisual, fireVisual;
     [Networked] private NetworkBool canSpawnFlame { get; set; }
