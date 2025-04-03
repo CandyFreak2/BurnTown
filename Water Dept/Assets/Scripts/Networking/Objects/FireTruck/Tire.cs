@@ -94,7 +94,6 @@ public class Tire : NetworkBehaviour
 
         //Projects linear velocity on forward vector to get speed of car
         float carSpeed = Vector3.Dot(_carForward, carRB.linearVelocity);
-        Debug.Log(carSpeed);
 
         //Braking force
         if (_brakingInput > 0.0f)
