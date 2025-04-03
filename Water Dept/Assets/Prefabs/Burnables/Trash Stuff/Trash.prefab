@@ -3154,6 +3154,7 @@ GameObject:
   - component: {fileID: 8939491049628964006}
   - component: {fileID: 4445391505014741416}
   - component: {fileID: 5320585752687526111}
+  - component: {fileID: 1776867197080620614}
   m_Layer: 0
   m_Name: Model
   m_TagString: Untagged
@@ -3171,7 +3172,7 @@ Transform:
   serializedVersion: 2
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
   m_LocalPosition: {x: 0, y: 0, z: 0}
-  m_LocalScale: {x: 0.01, y: 0.01, z: 0.01}
+  m_LocalScale: {x: 0.0125, y: 0.0125, z: 0.0125}
   m_ConstrainProportionsScale: 1
   m_Children:
   - {fileID: 7086764184241495316}
@@ -3230,6 +3231,27 @@ MeshRenderer:
   m_SortingLayer: 0
   m_SortingOrder: 0
   m_AdditionalVertexStreams: {fileID: 0}
+--- !u!65 &1776867197080620614
+BoxCollider:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 4187466958697299231}
+  m_Material: {fileID: 0}
+  m_IncludeLayers:
+    serializedVersion: 2
+    m_Bits: 0
+  m_ExcludeLayers:
+    serializedVersion: 2
+    m_Bits: 0
+  m_LayerOverridePriority: 0
+  m_IsTrigger: 0
+  m_ProvidesContacts: 0
+  m_Enabled: 1
+  serializedVersion: 3
+  m_Size: {x: 73.91614, y: 97.40444, z: 80.98984}
+  m_Center: {x: 35.78441, y: 37.57667, z: -38.880844}
 --- !u!1 &7253036844930044120
 GameObject:
   m_ObjectHideFlags: 0
@@ -3239,7 +3261,6 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 5125666945234525588}
-  - component: {fileID: 1906806147068131643}
   - component: {fileID: 6789456815456585511}
   - component: {fileID: 5749736851392449744}
   - component: {fileID: 7665528197390418716}
@@ -3267,27 +3288,6 @@ Transform:
   - {fileID: 8939491049628964006}
   m_Father: {fileID: 0}
   m_LocalEulerAnglesHint: {x: 0, y: -29.824, z: 0}
---- !u!65 &1906806147068131643
-BoxCollider:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 7253036844930044120}
-  m_Material: {fileID: 0}
-  m_IncludeLayers:
-    serializedVersion: 2
-    m_Bits: 0
-  m_ExcludeLayers:
-    serializedVersion: 2
-    m_Bits: 0
-  m_LayerOverridePriority: 0
-  m_IsTrigger: 0
-  m_ProvidesContacts: 0
-  m_Enabled: 1
-  serializedVersion: 3
-  m_Size: {x: 0.67, y: 0.73, z: 0.69}
-  m_Center: {x: 0.35, y: 0.31, z: -0.37}
 --- !u!54 &6789456815456585511
 Rigidbody:
   m_ObjectHideFlags: 0
@@ -3356,6 +3356,9 @@ MonoBehaviour:
   vfxControler: {fileID: 0}
   onFireVFX:
   - {fileID: 5971381314825315898}
+  audioProfile:
+    fadeDuration: 0
+    DestructSFX: []
   despawnOnDeath: 1
   destroyedByImpact: 0
   destroyedDuration: 0
