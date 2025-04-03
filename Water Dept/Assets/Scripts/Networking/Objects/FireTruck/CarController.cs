@@ -18,7 +18,7 @@ public class CarController : NetworkBehaviour
     public GameObject truckParent;
     [SerializeField] private Rigidbody carRB;
     [SerializeField] private Transform camTarget;
-    [SerializeField] private float gravityStrength = 12.0f;
+    [SerializeField] private float popUpForce = 10000.0f;
     public Transform seatTransform;
 
     [SerializeField] private List<Tire> frontTires, backTires;
@@ -189,14 +189,6 @@ public class CarController : NetworkBehaviour
         }
     }
 
-    private void UpdateGravity()
-    {
-        if (carRB != null)
-        {
-            carRB.AddForce(Vector3.down * gravityStrength);
-        }
-    }
-
     private void CheckPlayerCount()
     {
         if (carData.GetNumPassengers() == 1)
@@ -224,7 +216,7 @@ public class CarController : NetworkBehaviour
 
         // RB
         carRB.isKinematic = false;
-        carRB.AddForce(Vector3.up * 4000);
+        carRB.AddForce(Vector3.up * popUpForce);
 
         // Add delay to player being able to exit so player doesn't instantly leave off of enter input
         canExit = false;

@@ -26,7 +26,7 @@ Transform:
   m_GameObject: {fileID: 1295557062003659758}
   serializedVersion: 2
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: -1.69, y: -3.1200001, z: -4.03}
+  m_LocalPosition: {x: -1.69, y: -2.85, z: -4.03}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []
@@ -46,8 +46,8 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   carRB: {fileID: 4768391477969633517}
   suspensionRestLength: 0.8
-  suspensionStrength: 2000
-  suspensionDamping: 700
+  suspensionStrength: 2600
+  suspensionDamping: 1600
   powerMultiplier: 500
   topSpeed: 60
   brakeStrength: 250
@@ -78,7 +78,7 @@ Transform:
   m_GameObject: {fileID: 1601628383318992276}
   serializedVersion: 2
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 1.68, y: -3.1200001, z: -4.03}
+  m_LocalPosition: {x: 1.68, y: -2.85, z: -4.03}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []
@@ -98,8 +98,8 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   carRB: {fileID: 4768391477969633517}
   suspensionRestLength: 0.8
-  suspensionStrength: 2000
-  suspensionDamping: 700
+  suspensionStrength: 2600
+  suspensionDamping: 1600
   powerMultiplier: 500
   topSpeed: 60
   brakeStrength: 250
@@ -571,7 +571,7 @@ Transform:
   m_GameObject: {fileID: 8397273350419712050}
   serializedVersion: 2
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 1.68, y: -3.1200001, z: 5.76}
+  m_LocalPosition: {x: 1.68, y: -2.85, z: 5.76}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []
@@ -591,8 +591,8 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   carRB: {fileID: 4768391477969633517}
   suspensionRestLength: 0.8
-  suspensionStrength: 2000
-  suspensionDamping: 700
+  suspensionStrength: 2600
+  suspensionDamping: 1600
   powerMultiplier: 450
   topSpeed: 60
   brakeStrength: 200
@@ -623,7 +623,7 @@ Transform:
   m_GameObject: {fileID: 8539886274263462978}
   serializedVersion: 2
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: -1.69, y: -3.12, z: 5.76}
+  m_LocalPosition: {x: -1.69, y: -2.85, z: 5.76}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []
@@ -643,8 +643,8 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   carRB: {fileID: 4768391477969633517}
   suspensionRestLength: 0.8
-  suspensionStrength: 2000
-  suspensionDamping: 700
+  suspensionStrength: 2600
+  suspensionDamping: 1600
   powerMultiplier: 450
   topSpeed: 60
   brakeStrength: 200
