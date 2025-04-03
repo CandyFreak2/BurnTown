@@ -186,6 +186,12 @@ MonoBehaviour:
   vfxControler: {fileID: 3102296439256494559}
   onFireVFX:
   - {fileID: 558549975800308899}
+  audioProfile:
+    fadeDuration: 0.5
+    DestructSFX:
+    - {fileID: 8300000, guid: 369479e1b75380b448392d146b244aff, type: 3}
+    BurningSFX:
+    - {fileID: 8300000, guid: 1d620eb3465df094aa0ae7f68210df98, type: 3}
   despawnOnDeath: 0
   destroyedByImpact: 1
   destroyedDuration: 2

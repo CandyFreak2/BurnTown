@@ -8,6 +8,7 @@ using Unity.Cinemachine;
 using Unity.VisualScripting;
 using UnityEngine;
 using UnityEngine.InputSystem.XR;
+using System;
 
 public class CarController : NetworkBehaviour
 {
@@ -42,6 +43,20 @@ public class CarController : NetworkBehaviour
     private bool canExit = false;
     private CarData[] trucks;
     private int closestTruckIndex = 0;
+
+    [Header("Audio")]
+    [SerializeField] AudioProfile audioProfile;
+    [Serializable]
+    private class AudioProfile
+    {
+        public float fadeDuration = 0f;
+        public List<AudioClip> ActivateSFX;
+        public List<AudioClip> DriveSFX;
+        public List<AudioClip> DoorSFX;
+        public List<AudioClip> ambientSFX;
+    }
+    private AudioSource ambientSource, accelerationSource;
+    private bool soundsPlayed = false; //Tmp fix for truck sounds
 
     private void Awake()
     {
@@ -110,10 +125,13 @@ public class CarController : NetworkBehaviour
         if (action.Buttons.WasPressed(previousButtons, InputButton.Shoot))
         {
             accelerationInput = 1.0f;
+            accelerationSource = AudioPlayer.PlaySFXLoop(audioProfile.DriveSFX, transform);
+            StartCoroutine(AudioPlayer.FadeAudioIn(accelerationSource, audioProfile.fadeDuration));
         }
         else if(action.Buttons.WasReleased(previousButtons, InputButton.Shoot))
         {
             accelerationInput = 0.0f;
+            StartCoroutine(AudioPlayer.FadeAudioOut(accelerationSource, audioProfile.fadeDuration));
         }
 
         // Braking
@@ -222,6 +240,21 @@ public class CarController : NetworkBehaviour
         canExit = false;
         Invoke("ExitDelay", 0.5f);
 
+        //Get in SFX
+        if (!soundsPlayed)
+        {
+            Debug.Log("get in noises");
+            if (isDriver)
+            {
+                AudioPlayer.PlaySFX(audioProfile.ActivateSFX, transform.position);
+            }
+            AudioPlayer.PlaySFX(audioProfile.DoorSFX, transform.position);
+            ambientSource = AudioPlayer.PlaySFXLoop(audioProfile.ambientSFX, transform.position, 0.8f);
+            StartCoroutine(AudioPlayer.FadeAudioIn(ambientSource, audioProfile.fadeDuration));
+            soundsPlayed = true;
+        }
+        
+
         RPC_RequestPlayerEnterTruck(Object.Id, _playerMovement.Object.Id);
     }
 
@@ -248,6 +281,15 @@ public class CarController : NetworkBehaviour
             {
                 playerController.GetComponent<SimpleKCC>().SetPosition(seatTransform.position + seatTransform.right);
             }
+        }
+
+        // get out SFX
+        if (soundsPlayed)
+        {
+            Debug.Log("Get out noises");
+            AudioPlayer.PlaySFX(audioProfile.DoorSFX, transform.position);
+            StartCoroutine(AudioPlayer.FadeAudioOut(ambientSource, audioProfile.fadeDuration));
+            soundsPlayed = false;
         }
 
         carData.SubPassenger();

@@ -165,7 +165,10 @@ MonoBehaviour:
   - {fileID: 4127278709303012512}
   audioProfile:
     fadeDuration: 0
-    DestructSFX: []
+    DestructSFX:
+    - {fileID: 8300000, guid: 369479e1b75380b448392d146b244aff, type: 3}
+    BurningSFX:
+    - {fileID: 8300000, guid: 57527da7b24bd1c45bd55ce6baf2e99a, type: 3}
   despawnOnDeath: 1
   destroyedByImpact: 0
   destroyedDuration: 0
@@ -187,7 +190,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   SortKey: 485612669
   ObjectInterest: 1
-  Flags: 1
+  Flags: 262145
   NestedObjects: []
   NetworkedBehaviours:
   - {fileID: 8788793531047324669}
