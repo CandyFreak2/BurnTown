@@ -48,7 +48,7 @@ MonoBehaviour:
   suspensionRestLength: 0.8
   suspensionStrength: 2600
   suspensionDamping: 1600
-  powerMultiplier: 500
+  powerMultiplier: 800
   topSpeed: 60
   brakeStrength: 250
   tireGripFactor: 0.8
@@ -100,7 +100,7 @@ MonoBehaviour:
   suspensionRestLength: 0.8
   suspensionStrength: 2600
   suspensionDamping: 1600
-  powerMultiplier: 500
+  powerMultiplier: 800
   topSpeed: 60
   brakeStrength: 250
   tireGripFactor: 0.8
@@ -273,6 +273,7 @@ MonoBehaviour:
   - {fileID: 8541504176339054803}
   - {fileID: 5827985545805330910}
   _truckPos: {x: 0, y: 0, z: 0}
+  killSpeed: 4
 --- !u!114 &2467624447809652897
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -432,7 +433,7 @@ BoxCollider:
   m_LayerOverridePriority: 0
   m_IsTrigger: 1
   m_ProvidesContacts: 0
-  m_Enabled: 1
+  m_Enabled: 0
   serializedVersion: 3
   m_Size: {x: 4.54, y: 3.5165029, z: 1.9289703}
   m_Center: {x: 0, y: 1.2582514, z: 0.46448517}
@@ -593,7 +594,7 @@ MonoBehaviour:
   suspensionRestLength: 0.8
   suspensionStrength: 2600
   suspensionDamping: 1600
-  powerMultiplier: 450
+  powerMultiplier: 600
   topSpeed: 60
   brakeStrength: 200
   tireGripFactor: 0.8
@@ -645,7 +646,7 @@ MonoBehaviour:
   suspensionRestLength: 0.8
   suspensionStrength: 2600
   suspensionDamping: 1600
-  powerMultiplier: 450
+  powerMultiplier: 600
   topSpeed: 60
   brakeStrength: 200
   tireGripFactor: 0.8
