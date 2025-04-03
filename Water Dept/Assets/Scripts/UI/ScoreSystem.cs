@@ -9,6 +9,8 @@ public class ScoreSystem : NetworkBehaviour {
     [SerializeField] private TMP_Text scoreText;
     [SerializeField] private bool isReset;
 
+    private bool wasSaved = false;
+
     public override void Spawned() {
         scoreText.text = SCORE_HEADER + overallScore.ToString("C0");
     }
@@ -18,6 +20,11 @@ public class ScoreSystem : NetworkBehaviour {
             isReset = false;
             overallScore = 0;
             scoreText.text = SCORE_HEADER + overallScore.ToString("C0");
+        }
+
+        if (!wasSaved && GameStateHandler.Instance.GetGameState == GameStateHandler.GameState.END && Runner.IsServer) {
+            PlayerPrefs.SetInt("N_FinalScore", overallScore);
+            wasSaved = true;    
         }
     }
 

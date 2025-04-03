@@ -4,6 +4,7 @@ using TMPro;
 using UnityEngine;
 using UnityEngine.UI;
 using Fusion;
+using UnityEngine.EventSystems;
 
 public class LobbyUI : MonoBehaviour {
     public GameObject loadingScreen;
@@ -90,11 +91,11 @@ public class LobbyUI : MonoBehaviour {
             launcher.SetGameMode(GameMode.Host);
             launcher.JoinOrCreateLobby();
             isLobbyValid = false;
+            EventSystem.current.SetSelectedGameObject(null);
         }
     }
 
-    public void ShowLoadScreen()
-    {
+    public void ShowLoadScreen() {
         loadingScreen.SetActive(true);
     }
 }

@@ -17,9 +17,8 @@ public class CarController : NetworkBehaviour
     private CarData carData;
     public GameObject truckParent;
     [SerializeField] private Rigidbody carRB;
-    [SerializeField] private NetworkRigidbody3D networkedCarRB;
     [SerializeField] private Transform camTarget;
-    [SerializeField] private float gravityStrength = 12.0f;
+    [SerializeField] private float popUpForce = 10000.0f;
     public Transform seatTransform;
 
     [SerializeField] private List<Tire> frontTires, backTires;
@@ -73,7 +72,7 @@ public class CarController : NetworkBehaviour
     {
         if (isSpawned && isActive)
         {
-
+            
             transform.localPosition = Vector3.zero/*truckParent.transform.position + truckParent.transform.TransformDirection(playerPos)*/;
             //player.transform.rotation = playerPos.rotation;
         }
@@ -190,14 +189,6 @@ public class CarController : NetworkBehaviour
         }
     }
 
-    private void UpdateGravity()
-    {
-        if (carRB != null)
-        {
-            carRB.AddForce(Vector3.down * gravityStrength);
-        }
-    }
-
     private void CheckPlayerCount()
     {
         if (carData.GetNumPassengers() == 1)
@@ -225,6 +216,7 @@ public class CarController : NetworkBehaviour
 
         // RB
         carRB.isKinematic = false;
+        carRB.AddForce(Vector3.up * popUpForce);
 
         // Add delay to player being able to exit so player doesn't instantly leave off of enter input
         canExit = false;
@@ -339,7 +331,6 @@ public class CarController : NetworkBehaviour
         carData = _data;
         truckParent = _data.gameObject;
         carRB = _data.carRB;
-        networkedCarRB = _data.networkCarRB;
         frontTires = _data.frontTires;
         backTires = _data.backTires;
 
@@ -417,11 +408,6 @@ public class CarController : NetworkBehaviour
     public Rigidbody GetCarRB()
     {
         return carRB;
-    }
-
-    public NetworkRigidbody3D GetCarRBNetworked()
-    {
-        return networkedCarRB;
     }
 
     private void ExitDelay()

@@ -97,7 +97,9 @@ public class Gasline : NetworkBehaviour {
             if (currentIndex == GetPointLength() && (Vector3.Distance(flameVisual.transform.position, GetPointPosition(currentIndex)) < tolerance))
             {
                 foreach (Burnable b in endGoals) {
-                    b.nIsBurning = true;
+                    if (b.gameObject.activeSelf) {
+                        b.nIsBurning = true;
+                    }
                 }
             }
 

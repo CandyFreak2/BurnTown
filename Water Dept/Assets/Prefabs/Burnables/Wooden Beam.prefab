@@ -53,19 +53,37 @@ MonoBehaviour:
   heatModifier: 0
   HeatSources: []
   burnOnAwake: 0
+  spreadSource: {fileID: 4827358829407113957}
+  receiverPoint: {fileID: 4827358829407113957}
   startFuel: 8
   heatResistance: 0
   heatBuffer: 2
   heatDmgCap: 999
   heatStrength: 1
   spreadRadius: 5
+  finalHeatStrength: 0
+  finalSpreadRadius: 0
+  wallPenetration: 0
+  overlapMask:
+    serializedVersion: 2
+    m_Bits: 1
   _nIsBurning: 0
   showsLerp: 1
+  colorStepSmoothing: 0.05
+  colorStepMax: 0.8
   initialColor: {r: 0.3537736, g: 1, b: 0.3537736, a: 0}
   startColor: {r: 1, g: 0.92156863, b: 0.015686275, a: 1}
   endColor: {r: 1, g: 0, b: 0, a: 1}
-  onFireVFX: {fileID: 5815517458772770438}
+  vfxControler: {fileID: 0}
+  onFireVFX:
+  - {fileID: 5815517458772770438}
+  despawnOnDeath: 1
+  destroyedByImpact: 0
+  destroyedDuration: 0
+  activeModel: {fileID: 0}
+  activeModelSubAnchor: {fileID: 0}
   destroyedModel: {fileID: 0}
+  destructionVFX: {fileID: 0}
 --- !u!114 &7100946691638049002
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -230,17 +248,17 @@ PrefabInstance:
     - target: {fileID: 3827635482907629621, guid: dcffeeeeb26f0ab418336c2779f00a8c,
         type: 3}
       propertyPath: m_LocalScale.x
-      value: 0.5
+      value: 1.5217676
       objectReference: {fileID: 0}
     - target: {fileID: 3827635482907629621, guid: dcffeeeeb26f0ab418336c2779f00a8c,
         type: 3}
       propertyPath: m_LocalScale.y
-      value: 1.5
+      value: 3.3561
       objectReference: {fileID: 0}
     - target: {fileID: 3827635482907629621, guid: dcffeeeeb26f0ab418336c2779f00a8c,
         type: 3}
       propertyPath: m_LocalScale.z
-      value: 0.5
+      value: 1.4902203
       objectReference: {fileID: 0}
     - target: {fileID: 3827635482907629621, guid: dcffeeeeb26f0ab418336c2779f00a8c,
         type: 3}
@@ -250,12 +268,12 @@ PrefabInstance:
     - target: {fileID: 3827635482907629621, guid: dcffeeeeb26f0ab418336c2779f00a8c,
         type: 3}
       propertyPath: m_LocalPosition.y
-      value: 0.79502773
+      value: 0.96
       objectReference: {fileID: 0}
     - target: {fileID: 3827635482907629621, guid: dcffeeeeb26f0ab418336c2779f00a8c,
         type: 3}
       propertyPath: m_LocalPosition.z
-      value: 0.047935486
+      value: 0.125
       objectReference: {fileID: 0}
     - target: {fileID: 3827635482907629621, guid: dcffeeeeb26f0ab418336c2779f00a8c,
         type: 3}

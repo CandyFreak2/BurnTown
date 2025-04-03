@@ -1,17 +1,24 @@
+using System;
+using System.Collections.Generic;
 using DG.Tweening;
 using Fusion;
 using UnityEngine;
-using static Unity.Collections.Unicode;
+using UnityEngine.UI;
 
 public class InteractableUI : NetworkBehaviour
 {
     private GameObject flamethrowerUI;
+    [SerializeField] private Animator flamethrowerIconAnim;
+
     private GameObject barrelUI;
+    private Image barrelIcon;
+
     private GameObject firetruckUI;
+    private Image firetruckIcon;
 
     private PlayerMovement playerMovement;
 
-    private bool isAttackPressed;
+    private InputButton inputPressed;
     [SerializeField] private float popupDelay = 0.25f;
 
     [Header("Tween")]
@@ -19,6 +26,16 @@ public class InteractableUI : NetworkBehaviour
     [SerializeField] Vector3 tweenMagnatude;
     [SerializeField] int tweenVibrato;
     Sequence[] activeTweens;
+
+
+    [Serializable]
+    public class ButtonUI
+    {
+        public Sprite defaultSprite, pressedSprite;
+    }
+    public List<ButtonUI> buttonSprites;
+    public static Dictionary<string, ButtonUI> spriteMap;
+
 
     private void OnEnable()
     {
@@ -38,14 +55,41 @@ public class InteractableUI : NetworkBehaviour
         firetruckUI = UIManager.Instance.GetFiretruckUI();
 
         activeTweens = new Sequence[3];
+        InitSprites();
+    }
+
+    // Make dictionary of sprites so that accessing sprites will be more intuitive
+    private void InitSprites()
+    {
+        spriteMap = new Dictionary<string, ButtonUI>();
+
+        if (buttonSprites.Count >= 7)
+        {
+            spriteMap.Add("AButton", buttonSprites[0]);
+            spriteMap.Add("BButton", buttonSprites[1]);
+            spriteMap.Add("XButton", buttonSprites[2]);
+            spriteMap.Add("YButton", buttonSprites[3]);
+            spriteMap.Add("RTButton", buttonSprites[4]);
+            spriteMap.Add("LTButton", buttonSprites[5]);
+            spriteMap.Add("BarrelIcon", buttonSprites[6]);
+            spriteMap.Add("FiretruckIcon", buttonSprites[7]);
+        }
+        else
+        {
+            Debug.Log("Sprite list no long enough");
+        }
+
+        // Initialize ui image refrences
+        barrelIcon = barrelUI.transform.Find("BarrelIcon")?.GetComponent<Image>();
+        firetruckIcon = firetruckUI.transform.Find("FiretruckIcon")?.GetComponent<Image>();
     }
 
     // Delay updating ui so that playermovement data gets updated first then ui
-    private void DelayUpdateUI(bool _isAttackPressed)
+    private void DelayUpdateUI(InputButton _input)
     {
-        isAttackPressed = _isAttackPressed;
+        inputPressed = _input;
 
-        if (isAttackPressed)
+        if (inputPressed == InputButton.ShootDown || inputPressed == InputButton.ShootUp || inputPressed == InputButton.BrakeDown || inputPressed == InputButton.BrakeUp)
         {
             Invoke("UpdateUI", popupDelay);
         }
@@ -53,6 +97,7 @@ public class InteractableUI : NetworkBehaviour
         {
             Invoke("UpdateUI", popupDelay);
 
+            // If trigger not pressed tween ui
             for (int i = 0; i < activeTweens.Length; i++)
             {
                 activeTweens[i].Kill();
@@ -81,9 +126,10 @@ public class InteractableUI : NetworkBehaviour
     {
         RPC_SetPlayerState();
 
-        if (!playerMovement.enabled)
+        if (!playerMovement.enabled) //Should prolly change this check with stun disabling playermovement too
         {
             firetruckUI.SetActive(true);
+            UpdateFiretruckUI();
         }
         else if (playerMovement.carriedObject == null)
         {
@@ -92,10 +138,12 @@ public class InteractableUI : NetworkBehaviour
         else if (playerMovement.carriedObject.interactableType == InteractableType.Flamethrower)
         {
             flamethrowerUI.SetActive(true);
+            UpdateFlamethrowerUI();
         }
         else if (playerMovement.carriedObject.interactableType == InteractableType.Barrel)
         {
             barrelUI.SetActive(true);
+            UpdateBarrelUI();
         }
         else
         {
@@ -105,9 +153,54 @@ public class InteractableUI : NetworkBehaviour
 
     private void DeactivateAllUI()
     {
+        // Reset button sprites
+
         flamethrowerUI.SetActive(false);
         barrelUI.SetActive(false);
         firetruckUI.SetActive(false);
+    }
+
+    private void UpdateFlamethrowerUI()
+    {
+        // Toggle flamethrower sprite animation
+        if (inputPressed == InputButton.ShootDown)
+        {
+            flamethrowerIconAnim.SetBool("isShooting", true);
+        }
+
+        else if (inputPressed == InputButton.ShootUp)
+        {
+            flamethrowerIconAnim.SetBool("isShooting", false);
+        }
+    }
+
+    private void UpdateBarrelUI()
+    {
+        if (inputPressed == InputButton.Drop)
+        {
+            if (barrelIcon.sprite == spriteMap["BarrelIcon"].defaultSprite)
+            {
+                barrelIcon.sprite = spriteMap["BarrelIcon"].pressedSprite;
+            }
+            else
+            {
+                barrelIcon.sprite = spriteMap["BarrelIcon"].defaultSprite;
+            }
+        }
+    }
+
+    private void UpdateFiretruckUI()
+    {
+        // Toggle Firetuck icon sprite
+        if (inputPressed == InputButton.ShootDown || inputPressed == InputButton.BrakeDown)
+        {
+            firetruckIcon.sprite = spriteMap["FiretruckIcon"].pressedSprite;
+        }
+
+        else if (inputPressed == InputButton.ShootUp || inputPressed == InputButton.BrakeUp)
+        {
+            firetruckIcon.sprite = spriteMap["FiretruckIcon"].defaultSprite;
+        }
     }
 
     [Rpc(HostMode = RpcHostMode.SourceIsHostPlayer)]

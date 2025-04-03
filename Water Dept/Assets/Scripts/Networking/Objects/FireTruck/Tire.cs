@@ -24,7 +24,7 @@ public class Tire : NetworkBehaviour
     public float powerMultiplier = 3.0f;
     public float topSpeed = 60;
     public float brakeStrength = 0.8f;
-    private float frictionStrength = 0.3f;
+    private float frictionStrength = 37.0f;
 
     //Steering variables
     private Vector3 steeringForce;
@@ -103,20 +103,6 @@ public class Tire : NetworkBehaviour
             accelerationForce += -accelerationDirection * powerToTire;
         }
 
-        //Rolling friction force
-        else if (carSpeed < 0.0001f && carSpeed > -0.001f) //Prevents oscilatting friction forces when speed is very low
-        {
-            accelerationForce = Vector3.zero;
-        }
-        else if (carSpeed < -0.0001f)
-        {
-            accelerationForce += -accelerationDirection * frictionStrength;
-        }
-        else if (carSpeed > -0.001f)
-        {
-            accelerationForce += accelerationDirection * frictionStrength;
-        }
-
         //Acceleration force
         if (_accelerationInput > 0.0f)
         {
@@ -127,6 +113,24 @@ public class Tire : NetworkBehaviour
 
             accelerationForce += accelerationDirection * powerToTire * powerMultiplier;
         }
+        else if (carSpeed > 0.001f)
+        {
+            accelerationForce += accelerationDirection * frictionStrength;
+        }
+
+        //Rolling friction force
+        //if (carSpeed < 0.0001f && carSpeed > -0.001f) //Prevents oscilatting friction forces when speed is very low
+        //{
+        //    accelerationForce = Vector3.zero;
+        //}
+        //else if (carSpeed < -0.0001f)
+        //{
+        //    accelerationForce += -accelerationDirection * frictionStrength;
+        //}
+        //else if (carSpeed > -0.001f)
+        //{
+        //    accelerationForce += accelerationDirection * frictionStrength;
+        //}
     }
 
     private void UpdateSteering()

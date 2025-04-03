@@ -8,7 +8,11 @@ public enum InputButton
     Shoot,
     Drop,
     Brake,
-    Throw
+    Throw,
+    ShootUp,
+    ShootDown,
+    BrakeDown,
+    BrakeUp// Should have done this to begin with but just putting in now to get ui animations networked:( - jake
 }
 
 public struct PlayerInputAction : INetworkInput

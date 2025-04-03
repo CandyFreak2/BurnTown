@@ -1,6 +1,7 @@
 using UnityEngine;
 using Fusion;
 using Fusion.Addons.Physics;
+using DG.Tweening;
 
 public enum InteractableType
 {
@@ -28,6 +29,9 @@ public class Interactable : NetworkBehaviour
 
     [SerializeField]
     public InteractableType interactableType;
+
+    //tweening
+    private Tween activeTween;
 
     private void Awake()
     {
@@ -83,6 +87,8 @@ public class Interactable : NetworkBehaviour
             rb.constraints = RigidbodyConstraints.FreezeAll;
             interactableCollider.enabled = false;
             networkRB.enabled = false;
+
+            
         }
     }
 
@@ -118,6 +124,10 @@ public class Interactable : NetworkBehaviour
             interactable.rb.constraints = RigidbodyConstraints.FreezeAll;
             interactable.interactableCollider.enabled = false;
             interactable.networkRB.enabled = false;
+
+            //tween
+            activeTween.Complete();
+            activeTween = transform.DOShakeScale(0.5f, 0.8f);
         }
     }
 
@@ -136,6 +146,10 @@ public class Interactable : NetworkBehaviour
             interactable.rb.constraints = RigidbodyConstraints.None;
             interactable.interactableCollider.enabled = true;
             interactable.networkRB.enabled = true;
+
+            //tween
+            activeTween.Complete();
+            activeTween = transform.DOShakeScale(0.5f, 0.8f);
         }
     }
 

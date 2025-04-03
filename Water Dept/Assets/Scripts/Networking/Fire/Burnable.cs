@@ -1,6 +1,9 @@
+using DG.Tweening;
 using Fusion;
 using System.Collections;
 using System.Collections.Generic;
+using System.Linq;
+using Unity.Mathematics;
 using UnityEngine;
 
 public class Burnable : NetworkBehaviour
@@ -13,6 +16,7 @@ public class Burnable : NetworkBehaviour
 
     [Header("Burning Effects")]
     [SerializeField, Networked] private int fuelRemaining { get; set; }
+    private int localFuelRemaining;
 
     [SerializeField, Tooltip("Increased by non-burnables like the flamethrower, decreases by 1 each seccond")]
     protected int heatModifier = 0;
@@ -24,6 +28,12 @@ public class Burnable : NetworkBehaviour
     protected bool burnOnAwake = false;
 
     [Header("Heath and Resistance")]
+    [SerializeField, Tooltip("Where does the fire spread from")]
+    protected Transform spreadSource;
+
+    [SerializeField, Tooltip("Where does fire spread to this object target")]
+    protected Transform receiverPoint;
+
     [SerializeField, Tooltip("The health of the object, takes damage from surrounding fire and itself")] 
     protected int startFuel = 10;
 
@@ -37,11 +47,23 @@ public class Burnable : NetworkBehaviour
     protected int heatDmgCap = 999;
 
     [Header("Damage and Spread")]
-    [SerializeField, Tooltip("The amount of heat damage this object does to others, only the highest is used")] 
+    [SerializeField, Tooltip("The amount of heat damage this object does to others, cumulative for each object")] 
     protected int heatStrength = 1;
 
     [SerializeField, Tooltip("The radius the fire will spread")]
     protected float spreadRadius = 10.0f;
+
+    [SerializeField, Tooltip("The amount of heat damage this object does to others on it's final burst")]
+    protected int finalHeatStrength = 2;
+
+    [SerializeField, Tooltip("The radius the fire will spread on it's final burst")]
+    protected float finalSpreadRadius = 0f;
+
+    [SerializeField, Tooltip("How many walls the fire can penetrate before begin blocked")]
+    protected int wallPenetration = 0;
+
+    [SerializeField, Tooltip("How many walls the fire can penetrate before begin blocked")]
+    protected LayerMask overlapMask;
 
     [SerializeField, Tooltip("The delay between each damage and spread tick, keep at 1 for now")] 
     protected static int heartBeat = 1;
@@ -66,18 +88,44 @@ public class Burnable : NetworkBehaviour
     [SerializeField] private Color startColor = Color.yellow;
     [SerializeField] private Color endColor = Color.red;
     private Renderer render;
-    private VFXController vfxControler;
     private float burnVisOpacity;
 
     [Header("VFX")]
-    [SerializeField] ParticleSystem onFireVFX;
+    [SerializeField] VFXController vfxControler;
+    [SerializeField] List<ParticleSystem> onFireVFX;
 
-    [Header("Destruction Model")]
-    [SerializeField] private GameObject destroyedModel;
+    [Header("Destruction")]
+    [SerializeField] bool despawnOnDeath = true;
+    [SerializeField] bool destroyedByImpact;
+    [SerializeField] float destroyedDuration;
+    [SerializeField] Transform activeModel;
+    [SerializeField] Transform activeModelSubAnchor;
+    [SerializeField] Transform destroyedModel;
+    [SerializeField] ParticleSystem destructionVFX;
+    private bool startedCollapse;
+    private bool finishedCollapse;
+
+    private void OnValidate()
+    {
+        if (spreadSource == null)
+            spreadSource = transform;
+        if (receiverPoint == null)
+            receiverPoint = spreadSource == null ? transform : spreadSource.transform;
+    }
+
+    private void OnDrawGizmosSelected()
+    {
+        Gizmos.color = Color.red;
+        Gizmos.DrawWireSphere(spreadSource.position, spreadRadius);
+
+        Gizmos.color = Color.yellow;
+        Gizmos.DrawWireSphere(spreadSource.position, finalSpreadRadius);
+    }
 
     public override void Spawned()
     {
         fuelRemaining = startFuel;
+        localFuelRemaining = startFuel;
         isSpawned = true;
         nIsBurning = burnOnAwake;
 
@@ -87,7 +135,6 @@ public class Burnable : NetworkBehaviour
         //used for tracking percentages
         if (showsLerp)
         {
-            vfxControler = GetComponentInChildren<VFXController>();
             render = GetComponentInChildren<Renderer>();
             render.material.color = initialColor;
         }
@@ -119,7 +166,7 @@ public class Burnable : NetworkBehaviour
 
                 if (vfxControler != null)
                 {
-                    burnVisOpacity = Mathf.InverseLerp((float)startFuel, 0, (float)fuelRemaining * colorStepMax);
+                    burnVisOpacity = Mathf.InverseLerp((float)startFuel, 0, (float)localFuelRemaining * colorStepMax);
                     vfxControler.Opacity = Mathf.Lerp(vfxControler.Opacity, burnVisOpacity, colorStepSmoothing); //stupid, but adds nice smoothing
                 }
             }
@@ -157,9 +204,23 @@ public class Burnable : NetworkBehaviour
     ///Gets the array of burnables in a radius and adds the source to them
     private void SpreadFire()
     {
-        Collider[] objArr = Physics.OverlapSphere(gameObject.transform.position, spreadRadius);
+        Collider[] objArr = Physics.OverlapSphere(spreadSource.position, spreadRadius, overlapMask);
         foreach (var obj in objArr)
         {
+            if (!obj.gameObject.TryGetComponent(out Burnable check_1) && !obj.gameObject.TryGetComponent(out BarrelInfo check_2) )
+                continue;
+
+            //Skip obj if over pen limit, (!System will break if obj is using multiple colliders!) //always add +1 because it will usually hit itself
+            Vector3 targetPos = check_1 == null ? obj.transform.position : check_1.receiverPoint.position;
+            RaycastHit[] hits = Physics.RaycastAll(spreadSource.position, targetPos - spreadSource.position, Vector3.Distance(spreadSource.position, obj.transform.position));
+            if (hits.Length > wallPenetration + 1)
+            {
+                Debug.DrawLine(spreadSource.position, targetPos, Color.black, 2f);
+                continue;
+            }
+
+            Debug.DrawLine(spreadSource.position, targetPos, Color.red, 2f);
+
             if (obj.TryGetComponent(out Burnable target))
             {
                 //DealFireDamage(obj.GetComponent<Burnable>());
@@ -174,6 +235,32 @@ public class Burnable : NetworkBehaviour
         }
     }
 
+    private void FinalSpread()
+    {
+        Collider[] objArr = Physics.OverlapSphere(spreadSource.position, finalSpreadRadius, overlapMask);
+        foreach (var obj in objArr)
+        {
+            if (!obj.gameObject.TryGetComponent(out Burnable check_1) && !obj.gameObject.TryGetComponent(out BarrelInfo check_2))
+                continue;
+
+            //Skip obj if over pen limit, (!System will break if obj is using multiple colliders!) //always add +1 because it will usually hit itself
+            Vector3 targetPos = check_1 == null ? obj.transform.position : check_1.receiverPoint.position;
+            RaycastHit[] hits = Physics.RaycastAll(spreadSource.position, targetPos - spreadSource.position, Vector3.Distance(spreadSource.position, obj.transform.position));
+            if (hits.Length > wallPenetration + 1)
+            {
+                Debug.DrawLine(spreadSource.position, targetPos, Color.black, 2f);
+                continue;
+            }
+
+            Debug.DrawLine(spreadSource.position, obj.transform.position, Color.yellow, 2f);
+
+            if (obj.TryGetComponent(out Burnable target))
+            {
+                target.enabled = true;
+                target.AddHeatModifier(finalHeatStrength);
+            }
+        }
+    }
     private void TakeFireDamageTick()
     {
         //Debug.Log(gameObject.name + "'s current heat is " + CurrentHeat);
@@ -189,6 +276,8 @@ public class Burnable : NetworkBehaviour
 
         heatModifier -= heartBeat;
         heatModifier = Mathf.Clamp(heatModifier, 0, heatDmgCap);
+
+        localFuelRemaining = fuelRemaining;
     }
     int GetCurrentHeat()
     {
@@ -203,6 +292,10 @@ public class Burnable : NetworkBehaviour
 
         return heat;
     }
+
+    //
+    // NETWORKED HEAT 
+    //
 
     ///<summary>A function for taking damage from incoming fire sources</summary>  -James 03/08
     public void AddHeat(Burnable source)
@@ -272,36 +365,114 @@ public class Burnable : NetworkBehaviour
         //SHOULD NOT CALL RPC LIKE THIS BUT NETWORKED OBJ WONT TAKE MY NICE LIST   ):<
         startedBurning = true;
         nIsBurning = true;
-        onFireVFX.Play();
+        foreach (var fire in onFireVFX)
+            fire.Play();
     }
 
-
-    [Rpc(RpcSources.All, RpcTargets.All)] 
+    [Rpc(RpcSources.All, RpcTargets.All)]
     private void RPC_BurningStopped() => Runner.FindObject(Object.Id)?.GetComponent<Burnable>().BurningStopped();
     private void BurningStopped() //do not call, use RPC
     {
         stoppedBurning = true;
-
-        //detatch VFX
-        onFireVFX.Stop();
-        Destroy(onFireVFX.gameObject, 10); //magic 10, VFX should be stopped and destroyed waaaaaayyy after they're done, but it's hard to tell when that is
-        onFireVFX.transform.parent = null;
-
-        nIsBurning = false;
-
-        //it's annoying to have to delay this but the client fucks up without it. We should avoid removing objects from scene in the future
-        Invoke("Despawn", 0.5f);
+        TriggerDestroyBurnable();
     }
 
-        private void Despawn()
+    //
+    // DESTRUCTION 
+    //
+
+    /// <summary>Trigger the destruction of the object. It will try to collapse unless it is set to despawn, but only if the destroyedByRamming bool is true</summary>
+    /// <param name="overrideImpactSettings"> ignore objects impact settings -James</param>
+    public void DestroyObjectImpact(bool overrideImpactSettings = false) => DestroyObjectImpact(destroyedDuration, overrideImpactSettings);
+    /// <summary>Trigger the destruction of the object. The duration is how long it will crumble for</summary>
+    public void DestroyObjectImpact(float duration, bool overrideImpactSettings = false)
+    {
+        if (destroyedByImpact || overrideImpactSettings)
         {
-            //despawn obj 
-            EventManager.BurnableDestroyed(burnableScore);
-            Runner.Despawn(Object);
-/*            if (destroyedModel != null) {
-                Runner.Spawn(destroyedModel, transform.position);
-            }*/
+            RPC_TriggerDestroySignal(duration);
         }
+    }
+
+    [Rpc(RpcSources.All, RpcTargets.StateAuthority, HostMode = RpcHostMode.SourceIsHostPlayer)]
+    private void RPC_TriggerDestroySignal(float duration, RpcInfo info = default) => RPC_TriggerDestroyRelay(duration, info.Source);
+
+    [Rpc(RpcSources.StateAuthority, RpcTargets.All, HostMode = RpcHostMode.SourceIsServer)]
+    private void RPC_TriggerDestroyRelay(float duration, PlayerRef messageSource)
+    {
+        TriggerDestroyBurnable(duration);
+    }
+
+    private void TriggerDestroyBurnable() => TriggerDestroyBurnable(destroyedDuration);
+    private void TriggerDestroyBurnable(float duration)
+    {
+        //detatch VFX
+        foreach (var fire in onFireVFX)
+        {
+            fire.Stop();
+            Destroy(fire.gameObject, 10); //magic 10, VFX should be stopped and destroyed waaaaaayyy after they're done, but it's hard to tell when that is
+            fire.transform.parent = null;
+        }
+
+        //this will not work if triggered by RPC call... ugggghhhh
+        nIsBurning = false;
+
+        if (despawnOnDeath)
+            TriggerDespawn();
+        else
+            TriggerCollapse(duration);
+    }
+    
+    //it's annoying to have to delay this but the client fucks up without it. We should avoid removing objects from scene in the future
+    private void TriggerDespawn()
+    {
+        EventManager.BurnableDestroyed(burnableScore);
+        Invoke("Despawn", 0.2f);
+    }
+    private void Despawn()
+    {
+        if (destructionVFX != null)
+        {
+            destructionVFX.Play();
+            destructionVFX.transform.parent = null;
+        }
+        
+        Runner.Despawn(Object);
+    }
+
+    public void TriggerCollapse(float duration)
+    {
+        if(startedCollapse) 
+            return;
+
+        startedCollapse = true;
+        FinalSpread();
+        StartCoroutine(Collapse(duration));
+    }
+
+    private IEnumerator Collapse(float duration)
+    {
+        duration = Mathf.Clamp(duration, 1.2f, Mathf.Infinity);
+
+        EventManager.BurnableDestroyed(burnableScore);
+        destroyedModel.gameObject.SetActive(true);
+
+        //play vfx and shake for 1 sec, also disable hitbox,
+        GetComponent<Collider>().enabled = false;
+        destructionVFX.Play();
+        activeModelSubAnchor.DOShakePosition(duration, 0.2f, 20, 90, false);
+        yield return new WaitForSeconds(1f);
+
+        //Collapse,  and wait untill finished
+        activeModel.DOLocalMove(Vector3.down * 14f, duration);
+        yield return new WaitForSeconds(duration);
+
+        //disable this script and the model
+        finishedCollapse = true;
+        activeModel.gameObject.SetActive(false);
+        enabled = false;
+    }
+
+
 
     public bool GetDisabled(float _disabledPercent) {
         return isSpawned && _disabledPercent > fuelRemaining / startFuel;

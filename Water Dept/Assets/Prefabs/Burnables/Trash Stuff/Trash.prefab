@@ -3319,7 +3319,7 @@ Rigidbody:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 7253036844930044120}
   serializedVersion: 4
-  m_Mass: 1
+  m_Mass: 0.1
   m_Drag: 0
   m_AngularDrag: 0.05
   m_CenterOfMass: {x: 0, y: 0, z: 0}
@@ -3355,12 +3355,20 @@ MonoBehaviour:
   heatModifier: 0
   HeatSources: []
   burnOnAwake: 0
+  spreadSource: {fileID: 5125666945234525588}
+  receiverPoint: {fileID: 5125666945234525588}
   startFuel: 10
   heatResistance: 0
   heatBuffer: 1
   heatDmgCap: 999
   heatStrength: 1
   spreadRadius: 3
+  finalHeatStrength: 0
+  finalSpreadRadius: 0
+  wallPenetration: 0
+  overlapMask:
+    serializedVersion: 2
+    m_Bits: 1
   _nIsBurning: 0
   showsLerp: 0
   colorStepSmoothing: 0.05
@@ -3368,8 +3376,16 @@ MonoBehaviour:
   initialColor: {r: 0, g: 0, b: 0, a: 1}
   startColor: {r: 1, g: 0.56351566, b: 0.015686274, a: 1}
   endColor: {r: 1, g: 0, b: 0, a: 1}
-  onFireVFX: {fileID: 5971381314825315898}
+  vfxControler: {fileID: 0}
+  onFireVFX:
+  - {fileID: 5971381314825315898}
+  despawnOnDeath: 1
+  destroyedByImpact: 0
+  destroyedDuration: 0
+  activeModel: {fileID: 0}
+  activeModelSubAnchor: {fileID: 0}
   destroyedModel: {fileID: 0}
+  destructionVFX: {fileID: 0}
 --- !u!114 &7665528197390418716
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -3397,10 +3413,30 @@ PrefabInstance:
     serializedVersion: 3
     m_TransformParent: {fileID: 5125666945234525588}
     m_Modifications:
+    - target: {fileID: 122068770842325883, guid: dcffeeeeb26f0ab418336c2779f00a8c,
+        type: 3}
+      propertyPath: EmissionModule.rateOverTime.scalar
+      value: 0.5
+      objectReference: {fileID: 0}
     - target: {fileID: 961762408205275243, guid: dcffeeeeb26f0ab418336c2779f00a8c,
         type: 3}
       propertyPath: m_Name
       value: VFX_BoxFire_Small
+      objectReference: {fileID: 0}
+    - target: {fileID: 3827635482907629621, guid: dcffeeeeb26f0ab418336c2779f00a8c,
+        type: 3}
+      propertyPath: m_LocalScale.x
+      value: 0.65103
+      objectReference: {fileID: 0}
+    - target: {fileID: 3827635482907629621, guid: dcffeeeeb26f0ab418336c2779f00a8c,
+        type: 3}
+      propertyPath: m_LocalScale.y
+      value: 0.65103
+      objectReference: {fileID: 0}
+    - target: {fileID: 3827635482907629621, guid: dcffeeeeb26f0ab418336c2779f00a8c,
+        type: 3}
+      propertyPath: m_LocalScale.z
+      value: 0.65103
       objectReference: {fileID: 0}
     - target: {fileID: 3827635482907629621, guid: dcffeeeeb26f0ab418336c2779f00a8c,
         type: 3}
@@ -3410,7 +3446,7 @@ PrefabInstance:
     - target: {fileID: 3827635482907629621, guid: dcffeeeeb26f0ab418336c2779f00a8c,
         type: 3}
       propertyPath: m_LocalPosition.y
-      value: 0
+      value: -0.1012
       objectReference: {fileID: 0}
     - target: {fileID: 3827635482907629621, guid: dcffeeeeb26f0ab418336c2779f00a8c,
         type: 3}

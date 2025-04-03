@@ -4,7 +4,7 @@ using System.Collections.Generic;
 
 public class PlayerSkin : NetworkBehaviour {
     [Header("Models")]
-    [SerializeField] List<SkinnedMeshRenderer> playerSkins;
+    [SerializeField] List<SkinnedMeshRenderer> playerMesh;
     [SerializeField] List<MeshRenderer> playerModels;
 
     [Header("Skins")]
@@ -47,7 +47,7 @@ public class PlayerSkin : NetworkBehaviour {
 
     //where the skin actually gets set
     private void OverwriteSkin(int index) {
-        foreach (SkinnedMeshRenderer renderer in playerSkins) {
+        foreach (SkinnedMeshRenderer renderer in playerMesh) {
             renderer.material = skins[index];
         }
 
