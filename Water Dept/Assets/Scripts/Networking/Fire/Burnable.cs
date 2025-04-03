@@ -456,14 +456,14 @@ public class Burnable : NetworkBehaviour
         EventManager.BurnableDestroyed(burnableScore);
         destroyedModel.gameObject.SetActive(true);
 
-        //play vfx and shake for 1 sec
+        //play vfx and shake for 1 sec, also disable hitbox,
+        GetComponent<Collider>().enabled = false;
         destructionVFX.Play();
         activeModelSubAnchor.DOShakePosition(duration, 0.2f, 20, 90, false);
         yield return new WaitForSeconds(1f);
 
-        //Collapse, disable hitbox, and wait untill finished
+        //Collapse,  and wait untill finished
         activeModel.DOLocalMove(Vector3.down * 14f, duration);
-        GetComponent<Collider>().enabled = false;
         yield return new WaitForSeconds(duration);
 
         //disable this script and the model
