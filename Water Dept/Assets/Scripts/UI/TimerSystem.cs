@@ -4,44 +4,47 @@ using UnityEngine;
 using UnityEngine.UI;
 
 public class TimerSystem : NetworkBehaviour {
-    [Networked] private CustomTickTimer Timer { get; set; }
     [Networked] private NetworkBool canStart { get; set; }
+    [Networked] private NetworkBool hasStarted { get; set; }
 
     [Header("Time Syncing")]
     [SerializeField] private TMP_Text timerText;
-    [SerializeField] private float remainingTime;
-    private float duration = 0;
+    [Networked] private float Timer { get; set; }
+    private static float sTimer;
 
-    private bool canPause = false, playedCutscene;
-    private int prev, current;
+    private bool playedCutscene;
 
     public override void Spawned() {
-        remainingTime = duration;
         canStart = true;
     }
 
     // Only used to update the timer's text if the timer is actually running
     public override void Render() {
-        if (Timer.IsRunning) {
+        if (hasStarted) {
             RPC_SyncTimer();
         }
     }
 
     public void RPC_SyncTimer() {
-        if (Timer.IsRunning) {
-            remainingTime = Timer.RemainingTime(Runner) ?? 0;
-            DisplayTime(remainingTime);
+        if (hasStarted) {
+            DisplayTime(Timer);
         }
     }
 
+
     public override void FixedUpdateNetwork() {
+        sTimer = Timer;
+
         if (GameStateHandler.Instance.GetGameState == GameStateHandler.GameState.STARTED) {
             if (!playedCutscene) {
-                EventManager.TimerStart();
                 playedCutscene = true;
             }
-            if (!Timer.IsRunning) {
-                Timer = CustomTickTimer.CreateFromSeconds(Runner, remainingTime);
+            if (!hasStarted) {
+                EventManager.TimerStart();
+                hasStarted = true;
+            }
+            if (hasStarted) {
+                Timer += Runner.DeltaTime;
             }
         }
     }
@@ -57,23 +60,8 @@ public class TimerSystem : NetworkBehaviour {
         // Update all player's UI timer text
         if (timerText != null) {
             timerText.text = string.Format("{0:00}:{1:00}", minutes, seconds);
-            OnTimeChange(displayTime);
         }
     }
 
-    public void OnTimeChange(float displayTime) {
-        current = (int)displayTime;
-        if (current < prev && Timer.IsRunning) {
-            prev = current;
-            EventManager.TimeChange(current);
-        }
-    }
-
-    private void OnEnable() {
-        EventManager.onTimeChange += OnTimeChange;
-    }
-
-    private void OnDisable() {
-        EventManager.onTimeChange -= OnTimeChange;
-    }
+    public static float GetTimerTime () => sTimer;
 }
