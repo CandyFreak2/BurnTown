@@ -231,9 +231,13 @@ public class BarrelInfo : NetworkBehaviour
 
     private void OnTriggerEnter(Collider other)
     {
-        if (other.tag == "Flame" || other.tag == "Gas Flame")
+        if (other.tag == "Flame")
         {
             isExploded = true;
+        }
+
+        if (other.tag == "Gas Flame") {
+            StartCoroutine(DelayedChainExplode());
         }
     }
 }
