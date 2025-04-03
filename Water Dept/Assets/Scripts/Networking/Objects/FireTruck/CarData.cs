@@ -13,8 +13,9 @@ public class CarData : NetworkBehaviour
     [SerializeField] public List<Transform> passengerPos;
     [Networked] private int numPassengers { set; get; } // change to private
     private int maxPassengers;
-    [Networked] public Vector3 truckPos { set; get; }
+    [Networked] public Vector3 truckPos { get; set; }
     [Networked] private float carSpeed { get; set; }
+    [SerializeField] public float killSpeed = 4.0f;
     private bool atKillSpeed = false;
 
     // Start is called once before the first execution of Update after the MonoBehaviour is created
@@ -35,7 +36,7 @@ public class CarData : NetworkBehaviour
         {
             truckPos = transform.position;
             UpdateKillzone();
-            killzone.transform.localScale = new Vector3(1.0f, 1.0f, Mathf.Clamp(carSpeed / 2, 1.0f, 3.75f));
+            //killzone.transform.localScale = new Vector3(1.0f, 1.0f, Mathf.Clamp(carSpeed / 4, 1.0f, 3.75f));
         }
     }
 
