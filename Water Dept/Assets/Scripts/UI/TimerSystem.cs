@@ -9,7 +9,7 @@ public class TimerSystem : NetworkBehaviour {
 
     [Header("Time Syncing")]
     [SerializeField] private TMP_Text timerText;
-    [Networked] private float Timer {get; set;}
+    [Networked] private static float Timer { get; set; }
 
     private bool playedCutscene;
 
@@ -59,5 +59,5 @@ public class TimerSystem : NetworkBehaviour {
         }
     }
 
-    public float GetTimerTime () => Timer;
+    public static float GetTimerTime () => Timer;
 }
