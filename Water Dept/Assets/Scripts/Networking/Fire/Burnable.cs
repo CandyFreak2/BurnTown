@@ -1,5 +1,6 @@
 using DG.Tweening;
 using Fusion;
+using System;
 using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
@@ -93,6 +94,15 @@ public class Burnable : NetworkBehaviour
     [Header("VFX")]
     [SerializeField] VFXController vfxControler;
     [SerializeField] List<ParticleSystem> onFireVFX;
+
+    [Header("Audio")]
+    [SerializeField] AudioProfile audioProfile;
+    [Serializable]
+    private class AudioProfile
+    {
+        public float fadeDuration = 0f;
+        public List<AudioClip> DestructSFX;
+    }
 
     [Header("Destruction")]
     [SerializeField] bool despawnOnDeath = true;
