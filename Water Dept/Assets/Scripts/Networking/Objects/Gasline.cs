@@ -103,6 +103,9 @@ public class Gasline : NetworkBehaviour {
             {
                 foreach (Burnable b in endGoals) {
                     b.nIsBurning = true;
+
+                    fireZone.SetActive(true); //enables firezone gameObject that has collider, is located by the end point
+                    fireZoneFlamePrefab.SetActive(true); //turns on vfx flame which has play on awake enabled
                 }
             }
 

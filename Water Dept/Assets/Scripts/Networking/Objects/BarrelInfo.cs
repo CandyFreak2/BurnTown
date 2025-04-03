@@ -231,7 +231,7 @@ public class BarrelInfo : NetworkBehaviour
 
     private void OnTriggerEnter(Collider other)
     {
-        if (other.tag == "Flame")
+        if (other.tag == "Flame" || other.tag == "Gas Flame")
         {
             isExploded = true;
         }
