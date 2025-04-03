@@ -9,7 +9,8 @@ public class TimerSystem : NetworkBehaviour {
 
     [Header("Time Syncing")]
     [SerializeField] private TMP_Text timerText;
-    [Networked] private static float Timer { get; set; }
+    [Networked] private float Timer { get; set; }
+    private static float sTimer;
 
     private bool playedCutscene;
 
@@ -30,7 +31,10 @@ public class TimerSystem : NetworkBehaviour {
         }
     }
 
+
     public override void FixedUpdateNetwork() {
+        sTimer = Timer;
+
         if (GameStateHandler.Instance.GetGameState == GameStateHandler.GameState.STARTED) {
             if (!playedCutscene) {
                 playedCutscene = true;
@@ -59,5 +63,5 @@ public class TimerSystem : NetworkBehaviour {
         }
     }
 
-    public static float GetTimerTime () => Timer;
+    public static float GetTimerTime () => sTimer;
 }
