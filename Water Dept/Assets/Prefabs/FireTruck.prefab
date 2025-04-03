@@ -26,7 +26,7 @@ Transform:
   m_GameObject: {fileID: 1295557062003659758}
   serializedVersion: 2
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: -1.69, y: -2.8, z: -4.03}
+  m_LocalPosition: {x: -1.69, y: -2.85, z: -4.03}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []
@@ -46,11 +46,11 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   carRB: {fileID: 4768391477969633517}
   suspensionRestLength: 0.8
-  suspensionStrength: 85
-  suspensionDamping: 75
-  powerMultiplier: 30
+  suspensionStrength: 2600
+  suspensionDamping: 1600
+  powerMultiplier: 500
   topSpeed: 60
-  brakeStrength: 12
+  brakeStrength: 250
   tireGripFactor: 0.8
 --- !u!1 &1601628383318992276
 GameObject:
@@ -78,7 +78,7 @@ Transform:
   m_GameObject: {fileID: 1601628383318992276}
   serializedVersion: 2
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 1.68, y: -2.8, z: -4.03}
+  m_LocalPosition: {x: 1.68, y: -2.85, z: -4.03}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []
@@ -98,11 +98,11 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   carRB: {fileID: 4768391477969633517}
   suspensionRestLength: 0.8
-  suspensionStrength: 85
-  suspensionDamping: 75
-  powerMultiplier: 30
+  suspensionStrength: 2600
+  suspensionDamping: 1600
+  powerMultiplier: 500
   topSpeed: 60
-  brakeStrength: 12
+  brakeStrength: 250
   tireGripFactor: 0.8
 --- !u!1 &2040709483166779140
 GameObject:
@@ -207,7 +207,7 @@ Rigidbody:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 2231294426090905358}
   serializedVersion: 4
-  m_Mass: 20
+  m_Mass: 500
   m_Drag: 0
   m_AngularDrag: 0.05
   m_CenterOfMass: {x: 0, y: -0.95, z: 0}
@@ -246,7 +246,7 @@ BoxCollider:
   m_Enabled: 1
   serializedVersion: 3
   m_Size: {x: 5, y: 5.5, z: 14.515202}
-  m_Center: {x: 0, y: -0.099999905, z: -0.20261669}
+  m_Center: {x: 0, y: 0, z: -0.20261669}
 --- !u!114 &615215578933300217
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -260,7 +260,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   carRB: {fileID: 4768391477969633517}
-  killzone: {fileID: 6472798120567889666}
+  killzone: {fileID: 8181070929540949012}
   frontTires:
   - {fileID: 5595848358408308924}
   - {fileID: 3962749562720211918}
@@ -392,13 +392,14 @@ GameObject:
   m_Component:
   - component: {fileID: 7669321806888003676}
   - component: {fileID: 8181070929540949012}
+  - component: {fileID: 1313519266392692349}
   m_Layer: 0
   m_Name: Killzone
   m_TagString: FireTruckKillzone
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 0
+  m_IsActive: 1
 --- !u!4 &7669321806888003676
 Transform:
   m_ObjectHideFlags: 0
@@ -408,7 +409,7 @@ Transform:
   m_GameObject: {fileID: 6472798120567889666}
   serializedVersion: 2
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 0, y: -2.13, z: 7.74}
+  m_LocalPosition: {x: 0, y: -2.74, z: 7.74}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []
@@ -433,8 +434,20 @@ BoxCollider:
   m_ProvidesContacts: 0
   m_Enabled: 1
   serializedVersion: 3
-  m_Size: {x: 4.54, y: 1, z: 1}
-  m_Center: {x: 0, y: 0, z: 0}
+  m_Size: {x: 4.54, y: 3.5165029, z: 1.9289703}
+  m_Center: {x: 0, y: 1.2582514, z: 0.46448517}
+--- !u!114 &1313519266392692349
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 6472798120567889666}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 45986926c2ff4c24db3f3c0958dc61dd, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
 --- !u!1 &7310782486318041851
 GameObject:
   m_ObjectHideFlags: 0
@@ -558,7 +571,7 @@ Transform:
   m_GameObject: {fileID: 8397273350419712050}
   serializedVersion: 2
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 1.68, y: -2.8, z: 5.76}
+  m_LocalPosition: {x: 1.68, y: -2.85, z: 5.76}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []
@@ -578,11 +591,11 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   carRB: {fileID: 4768391477969633517}
   suspensionRestLength: 0.8
-  suspensionStrength: 85
-  suspensionDamping: 75
-  powerMultiplier: 20
+  suspensionStrength: 2600
+  suspensionDamping: 1600
+  powerMultiplier: 450
   topSpeed: 60
-  brakeStrength: 10
+  brakeStrength: 200
   tireGripFactor: 0.8
 --- !u!1 &8539886274263462978
 GameObject:
@@ -610,7 +623,7 @@ Transform:
   m_GameObject: {fileID: 8539886274263462978}
   serializedVersion: 2
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: -1.69, y: -2.8, z: 5.76}
+  m_LocalPosition: {x: -1.69, y: -2.85, z: 5.76}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []
@@ -630,11 +643,11 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   carRB: {fileID: 4768391477969633517}
   suspensionRestLength: 0.8
-  suspensionStrength: 85
-  suspensionDamping: 75
-  powerMultiplier: 20
+  suspensionStrength: 2600
+  suspensionDamping: 1600
+  powerMultiplier: 450
   topSpeed: 60
-  brakeStrength: 10
+  brakeStrength: 200
   tireGripFactor: 0.8
 --- !u!1 &9181218762468318415
 GameObject:
@@ -666,8 +679,8 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 9181218762468318415}
   serializedVersion: 2
-  m_LocalRotation: {x: 0.1412296, y: -0.85866207, z: 0.34095564, w: 0.3556724}
-  m_LocalPosition: {x: 15.000088, y: 20, z: 14.999911}
+  m_LocalRotation: {x: 0.3409561, y: 0.35566992, z: -0.14122865, w: 0.85866314}
+  m_LocalPosition: {x: -15, y: 20, z: -15}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []
@@ -819,7 +832,7 @@ MonoBehaviour:
   PivotOffset: {x: 0, y: 0, z: 0}
   AmplitudeGain: 0
   FrequencyGain: 0
-  m_NoiseOffsets: {x: 0, y: 0, z: 0}
+  m_NoiseOffsets: {x: 33.260468, y: 783.891, z: -295.4663}
 --- !u!114 &7606062162499173523
 MonoBehaviour:
   m_ObjectHideFlags: 0

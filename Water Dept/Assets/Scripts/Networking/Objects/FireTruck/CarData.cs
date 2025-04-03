@@ -6,7 +6,7 @@ using UnityEngine;
 public class CarData : NetworkBehaviour
 {
     [SerializeField] public Rigidbody carRB;
-    [SerializeField] public GameObject killzone;
+    [SerializeField] public Collider killzone;
     [SerializeField] public List<Tire> frontTires, backTires;
 
     [SerializeField] public Transform driverPos;
@@ -35,23 +35,22 @@ public class CarData : NetworkBehaviour
         {
             truckPos = transform.position;
             UpdateKillzone();
+            killzone.transform.localScale = new Vector3(1.0f, 1.0f, Mathf.Clamp(carSpeed / 2, 1.0f, 3.75f));
         }
     }
 
     private void UpdateKillzone()
     {
         carSpeed = carRB.linearVelocity.magnitude;
-        // Get this shit outta here - Jerry
-        //Debug.Log(carSpeed);
 
         if (!atKillSpeed && carSpeed >= 5.0f)
         {
-            killzone.SetActive(true);
+            killzone.enabled = true;
             atKillSpeed = true;
         }
-        else if (atKillSpeed && carSpeed < 5.0f)
+        else if (atKillSpeed && carSpeed < 5.0f) // change back
         {
-            killzone.SetActive(false);
+            killzone.enabled = false;
             atKillSpeed = false;
         }
     }
