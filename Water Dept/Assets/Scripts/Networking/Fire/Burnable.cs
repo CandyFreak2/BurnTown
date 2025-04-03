@@ -102,7 +102,9 @@ public class Burnable : NetworkBehaviour
     {
         public float fadeDuration = 0f;
         public List<AudioClip> DestructSFX;
+        public List<AudioClip> BurningSFX;
     }
+    private AudioSource sfxSource;
 
     [Header("Destruction")]
     [SerializeField] bool despawnOnDeath = true;
@@ -375,6 +377,11 @@ public class Burnable : NetworkBehaviour
         //SHOULD NOT CALL RPC LIKE THIS BUT NETWORKED OBJ WONT TAKE MY NICE LIST   ):<
         startedBurning = true;
         nIsBurning = true;
+
+        //Burning loop sfx started fade in set AudioSource to var
+        sfxSource = AudioPlayer.PlaySFXLoop(audioProfile.BurningSFX, transform);
+        StartCoroutine(AudioPlayer.FadeAudioIn(sfxSource, audioProfile.fadeDuration));
+
         foreach (var fire in onFireVFX)
             fire.Play();
     }
@@ -383,6 +390,9 @@ public class Burnable : NetworkBehaviour
     private void RPC_BurningStopped() => Runner.FindObject(Object.Id)?.GetComponent<Burnable>().BurningStopped();
     private void BurningStopped() //do not call, use RPC
     {
+        //Burning sfx fade out and pass AudioSource to destroy it
+        StartCoroutine(AudioPlayer.FadeAudioOut(sfxSource, audioProfile.fadeDuration, true));
+
         stoppedBurning = true;
         TriggerDestroyBurnable();
     }
@@ -425,6 +435,10 @@ public class Burnable : NetworkBehaviour
 
         //this will not work if triggered by RPC call... ugggghhhh
         nIsBurning = false;
+
+
+        //Destruction sfx
+        AudioPlayer.PlaySFX(audioProfile.DestructSFX, transform.position);
 
         if (despawnOnDeath)
             TriggerDespawn();

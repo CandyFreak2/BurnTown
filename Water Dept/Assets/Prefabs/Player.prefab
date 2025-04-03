@@ -333,6 +333,18 @@ MonoBehaviour:
   rightTireAngle: {x: 0, y: 0, z: 0}
   playerController: {fileID: 0}
   isDriver: 0
+  audioProfile:
+    fadeDuration: 0.25
+    ActivateSFX:
+    - {fileID: 8300000, guid: 3eb1af190ebb8aa4aafdfce0c7df7e2b, type: 3}
+    DriveSFX:
+    - {fileID: 8300000, guid: e6e6bc389e250184b97c2b21af28d93b, type: 3}
+    - {fileID: 8300000, guid: bb5e0d8b652ff884db90e4a08b559a7f, type: 3}
+    DoorSFX:
+    - {fileID: 8300000, guid: 6f4651883762dd1449f21315eea94ddf, type: 3}
+    - {fileID: 8300000, guid: 943b31709b71cb543a48fe1d69838c60, type: 3}
+    ambientSFX:
+    - {fileID: 8300000, guid: 6f702c0d502ac1c4faf26092ebd2c58c, type: 3}
 --- !u!114 &-3036700806444132779
 MonoBehaviour:
   m_ObjectHideFlags: 0
