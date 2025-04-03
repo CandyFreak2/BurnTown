@@ -7,6 +7,7 @@ using System;
 using System.Collections.Generic;
 using DG.Tweening;
 using static Unity.Collections.Unicode;
+using UnityEngine.UI;
 public class PlayerMovement : NetworkBehaviour
 {
     //I need these for animations to work -James
@@ -37,6 +38,7 @@ public class PlayerMovement : NetworkBehaviour
 
     [Networked] public Interactable carriedObject { get; set; }
     [SerializeField] private TextMeshPro pickupText;
+    [SerializeField] private Image pickupIcon;
     [SerializeField] private GameObject objIndicator;
     [SerializeField] private CarController truckController;
     [Networked] public PlayerRef playerRef { get; set; }
@@ -211,6 +213,8 @@ public class PlayerMovement : NetworkBehaviour
         {
             PickUpObject(nearestInteractable.GetComponent<Interactable>());
             pickupText.text = "";
+            //pickupIcon.SetActive(false);
+            pickupIcon.enabled = false;
 
             //if barrel is picked up, queue schematic
             if (nearestInteractable.tag == "Barrel")
@@ -226,6 +230,8 @@ public class PlayerMovement : NetworkBehaviour
         {
             GetInTruck(nearestInteractable);
             pickupText.text = "";
+            //pickupIcon.SetActive(false);
+            pickupIcon.enabled = false;
         }
 
         //Drop hose // Barrel
@@ -300,7 +306,8 @@ public class PlayerMovement : NetworkBehaviour
                     CarData truckData = nearestInteractable.GetComponent<CarData>();
                     if (truckData.GetNumPassengers() < truckData.GetMaxPassengers())
                     {
-                        pickupText.text = "North Button / E to Enter Fire Truck";
+                        //pickupIcon.SetActive(true);
+                        pickupIcon.enabled = true;
                         return nearestInteractable;
                     }
                     else
@@ -312,18 +319,22 @@ public class PlayerMovement : NetworkBehaviour
                 else if (collider.gameObject.tag == "FireHoseHead")
                 {
                     nearestInteractable = collider.gameObject;
-                    pickupText.text = "North Button / E to Pickup Flamethrower";
+                    //pickupIcon.SetActive(true);
+                    pickupIcon.enabled = true;
                     return nearestInteractable;
                 }
                 else if (collider.gameObject.tag == "Barrel")
                 {
                     nearestInteractable = collider.gameObject;
-                    pickupText.text = "North Button / E to Pickup Barrel";
+                    //pickupIcon.SetActive(true);
+                    pickupIcon.enabled = true;
                     return nearestInteractable;
                 }
                 else
                 {
                     pickupText.text = "";
+                    //pickupIcon.SetActive(false);
+                    pickupIcon.enabled = false;
                 }
             }
         }

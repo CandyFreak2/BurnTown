@@ -8,6 +8,7 @@ using UnityEngine.UI;
 public class InteractableUI : NetworkBehaviour
 {
     private GameObject flamethrowerUI;
+    private Image flamethrowerIcon;
     [SerializeField] private Animator flamethrowerIconAnim;
 
     private GameObject barrelUI;
@@ -63,7 +64,7 @@ public class InteractableUI : NetworkBehaviour
     {
         spriteMap = new Dictionary<string, ButtonUI>();
 
-        if (buttonSprites.Count >= 7)
+        if (buttonSprites.Count >= 9)
         {
             spriteMap.Add("AButton", buttonSprites[0]);
             spriteMap.Add("BButton", buttonSprites[1]);
@@ -73,6 +74,7 @@ public class InteractableUI : NetworkBehaviour
             spriteMap.Add("LTButton", buttonSprites[5]);
             spriteMap.Add("BarrelIcon", buttonSprites[6]);
             spriteMap.Add("FiretruckIcon", buttonSprites[7]);
+            spriteMap.Add("FlamethrowerIcon", buttonSprites[8]);
         }
         else
         {
@@ -82,6 +84,7 @@ public class InteractableUI : NetworkBehaviour
         // Initialize ui image refrences
         barrelIcon = barrelUI.transform.Find("BarrelIcon")?.GetComponent<Image>();
         firetruckIcon = firetruckUI.transform.Find("FiretruckIcon")?.GetComponent<Image>();
+        flamethrowerIcon = flamethrowerUI.transform.Find("FlamethrowerIcon")?.GetComponent<Image>();
     }
 
     // Delay updating ui so that playermovement data gets updated first then ui
@@ -170,6 +173,13 @@ public class InteractableUI : NetworkBehaviour
 
         else if (inputPressed == InputButton.ShootUp)
         {
+            flamethrowerIconAnim.SetBool("isShooting", false);
+            flamethrowerIcon.sprite = spriteMap["FlamethrowerIcon"].defaultSprite;
+        }
+
+        else if (inputPressed == InputButton.Drop)
+        {
+            flamethrowerIcon.sprite = spriteMap["FlamethrowerIcon"].defaultSprite;
             flamethrowerIconAnim.SetBool("isShooting", false);
         }
     }
