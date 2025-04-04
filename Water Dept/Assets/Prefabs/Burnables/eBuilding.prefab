@@ -67,7 +67,7 @@ MonoBehaviour:
   wallPenetration: 0
   overlapMask:
     serializedVersion: 2
-    m_Bits: 1
+    m_Bits: 65
   _nIsBurning: 0
   showsLerp: 1
   colorStepSmoothing: 0.1
@@ -92,6 +92,9 @@ MonoBehaviour:
   activeModelSubAnchor: {fileID: 9049419035712158156}
   destroyedModel: {fileID: 9203221664725786767}
   destructionVFX: {fileID: 7702637400973416565}
+  screenShake:
+    intensity: 2
+    duration: 2
 --- !u!114 &9024513864095165934
 MonoBehaviour:
   m_ObjectHideFlags: 0

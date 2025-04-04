@@ -14,13 +14,27 @@ public class CinemachineShake : MonoBehaviour
         activeShake = new CamShake(0, 0, _ChannelPerlin);
     }
 
+    public static void ShakeAllCameras(float intensity, float duration)
+    {
+        CineSingleCamera.GetActiveCamera().GetComponent<CinemachineShake>().ShakeCamera(intensity, duration);
+
+        /*foreach(CineSingleCamera cam in CineSingleCamera.activeCineCameras)
+        {
+            CinemachineShake shake = cam.GetComponentInParent<CinemachineShake>();
+            if(shake != null)
+                shake.ShakeCamera(intensity, duration);
+        }*/
+    }
+
     public void ShakeCamera(float intensity, float duration)
     {
         //filter out lower intensity shake
-        if(intensity < activeShake.intensity) 
+        if (intensity < activeShake.target.AmplitudeGain) 
             return;
 
-        StopCoroutine(shakeCorutine);
+        if(shakeCorutine != null)
+            StopCoroutine(shakeCorutine);
+        
         activeShake = new CamShake(intensity, duration, _ChannelPerlin);
         shakeCorutine = StartCoroutine(activeShake.RunShake());
     }
@@ -29,7 +43,7 @@ public class CinemachineShake : MonoBehaviour
     {
         public float intensity;
         public float duration;
-        CinemachineBasicMultiChannelPerlin target;
+        public CinemachineBasicMultiChannelPerlin target;
 
         public CamShake(float intensity, float duration, CinemachineBasicMultiChannelPerlin target)
         {

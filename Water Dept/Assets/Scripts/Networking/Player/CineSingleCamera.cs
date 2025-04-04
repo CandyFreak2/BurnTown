@@ -5,7 +5,6 @@ using UnityEngine;
 public class CineSingleCamera : MonoBehaviour
 {
     public static List<CineSingleCamera> activeCineCameras = new List<CineSingleCamera>();
-
     private CinemachineCamera _PlayerCam;
 
     private void Awake()
@@ -29,5 +28,13 @@ public class CineSingleCamera : MonoBehaviour
             cam._PlayerCam.enabled = false;
 
         _PlayerCam.enabled = true;
+    }
+
+    public static CinemachineCamera GetActiveCamera()
+    {
+        foreach (var cam in activeCineCameras)
+            if (cam.enabled)
+                return cam._PlayerCam;
+        return null;
     }
 }
