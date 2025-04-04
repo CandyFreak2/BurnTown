@@ -5,6 +5,7 @@ using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
 using Unity.Mathematics;
+using Unity.VisualScripting;
 using UnityEngine;
 
 public class Burnable : NetworkBehaviour
@@ -117,6 +118,14 @@ public class Burnable : NetworkBehaviour
     private bool startedCollapse;
     private bool finishedCollapse;
 
+    //screenshake
+    [SerializeField] ScreenShake screenShake;
+    [Serializable] private class ScreenShake
+    {
+        public float intensity = 0f;
+        public float duration = 0f;
+    }
+
     private void OnValidate()
     {
         if (spreadSource == null)
@@ -127,10 +136,10 @@ public class Burnable : NetworkBehaviour
 
     private void OnDrawGizmosSelected()
     {
-        Gizmos.color = Color.red;
+        Gizmos.color = Color.yellow;
         Gizmos.DrawWireSphere(spreadSource.position, spreadRadius);
 
-        Gizmos.color = Color.yellow;
+        Gizmos.color = Color.red;
         Gizmos.DrawWireSphere(spreadSource.position, finalSpreadRadius);
     }
 
@@ -231,7 +240,7 @@ public class Burnable : NetworkBehaviour
                 continue;
             }
 
-            Debug.DrawLine(spreadSource.position, targetPos, Color.red, 2f);
+            Debug.DrawLine(spreadSource.position, targetPos, Color.yellow, 2f);
 
             if (obj.TryGetComponent(out Burnable target))
             {
@@ -252,6 +261,16 @@ public class Burnable : NetworkBehaviour
         Collider[] objArr = Physics.OverlapSphere(spreadSource.position, finalSpreadRadius, overlapMask);
         foreach (var obj in objArr)
         {
+            //screenshake
+            if(obj.tag == "Player" && obj.GetComponentInParent<PlayerMovement>() != null && obj.GetComponentInParent<PlayerMovement>().HasInputAuthority)
+            {
+                Debug.DrawLine(spreadSource.position, obj.transform.position, Color.magenta);
+                float shakeMultiplier = Mathf.InverseLerp(0, finalSpreadRadius, Vector3.Distance(obj.transform.position, spreadSource.position));
+                CinemachineShake.ShakeAllCameras(screenShake.intensity * shakeMultiplier, screenShake.duration * shakeMultiplier);
+                continue;
+            }
+
+            //stop if object isnt burnable or explosive
             if (!obj.gameObject.TryGetComponent(out Burnable check_1) && !obj.gameObject.TryGetComponent(out BarrelInfo check_2))
                 continue;
 
@@ -264,7 +283,7 @@ public class Burnable : NetworkBehaviour
                 continue;
             }
 
-            Debug.DrawLine(spreadSource.position, obj.transform.position, Color.yellow, 2f);
+            Debug.DrawLine(spreadSource.position, obj.transform.position, Color.red, 2f);
 
             if (obj.TryGetComponent(out Burnable target))
             {

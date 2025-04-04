@@ -114,22 +114,17 @@ public class Flamethrower : NetworkBehaviour
         //ray cast the shot
         if (Physics.Raycast(raySource.position, raySource.forward, out RaycastHit hit, rayDistance, rayMask))
         {
-            if(hit.collider.TryGetComponent(out Burnable burn))
-            if (burn == null) 
+            //apply fire dammage to burnables
+            if (hit.collider.TryGetComponent(out Burnable burn))
             {
-                burn = hit.collider.GetComponentInChildren<Burnable>(true);
+                burn.enabled = true;
+                burn.AddHeatModifier(heatApplied);
             }
 
+            //set off gassline
             if(hit.collider.GetComponent<GaslinePoint>())
             {
                 hit.collider.GetComponent<GaslinePoint>().setFire();
-            }
-
-            //apply fire dammage to burnables
-            if (burn != null)
-            {
-                if (!burn.enabled) burn.enabled = true;
-                    burn.AddHeatModifier(heatApplied);
             }
 
             //apply fire dammage to barrels
@@ -138,9 +133,9 @@ public class Flamethrower : NetworkBehaviour
                 barrel.Explode();
             }
 
+            //apply decals
             if(decalTimer > decalSpawnDelay)
             {
-                //apply decals
                 Transform decal = decalPool.GetPooledObject().transform;
                 decal.position = hit.point;
                 decal.forward = -hit.normal;
