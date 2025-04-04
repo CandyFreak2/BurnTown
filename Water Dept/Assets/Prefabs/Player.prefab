@@ -3591,6 +3591,11 @@ PrefabInstance:
       objectReference: {fileID: 1809968442882517360}
     - target: {fileID: 4387287218986668996, guid: 96804e7c3961f9140b030ab112fcfa6e,
         type: 3}
+      propertyPath: FrequencyGain
+      value: 80
+      objectReference: {fileID: 0}
+    - target: {fileID: 4387287218986668996, guid: 96804e7c3961f9140b030ab112fcfa6e,
+        type: 3}
       propertyPath: m_NoiseOffsets.x
       value: -813.01025
       objectReference: {fileID: 0}
@@ -3609,8 +3614,7 @@ PrefabInstance:
       propertyPath: FollowOffset.x
       value: -10
       objectReference: {fileID: 0}
-    m_RemovedComponents:
-    - {fileID: 8101262560785541026, guid: 96804e7c3961f9140b030ab112fcfa6e, type: 3}
+    m_RemovedComponents: []
     m_RemovedGameObjects: []
     m_AddedGameObjects: []
     m_AddedComponents: []
