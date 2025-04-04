@@ -84115,6 +84115,11 @@ PrefabInstance:
       propertyPath: m_Name
       value: Road_Straight_Sidewalk (5)
       objectReference: {fileID: 0}
+    - target: {fileID: 5011693737508282806, guid: a9db77fcc6160c6489e42a76adffa929,
+        type: 3}
+      propertyPath: SortKey
+      value: 3587075038
+      objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
     m_AddedGameObjects: []
@@ -142087,15 +142092,7 @@ PrefabInstance:
     m_RemovedComponents: []
     m_RemovedGameObjects: []
     m_AddedGameObjects: []
-    m_AddedComponents:
-    - targetCorrespondingSourceObject: {fileID: 923872575743106205, guid: 088705ca87a0da748964538fcac209a0,
-        type: 3}
-      insertIndex: -1
-      addedObject: {fileID: 0}
-    - targetCorrespondingSourceObject: {fileID: 3075656237079975324, guid: 088705ca87a0da748964538fcac209a0,
-        type: 3}
-      insertIndex: -1
-      addedObject: {fileID: 0}
+    m_AddedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 088705ca87a0da748964538fcac209a0, type: 3}
 --- !u!4 &4185700994842362757 stripped
 Transform:
@@ -142766,3 +142763,4 @@ SceneRoots:
   - {fileID: 1022721542}
   - {fileID: 1593091221}
   - {fileID: 186457158}
+  - {fileID: 733742300}
