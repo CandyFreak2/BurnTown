@@ -149,7 +149,7 @@ public class PlayerMovement : NetworkBehaviour
     public void RotatePlayer()
     {
         //get camera view direction
-        Vector3 camDir = camTarget.forward;
+        Vector3 camDir = Camera.main.transform.forward;
         camDir.y = 0;
         float viewDir = Vector3.Angle(Vector3.forward, camDir);
 
@@ -181,7 +181,7 @@ public class PlayerMovement : NetworkBehaviour
 
     public void MovePlayer()
     {
-        Quaternion camOffest = Quaternion.Euler(0, camTarget.rotation.eulerAngles.y, 0);
+        Quaternion camOffest = Quaternion.Euler(0, Camera.main.transform.rotation.eulerAngles.y, 0);
         moveDirection = kcc.TransformRotation * camOffest * ToVector3(action.MoveDirection);
 
         if (isExploded)

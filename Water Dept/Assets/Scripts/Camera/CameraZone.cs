@@ -9,6 +9,7 @@ public class CameraZone : MonoBehaviour
     private void Awake()
     {
         cam = GetComponentInChildren<CinemachineCamera>();
+        cam.Priority = -1;
     }
 
     private void OnTriggerEnter(Collider other)
@@ -31,7 +32,7 @@ public class CameraZone : MonoBehaviour
 
         if (player.HasInputAuthority)
         {
-            cam.Priority = 1;
+            cam.Priority = -1;
         }
     }
 }
