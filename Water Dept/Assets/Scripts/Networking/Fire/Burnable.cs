@@ -18,7 +18,6 @@ public class Burnable : NetworkBehaviour
 
     [Header("Burning Effects")]
     [SerializeField, Networked] private int fuelRemaining { get; set; }
-    private int localFuelRemaining;
 
     [SerializeField, Tooltip("Increased by non-burnables like the flamethrower, decreases by 1 each seccond")]
     protected int heatModifier = 0;
@@ -146,7 +145,6 @@ public class Burnable : NetworkBehaviour
     public override void Spawned()
     {
         fuelRemaining = startFuel;
-        localFuelRemaining = startFuel;
         isSpawned = true;
         nIsBurning = burnOnAwake;
 
@@ -177,7 +175,7 @@ public class Burnable : NetworkBehaviour
     //changes obj color 
     private void Effects()
     {
-        if (isSpawned && nIsBurning)
+        //if (isSpawned && nIsBurning)
         {
             //lerp between start and end color based on % of fuel remaining
             if(showsLerp)
@@ -187,12 +185,16 @@ public class Burnable : NetworkBehaviour
 
                 if (vfxControler != null)
                 {
-                    burnVisOpacity = Mathf.InverseLerp((float)startFuel, 0, (float)localFuelRemaining * colorStepMax);
+                    burnVisOpacity = Mathf.InverseLerp((float)startFuel * colorStepMax, 0, (float)fuelRemaining);
                     vfxControler.Opacity = Mathf.Lerp(vfxControler.Opacity, burnVisOpacity, colorStepSmoothing); //stupid, but adds nice smoothing
+                    Debug.Log("Setting Opacity " +  burnVisOpacity);
+                    Debug.Log("Receved Opacity " +  vfxControler.Opacity);
                 }
             }
         }
     }
+
+    /// <summary> </summary>
 
     //Checks if burning object is on fire and burns it and spreads fire
     //Destroys object if no more fuel
@@ -307,8 +309,6 @@ public class Burnable : NetworkBehaviour
 
         heatModifier -= heartBeat;
         heatModifier = Mathf.Clamp(heatModifier, 0, heatDmgCap);
-
-        localFuelRemaining = fuelRemaining;
     }
     int GetCurrentHeat()
     {
@@ -378,16 +378,9 @@ public class Burnable : NetworkBehaviour
     }
 
 
-    public void TriggerBurn() => RPC_TrigggerBurn(Object.Id);
-    [Rpc(RpcSources.All, RpcTargets.All)]
-    private void RPC_TrigggerBurn(NetworkId _objID)
-    {
-        Burnable target = Runner.FindObject(_objID).GetComponent<Burnable>();
-        target.nIsBurning = true;
-    }
 
     //gives host the authority on what burns
-    [Rpc(RpcSources.StateAuthority, RpcTargets.StateAuthority, HostMode = RpcHostMode.SourceIsHostPlayer)]
+    [Rpc(RpcSources.InputAuthority, RpcTargets.StateAuthority, HostMode = RpcHostMode.SourceIsHostPlayer)]
     private void RPC_BurningStartedSignal(RpcInfo info = default) => RPC_BurningStartedRelay(info.Source);
 
     [Rpc(RpcSources.StateAuthority, RpcTargets.All, HostMode = RpcHostMode.SourceIsServer)]
@@ -398,9 +391,10 @@ public class Burnable : NetworkBehaviour
         nIsBurning = true;
 
         //Burning loop sfx started fade in set AudioSource to var
-        sfxSource = AudioPlayer.PlaySFXLoop(audioProfile.BurningSFX, transform);
+        sfxSource = AudioPlayer.PlaySFXLoop(audioProfile.BurningSFX, transform.position);
         StartCoroutine(AudioPlayer.FadeAudioIn(sfxSource, audioProfile.fadeDuration));
 
+        //vfx is currently split in an ugly way. Here and in the controller :P
         foreach (var fire in onFireVFX)
             fire.Play();
     }
@@ -410,7 +404,7 @@ public class Burnable : NetworkBehaviour
     private void BurningStopped() //do not call, use RPC
     {
         //Burning sfx fade out and pass AudioSource to destroy it
-        StartCoroutine(AudioPlayer.FadeAudioOut(sfxSource, audioProfile.fadeDuration, true));
+        StartCoroutine(AudioPlayer.FadeAudioOut(sfxSource, audioProfile.fadeDuration));
 
         stoppedBurning = true;
         TriggerDestroyBurnable();
@@ -514,8 +508,6 @@ public class Burnable : NetworkBehaviour
         activeModel.gameObject.SetActive(false);
         enabled = false;
     }
-
-
 
     public bool GetDisabled(float _disabledPercent) {
         return isSpawned && _disabledPercent > fuelRemaining / startFuel;
