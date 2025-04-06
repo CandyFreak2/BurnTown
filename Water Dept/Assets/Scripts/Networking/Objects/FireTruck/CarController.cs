@@ -1,13 +1,10 @@
 using Fusion;
 using Fusion.Addons.SimpleKCC;
 using Fusion.Addons.Physics;
-using NUnit.Framework;
 using System.Collections;
 using System.Collections.Generic;
 using Unity.Cinemachine;
-using Unity.VisualScripting;
 using UnityEngine;
-using UnityEngine.InputSystem.XR;
 using System;
 
 public class CarController : NetworkBehaviour
@@ -50,6 +47,7 @@ public class CarController : NetworkBehaviour
     private class AudioProfile
     {
         public float fadeDuration = 0f;
+        public float speedToPitch = 30f;
         public List<AudioClip> ActivateSFX;
         public List<AudioClip> DriveSFX;
         public List<AudioClip> DoorSFX;
@@ -125,7 +123,6 @@ public class CarController : NetworkBehaviour
         if (action.Buttons.WasPressed(previousButtons, InputButton.Shoot))
         {
             accelerationInput = 1.0f;
-            accelerationSource = AudioPlayer.PlaySFXLoop(audioProfile.DriveSFX, transform);
             StartCoroutine(AudioPlayer.FadeAudioIn(accelerationSource, audioProfile.fadeDuration));
         }
         else if(action.Buttons.WasReleased(previousButtons, InputButton.Shoot))
@@ -205,6 +202,12 @@ public class CarController : NetworkBehaviour
 
             carRB.AddForceAtPosition(tire.GetForces(), tire.transform.position);
         }
+
+
+        //audio
+        if (accelerationSource == null) 
+            accelerationSource = AudioPlayer.PlaySFXLoop(audioProfile.DriveSFX, transform);
+        accelerationSource.pitch = Mathf.Lerp(.8f, 1.2f, Mathf.InverseLerp(0, audioProfile.speedToPitch, carRB.linearVelocity.magnitude));
     }
 
     private void CheckPlayerCount()
