@@ -18,16 +18,18 @@ public class Flamethrower : NetworkBehaviour
 
     [Header("Damage & Fire")]
     [SerializeField] int heatApplied = 1;
+    [SerializeField] int heatAppliedDefault = 1;
+    [SerializeField] int heatAppliedMax = 2;
 
     [Header("Fuel")]
-    [Tooltip("Max amount of fuel and starting fuel")]
-    [SerializeField] public float startFuel = 10f;
-    [Tooltip("Fuel amount flamethrower loses (seconds)"), Range(0, 3)]
-    public float fuelDepletionRate = 1;
-    [Tooltip("Fuel amount flamethrower regenerates (seconds)"), Range(0, 3)]
-    public float fuelRegenerationRate = 1;
+    [Tooltip("Max amount of overcharge")]
+    [SerializeField] public float maxOvercharge = 10f;
+    [Tooltip("Temp amount flamethrower gains (seconds)"), Range(0, 3)]
+    public float overchargeGainRate = 1;
+    [Tooltip("Temp amount flamethrower cools (seconds)"), Range(0, 3)]
+    public float overchargeCoolRate = 1;
     //[Networked] public float fuel { get; set; }
-    public float fuel;
+    public float overcharge;
     [SerializeField] private GameObject fuelBarElements;
     [SerializeField] private Transform fuelBarAnchor;
     [SerializeField] private MeshRenderer fuelBarMesh;
@@ -38,12 +40,13 @@ public class Flamethrower : NetworkBehaviour
     [SerializeField] float rayDistance;
     [SerializeField] LayerMask rayMask;
 
-
+/*
     [Header("Tween")]
     [SerializeField] float tweenDuration;
     [SerializeField] Vector3 tweenMagnatude;
     [SerializeField] int tweenVibrato;
     Tween activeTween;
+*/
 
     [Header("VFX")]
     [SerializeField] private ParticleSystem VFX_Flame;
@@ -68,7 +71,7 @@ public class Flamethrower : NetworkBehaviour
     {
         isShooting = false;
         audioProfile.activeSource = AudioPlayer.PlaySFXLoop(audioProfile.flamethrowerLoop, transform, 0);
-        fuel = startFuel;
+        overcharge = 0;
         fuelBarMesh.material.color = Color.green;
         fuelBarElements.SetActive(false);
     }
@@ -80,8 +83,13 @@ public class Flamethrower : NetworkBehaviour
 
         if(HasInputAuthority)
         {
-            if (Gamepad.current != null) {
-                Gamepad.current.SetMotorSpeeds(0.25f * rumbleMultiplier, 0.75f * rumbleMultiplier);
+            if (Gamepad.current != null) 
+            {
+                if(overcharge >= maxOvercharge)
+                    Gamepad.current.SetMotorSpeeds(0.25f * rumbleMultiplier, 0.75f * rumbleMultiplier);
+                else
+                    Gamepad.current.SetMotorSpeeds(0.15f * rumbleMultiplier, 0.5f * rumbleMultiplier);
+
                 InputSystem.ResumeHaptics();
             }
         }
@@ -144,7 +152,7 @@ public class Flamethrower : NetworkBehaviour
 
         }
 
-        if(fuel <= 0)
+        if(overcharge <= 0)
         {
             StopSpraying();
             fuelBarAnchor.localScale = Vector3.zero;
@@ -157,20 +165,27 @@ public class Flamethrower : NetworkBehaviour
     {
         Flamethrower firehose = Runner.FindObject(_hoseId).GetComponent<Flamethrower>();
         firehose.isShooting = true;
-        firehose.fuel = fuel;
+        firehose.overcharge = overcharge;
 
         if (firehose != null)
         {
-            //tween
+            //tween 
+        /*
+         * Removed due to bug -James
             if (activeTween != null) activeTween.Complete();
             activeTween = firehose.transform.DOShakeScale(tweenDuration, tweenMagnatude, tweenVibrato);
-
+        */
             //vfx start
             firehose.VFX_Flame.Play();
 
             //audio start
-            AudioPlayer.PlaySFX(audioProfile.flamethrowerStart, transform);
-            if (audioProfile.activeFade != null) StopCoroutine(audioProfile.activeFade);
+
+            if(audioProfile.activeSource.volume < 0.01f)
+                AudioPlayer.PlaySFX(audioProfile.flamethrowerStart, transform);
+
+            if (audioProfile.activeFade != null) 
+                StopCoroutine(audioProfile.activeFade);
+
             audioProfile.activeFade = StartCoroutine(AudioPlayer.FadeAudioIn(audioProfile.activeSource, audioProfile.fadeDuration));
         }
     }
@@ -181,7 +196,7 @@ public class Flamethrower : NetworkBehaviour
     {
         Flamethrower firehose = Runner.FindObject(_hoseId).GetComponent<Flamethrower>();
         firehose.isShooting = false;
-        firehose.fuel = fuel;
+        firehose.overcharge = overcharge;
 
         if (firehose != null)
         {
@@ -197,18 +212,34 @@ public class Flamethrower : NetworkBehaviour
     private void FuelUpdate()
     {
         //regen fuel
-        fuel = isShooting ? fuel - Time.fixedDeltaTime * fuelDepletionRate : fuel + Time.fixedDeltaTime * fuelRegenerationRate;
-        fuel = Mathf.Clamp(fuel, 0, startFuel);
+        overcharge = isShooting ? overcharge + Time.fixedDeltaTime * overchargeGainRate : overcharge - Time.fixedDeltaTime * overchargeCoolRate;
+        overcharge = Mathf.Clamp(overcharge, 0, maxOvercharge);
 
-        //lerp fuel indicators
-        if (fuel > 0)
+        if (overcharge > 0)
         {
-            fuelBarAnchor.localScale = new Vector3(1, Mathf.Lerp(0, 1, fuel / startFuel), 1);
-            fuelBarMesh.material.color = Color.Lerp(Color.red, Color.green, fuel / startFuel);
-        }
+            //lerp indicators
+            fuelBarAnchor.localScale = new Vector3(1, Mathf.Lerp(0, 1, overcharge / maxOvercharge), 1);
+            fuelBarMesh.material.color = Color.Lerp(Color.green, Color.red, overcharge / maxOvercharge);
+            heatApplied = heatAppliedDefault;
 
-        //disable when full
-        if(fuel >= startFuel)
+            //lerp audio pitch
+            audioProfile.activeSource.pitch = Mathf.Lerp(.8f, 1.3f, overcharge / maxOvercharge);
+
+            //lerp camerashake
+            if(overcharge/maxOvercharge > 0.75f)
+            {
+                float shakeMagnitude = Mathf.Lerp(0.001f, 0.05f, Mathf.InverseLerp(0.75f, maxOvercharge, overcharge));
+                CinemachineShake.ShakeAllCameras(shakeMagnitude, 0.2f);
+            }
+
+            if (overcharge >= maxOvercharge)
+            {
+                fuelBarMesh.material.color = Color.magenta;
+                CinemachineShake.ShakeAllCameras(0.1f, 0.2f);
+                heatApplied = heatAppliedMax;
+            }
+        }
+        else //disable when empty
         {
             fuelBarElements.SetActive(false);
         }

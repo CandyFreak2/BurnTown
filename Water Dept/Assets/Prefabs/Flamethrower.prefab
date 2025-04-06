@@ -250,61 +250,6 @@ MeshRenderer:
   m_SortingLayer: 0
   m_SortingOrder: 0
   m_AdditionalVertexStreams: {fileID: 0}
---- !u!1 &2728231644651137783
-GameObject:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  serializedVersion: 6
-  m_Component:
-  - component: {fileID: 2040343409374755601}
-  - component: {fileID: 2718493701278218693}
-  m_Layer: 0
-  m_Name: Flame Hitbox (NOT USED)
-  m_TagString: Flame
-  m_Icon: {fileID: 0}
-  m_NavMeshLayer: 0
-  m_StaticEditorFlags: 0
-  m_IsActive: 1
---- !u!4 &2040343409374755601
-Transform:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 2728231644651137783}
-  serializedVersion: 2
-  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 0, y: 0.26, z: 6.21}
-  m_LocalScale: {x: 1, y: 1, z: 1}
-  m_ConstrainProportionsScale: 0
-  m_Children: []
-  m_Father: {fileID: 4418976957054803028}
-  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
---- !u!136 &2718493701278218693
-CapsuleCollider:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 2728231644651137783}
-  m_Material: {fileID: 0}
-  m_IncludeLayers:
-    serializedVersion: 2
-    m_Bits: 0
-  m_ExcludeLayers:
-    serializedVersion: 2
-    m_Bits: 0
-  m_LayerOverridePriority: 0
-  m_IsTrigger: 1
-  m_ProvidesContacts: 0
-  m_Enabled: 0
-  serializedVersion: 2
-  m_Radius: 0.2
-  m_Height: 8
-  m_Direction: 2
-  m_Center: {x: 0, y: 0, z: 0}
 --- !u!1 &4946523008368634297
 GameObject:
   m_ObjectHideFlags: 0
@@ -417,6 +362,7 @@ MonoBehaviour:
   _carrierId:
     Raw: 0
   interactableCollider: {fileID: 0}
+  interactableMeshRenderer: {fileID: 6234826915009364222}
   holdOffset: {x: 0.5, y: 1.2, z: 0}
   interactableType: 0
 --- !u!54 &3656389120166898570
@@ -480,10 +426,12 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   heatApplied: 1
-  startFuel: 10
-  fuelDepletionRate: 1
-  fuelRegenerationRate: 1
-  fuel: 10
+  heatAppliedDefault: 1
+  heatAppliedMax: 2
+  maxOvercharge: 10
+  overchargeGainRate: 1
+  overchargeCoolRate: 1
+  overcharge: 0
   fuelBarElements: {fileID: 1187821916715340654}
   fuelBarAnchor: {fileID: 2070308175233577707}
   fuelBarMesh: {fileID: 4180535811369845006}
@@ -493,9 +441,6 @@ MonoBehaviour:
   rayMask:
     serializedVersion: 2
     m_Bits: 1
-  tweenDuration: 0.5
-  tweenMagnatude: {x: 0.2, y: 0.2, z: 0.6}
-  tweenVibrato: 12
   VFX_Flame: {fileID: 6700870194366174231}
   decalPool: {fileID: 7476817858956929214}
   decalSpawnDelay: 0.06
@@ -573,11 +518,10 @@ Transform:
   m_GameObject: {fileID: 6193447075105349618}
   serializedVersion: 2
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: -0.202, y: -0.022, z: -0.524}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
-  m_Children:
-  - {fileID: 2040343409374755601}
+  m_Children: []
   m_Father: {fileID: 1002961816487231613}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1 &6541684849237151569
@@ -683,6 +627,12 @@ PrefabInstance:
 --- !u!4 &4447097950255507693 stripped
 Transform:
   m_CorrespondingSourceObject: {fileID: -8679921383154817045, guid: fb7074574035f8c4db8c62de24320399,
+    type: 3}
+  m_PrefabInstance: {fileID: 4196789133993414406}
+  m_PrefabAsset: {fileID: 0}
+--- !u!23 &6234826915009364222 stripped
+MeshRenderer:
+  m_CorrespondingSourceObject: {fileID: -1388389131317932040, guid: fb7074574035f8c4db8c62de24320399,
     type: 3}
   m_PrefabInstance: {fileID: 4196789133993414406}
   m_PrefabAsset: {fileID: 0}

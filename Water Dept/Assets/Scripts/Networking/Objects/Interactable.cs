@@ -23,6 +23,7 @@ public class Interactable : NetworkBehaviour
     private Rigidbody rb;
     private NetworkRigidbody3D networkRB;
     public Collider interactableCollider;
+    public MeshRenderer interactableMeshRenderer;
 
     [SerializeField]
     private Vector3 holdOffset = new Vector3(1.0f, 0.5f, 0.0f);
@@ -38,6 +39,8 @@ public class Interactable : NetworkBehaviour
         isSpawned = false;
         rb = GetComponent<Rigidbody>();
         interactableCollider = GetComponent<Collider>();
+        if(interactableMeshRenderer == null)
+            interactableMeshRenderer = GetComponentInChildren<MeshRenderer>();
     }
 
     public override void Spawned()
@@ -124,10 +127,11 @@ public class Interactable : NetworkBehaviour
             interactable.rb.constraints = RigidbodyConstraints.FreezeAll;
             interactable.interactableCollider.enabled = false;
             interactable.networkRB.enabled = false;
+            interactable.interactableMeshRenderer.enabled = false;
 
             //tween
             activeTween.Complete();
-            activeTween = transform.DOShakeScale(0.5f, 0.8f);
+            //activeTween = transform.DOShakeScale(0.5f, 0.8f); //removed, is no longer visible and was causing random scale problems -James
         }
     }
 
@@ -146,6 +150,7 @@ public class Interactable : NetworkBehaviour
             interactable.rb.constraints = RigidbodyConstraints.None;
             interactable.interactableCollider.enabled = true;
             interactable.networkRB.enabled = true;
+            interactable.interactableMeshRenderer.enabled = true;
 
             //tween
             activeTween.Complete();

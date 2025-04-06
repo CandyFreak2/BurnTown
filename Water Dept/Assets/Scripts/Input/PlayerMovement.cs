@@ -252,15 +252,11 @@ public class PlayerMovement : NetworkBehaviour
         {
             if (carriedObject.interactableType == InteractableType.Flamethrower)
             {
-                if(carriedObject.gameObject.GetComponent<Flamethrower>().fuel > 0)
-                {
                     carriedObject.gameObject.GetComponent<Flamethrower>().Spray();
                     //limit movement
                     isFiring = true;
                     //push back player
                     gameObject.GetComponent<SimpleKCC>().Move(-orientation.forward.normalized * 20);
-                }
-                
             }
             else if (carriedObject.interactableType == InteractableType.Barrel)
             {
