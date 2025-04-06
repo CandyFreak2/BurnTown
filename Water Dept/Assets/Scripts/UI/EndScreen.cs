@@ -22,6 +22,9 @@ public class EndScreen : NetworkBehaviour
 
     [SerializeField] float tallyTimeMaxScore;
     [SerializeField] float tallyTimeMinScore;
+    [SerializeField] float tallyTimeMax;
+    [SerializeField] float tallyTimeMin;
+
 
     [SerializeField] List<AudioClip> tickSfx;
     [SerializeField] List<AudioClip> tallyFinishedSfx;
@@ -44,7 +47,7 @@ public class EndScreen : NetworkBehaviour
     {
         WaitForEndOfFrame tick = new();
         float magnitude = Mathf.InverseLerp(tallyTimeMinScore, tallyTimeMaxScore, score);
-        float duration = Mathf.Lerp(1, 5, magnitude);
+        float duration = Mathf.Lerp(tallyTimeMin, tallyTimeMax, magnitude);
         float timer = 0;
 
         while (timer < duration)
@@ -89,12 +92,12 @@ public class EndScreen : NetworkBehaviour
     //Assign to links and stuff
     private void OnEnable()
     {
-        EventManager.onEndZoneTrigger += TriggerEndScreen; 
+        //EventManager.onEndZoneTrigger += TriggerEndScreen; 
     }
 
     private void OnDisable()
     {
-        EventManager.onEndZoneTrigger -= TriggerEndScreen;
+        //EventManager.onEndZoneTrigger -= TriggerEndScreen;
     }
 
     //bleeeghhhhh networking :(
@@ -113,7 +116,7 @@ public class EndScreen : NetworkBehaviour
         //TallyScore(PlayerPrefs.GetInt("N_FinalScore"), 156f);
     }
 
-    [Rpc(RpcSources.All, RpcTargets.StateAuthority, HostMode = RpcHostMode.SourceIsHostPlayer)]
+    [Rpc(RpcSources.StateAuthority, RpcTargets.StateAuthority, HostMode = RpcHostMode.SourceIsHostPlayer)]
     private void RPC_TallyScoreSignal(float score, float time) => RPC_TallyScoreRelay(score, time);
 
     [Rpc(RpcSources.StateAuthority, RpcTargets.All, HostMode = RpcHostMode.SourceIsServer)]
