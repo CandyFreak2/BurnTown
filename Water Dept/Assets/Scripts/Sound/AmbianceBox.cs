@@ -10,8 +10,8 @@ public class AmbienceBox : MonoBehaviour
 
     private void OnDrawGizmos()
     {
-        Gizmos.color = Color.blue;
-        Gizmos.DrawWireCube(transform.position + Area.center, Area.size);
+        Gizmos.color = Color.cyan;
+        Gizmos.DrawWireCube(Area.transform.position + Area.center, Area.size);
     }
 
     void Update()
