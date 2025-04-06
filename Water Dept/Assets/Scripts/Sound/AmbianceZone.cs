@@ -1,10 +1,15 @@
+using TMPro.EditorUtilities;
 using Unity.Cinemachine;
+using Unity.VisualScripting;
 using UnityEngine;
 
 public class AmbientZone : MonoBehaviour
 {
     [Tooltip("Cinemachine Path to follow")]
     [SerializeField] CinemachineSplineCart _cart;
+
+    [Tooltip("How far to offset the sfx infront of the camera")]
+    [SerializeField] float offset = 8f;
 
     //This being deprecated is stupid. The Spline system hasn't got a closes position setting? WHY!?@?@ 
     ///private CinemachinePathBase.PositionUnits m_PositionUnits = CinemachinePathBase.PositionUnits.PathUnits;
@@ -27,7 +32,7 @@ public class AmbientZone : MonoBehaviour
         // Attach object to player on enter
         if (Vector3.Dot(Sub, Spline) > 0)
         {
-            transform.position = _cart.TrackingTarget.position;
+            transform.position = Vector3.Lerp(transform.position, _cart.TrackingTarget.position + _cart.TrackingTarget.forward * offset, 0.2f);
             transform.rotation = _cart.TrackingTarget.rotation;
         }
     }
