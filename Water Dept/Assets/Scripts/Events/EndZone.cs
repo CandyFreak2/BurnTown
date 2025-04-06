@@ -35,9 +35,7 @@ public class EndZone : NetworkBehaviour {
                         Timer = TickTimer.CreateFromSeconds(Runner, timeToComplete);
                     } else if (Timer.ExpiredOrNotRunning(Runner)) {
                         Timer = TickTimer.None;
-                        GameStateHandler.Instance.SetGameState(GameStateHandler.GameState.END);
-                        EventManager.EndZoneTrigger(state);
-                        TriggerEndZone?.Invoke();
+                        RPC_TriggerEndSignal();
                     }
                 }
 
@@ -64,9 +62,7 @@ public class EndZone : NetworkBehaviour {
         //this is more like what I needed -James
         if (state == EndConditions.FIRETRUCK && other.CompareTag("FireTruck"))
         {
-            GameStateHandler.Instance.SetGameState(GameStateHandler.GameState.END);
-            EventManager.EndZoneTrigger(state);
-            TriggerEndZone?.Invoke();
+            RPC_TriggerEndSignal();
         }
     }
 
@@ -75,5 +71,18 @@ public class EndZone : NetworkBehaviour {
             playersInRadius--;
             EventManager.EndZoneExit(state);
         }
+    }
+
+    [Rpc(RpcSources.All, RpcTargets.StateAuthority, HostMode = RpcHostMode.SourceIsHostPlayer)]
+    private void RPC_TriggerEndSignal() => RPC_TriggerEndRelay();
+
+    [Rpc(RpcSources.StateAuthority, RpcTargets.All, HostMode = RpcHostMode.SourceIsServer)]
+    private void RPC_TriggerEndRelay() => TriggerEnd();
+
+    void TriggerEnd()
+    {
+        TriggerEndZone?.Invoke();
+        GameStateHandler.Instance.SetGameState(GameStateHandler.GameState.END);
+        EventManager.EndZoneTrigger(state);
     }
 }
