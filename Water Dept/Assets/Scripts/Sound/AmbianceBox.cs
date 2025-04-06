@@ -10,8 +10,13 @@ public class AmbienceBox : MonoBehaviour
 
     private void OnDrawGizmos()
     {
-        Gizmos.color = Color.blue;
-        Gizmos.DrawWireCube(transform.position + Area.center, Area.size);
+        Gizmos.color = Color.cyan;
+        Gizmos.DrawWireCube(Area.transform.position + Area.center, Area.size);
+
+        //DO NO SCALE AUDIO ZONES :^) 
+        //Use the box collider volume tool pls
+        Area.transform.localScale = Vector3.one;
+        transform.localScale = Vector3.one;
     }
 
     void Update()
