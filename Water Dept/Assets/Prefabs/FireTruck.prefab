@@ -44,7 +44,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 0777d029ed3dffa4692f417d4aba19ca, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  m_Material: {fileID: 2100000, guid: 332d717f58076874687052d8d8fbeb70, type: 2}
+  m_Material: {fileID: 2100000, guid: 8b051fe5a76933e40b80ab3fb7469d84, type: 2}
   m_DrawDistance: 1000
   m_FadeScale: 0.9
   m_StartAngleFade: 180
@@ -102,8 +102,8 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   carRB: {fileID: 4768391477969633517}
   suspensionRestLength: 0.8
-  suspensionStrength: 2600
-  suspensionDamping: 1600
+  suspensionStrength: 3600
+  suspensionDamping: 3000
   powerMultiplier: 800
   topSpeed: 60
   brakeStrength: 250
@@ -154,8 +154,8 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   carRB: {fileID: 4768391477969633517}
   suspensionRestLength: 0.8
-  suspensionStrength: 2600
-  suspensionDamping: 1600
+  suspensionStrength: 3600
+  suspensionDamping: 3000
   powerMultiplier: 800
   topSpeed: 60
   brakeStrength: 250
@@ -268,7 +268,7 @@ Rigidbody:
   m_Mass: 500
   m_Drag: 0
   m_AngularDrag: 0.05
-  m_CenterOfMass: {x: 0, y: -2, z: 0}
+  m_CenterOfMass: {x: 0, y: -3, z: 0}
   m_InertiaTensor: {x: 1, y: 1, z: 1}
   m_InertiaRotation: {x: 0, y: 0, z: 0, w: 1}
   m_IncludeLayers:
@@ -303,8 +303,8 @@ BoxCollider:
   m_ProvidesContacts: 0
   m_Enabled: 1
   serializedVersion: 3
-  m_Size: {x: 5, y: 4.3467016, z: 14.106489}
-  m_Center: {x: 0, y: -0.32121372, z: -0.25136757}
+  m_Size: {x: 3.9993038, y: 3.8912988, z: 13.920353}
+  m_Center: {x: 0.008491516, y: -0.0935123, z: -0.3444357}
 --- !u!136 &3576362394444087325
 CapsuleCollider:
   m_ObjectHideFlags: 0
@@ -324,10 +324,10 @@ CapsuleCollider:
   m_ProvidesContacts: 0
   m_Enabled: 1
   serializedVersion: 2
-  m_Radius: 0.6
-  m_Height: 14.5
+  m_Radius: 0.8
+  m_Height: 14
   m_Direction: 2
-  m_Center: {x: 2.3, y: -2.3, z: 0}
+  m_Center: {x: 1.8, y: -2.2, z: 0}
 --- !u!136 &2666210483965523793
 CapsuleCollider:
   m_ObjectHideFlags: 0
@@ -347,10 +347,10 @@ CapsuleCollider:
   m_ProvidesContacts: 0
   m_Enabled: 1
   serializedVersion: 2
-  m_Radius: 0.6
-  m_Height: 14.5
+  m_Radius: 0.8
+  m_Height: 14
   m_Direction: 2
-  m_Center: {x: -2.3, y: -2.3, z: 0}
+  m_Center: {x: -1.8, y: -2.2, z: 0}
 --- !u!114 &615215578933300217
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -730,8 +730,8 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   carRB: {fileID: 4768391477969633517}
   suspensionRestLength: 0.8
-  suspensionStrength: 2600
-  suspensionDamping: 1600
+  suspensionStrength: 3600
+  suspensionDamping: 3000
   powerMultiplier: 600
   topSpeed: 60
   brakeStrength: 200
@@ -782,8 +782,8 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   carRB: {fileID: 4768391477969633517}
   suspensionRestLength: 0.8
-  suspensionStrength: 2600
-  suspensionDamping: 1600
+  suspensionStrength: 3600
+  suspensionDamping: 3000
   powerMultiplier: 600
   topSpeed: 60
   brakeStrength: 200
@@ -818,8 +818,8 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 9181218762468318415}
   serializedVersion: 2
-  m_LocalRotation: {x: 0.3409561, y: 0.35566992, z: -0.14122865, w: 0.85866314}
-  m_LocalPosition: {x: -15, y: 20, z: -15}
+  m_LocalRotation: {x: 0.14122863, y: 0.85866314, z: -0.34095606, w: 0.3556699}
+  m_LocalPosition: {x: -15, y: 20, z: 14.999999}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []
@@ -886,7 +886,7 @@ MonoBehaviour:
     AngularDampingMode: 0
     RotationDamping: {x: 1, y: 1, z: 1}
     QuaternionDamping: 1
-  FollowOffset: {x: -15, y: 20, z: -15}
+  FollowOffset: {x: -15, y: 20, z: 15}
 --- !u!114 &7174375742435550258
 MonoBehaviour:
   m_ObjectHideFlags: 0
