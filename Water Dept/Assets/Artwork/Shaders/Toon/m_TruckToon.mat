@@ -33,10 +33,14 @@ Material:
         m_Scale: {x: 1, y: 1}
         m_Offset: {x: 0, y: 0}
     - Texture2D_A12E9444:
-        m_Texture: {fileID: 2800000, guid: 94b898511b9b8ca4c9bea320362e8fc9, type: 3}
+        m_Texture: {fileID: 2800000, guid: 9e8dfee68e5ce694dbda4ff365f5b08b, type: 3}
         m_Scale: {x: 1, y: 1}
         m_Offset: {x: 0, y: 0}
     - _CalculateLightingRamp_CDA92BAB_Texture2D787AF2C_2026328018:
+        m_Texture: {fileID: 0}
+        m_Scale: {x: 1, y: 1}
+        m_Offset: {x: 0, y: 0}
+    - _RoughnessTexture:
         m_Texture: {fileID: 0}
         m_Scale: {x: 1, y: 1}
         m_Offset: {x: 0, y: 0}
@@ -54,13 +58,19 @@ Material:
         m_Offset: {x: 0, y: 0}
     m_Ints: []
     m_Floats:
-    - Vector1_9B44923E: 0.8
+    - Vector1_1: 1
+    - Vector1_9B44923E: 0.9
     - _Edge_Power: 5
+    - _Edge_Strength: 5
     - _Edge_Tickness: 0.3
+    - _Glint_Opacity: 0.7
     - _QueueControl: 0
     - _QueueOffset: 0
+    - _Shade_Thickness: 5
     m_Colors:
     - _Edge_Color: {r: 0.084905684, g: 0.005206483, b: 0.005206483, a: 1}
+    - _Edge_Tint: {r: 0, g: 0, b: 0, a: 1}
+    - _Shade_Tint: {r: 0.44339618, g: 0.21124056, b: 0.21124056, a: 1}
   m_BuildTextureStacks: []
   m_AllowLocking: 1
 --- !u!114 &2328688640712767107
