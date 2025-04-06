@@ -3154,7 +3154,6 @@ GameObject:
   - component: {fileID: 8939491049628964006}
   - component: {fileID: 4445391505014741416}
   - component: {fileID: 5320585752687526111}
-  - component: {fileID: 1776867197080620614}
   m_Layer: 0
   m_Name: Model
   m_TagString: Untagged
@@ -3231,27 +3230,37 @@ MeshRenderer:
   m_SortingLayer: 0
   m_SortingOrder: 0
   m_AdditionalVertexStreams: {fileID: 0}
---- !u!65 &1776867197080620614
-BoxCollider:
+--- !u!1 &6746341551669647743
+GameObject:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 4187466958697299231}
-  m_Material: {fileID: 0}
-  m_IncludeLayers:
-    serializedVersion: 2
-    m_Bits: 0
-  m_ExcludeLayers:
-    serializedVersion: 2
-    m_Bits: 0
-  m_LayerOverridePriority: 0
-  m_IsTrigger: 0
-  m_ProvidesContacts: 0
-  m_Enabled: 1
-  serializedVersion: 3
-  m_Size: {x: 73.91614, y: 97.40444, z: 80.98984}
-  m_Center: {x: 35.78441, y: 37.57667, z: -38.880844}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 6755539405299327594}
+  m_Layer: 0
+  m_Name: Spread Point
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &6755539405299327594
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 6746341551669647743}
+  serializedVersion: 2
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: 0.35, y: 0.3, z: -0.44}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children: []
+  m_Father: {fileID: 5125666945234525588}
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1 &7253036844930044120
 GameObject:
   m_ObjectHideFlags: 0
@@ -3262,8 +3271,10 @@ GameObject:
   m_Component:
   - component: {fileID: 5125666945234525588}
   - component: {fileID: 6789456815456585511}
-  - component: {fileID: 5749736851392449744}
+  - component: {fileID: 5008828285993607222}
   - component: {fileID: 7665528197390418716}
+  - component: {fileID: 2639924910935032561}
+  - component: {fileID: 5749736851392449744}
   m_Layer: 0
   m_Name: Trash
   m_TagString: Untagged
@@ -3286,6 +3297,7 @@ Transform:
   m_Children:
   - {fileID: 7381762062718537076}
   - {fileID: 8939491049628964006}
+  - {fileID: 6755539405299327594}
   m_Father: {fileID: 0}
   m_LocalEulerAnglesHint: {x: 0, y: -29.824, z: 0}
 --- !u!54 &6789456815456585511
@@ -3315,6 +3327,64 @@ Rigidbody:
   m_Interpolate: 0
   m_Constraints: 0
   m_CollisionDetection: 0
+--- !u!65 &5008828285993607222
+BoxCollider:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 7253036844930044120}
+  m_Material: {fileID: 0}
+  m_IncludeLayers:
+    serializedVersion: 2
+    m_Bits: 0
+  m_ExcludeLayers:
+    serializedVersion: 2
+    m_Bits: 0
+  m_LayerOverridePriority: 0
+  m_IsTrigger: 0
+  m_ProvidesContacts: 0
+  m_Enabled: 1
+  serializedVersion: 3
+  m_Size: {x: 0.899648, y: 1, z: 0.928712}
+  m_Center: {x: 0.44982234, y: 0.3999985, z: -0.46435556}
+--- !u!114 &7665528197390418716
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 7253036844930044120}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: -1552182283, guid: e725a070cec140c4caffb81624c8c787, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  SortKey: 3450288369
+  ObjectInterest: 1
+  Flags: 262145
+  NestedObjects: []
+  NetworkedBehaviours:
+  - {fileID: 2639924910935032561}
+  - {fileID: 5749736851392449744}
+  ForceRemoteRenderTimeframe: 0
+--- !u!114 &2639924910935032561
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 7253036844930044120}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 158639473, guid: e725a070cec140c4caffb81624c8c787, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  _stateAuthorityChangeErrorCorrectionDelta: 0.15
+  SyncScale: 0
+  SyncParent: 0
+  _autoAOIOverride: 1
+  DisableSharedModeInterpolation: 0
 --- !u!114 &5749736851392449744
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -3332,8 +3402,8 @@ MonoBehaviour:
   heatModifier: 0
   HeatSources: []
   burnOnAwake: 0
-  spreadSource: {fileID: 5125666945234525588}
-  receiverPoint: {fileID: 5125666945234525588}
+  spreadSource: {fileID: 6755539405299327594}
+  receiverPoint: {fileID: 6755539405299327594}
   startFuel: 10
   heatResistance: 0
   heatBuffer: 1
@@ -3364,31 +3434,15 @@ MonoBehaviour:
     BurningSFX:
     - {fileID: 8300000, guid: 57527da7b24bd1c45bd55ce6baf2e99a, type: 3}
   despawnOnDeath: 1
-  destroyedByImpact: 0
+  destroyedByImpact: 1
   destroyedDuration: 0
   activeModel: {fileID: 0}
   activeModelSubAnchor: {fileID: 0}
   destroyedModel: {fileID: 0}
   destructionVFX: {fileID: 0}
---- !u!114 &7665528197390418716
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 7253036844930044120}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: -1552182283, guid: e725a070cec140c4caffb81624c8c787, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  SortKey: 3450288369
-  ObjectInterest: 1
-  Flags: 262145
-  NestedObjects: []
-  NetworkedBehaviours:
-  - {fileID: 5749736851392449744}
-  ForceRemoteRenderTimeframe: 0
+  screenShake:
+    intensity: 0
+    duration: 0
 --- !u!1001 &6012084833372132673
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -3425,17 +3479,17 @@ PrefabInstance:
     - target: {fileID: 3827635482907629621, guid: dcffeeeeb26f0ab418336c2779f00a8c,
         type: 3}
       propertyPath: m_LocalPosition.x
-      value: 0
+      value: 0.463
       objectReference: {fileID: 0}
     - target: {fileID: 3827635482907629621, guid: dcffeeeeb26f0ab418336c2779f00a8c,
         type: 3}
       propertyPath: m_LocalPosition.y
-      value: -0.1012
+      value: 0.315
       objectReference: {fileID: 0}
     - target: {fileID: 3827635482907629621, guid: dcffeeeeb26f0ab418336c2779f00a8c,
         type: 3}
       propertyPath: m_LocalPosition.z
-      value: 0
+      value: -0.468
       objectReference: {fileID: 0}
     - target: {fileID: 3827635482907629621, guid: dcffeeeeb26f0ab418336c2779f00a8c,
         type: 3}
