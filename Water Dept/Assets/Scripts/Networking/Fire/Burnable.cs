@@ -82,8 +82,8 @@ public class Burnable : NetworkBehaviour
     [SerializeField] private bool showsLerp = true;
     [SerializeField, Range(0f, 1f), Tooltip("Smoothes the color transition, Low values = smoother")] 
     private float colorStepSmoothing = 0.05f;
-    [SerializeField, Range(0f, 1f), Tooltip("Reaches max color at this ratio of fuel expended")]
-    private float colorStepMax = 0.8f;
+    [SerializeField, Range(0f, 1f), Tooltip("Reaches max color at this ratio of fuel remaining")]
+    private float colorStepMax = 0.2f;
 
     [SerializeField] private Color initialColor = Color.green;
     [SerializeField] private Color startColor = Color.yellow;
@@ -168,9 +168,12 @@ public class Burnable : NetworkBehaviour
     public override void FixedUpdateNetwork()
     {
         HandleBurn();
-        Effects();
     }
 
+    private void FixedUpdate()
+    {
+        Effects();
+    }
 
     //changes obj color 
     private void Effects()
@@ -185,10 +188,10 @@ public class Burnable : NetworkBehaviour
 
                 if (vfxControler != null)
                 {
-                    burnVisOpacity = Mathf.InverseLerp((float)startFuel * colorStepMax, 0, (float)fuelRemaining);
+                    burnVisOpacity = Mathf.InverseLerp((float)startFuel , startFuel * colorStepMax, (float)fuelRemaining);
                     vfxControler.Opacity = Mathf.Lerp(vfxControler.Opacity, burnVisOpacity, colorStepSmoothing); //stupid, but adds nice smoothing
-                    Debug.Log("Setting Opacity " +  burnVisOpacity);
-                    Debug.Log("Receved Opacity " +  vfxControler.Opacity);
+                    //Debug.Log("Setting Opacity " +  burnVisOpacity);
+                    //Debug.Log("Receved Opacity " +  vfxControler.Opacity);
                 }
             }
         }
@@ -267,7 +270,7 @@ public class Burnable : NetworkBehaviour
             if(obj.tag == "Player" && obj.GetComponentInParent<PlayerMovement>() != null && obj.GetComponentInParent<PlayerMovement>().HasInputAuthority)
             {
                 Debug.DrawLine(spreadSource.position, obj.transform.position, Color.magenta);
-                float shakeMultiplier = Mathf.InverseLerp(0, finalSpreadRadius, Vector3.Distance(obj.transform.position, spreadSource.position));
+                float shakeMultiplier = Mathf.InverseLerp(finalSpreadRadius, 0, Vector3.Distance(obj.transform.position, spreadSource.position));
                 CinemachineShake.ShakeAllCameras(screenShake.intensity * shakeMultiplier, screenShake.duration * shakeMultiplier);
                 continue;
             }
@@ -380,7 +383,7 @@ public class Burnable : NetworkBehaviour
 
 
     //gives host the authority on what burns
-    [Rpc(RpcSources.InputAuthority, RpcTargets.StateAuthority, HostMode = RpcHostMode.SourceIsHostPlayer)]
+    [Rpc(RpcSources.StateAuthority, RpcTargets.StateAuthority, HostMode = RpcHostMode.SourceIsHostPlayer)]
     private void RPC_BurningStartedSignal(RpcInfo info = default) => RPC_BurningStartedRelay(info.Source);
 
     [Rpc(RpcSources.StateAuthority, RpcTargets.All, HostMode = RpcHostMode.SourceIsServer)]
