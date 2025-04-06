@@ -12,7 +12,6 @@ GameObject:
   - component: {fileID: 4905801373664398536}
   - component: {fileID: 7862908346343698033}
   - component: {fileID: 2805813704574917928}
-  - component: {fileID: 6291916539596368636}
   m_Layer: 0
   m_Name: eBuilding_5_resistant
   m_TagString: Untagged
@@ -50,7 +49,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: d687f89eee019c74e9f3e5c3d46719f7, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  burnableScore: 3500
+  burnableScore: 200000
   _fuelRemaining: 0
   heatModifier: 0
   HeatSources: []
@@ -136,20 +135,6 @@ BoxCollider:
   serializedVersion: 3
   m_Size: {x: 9, y: 10, z: 9}
   m_Center: {x: -4.5, y: 5, z: 4.5}
---- !u!114 &6291916539596368636
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 310888884861083897}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 1541381998, guid: e725a070cec140c4caffb81624c8c787, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  Guid:
-    RawGuidValue: cd5d15e21d2bbf544b48404612fb22c1
 --- !u!1 &2216977752810186581
 GameObject:
   m_ObjectHideFlags: 0
