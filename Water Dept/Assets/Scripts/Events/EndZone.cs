@@ -1,5 +1,6 @@
 using Fusion;
 using UnityEngine;
+using UnityEngine.Events;
 
 public enum EndConditions {
     RADIUS,
@@ -20,6 +21,7 @@ public class EndZone : NetworkBehaviour {
     
     private bool canStart = false;
 
+    public UnityEvent TriggerEndZone;
 
     public override void Spawned() {
         canStart = true;
@@ -35,19 +37,20 @@ public class EndZone : NetworkBehaviour {
                         Timer = TickTimer.None;
                         GameStateHandler.Instance.SetGameState(GameStateHandler.GameState.END);
                         EventManager.EndZoneTrigger(state);
+                        TriggerEndZone?.Invoke();
                     }
                 }
 
-                if (state == EndConditions.FIRETRUCK) {
+                /*if (state == EndConditions.FIRETRUCK) {
                     if (firetruck == null) {
                         Debug.LogWarning(gameObject.name + "needs Firetruck's Car Data");
-                    } else if (firetruck != null) {
+                    } else {
                         if (firetruck.GetNumPassengers() == ServerInfo.MaxPlayers) {
                             GameStateHandler.Instance.SetGameState(GameStateHandler.GameState.END);
                             EventManager.EndZoneTrigger(state);
                         }
                     } 
-                }
+                }*/
             }
         }
     }
@@ -56,6 +59,14 @@ public class EndZone : NetworkBehaviour {
         if (state == EndConditions.RADIUS && other.CompareTag("Player")) {
             playersInRadius++;
             EventManager.EndZoneEnter(state);
+        }
+
+        //this is more like what I needed -James
+        if (state == EndConditions.FIRETRUCK && other.CompareTag("FireTruck"))
+        {
+            GameStateHandler.Instance.SetGameState(GameStateHandler.GameState.END);
+            EventManager.EndZoneTrigger(state);
+            TriggerEndZone?.Invoke();
         }
     }
 
