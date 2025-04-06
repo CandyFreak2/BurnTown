@@ -37,4 +37,9 @@ public class CineSingleCamera : MonoBehaviour
                 return cam._PlayerCam;
         return null;
     }
+
+    public static Transform GetActiveTarget()
+    {
+        return GetActiveCamera().Target.TrackingTarget.transform;
+    }
 }
