@@ -1,6 +1,7 @@
 using UnityEngine;
 using Unity.Cinemachine;
 using System.Collections.Generic;
+using UnityEngine.UI;
 
 public class CameraManager : MonoBehaviour
 {
@@ -12,6 +13,8 @@ public class CameraManager : MonoBehaviour
     [Header("References")]
     [SerializeField] GameObject startTXT;
     [SerializeField] private List<GameObject> buttons;
+    [SerializeField] Canvas mainMenuCanvas;
+    [SerializeField] GameObject playButton;
 
     private CinemachineCamera currentCam;
 
@@ -28,17 +31,35 @@ public class CameraManager : MonoBehaviour
         lobbyCam.Priority = 0;
 
         currentCam = startCam;
+
+        //set main canvas to disable
+        mainMenuCanvas.enabled = false;
     }
     private void Update()
     {
         if(currentCam == startCam)
         {
+            //play button is not interactable
+            DisableUI();
+
             if(Input.anyKeyDown) //if the player presses anything it will transition to main screen camera
             {
                 SwitchActiveCamera(mainCam);
                 startTXT.SetActive(false);
                 buttons.ForEach(n => n.SetActive(true));
             }
+        }
+        if(currentCam == mainCam)
+        {
+            mainMenuCanvas.enabled = true;
+
+            Invoke("EnableUI", 1f);
+        }
+        else
+        {
+            mainMenuCanvas.enabled = false;
+            DisableUI();
+            
         }
     }
 
@@ -54,5 +75,16 @@ public class CameraManager : MonoBehaviour
         currentCam = newVCam;
     }
 
+    void EnableUI()
+    {
+        //play button is interactable
+        playButton.GetComponent<Button>().interactable = true;
+    }
+
+    void DisableUI()
+    {
+        //play button is not interactable
+        playButton.GetComponent<Button>().interactable = false;
+    }
 
 }

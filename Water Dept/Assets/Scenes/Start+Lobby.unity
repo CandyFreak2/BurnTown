@@ -3216,6 +3216,80 @@ CanvasRenderer:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 339636691}
   m_CullTransparentMesh: 1
+--- !u!1001 &345623305
+PrefabInstance:
+  m_ObjectHideFlags: 0
+  serializedVersion: 2
+  m_Modification:
+    serializedVersion: 3
+    m_TransformParent: {fileID: 1118291331}
+    m_Modifications:
+    - target: {fileID: 5132432464737787608, guid: 38889cc980b96b74fb6168cbb78cf1d7,
+        type: 3}
+      propertyPath: m_LocalPosition.x
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 5132432464737787608, guid: 38889cc980b96b74fb6168cbb78cf1d7,
+        type: 3}
+      propertyPath: m_LocalPosition.y
+      value: 0.1
+      objectReference: {fileID: 0}
+    - target: {fileID: 5132432464737787608, guid: 38889cc980b96b74fb6168cbb78cf1d7,
+        type: 3}
+      propertyPath: m_LocalPosition.z
+      value: -49.88001
+      objectReference: {fileID: 0}
+    - target: {fileID: 5132432464737787608, guid: 38889cc980b96b74fb6168cbb78cf1d7,
+        type: 3}
+      propertyPath: m_LocalRotation.w
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 5132432464737787608, guid: 38889cc980b96b74fb6168cbb78cf1d7,
+        type: 3}
+      propertyPath: m_LocalRotation.x
+      value: -0
+      objectReference: {fileID: 0}
+    - target: {fileID: 5132432464737787608, guid: 38889cc980b96b74fb6168cbb78cf1d7,
+        type: 3}
+      propertyPath: m_LocalRotation.y
+      value: -0
+      objectReference: {fileID: 0}
+    - target: {fileID: 5132432464737787608, guid: 38889cc980b96b74fb6168cbb78cf1d7,
+        type: 3}
+      propertyPath: m_LocalRotation.z
+      value: -0
+      objectReference: {fileID: 0}
+    - target: {fileID: 5132432464737787608, guid: 38889cc980b96b74fb6168cbb78cf1d7,
+        type: 3}
+      propertyPath: m_LocalEulerAnglesHint.x
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 5132432464737787608, guid: 38889cc980b96b74fb6168cbb78cf1d7,
+        type: 3}
+      propertyPath: m_LocalEulerAnglesHint.y
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 5132432464737787608, guid: 38889cc980b96b74fb6168cbb78cf1d7,
+        type: 3}
+      propertyPath: m_LocalEulerAnglesHint.z
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 8297691098361718175, guid: 38889cc980b96b74fb6168cbb78cf1d7,
+        type: 3}
+      propertyPath: m_Name
+      value: Road_Straight_Sidewalk (4)
+      objectReference: {fileID: 0}
+    m_RemovedComponents: []
+    m_RemovedGameObjects: []
+    m_AddedGameObjects: []
+    m_AddedComponents: []
+  m_SourcePrefab: {fileID: 100100000, guid: 38889cc980b96b74fb6168cbb78cf1d7, type: 3}
+--- !u!4 &345623306 stripped
+Transform:
+  m_CorrespondingSourceObject: {fileID: 5132432464737787608, guid: 38889cc980b96b74fb6168cbb78cf1d7,
+    type: 3}
+  m_PrefabInstance: {fileID: 345623305}
+  m_PrefabAsset: {fileID: 0}
 --- !u!1 &358207993
 GameObject:
   m_ObjectHideFlags: 0
@@ -16783,6 +16857,8 @@ MonoBehaviour:
   - {fileID: 604710957}
   - {fileID: 938823915}
   - {fileID: 253207074}
+  mainMenuCanvas: {fileID: 110212020}
+  playButton: {fileID: 604710957}
 --- !u!1001 &1564004626
 PrefabInstance:
   m_ObjectHideFlags: 0

@@ -12,7 +12,6 @@ GameObject:
   - component: {fileID: 4167903808683400320}
   - component: {fileID: 8469555968027150644}
   - component: {fileID: 8983358018388847052}
-  - component: {fileID: 2506360243602086360}
   m_Layer: 0
   m_Name: eBuilding_9_resistant
   m_TagString: Untagged
@@ -45,16 +44,16 @@ MonoBehaviour:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1817755037077653323}
-  m_Enabled: 1
+  m_Enabled: 0
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: d687f89eee019c74e9f3e5c3d46719f7, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  burnableScore: 3500
+  burnableScore: 1000000
   _fuelRemaining: 0
   heatModifier: 0
   HeatSources: []
-  burnOnAwake: 1
+  burnOnAwake: 0
   spreadSource: {fileID: 3170202802787815577}
   receiverPoint: {fileID: 3170202802787815577}
   startFuel: 12
@@ -136,20 +135,6 @@ BoxCollider:
   serializedVersion: 3
   m_Size: {x: 9, y: 10, z: 9}
   m_Center: {x: -4.5, y: 5, z: 4.5}
---- !u!114 &2506360243602086360
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1817755037077653323}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 1541381998, guid: e725a070cec140c4caffb81624c8c787, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  Guid:
-    RawGuidValue: 802bc31f9300fe241afdc9136428cb62
 --- !u!1 &1871779852313266209
 GameObject:
   m_ObjectHideFlags: 0

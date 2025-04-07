@@ -134,14 +134,14 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: d687f89eee019c74e9f3e5c3d46719f7, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  burnableScore: 3500
+  burnableScore: 10000
   _fuelRemaining: 0
   heatModifier: 0
   HeatSources: []
   burnOnAwake: 0
   spreadSource: {fileID: 8694019913410145542}
   receiverPoint: {fileID: 8694019913410145542}
-  startFuel: 8
+  startFuel: 100
   heatResistance: 0
   heatBuffer: 2
   heatDmgCap: 999
@@ -176,6 +176,9 @@ MonoBehaviour:
   activeModelSubAnchor: {fileID: 0}
   destroyedModel: {fileID: 0}
   destructionVFX: {fileID: 0}
+  screenShake:
+    intensity: 0
+    duration: 0
 --- !u!114 &5011693737508282806
 MonoBehaviour:
   m_ObjectHideFlags: 0
