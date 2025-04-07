@@ -7,6 +7,7 @@ public class CreditsController : MonoBehaviour
     [SerializeField] GameObject mainCanvas;
     [SerializeField] GameObject mainCanvasButton;
     [SerializeField] GameObject returnButton;
+
     private void OnEnable()
     {
         mainCanvas.SetActive(false);
@@ -27,10 +28,5 @@ public class CreditsController : MonoBehaviour
         mainCanvas.SetActive(true);
         EventSystem.current.SetSelectedGameObject(mainCanvasButton);
         transform.DOScale(Vector3.zero, 0.6f).OnComplete(() => gameObject.SetActive(false));
-    }
-
-    void HideDelay()
-    {
-
     }
 }
