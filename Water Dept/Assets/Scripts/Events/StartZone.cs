@@ -51,7 +51,7 @@ public class StartZone : NetworkBehaviour {
                 if (!players.Contains(other.gameObject) && GameStateHandler.Instance.GetGameState == GameStateHandler.GameState.NOT_STARTED) {
                     players.Add(other.gameObject);
                     other.GetComponentInParent<PlayerMovement>().IsReady = true;
-                    EventManager.StartZoneExit();
+                    EventManager.StartZoneEnter();
                 }
             }
         }
@@ -63,5 +63,7 @@ public class StartZone : NetworkBehaviour {
         }
     }
 
-    public float GetTimeLeft => Timer.RemainingTime(Runner) ?? 0;
+    public float GetTimeLeft => Timer.RemainingTime(Runner) ?? duration;
+    public int GetCurrentPlayers => playersInRadius;
+    public int GetMaxPlayers => ServerInfo.MaxPlayers;
 }
