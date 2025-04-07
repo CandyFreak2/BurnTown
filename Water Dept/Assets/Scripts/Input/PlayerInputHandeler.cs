@@ -11,6 +11,7 @@ public class PlayerInputHandeler : SimulationBehaviour, IBeforeUpdate, INetworkR
 
     Vector2 moveDirection;
     Vector2 lookDelta;
+    Vector2 camDirection;
     float interactPress;
     float dropPress;
     float shootPress;
@@ -107,6 +108,9 @@ public class PlayerInputHandeler : SimulationBehaviour, IBeforeUpdate, INetworkR
 
         //if (lookDelta.magnitude > 0)
             accumulatedInput.LookDelta = lookDelta;
+
+        Vector3 camDirV3 = Camera.main.transform.forward;
+        accumulatedInput.CameraDirection = new Vector2(camDirV3.x, camDirV3.z);
 
         accumulatedInput.Buttons = new NetworkButtons(accumulatedInput.Buttons.Bits | buttons.Bits);
     }

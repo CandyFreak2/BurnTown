@@ -335,6 +335,7 @@ MonoBehaviour:
   isDriver: 0
   audioProfile:
     fadeDuration: 0.25
+    speedToPitch: 30
     ActivateSFX:
     - {fileID: 8300000, guid: 3eb1af190ebb8aa4aafdfce0c7df7e2b, type: 3}
     DriveSFX:
@@ -2949,7 +2950,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 1
+  m_IsActive: 0
 --- !u!224 &4778472121616568128
 RectTransform:
   m_ObjectHideFlags: 0

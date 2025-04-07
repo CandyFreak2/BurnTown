@@ -30,7 +30,7 @@ public class PlayerMovement : NetworkBehaviour
     [SerializeField] Transform playerObj;
     [SerializeField] Transform camTarget;
     [SerializeField] float rotSpeed = 7.0f;
-    [Networked] private Vector3 networkedForward { get; set; }
+    [Networked] public Vector3 networkedForward { get; set; }
     public float stunDuration = 4f;
     //movement input
     private Vector3 moveDirection = Vector3.zero;
@@ -91,16 +91,15 @@ public class PlayerMovement : NetworkBehaviour
     public override void Spawned()
     {
         kcc.SetGravity(Physics.gravity.y);
+        playerRef = Object.InputAuthority;
 
         if (HasInputAuthority)
         {
-            //FreeCameraController.Singleton.SetTarget(camTarget);
             GetComponentInChildren<CineSingleCamera>().SetAsActiveCamera();
             objIndicator.SetActive(true);
             ObjectiveIndicatorList.Singleton.SetIndicator(objIndicator);
         }
-
-        playerRef = Object.InputAuthority;
+        
         isSpawned = true;
     }
 
@@ -149,7 +148,8 @@ public class PlayerMovement : NetworkBehaviour
     public void RotatePlayer()
     {
         //get camera view direction
-        Vector3 camDir = Camera.main.transform.forward;
+        Vector3 camDir = ToVector3(action.CameraDirection);
+        Debug.Log(camDir);
         camDir.y = 0;
         float viewDir = Vector3.Angle(Vector3.forward, camDir);
 
@@ -181,7 +181,8 @@ public class PlayerMovement : NetworkBehaviour
 
     public void MovePlayer()
     {
-        Quaternion camOffest = Quaternion.Euler(0, Camera.main.transform.rotation.eulerAngles.y, 0);
+        //Quaternion camOffest = Quaternion.Euler(0, Camera.main.transform.rotation.eulerAngles.y, 0);
+        Quaternion camOffest = Quaternion.LookRotation(ToVector3(action.CameraDirection), Vector3.up);
         moveDirection = kcc.TransformRotation * camOffest * ToVector3(action.MoveDirection);
 
         if (isExploded)
