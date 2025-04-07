@@ -11,6 +11,7 @@ GameObject:
   - component: {fileID: 3272515744953382284}
   - component: {fileID: 6099853066716929367}
   - component: {fileID: 5248324743033420495}
+  - component: {fileID: 2767008559213291912}
   m_Layer: 2
   m_Name: CameraZone
   m_TagString: Untagged
@@ -67,7 +68,28 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 158a1e68b491d9e41bebf6bb30f4b27c, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  camPriority: 20
+  playerLayer:
+    serializedVersion: 2
+    m_Bits: 64
+--- !u!114 &2767008559213291912
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1405294786688767598}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: -1552182283, guid: e725a070cec140c4caffb81624c8c787, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  SortKey: 1382262287
+  ObjectInterest: 1
+  Flags: 262145
+  NestedObjects: []
+  NetworkedBehaviours:
+  - {fileID: 5248324743033420495}
+  ForceRemoteRenderTimeframe: 0
 --- !u!1 &7705040316279517879
 GameObject:
   m_ObjectHideFlags: 0
