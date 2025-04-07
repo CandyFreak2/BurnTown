@@ -335,6 +335,7 @@ MonoBehaviour:
   isDriver: 0
   audioProfile:
     fadeDuration: 0.25
+    speedToPitch: 30
     ActivateSFX:
     - {fileID: 8300000, guid: 3eb1af190ebb8aa4aafdfce0c7df7e2b, type: 3}
     DriveSFX:
@@ -2643,6 +2644,7 @@ Transform:
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children:
+  - {fileID: 1735398101963230161}
   - {fileID: 1520285389193492421}
   m_Father: {fileID: 5779141458447338188}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
@@ -3131,6 +3133,92 @@ MonoBehaviour:
   m_BlockingMask:
     serializedVersion: 2
     m_Bits: 4294967295
+--- !u!1 &7561297452873841689
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 1735398101963230161}
+  - component: {fileID: 281200763176738379}
+  - component: {fileID: 2119913993895091124}
+  m_Layer: 0
+  m_Name: Flamer_geo (1)
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &1735398101963230161
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 7561297452873841689}
+  serializedVersion: 2
+  m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
+  m_LocalPosition: {x: 1.8475858, y: -44.68582, z: -0.021117926}
+  m_LocalScale: {x: 15, y: 15, z: 15}
+  m_ConstrainProportionsScale: 0
+  m_Children: []
+  m_Father: {fileID: 4569886283134892048}
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!33 &281200763176738379
+MeshFilter:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 7561297452873841689}
+  m_Mesh: {fileID: -5381358332483250941, guid: a6ce7a3412cd1f5488b6a95b9e40539e, type: 3}
+--- !u!23 &2119913993895091124
+MeshRenderer:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 7561297452873841689}
+  m_Enabled: 1
+  m_CastShadows: 1
+  m_ReceiveShadows: 1
+  m_DynamicOccludee: 1
+  m_StaticShadowCaster: 0
+  m_MotionVectors: 1
+  m_LightProbeUsage: 1
+  m_ReflectionProbeUsage: 1
+  m_RayTracingMode: 2
+  m_RayTraceProcedural: 0
+  m_RayTracingAccelStructBuildFlagsOverride: 0
+  m_RayTracingAccelStructBuildFlags: 1
+  m_SmallMeshCulling: 1
+  m_RenderingLayerMask: 1
+  m_RendererPriority: 0
+  m_Materials:
+  - {fileID: 2100000, guid: ab0c8d9b488c1ad4fac5abf16a0dd5da, type: 2}
+  m_StaticBatchInfo:
+    firstSubMesh: 0
+    subMeshCount: 0
+  m_StaticBatchRoot: {fileID: 0}
+  m_ProbeAnchor: {fileID: 0}
+  m_LightProbeVolumeOverride: {fileID: 0}
+  m_ScaleInLightmap: 1
+  m_ReceiveGI: 1
+  m_PreserveUVs: 0
+  m_IgnoreNormalsForChartDetection: 0
+  m_ImportantGI: 0
+  m_StitchLightmapSeams: 1
+  m_SelectedEditorRenderState: 3
+  m_MinimumChartSize: 4
+  m_AutoUVMaxDistance: 0.5
+  m_AutoUVMaxAngle: 89
+  m_LightmapParameters: {fileID: 0}
+  m_SortingLayerID: 0
+  m_SortingLayer: 0
+  m_SortingOrder: 0
+  m_AdditionalVertexStreams: {fileID: 0}
 --- !u!1 &7621550371935733915
 GameObject:
   m_ObjectHideFlags: 0
@@ -3382,6 +3470,11 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: -4809425534152623818, guid: a6ce7a3412cd1f5488b6a95b9e40539e,
         type: 3}
+      propertyPath: m_Enabled
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: -4809425534152623818, guid: a6ce7a3412cd1f5488b6a95b9e40539e,
+        type: 3}
       propertyPath: 'm_Materials.Array.data[0]'
       value: 
       objectReference: {fileID: 2100000, guid: ab0c8d9b488c1ad4fac5abf16a0dd5da, type: 2}
@@ -3415,6 +3508,12 @@ PrefabInstance:
 --- !u!4 &1520285389193492421 stripped
 Transform:
   m_CorrespondingSourceObject: {fileID: -8679921383154817045, guid: a6ce7a3412cd1f5488b6a95b9e40539e,
+    type: 3}
+  m_PrefabInstance: {fileID: 1338583924781436974}
+  m_PrefabAsset: {fileID: 0}
+--- !u!4 &2016746561162664695 stripped
+Transform:
+  m_CorrespondingSourceObject: {fileID: -8543479456278115623, guid: a6ce7a3412cd1f5488b6a95b9e40539e,
     type: 3}
   m_PrefabInstance: {fileID: 1338583924781436974}
   m_PrefabAsset: {fileID: 0}
@@ -3459,6 +3558,9 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   manualSpeedTweak: 0.7
+  flamerGeo: {fileID: 2016746561162664695}
+  flamerGeoOverwrite: {fileID: 1735398101963230161}
+  flamerOffsetTweak: -1.831724
 --- !u!4 &2699263698544737257 stripped
 Transform:
   m_CorrespondingSourceObject: {fileID: -5195415691083584569, guid: a6ce7a3412cd1f5488b6a95b9e40539e,

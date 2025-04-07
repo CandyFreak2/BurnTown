@@ -16,6 +16,10 @@ public class PlayerAnimationController : MonoBehaviour
 
     public float manualSpeedTweak = 1f;
 
+    public Transform flamerGeo;
+    public Transform flamerGeoOverwrite;
+    public float flamerOffsetTweak;
+
     private void Awake()
     {
         _playerAnimator = GetComponentInParent<Animator>();
@@ -60,6 +64,8 @@ public class PlayerAnimationController : MonoBehaviour
         _playerAnimator.SetBool("Holding Flamer", holdingFlamer);
         _playerAnimator.SetBool("Holding Barrel", holdingBarrel);
         _playerAnimator.SetBool("Stunned", stunned);
+
+        
     }
 
     void ThrowBarrel()
@@ -71,5 +77,25 @@ public class PlayerAnimationController : MonoBehaviour
     public void FootStepTrigger()
     {
         AudioPlayer.PlaySFX(_playerScript.sfxProfile.footstep, transform.position, 0.2f);
+    }
+
+    private void LateUpdate()
+    {
+        if(holdingFlamer && playerSpeed > 0.1f)
+        {
+            flamerGeoOverwrite.position = flamerGeo.position + flamerGeo.parent.parent.right * flamerOffsetTweak;
+            flamerGeoOverwrite.rotation = flamerGeo.rotation;
+
+            flamerGeoOverwrite.GetComponent<MeshRenderer>().enabled = true;
+            flamerGeo.GetComponent<MeshRenderer>().enabled = false;
+        }
+        else
+        {
+            flamerGeoOverwrite.position = flamerGeo.position + flamerGeo.parent.parent.right * flamerOffsetTweak;
+            flamerGeoOverwrite.rotation = flamerGeo.rotation;
+
+            flamerGeoOverwrite.GetComponent<MeshRenderer>().enabled = false;
+        }
+
     }
 }
