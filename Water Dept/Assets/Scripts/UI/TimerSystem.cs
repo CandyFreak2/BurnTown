@@ -1,7 +1,7 @@
 using Fusion;
 using TMPro;
 using UnityEngine;
-using UnityEngine.UI;
+using static GameStateHandler;
 
 public class TimerSystem : NetworkBehaviour {
     [Networked] private NetworkBool canStart { get; set; }
@@ -13,6 +13,7 @@ public class TimerSystem : NetworkBehaviour {
     private static float sTimer;
 
     private bool playedCutscene;
+    private bool wasSaved = false;
 
     public override void Spawned() {
         canStart = true;
@@ -35,7 +36,7 @@ public class TimerSystem : NetworkBehaviour {
     public override void FixedUpdateNetwork() {
         sTimer = Timer;
 
-        if (GameStateHandler.Instance.GetGameState == GameStateHandler.GameState.STARTED) {
+        if (Instance.GetGameState == GameState.STARTED) {
             if (!playedCutscene) {
                 playedCutscene = true;
             }
@@ -47,7 +48,13 @@ public class TimerSystem : NetworkBehaviour {
                 Timer += Runner.DeltaTime;
             }
         }
+
+        if (!wasSaved && Instance.GetGameState == GameState.END && Runner.IsServer) {
+            PlayerPrefs.SetFloat("N_FinalTime", Timer);
+            wasSaved = true;
+        }
     }
+
 
     // Update the timer text across all players' UI
     public void DisplayTime(float displayTime) {
