@@ -60,14 +60,14 @@ public class CameraZone : NetworkBehaviour
         CameraZone objectiveMarker = Runner.FindObject(_zoneId).GetComponent<CameraZone>();
         NetworkObject inputAuth = Runner.FindObject(_otherId);
 
+        // Update cam for just client
         if (objectiveMarker != null && inputAuth != null && inputAuth.HasInputAuthority && Runner.IsClient)
         {
-            Debug.Log("Move client cam up");
             objectiveMarker.cam.Priority = 10;
         }
+        // Update cam for just host
         else if (objectiveMarker != null && inputAuth != null && inputAuth.HasStateAuthority && inputAuth.HasInputAuthority && !Runner.IsClient)
         {
-            Debug.Log("Move host cam up");
             objectiveMarker.cam.Priority = 10;
         }
     }
@@ -78,14 +78,14 @@ public class CameraZone : NetworkBehaviour
         CameraZone objectiveMarker = Runner.FindObject(_zoneId).GetComponent<CameraZone>();
         NetworkObject inputAuth = Runner.FindObject(_otherId);
 
+        // Update cam for just client
         if (objectiveMarker != null && inputAuth != null && inputAuth.HasInputAuthority && Runner.IsClient)
         {
-            Debug.Log("Move client cam downn");
             objectiveMarker.cam.Priority = -1;
         }
+        // Update cam for just host
         else if (objectiveMarker != null && inputAuth != null && inputAuth.HasStateAuthority && inputAuth.HasInputAuthority && !Runner.IsClient)
         {
-            Debug.Log("Move host cam downn");
             objectiveMarker.cam.Priority = -1;
         }
     }
