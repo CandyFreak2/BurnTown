@@ -19,10 +19,11 @@ public class StartZone : NetworkBehaviour {
         if (GameStateHandler.Instance.GetGameState == GameStateHandler.GameState.NOT_STARTED) {
             if (players.Count >= ServerInfo.MaxPlayers && IsAllTrue(players)) {
                 GameStateHandler.Instance.SetGameState(GameStateHandler.GameState.STARTED);
-                EventManager.StartZoneTrigger();
+                EventManager.StartZoneTrigger(); //This just aint working right -James
             }
         }
 
+        //currently not working 
         if (isSpawned) {
             if (playersInRadius >= ServerInfo.MaxPlayers && !Timer.IsRunning) {
                 Timer = TickTimer.CreateFromSeconds(Runner, duration);
@@ -64,6 +65,6 @@ public class StartZone : NetworkBehaviour {
     }
 
     public float GetTimeLeft => Timer.RemainingTime(Runner) ?? duration;
-    public int GetCurrentPlayers => playersInRadius;
-    public int GetMaxPlayers => ServerInfo.MaxPlayers;
+    public int GetCurrentPlayers => playersInRadius; //does not sync for clients -James
+    public int GetMaxPlayers => ServerInfo.MaxPlayers; 
 }

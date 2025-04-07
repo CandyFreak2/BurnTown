@@ -3,7 +3,7 @@ using TMPro;
 using UnityEngine;
 using UnityEngine.Events;
 
-public class LobbyCounter : MonoBehaviour
+public class LobbyCounter : NetworkBehaviour
 {
     [SerializeField] StartZone linkedZone;
     [SerializeField] TextMeshPro playerCount;
@@ -25,19 +25,15 @@ public class LobbyCounter : MonoBehaviour
 
     private void OnEnable()
     {
-        EventManager.onStartZoneTrigger += RPC_SignalStart;
+        EventManager.onStartZoneTrigger += TriggerStart;
     }
 
     private void OnDisable()
     {
-        EventManager.onStartZoneTrigger -= RPC_SignalStart;
+        EventManager.onStartZoneTrigger -= TriggerStart;
     }
 
-    [Rpc(RpcSources.StateAuthority, RpcTargets.StateAuthority, HostMode = RpcHostMode.SourceIsHostPlayer)]
-    public void RPC_SignalStart() => RPC_RelayStart();
-
-    [Rpc(RpcSources.StateAuthority, RpcTargets.All, HostMode = RpcHostMode.SourceIsServer)]
-    public void RPC_RelayStart()
+    public void TriggerStart()
     {
         triggerStart?.Invoke();
     }
