@@ -66,10 +66,10 @@ public class EndScreen : NetworkBehaviour
 
         AudioPlayer.PlaySFX(tallyFinishedSfx, Camera.main.transform.position, 0f, 0.2f);
 
-        _Score.transform.DOShakeRotation(.5f, 90 * magnitude, 20);
+        _Score.transform.DOShakeRotation(.5f, 60 * magnitude, 20);
         _Score.transform.DOShakePosition(.5f, .5f * magnitude, 20);
 
-        _Time.transform.DOShakeRotation(.5f, 90 * magnitude, 20);
+        _Time.transform.DOShakeRotation(.5f, 60 * magnitude, 20);
         _Time.transform.DOShakePosition(.5f, .5f * magnitude, 20);
 
         int scoreIndex = 0;
@@ -85,6 +85,9 @@ public class EndScreen : NetworkBehaviour
 
         scoreIcon[scoreIndex].SetActive(true);
         timeIcon[timeIndex].SetActive(true);
+
+        scoreIcon[scoreIndex].transform.DOPunchScale(Vector3.one * 0.2f, 0.3f, 1);
+        timeIcon[timeIndex].transform.DOPunchScale(Vector3.one * 0.2f, 0.3f, 1);
 
         onTallyComplete?.Invoke();
     }
@@ -116,7 +119,7 @@ public class EndScreen : NetworkBehaviour
         //TallyScore(PlayerPrefs.GetInt("N_FinalScore"), 156f);
     }
 
-    [Rpc(RpcSources.StateAuthority, RpcTargets.StateAuthority, HostMode = RpcHostMode.SourceIsHostPlayer)]
+    [Rpc(RpcSources.All, RpcTargets.StateAuthority, HostMode = RpcHostMode.SourceIsHostPlayer)]
     private void RPC_TallyScoreSignal(float score, float time) => RPC_TallyScoreRelay(score, time);
 
     [Rpc(RpcSources.StateAuthority, RpcTargets.All, HostMode = RpcHostMode.SourceIsServer)]

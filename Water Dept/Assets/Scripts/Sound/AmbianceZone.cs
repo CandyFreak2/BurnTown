@@ -1,6 +1,4 @@
-using TMPro.EditorUtilities;
 using Unity.Cinemachine;
-using Unity.VisualScripting;
 using UnityEngine;
 
 public class AmbientZone : MonoBehaviour
