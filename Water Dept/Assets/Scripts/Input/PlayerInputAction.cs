@@ -19,6 +19,7 @@ public struct PlayerInputAction : INetworkInput
 {
     public Vector2 MoveDirection;
     public Vector2 LookDelta;
+    public Vector2 CameraDirection;
 
     public NetworkButtons Buttons;
 
@@ -26,6 +27,7 @@ public struct PlayerInputAction : INetworkInput
     {
         MoveDirection = action.MoveDirection;
         LookDelta = action.LookDelta;
+        CameraDirection = action.CameraDirection;
         Buttons = action.Buttons;
     }
 }
