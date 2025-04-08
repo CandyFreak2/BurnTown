@@ -498,7 +498,10 @@ public class Burnable : NetworkBehaviour
 
         //play vfx and shake for 1 sec, also disable hitbox,
         GetComponent<Collider>().enabled = false;
-        destructionVFX.Play();
+        if (destructionVFX != null)
+        {
+            destructionVFX.Play();
+        }
         activeModelSubAnchor.DOShakePosition(duration, 0.2f, 20, 90, false);
         yield return new WaitForSeconds(1f);
 

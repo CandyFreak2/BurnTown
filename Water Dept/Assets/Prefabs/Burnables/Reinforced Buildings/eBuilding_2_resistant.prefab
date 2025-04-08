@@ -44,16 +44,16 @@ MonoBehaviour:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1251726582352835880}
-  m_Enabled: 1
+  m_Enabled: 0
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: d687f89eee019c74e9f3e5c3d46719f7, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  burnableScore: 3500
+  burnableScore: 200000
   _fuelRemaining: 0
   heatModifier: 0
   HeatSources: []
-  burnOnAwake: 1
+  burnOnAwake: 0
   spreadSource: {fileID: 729759476855054800}
   receiverPoint: {fileID: 729759476855054800}
   startFuel: 12
@@ -643,7 +643,7 @@ PrefabInstance:
     - target: {fileID: 4276941039048445838, guid: 5e1427397c9b89b49a98552a8d90f741,
         type: 3}
       propertyPath: m_LocalPosition.x
-      value: 25.5
+      value: -5
       objectReference: {fileID: 0}
     - target: {fileID: 4276941039048445838, guid: 5e1427397c9b89b49a98552a8d90f741,
         type: 3}
@@ -653,7 +653,7 @@ PrefabInstance:
     - target: {fileID: 4276941039048445838, guid: 5e1427397c9b89b49a98552a8d90f741,
         type: 3}
       propertyPath: m_LocalPosition.z
-      value: -5.5
+      value: 4
       objectReference: {fileID: 0}
     - target: {fileID: 4276941039048445838, guid: 5e1427397c9b89b49a98552a8d90f741,
         type: 3}
