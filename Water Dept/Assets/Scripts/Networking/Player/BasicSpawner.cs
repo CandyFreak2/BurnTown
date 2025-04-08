@@ -80,10 +80,6 @@ public class BasicSpawner : MonoBehaviour, INetworkRunnerCallbacks {
         status = nStatus;
 
         if (!Application.isPlaying) return;
-
-        if (nStatus == ConnectionStatus.DISCONNECTED || nStatus == ConnectionStatus.FAILED) {
-            EventManager.FailedJoin("Couldn't Connect To Server", "Please try again.");
-        }
     }
 
     private static (string, string) OutputShutdownReason(ShutdownReason reason) {
@@ -180,6 +176,8 @@ public class BasicSpawner : MonoBehaviour, INetworkRunnerCallbacks {
         SetConnectionStatus(ConnectionStatus.DISCONNECTED);
 
         (string status, string message) = OutputShutdownReason(shutdownReason);
+        EventManager.FailedJoin(status, message);
+
         _spawnedCharacters.Clear();
 
         if (_runner) {
@@ -203,7 +201,7 @@ public class BasicSpawner : MonoBehaviour, INetworkRunnerCallbacks {
     public void OnInput(NetworkRunner runner, NetworkInput input) {}
     public void OnInputMissing(NetworkRunner runner, PlayerRef player, NetworkInput input) { }
     public void OnConnectRequest(NetworkRunner runner, NetworkRunnerCallbackArgs.ConnectRequest request, byte[] token) { }
-    public void OnConnectFailed(NetworkRunner runner, NetAddress remoteAddress, NetConnectFailedReason reason) { }
+    public void OnConnectFailed(NetworkRunner runner, NetAddress remoteAddress, NetConnectFailedReason reason) {}
     public void OnUserSimulationMessage(NetworkRunner runner, SimulationMessagePtr message) { }
     public void OnSessionListUpdated(NetworkRunner runner, List<SessionInfo> sessionList) { }
     public void OnCustomAuthenticationResponse(NetworkRunner runner, Dictionary<string, object> data) { }
