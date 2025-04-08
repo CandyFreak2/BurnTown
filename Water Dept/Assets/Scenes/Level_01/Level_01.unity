@@ -12074,6 +12074,11 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 8788793531047324669, guid: a9db77fcc6160c6489e42a76adffa929,
         type: 3}
+      propertyPath: m_Enabled
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 8788793531047324669, guid: a9db77fcc6160c6489e42a76adffa929,
+        type: 3}
       propertyPath: showsLerp
       value: 0
       objectReference: {fileID: 0}
@@ -48955,6 +48960,11 @@ PrefabInstance:
         type: 3}
       propertyPath: m_Name
       value: Billboard
+      objectReference: {fileID: 0}
+    - target: {fileID: 8788793531047324669, guid: a9db77fcc6160c6489e42a76adffa929,
+        type: 3}
+      propertyPath: m_Enabled
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 8788793531047324669, guid: a9db77fcc6160c6489e42a76adffa929,
         type: 3}
@@ -154760,6 +154770,11 @@ PrefabInstance:
     serializedVersion: 3
     m_TransformParent: {fileID: 1733892455}
     m_Modifications:
+    - target: {fileID: 1083677393930800458, guid: 3a66b6de9e1de6540bb7d20246655940,
+        type: 3}
+      propertyPath: SortKey
+      value: 3274973351
+      objectReference: {fileID: 0}
     - target: {fileID: 5601063768494776478, guid: 3a66b6de9e1de6540bb7d20246655940,
         type: 3}
       propertyPath: m_LocalPosition.x
@@ -154809,6 +154824,16 @@ PrefabInstance:
         type: 3}
       propertyPath: m_LocalEulerAnglesHint.z
       value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 5776770256361945963, guid: 3a66b6de9e1de6540bb7d20246655940,
+        type: 3}
+      propertyPath: SortKey
+      value: 4251348916
+      objectReference: {fileID: 0}
+    - target: {fileID: 7257018362668186151, guid: 3a66b6de9e1de6540bb7d20246655940,
+        type: 3}
+      propertyPath: SortKey
+      value: 1052905055
       objectReference: {fileID: 0}
     - target: {fileID: 7451542498092157681, guid: 3a66b6de9e1de6540bb7d20246655940,
         type: 3}
@@ -154996,6 +155021,11 @@ PrefabInstance:
     serializedVersion: 3
     m_TransformParent: {fileID: 1733892455}
     m_Modifications:
+    - target: {fileID: 919949471890387723, guid: 088705ca87a0da748964538fcac209a0,
+        type: 3}
+      propertyPath: SortKey
+      value: 3924861669
+      objectReference: {fileID: 0}
     - target: {fileID: 1518018056148590266, guid: 088705ca87a0da748964538fcac209a0,
         type: 3}
       propertyPath: m_Name
@@ -155066,6 +155096,10 @@ PrefabInstance:
     m_AddedGameObjects: []
     m_AddedComponents:
     - targetCorrespondingSourceObject: {fileID: 6096524304778416596, guid: 088705ca87a0da748964538fcac209a0,
+        type: 3}
+      insertIndex: -1
+      addedObject: {fileID: 0}
+    - targetCorrespondingSourceObject: {fileID: 8311516354332146608, guid: 088705ca87a0da748964538fcac209a0,
         type: 3}
       insertIndex: -1
       addedObject: {fileID: 0}
