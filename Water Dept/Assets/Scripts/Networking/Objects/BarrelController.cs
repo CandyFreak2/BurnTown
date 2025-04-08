@@ -34,6 +34,18 @@ public class BarrelController : NetworkBehaviour
 
         RaycastHit hit;
 
+        //horizontal ray
+        Debug.DrawRay(transform.position + new Vector3(0, 1, 0), orientationForward * 10, Color.red);
+        if (Physics.Raycast(transform.position + new Vector3(0, 1, 0), orientationForward, out hit))
+        {
+            if (hit.collider != null && Vector3.Distance(transform.position, hit.point) < placeDistance)
+            {
+                obj.transform.position = hit.point;
+                Debug.Log(hit);
+            }
+        }
+
+        //vertical ray
         if (Physics.Raycast(obj.transform.position + new Vector3(0, 100f, 0), Vector3.down, out hit))
         {
             //snaps barrel to ground
