@@ -59,4 +59,7 @@ public static class EventManager {
 
     public static event UnityAction onVMDelete;
     public static void VMDelete() => onVMDelete.Invoke();
+
+    public static event UnityAction<string, string> onFailedJoin;
+    public static void FailedJoin(string cause, string description) => onFailedJoin?.Invoke(cause, description);
 }

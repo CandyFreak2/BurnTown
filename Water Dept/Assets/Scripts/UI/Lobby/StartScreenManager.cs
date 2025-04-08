@@ -12,8 +12,10 @@ public class StartScreenManager : MonoBehaviour {
     [SerializeField] private Button confirmButton;
     [SerializeField] private GameObject loadScreen;
     private int charCount;
-
     private bool isLobbyValid = false;
+
+    [SerializeField] private GameObject failureToJoinPanel;
+    [SerializeField] private TMP_Text statusMessage, descriptionMessage;
 
     private void Start() {
         charCount = LobbyUI.GetCodeLength;
@@ -40,13 +42,30 @@ public class StartScreenManager : MonoBehaviour {
         }
     }
 
-    public void ClearInput() => codeInput.text = string.Empty;
+    public void ClearInput() {
+        codeInput.text = string.Empty;
+        HideFailureToJoinPanel();
+    }
     
     public void DeleteInput() {
         if (codeInput.text.Length > 0) {
             string newCode = codeInput.text.Remove(codeInput.text.Length - 1);
             codeInput.text = newCode;
         }
+        HideFailureToJoinPanel();
+    }
+
+    public void HideFailureToJoinPanel() {
+        if (failureToJoinPanel.activeInHierarchy) {
+            failureToJoinPanel.SetActive(false);
+        }
+    }
+
+    public void FailedJoin(string status, string desc) {
+        failureToJoinPanel.SetActive(true);
+        statusMessage.text = status;
+        descriptionMessage.text = desc; 
+        loadScreen.SetActive(false);
     }
 
     public void ValidateLobby() {
@@ -68,11 +87,12 @@ public class StartScreenManager : MonoBehaviour {
         EventManager.onKeyPress += AddInput;
         EventManager.onVMClear += ClearInput;
         EventManager.onVMDelete += DeleteInput;
+        EventManager.onFailedJoin += FailedJoin;
     }
 
     private void OnDisable() {
         EventManager.onKeyPress -= AddInput;
         EventManager.onVMClear -= ClearInput;
-        EventManager.onVMDelete -= DeleteInput;
+        EventManager.onFailedJoin -= FailedJoin;
     }
 }
