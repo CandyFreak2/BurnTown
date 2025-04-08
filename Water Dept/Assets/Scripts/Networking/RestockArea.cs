@@ -52,7 +52,7 @@ public class RestockArea : NetworkBehaviour
         if (isListNull() && canSpawn)
         {
             barrelList.Clear();
-            droneDeliver.sendDrone(droneDeliveryPoint);
+            droneDeliver.sendDrone(droneDeliveryPoint + Vector3.up * 8f);
             canSpawn = false;
         }
     }
