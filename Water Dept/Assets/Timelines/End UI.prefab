@@ -1341,6 +1341,7 @@ GameObject:
   - component: {fileID: 5240352579580230405}
   - component: {fileID: 3698521540358215530}
   - component: {fileID: 5535988678067086483}
+  - component: {fileID: 8713797801697343657}
   m_Layer: 5
   m_Name: Quit
   m_TagString: Untagged
@@ -1450,10 +1451,10 @@ MonoBehaviour:
   m_OnClick:
     m_PersistentCalls:
       m_Calls:
-      - m_Target: {fileID: 0}
-        m_TargetAssemblyTypeName: PauseMenu, Assembly-CSharp
-        m_MethodName: Quit
-        m_Mode: 1
+      - m_Target: {fileID: 8713797801697343657}
+        m_TargetAssemblyTypeName: QuitGame, Assembly-CSharp
+        m_MethodName: TriggerQuit
+        m_Mode: 4
         m_Arguments:
           m_ObjectArgument: {fileID: 0}
           m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
@@ -1462,6 +1463,18 @@ MonoBehaviour:
           m_StringArgument: 
           m_BoolArgument: 0
         m_CallState: 2
+--- !u!114 &8713797801697343657
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 4616308994900338364}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 65d265eac50a50a47902709d257790fd, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
 --- !u!1 &5102215021244279677
 GameObject:
   m_ObjectHideFlags: 0
