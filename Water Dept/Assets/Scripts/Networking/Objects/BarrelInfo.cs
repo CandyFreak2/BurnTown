@@ -13,12 +13,14 @@ public class BarrelInfo : NetworkBehaviour
 
     [Tooltip("How much firedamage burnables take from explosion")]
     [SerializeField] public int heatDamage = 10;
-    public float delay = 0.5f;
+    public float delay = 0.2f;
+    public float chainDelay = 1f;
 
     public bool isThrown = false;
 
     [Networked] private NetworkBool isExploded { set; get; }
     private bool isSpawned;
+    private bool explodingStarted = false;
 
     [SerializeField] public float explosionRadius = 3.0f;
     [SerializeField] public float explosionForce = 10.0f;
@@ -58,8 +60,9 @@ public class BarrelInfo : NetworkBehaviour
 
     public void Explode()
     {
-        if (!isExploded)
+        if (!explodingStarted)
         {
+            explodingStarted = true;
             StartCoroutine(ChainExplode());
         }
     }
@@ -87,9 +90,10 @@ public class BarrelInfo : NetworkBehaviour
             tail.GetComponent<Rigidbody>().isKinematic = true;
         }
 
+        yield return new WaitForSeconds(delay);
         ExplosionTriggers();
 
-        yield return new WaitForSeconds(delay);
+        yield return new WaitForSeconds(chainDelay);
 
         if (head != null)
         {
@@ -114,7 +118,7 @@ public class BarrelInfo : NetworkBehaviour
     //calls explode with delay
     IEnumerator DelayedChainExplode()
     {
-        yield return new WaitForSeconds(delay);
+        yield return new WaitForSeconds(chainDelay);
         Explode();
     }
 
