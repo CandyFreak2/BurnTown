@@ -214,8 +214,10 @@ public class PlayerMovement : NetworkBehaviour
         {
             PickUpObject(nearestInteractable.GetComponent<Interactable>());
             pickupText.text = "";
-            //pickupIcon.SetActive(false);
-            pickupIcon.enabled = false;
+            if (HasInputAuthority)
+            {
+                Invoke("TurnOffPickupUI", 0.25f);
+            }
 
             //if barrel is picked up, queue schematic
             if (nearestInteractable.tag == "Barrel")
@@ -231,8 +233,10 @@ public class PlayerMovement : NetworkBehaviour
         {
             GetInTruck(nearestInteractable);
             pickupText.text = "";
-            //pickupIcon.SetActive(false);
-            pickupIcon.enabled = false;
+            if (HasInputAuthority)
+            {
+                Invoke("TurnOffPickupUI", 0.25f);
+            }
         }
 
         //Drop hose // Barrel
@@ -288,6 +292,11 @@ public class PlayerMovement : NetworkBehaviour
         }
     }
 
+    private void TurnOffPickupUI()
+    {
+        pickupIcon.enabled = false;
+    }
+
     private GameObject GetNearestInteractable()
     {
         GameObject nearestInteractable = null;
@@ -303,7 +312,6 @@ public class PlayerMovement : NetworkBehaviour
                     CarData truckData = nearestInteractable.GetComponent<CarData>();
                     if (truckData.GetNumPassengers() < truckData.GetMaxPassengers())
                     {
-                        //pickupIcon.SetActive(true);
                         pickupIcon.enabled = true;
                         return nearestInteractable;
                     }
@@ -316,21 +324,18 @@ public class PlayerMovement : NetworkBehaviour
                 else if (collider.gameObject.tag == "FireHoseHead")
                 {
                     nearestInteractable = collider.gameObject;
-                    //pickupIcon.SetActive(true);
                     pickupIcon.enabled = true;
                     return nearestInteractable;
                 }
                 else if (collider.gameObject.tag == "Barrel")
                 {
                     nearestInteractable = collider.gameObject;
-                    //pickupIcon.SetActive(true);
                     pickupIcon.enabled = true;
                     return nearestInteractable;
                 }
                 else
                 {
                     pickupText.text = "";
-                    //pickupIcon.SetActive(false);
                     pickupIcon.enabled = false;
                 }
             }

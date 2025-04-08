@@ -204,6 +204,7 @@ MonoBehaviour:
   playerObj: {fileID: 4569886283134892048}
   camTarget: {fileID: 562206555851054493}
   rotSpeed: 6
+  _networkedForward: {x: 0, y: 0, z: 0}
   stunDuration: 3
   _carriedObject: {fileID: 0}
   pickupText: {fileID: 5343811775102406559}
@@ -2950,7 +2951,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 0
+  m_IsActive: 1
 --- !u!224 &4778472121616568128
 RectTransform:
   m_ObjectHideFlags: 0
@@ -2985,7 +2986,7 @@ MonoBehaviour:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 6971549754737568467}
-  m_Enabled: 1
+  m_Enabled: 0
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: fe87c0e1cc204ed48ad3b37840f39efc, type: 3}
   m_Name: 
