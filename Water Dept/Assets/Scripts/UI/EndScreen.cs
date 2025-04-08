@@ -58,7 +58,7 @@ public class EndScreen : NetworkBehaviour
             _Score.text = "$ " + (score * (timer / duration));
             _Time.text = (time * (timer / duration)) + " Sec";
 
-            AudioPlayer.PlaySFX(tickSfx, Camera.main.transform.position, 0.2f, 0.2f);
+            AudioPlayer.PlaySFX(tickSfx, Camera.main.transform.position, 0.2f, 1f);
 
             yield return tick;
             timer += 0.1f;
