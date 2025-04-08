@@ -164,7 +164,7 @@ public class BasicSpawner : MonoBehaviour, INetworkRunnerCallbacks {
 
     public void OnPlayerLeft(NetworkRunner runner, PlayerRef player) {
         if (_spawnedCharacters.TryGetValue(player, out NetworkObject networkObject)) {
-            runner.Despawn(networkObject);
+            //runner.Despawn(networkObject);
             _spawnedCharacters.Remove(player);
         }
 
@@ -179,10 +179,6 @@ public class BasicSpawner : MonoBehaviour, INetworkRunnerCallbacks {
         EventManager.FailedJoin(status, message);
 
         _spawnedCharacters.Clear();
-
-        if (_runner) {
-            Destroy(_runner.gameObject);
-        }
 
         _runner = null;
         EventManager.PlayerLeave();
