@@ -6,13 +6,16 @@ using System.Collections.Generic;
 using TMPro;
 using UnityEngine;
 using UnityEngine.Events;
+using UnityEngine.EventSystems;
 using UnityEngine.Playables;
+using UnityEngine.UI;
 
 public class EndScreen : NetworkBehaviour
 {
     [SerializeField] PlayableDirector endTimeline;
     [SerializeField] TextMeshProUGUI _Score;
     [SerializeField] TextMeshProUGUI _Time;
+    [SerializeField] GameObject defaultButton;
 
     [SerializeField] float[] scoreGrades = {0f, 10000f, 30000f};
     [SerializeField] float[] timeGrades = {9999f, 360f, 120f};
@@ -45,7 +48,7 @@ public class EndScreen : NetworkBehaviour
 
     IEnumerator RunTally(float score, float time)
     {
-        WaitForEndOfFrame tick = new();
+        WaitForSeconds tick = new WaitForSeconds(0.1f);
         float magnitude = Mathf.InverseLerp(tallyTimeMinScore, tallyTimeMaxScore, score);
         float duration = Mathf.Lerp(tallyTimeMin, tallyTimeMax, magnitude);
         float timer = 0;
@@ -58,7 +61,7 @@ public class EndScreen : NetworkBehaviour
             AudioPlayer.PlaySFX(tickSfx, Camera.main.transform.position, 0.2f, 0.2f);
 
             yield return tick;
-            timer += Time.deltaTime;
+            timer += 0.1f;
         }
 
         _Score.text = "$ " + score;
@@ -89,6 +92,7 @@ public class EndScreen : NetworkBehaviour
         scoreIcon[scoreIndex].transform.DOPunchScale(Vector3.one * 0.2f, 0.3f, 1);
         timeIcon[timeIndex].transform.DOPunchScale(Vector3.one * 0.2f, 0.3f, 1);
 
+        EventSystem.current.SetSelectedGameObject(defaultButton);
         onTallyComplete?.Invoke();
     }
 
