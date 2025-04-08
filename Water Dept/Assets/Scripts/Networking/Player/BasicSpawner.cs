@@ -14,7 +14,6 @@ public enum ConnectionStatus {
 }
 
 public class BasicSpawner : MonoBehaviour, INetworkRunnerCallbacks {
-    // Rework to contain own class
     [SerializeField] private NetworkPrefabRef _playerPrefab;
     [SerializeField, Tooltip("Radius Multiplier for Spawn Pos")] private float spawnDistance = 3f;
 
@@ -83,7 +82,6 @@ public class BasicSpawner : MonoBehaviour, INetworkRunnerCallbacks {
         if (!Application.isPlaying) return;
 
         if (nStatus == ConnectionStatus.DISCONNECTED || nStatus == ConnectionStatus.FAILED) {
-            // Change to have a pannel that outputs the error
             SceneManager.LoadScene(0);
         }
     }
@@ -203,18 +201,7 @@ public class BasicSpawner : MonoBehaviour, INetworkRunnerCallbacks {
         SetConnectionStatus(ConnectionStatus.DISCONNECTED);
     }
 
-    public void OnInput(NetworkRunner runner, NetworkInput input) {
-        //if (runner.LocalPlayer == null)
-        //    return;
-
-        //var data = new NetworkInputData();
-
-        //var gamepad = Gamepad.current;
-
-        //data.direction = gamepad.leftStick.value;
-
-        //input.Set(data);
-    }
+    public void OnInput(NetworkRunner runner, NetworkInput input) { }
 
     public void OnInputMissing(NetworkRunner runner, PlayerRef player, NetworkInput input) { }
     public void OnConnectRequest(NetworkRunner runner, NetworkRunnerCallbackArgs.ConnectRequest request, byte[] token) { }

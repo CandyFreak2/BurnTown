@@ -12,7 +12,6 @@ public class StartScreenManager : MonoBehaviour {
     [SerializeField] private Button confirmButton;
     [SerializeField] private GameObject loadScreen;
     private int charCount;
-
     private bool isLobbyValid = false;
 
     private void Start() {
@@ -40,7 +39,9 @@ public class StartScreenManager : MonoBehaviour {
         }
     }
 
-    public void ClearInput() => codeInput.text = string.Empty;
+    public void ClearInput() {
+        codeInput.text = string.Empty;
+    }
     
     public void DeleteInput() {
         if (codeInput.text.Length > 0) {
