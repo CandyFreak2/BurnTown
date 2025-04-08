@@ -132,7 +132,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   NoiseProfile: {fileID: 11400000, guid: 20a705aea2d80e0478fb89b6f43d8530, type: 2}
   PivotOffset: {x: 0, y: 0, z: 0}
-  AmplitudeGain: 5
+  AmplitudeGain: 0
   FrequencyGain: 5
   m_NoiseOffsets: {x: 398.04526, y: 86.72583, z: -10.470032}
 --- !u!114 &8109725294178379894
@@ -5287,6 +5287,11 @@ PrefabInstance:
     serializedVersion: 3
     m_TransformParent: {fileID: 4773050333038275049}
     m_Modifications:
+    - target: {fileID: 263538528583015895, guid: 277996bfffa11934eacb3c60be5e6cc3,
+        type: 3}
+      propertyPath: tallyTimeMax
+      value: 5
+      objectReference: {fileID: 0}
     - target: {fileID: 1600546619723539062, guid: 277996bfffa11934eacb3c60be5e6cc3,
         type: 3}
       propertyPath: m_Pivot.x
