@@ -1,6 +1,5 @@
 using UnityEngine;
 using Fusion;
-using Fusion.Addons.Physics;
 
 public class BarrelUpdater : NetworkBehaviour
 {
