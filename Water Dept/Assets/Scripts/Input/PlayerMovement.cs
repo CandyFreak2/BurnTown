@@ -39,6 +39,9 @@ public class PlayerMovement : NetworkBehaviour
     [Networked] public Interactable carriedObject { get; set; }
     [SerializeField] private TextMeshPro pickupText;
     [SerializeField] private Image pickupIcon;
+    [SerializeField] private Image pickupBarrelIcon;
+    [SerializeField] private Image pickupFlamethrowerIcon;
+    [SerializeField] private Image pickupFiretruckIcon;
     [SerializeField] private GameObject objIndicator;
     [SerializeField] private CarController truckController;
     [Networked] public PlayerRef playerRef { get; set; }
@@ -295,6 +298,9 @@ public class PlayerMovement : NetworkBehaviour
     private void TurnOffPickupUI()
     {
         pickupIcon.enabled = false;
+        pickupBarrelIcon.enabled = false;
+        pickupFlamethrowerIcon.enabled = false;
+        pickupFiretruckIcon.enabled = false;
     }
 
     private GameObject GetNearestInteractable()
@@ -313,6 +319,7 @@ public class PlayerMovement : NetworkBehaviour
                     if (truckData.GetNumPassengers() < truckData.GetMaxPassengers())
                     {
                         pickupIcon.enabled = true;
+                        pickupFiretruckIcon.enabled = true;
                         return nearestInteractable;
                     }
                     else
@@ -325,18 +332,20 @@ public class PlayerMovement : NetworkBehaviour
                 {
                     nearestInteractable = collider.gameObject;
                     pickupIcon.enabled = true;
+                    pickupFlamethrowerIcon.enabled = true;
                     return nearestInteractable;
                 }
                 else if (collider.gameObject.tag == "Barrel")
                 {
                     nearestInteractable = collider.gameObject;
                     pickupIcon.enabled = true;
+                    pickupBarrelIcon.enabled = true;
                     return nearestInteractable;
                 }
                 else
                 {
                     pickupText.text = "";
-                    pickupIcon.enabled = false;
+                    TurnOffPickupUI();
                 }
             }
         }
