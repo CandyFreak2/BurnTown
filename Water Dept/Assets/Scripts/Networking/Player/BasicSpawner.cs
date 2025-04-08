@@ -62,7 +62,7 @@ public class BasicSpawner : MonoBehaviour, INetworkRunnerCallbacks {
             Scene = scene,
             SceneManager = gameObject.AddComponent<NetworkSceneManagerDefault>(),
             PlayerCount = ServerInfo.MaxPlayers,
-            EnableClientSessionCreation = false, 
+            EnableClientSessionCreation = false
         });
     }
 
@@ -80,6 +80,10 @@ public class BasicSpawner : MonoBehaviour, INetworkRunnerCallbacks {
         status = nStatus;
 
         if (!Application.isPlaying) return;
+
+        if (nStatus == ConnectionStatus.DISCONNECTED || nStatus == ConnectionStatus.FAILED) {
+            SceneManager.LoadScene(0);
+        }
     }
 
     private static (string, string) OutputShutdownReason(ShutdownReason reason) {
@@ -122,11 +126,11 @@ public class BasicSpawner : MonoBehaviour, INetworkRunnerCallbacks {
     private static (string, string) ConnectFailedReason(NetConnectFailedReason reason) {
         switch (reason) {
             case NetConnectFailedReason.Timeout:
-                return ("Timed Out", "Server Not Responding");
+                return ("Timed Out", "");
             case NetConnectFailedReason.ServerRefused:
-                return ("Connection Refused", "Server Refused Connection");
+                return ("Connection Refused", "The lobby may be currently in-game");
             case NetConnectFailedReason.ServerFull:
-                return ("Server Full", "Max Player Count Already Reached");
+                return ("Server Full", "");
             default:
                 Debug.LogWarning($"Unknown NetConnectFailedReason {reason}");
                 return ("Unknown Connection Failure", $"{(int)reason}");
@@ -164,7 +168,7 @@ public class BasicSpawner : MonoBehaviour, INetworkRunnerCallbacks {
 
     public void OnPlayerLeft(NetworkRunner runner, PlayerRef player) {
         if (_spawnedCharacters.TryGetValue(player, out NetworkObject networkObject)) {
-            //runner.Despawn(networkObject);
+            runner.Despawn(networkObject);
             _spawnedCharacters.Remove(player);
         }
 
@@ -176,9 +180,12 @@ public class BasicSpawner : MonoBehaviour, INetworkRunnerCallbacks {
         SetConnectionStatus(ConnectionStatus.DISCONNECTED);
 
         (string status, string message) = OutputShutdownReason(shutdownReason);
-        EventManager.FailedJoin(status, message);
-
+        //Firefighter.players.Clear();
         _spawnedCharacters.Clear();
+
+        if (_runner) {
+            Destroy(_runner.gameObject);
+        }
 
         _runner = null;
         EventManager.PlayerLeave();
@@ -194,10 +201,11 @@ public class BasicSpawner : MonoBehaviour, INetworkRunnerCallbacks {
         SetConnectionStatus(ConnectionStatus.DISCONNECTED);
     }
 
-    public void OnInput(NetworkRunner runner, NetworkInput input) {}
+    public void OnInput(NetworkRunner runner, NetworkInput input) { }
+
     public void OnInputMissing(NetworkRunner runner, PlayerRef player, NetworkInput input) { }
     public void OnConnectRequest(NetworkRunner runner, NetworkRunnerCallbackArgs.ConnectRequest request, byte[] token) { }
-    public void OnConnectFailed(NetworkRunner runner, NetAddress remoteAddress, NetConnectFailedReason reason) {}
+    public void OnConnectFailed(NetworkRunner runner, NetAddress remoteAddress, NetConnectFailedReason reason) { }
     public void OnUserSimulationMessage(NetworkRunner runner, SimulationMessagePtr message) { }
     public void OnSessionListUpdated(NetworkRunner runner, List<SessionInfo> sessionList) { }
     public void OnCustomAuthenticationResponse(NetworkRunner runner, Dictionary<string, object> data) { }
