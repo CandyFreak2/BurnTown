@@ -3,7 +3,7 @@ using TMPro;
 using UnityEngine;
 
 public class ScoreSystem : NetworkBehaviour {
-    private const string SCORE_HEADER = "Financial Damage:f ";
+    private const string SCORE_HEADER = "Financial Damage: ";
 
     [Networked, SerializeField] private int overallScore { get; set; }
     [SerializeField] private TMP_Text scoreText;
