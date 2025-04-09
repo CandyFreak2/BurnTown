@@ -23,9 +23,9 @@ public class PanelSwitcher : MonoBehaviour {
         //turn of button visibility
         buttonHost.SetActive(false);
         buttonJoin.SetActive(false);
-        buttonPlay.SetActive(false);
-        buttonCredits.SetActive(false);
-        buttonQuit.SetActive(false);
+
+        //ugly patch fix to make the system work -James
+        buttonPlay.transform.parent.gameObject.SetActive(false);
     }
 
     private void ActivatePanel(GameObject panelToActivate, System.Func<GameObject> GetStartElement) {
