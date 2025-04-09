@@ -18,6 +18,7 @@ public class InteractableUI : NetworkBehaviour
     private Image firetruckIcon;
 
     private PlayerMovement playerMovement;
+    private CarController carController;
 
     private InputButton inputPressed;
     [SerializeField] private float popupDelay = 0.25f;
@@ -129,7 +130,7 @@ public class InteractableUI : NetworkBehaviour
     {
         RPC_SetPlayerState();
 
-        if (!playerMovement.enabled) //Should prolly change this check with stun disabling playermovement too
+        if (!playerMovement.enabled && carController.isActive) //Should prolly change this check with stun disabling playermovement too
         {
             firetruckUI.SetActive(true);
             UpdateFiretruckUI();
@@ -217,5 +218,6 @@ public class InteractableUI : NetworkBehaviour
     public void RPC_SetPlayerState(RpcInfo info = default)
     {
         playerMovement = Runner.GetPlayerObject(info.Source).GetComponent<PlayerMovement>();
+        carController = Runner.GetPlayerObject(info.Source).GetComponent<CarController>();
     }
 }
