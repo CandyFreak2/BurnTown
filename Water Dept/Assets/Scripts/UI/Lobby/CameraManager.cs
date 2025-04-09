@@ -1,6 +1,7 @@
 using UnityEngine;
 using Unity.Cinemachine;
 using System.Collections.Generic;
+using UnityEngine.EventSystems;
 
 public class CameraManager : MonoBehaviour
 {
@@ -11,7 +12,7 @@ public class CameraManager : MonoBehaviour
 
     [Header("References")]
     [SerializeField] GameObject startTXT;
-    [SerializeField] private List<GameObject> buttons;
+    [SerializeField] GameObject mainMenu;
 
     private CinemachineCamera currentCam;
 
@@ -37,7 +38,7 @@ public class CameraManager : MonoBehaviour
             {
                 SwitchActiveCamera(mainCam);
                 startTXT.SetActive(false);
-                buttons.ForEach(n => n.SetActive(true));
+                Invoke("EnableMenu", 0.2f);
             }
         }
     }
@@ -54,5 +55,9 @@ public class CameraManager : MonoBehaviour
         currentCam = newVCam;
     }
 
-
+    void EnableMenu()
+    {
+        mainMenu.SetActive(true);
+        EventSystem.current.SetSelectedGameObject(mainMenu.transform.GetChild(0).gameObject);
+    }
 }
