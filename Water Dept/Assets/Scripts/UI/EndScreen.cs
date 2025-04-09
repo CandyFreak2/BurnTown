@@ -118,7 +118,7 @@ public class EndScreen : NetworkBehaviour
     public void TriggerTally()
     {
         if (Runner.IsSceneAuthority)
-            RPC_TallyScoreSignal(PlayerPrefs.GetInt("N_FinalScore"), 156f); //temp time
+            RPC_TallyScoreSignal(PlayerPrefs.GetInt("N_FinalScore"), PlayerPrefs.GetFloat("N_FinalTime")); //temp time
 
         //TallyScore(PlayerPrefs.GetInt("N_FinalScore"), 156f);
     }
