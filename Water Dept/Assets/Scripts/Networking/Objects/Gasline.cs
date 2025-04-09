@@ -38,6 +38,7 @@ public class Gasline : NetworkBehaviour {
     private NetworkObject flameVisual, fireVisual;
     [Networked] private NetworkBool canSpawnFlame { get; set; }
     [Networked] private NetworkBool wasSpawned { get; set; }
+    [Tooltip("Gasline VFX is turned off after end goals"), Networked, SerializeField] private NetworkBool doesFireDisapper { get; set; }
 
     // Keeps track of which points have had fireVisual spawned
     private bool[] fireSpawned;
@@ -71,11 +72,11 @@ public class Gasline : NetworkBehaviour {
     }
     
     public void SpawnFlameVisual() {
-    if (flameVisual == null && !canSpawnFlame && HasStateAuthority) {
-        flameVisual = Runner.Spawn(flamePrefab, points[currentIndex].location.transform.position, Quaternion.identity);
-        canSpawnFlame = true;
+        if (flameVisual == null && !canSpawnFlame && HasStateAuthority) {
+            flameVisual = Runner.Spawn(flamePrefab, points[currentIndex].location.transform.position, Quaternion.identity);
+            canSpawnFlame = true;
+        }
     }
-}
 
     // Function that handles gasline movement
     [Rpc(RpcSources.All, RpcTargets.All)]
@@ -107,6 +108,9 @@ public class Gasline : NetworkBehaviour {
                         fireZone.SetActive(true); //enables firezone gameObject that has collider, is located by the end point
                         fireZoneFlamePrefab.SetActive(true); //turns on vfx flame which has play on awake enabledb.nIsBurning = false;
                     }
+                }
+                if (doesFireDisapper && fireZone.activeSelf && fireZoneFlamePrefab.activeSelf) {
+                    Runner.Despawn(flameVisual);
                 }
             }
 
