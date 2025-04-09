@@ -64,6 +64,18 @@ public class StartZone : NetworkBehaviour {
         }
     }
 
+    //[Rpc(RpcSources.All, RpcTargets.All)]
+    //public void RPC_TriggerMarker(NetworkId _markerId, NetworkId _otherId) {
+    //    ObjectiveMarker objectiveMarker = Runner.FindObject(_markerId).GetComponent<ObjectiveMarker>();
+    //    NetworkObject inputAuth = Runner.FindObject(_otherId);
+
+    //    if (objectiveMarker != null && inputAuth != null && inputAuth.HasInputAuthority && Runner.IsClient) {
+    //        objectiveMarker.isTriggered = true;
+    //    } else if (objectiveMarker != null && inputAuth != null && inputAuth.HasStateAuthority && inputAuth.HasInputAuthority && !Runner.IsClient) {
+    //        objectiveMarker.isTriggered = true;
+    //    }
+    //}
+
     public float GetTimeLeft => Timer.RemainingTime(Runner) ?? duration;
     public int GetCurrentPlayers => playersInRadius; //does not sync for clients -James
     public int GetMaxPlayers => ServerInfo.MaxPlayers; 
