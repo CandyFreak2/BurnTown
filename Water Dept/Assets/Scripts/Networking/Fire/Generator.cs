@@ -8,6 +8,7 @@ public class Generator : NetworkBehaviour
     [SerializeField] private Objective PoweredObjective_3;
     [SerializeField] private GameObject gateCameraZone;
     [SerializeField] private GameObject areaCameraZone;
+    [SerializeField] private GameObject area2CameraZone;
     [SerializeField] private Burnable genBurnable;
     [SerializeField] private float disabledPercent01; // value 0-1
 
@@ -41,6 +42,7 @@ public class Generator : NetworkBehaviour
     private void ResetCamZones()
     {
         areaCameraZone.SetActive(true);
+        area2CameraZone.SetActive(true);
         gateCameraZone.SetActive(false);
     }
 
@@ -52,6 +54,7 @@ public class Generator : NetworkBehaviour
         if (generator != null && generator.areaCameraZone != null && generator.gateCameraZone != null)
         {
             generator.areaCameraZone.SetActive(false);
+            generator.area2CameraZone.SetActive(false);
             generator.gateCameraZone.SetActive(true);
             generator.Invoke("ResetCamZones", 4.0f);
         }
