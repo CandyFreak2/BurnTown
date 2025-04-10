@@ -83,7 +83,7 @@ public class Gasline : NetworkBehaviour {
     public void RPC_HandleGaslineMovement() {
         SpawnFlameVisual();
 
-        if (currentIndex == GetPointLength()) //Jake. sry for jank fix but flameVisual is null for client
+        if (currentIndex == GetPointLength())
         {
             fireZone.SetActive(true); //enables firezone gameObject that has collider, is located by the end point
             fireZoneFlamePrefab.SetActive(true); //turns on vfx flame which has play on awake enabledb.nIsBurning = false;
@@ -106,8 +106,8 @@ public class Gasline : NetworkBehaviour {
 
             // Handles enabling burning
             // Tmp moved up here so generator will burn
-            
-            if (currentIndex == GetPointLength() && (Vector3.Distance(flameVisual.transform.position, GetPointPosition(currentIndex)) < tolerance))
+            bool isFlameVisualWithinTolernace = Vector3.Distance(flameVisual.transform.position, GetPointPosition(currentIndex)) < tolerance;
+            if (currentIndex == GetPointLength() && isFlameVisualWithinTolernace)
             {
                 foreach (Burnable b in endGoals) {
                     if (b.gameObject.activeSelf) {
@@ -152,7 +152,7 @@ public class Gasline : NetworkBehaviour {
     }
 
     public void StartFireSpread(int index) {
-        if (gaslinePoints[index].GetIsOnFire() && points[index].canStart)  {
+        if (gaslinePoints[index].GetIsOnFire() && points[index].canStart) {
             wasLit = true;
             canMove = true;
             wasSpawned = true;
