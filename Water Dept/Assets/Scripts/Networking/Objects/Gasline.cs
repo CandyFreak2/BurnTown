@@ -31,7 +31,6 @@ public class Gasline : NetworkBehaviour {
     public GameObject firePrefab;
     public GameObject fireZoneFlamePrefab; //Joel added this to visualize collider to set barrels on fire
 
-
     [Header("Fire Zone Parameters")]
     public GameObject fireZone;
 
@@ -70,7 +69,7 @@ public class Gasline : NetworkBehaviour {
             }
         }
     }
-    
+
     public void SpawnFlameVisual() {
         if (flameVisual == null && !canSpawnFlame && HasStateAuthority) {
             flameVisual = Runner.Spawn(flamePrefab, points[currentIndex].location.transform.position, Quaternion.identity);
@@ -83,8 +82,7 @@ public class Gasline : NetworkBehaviour {
     public void RPC_HandleGaslineMovement() {
         SpawnFlameVisual();
 
-        if (currentIndex == GetPointLength())
-        {
+        if (currentIndex == GetPointLength()) {
             fireZone.SetActive(true); //enables firezone gameObject that has collider, is located by the end point
             fireZoneFlamePrefab.SetActive(true); //turns on vfx flame which has play on awake enabledb.nIsBurning = false;
         }
@@ -106,16 +104,14 @@ public class Gasline : NetworkBehaviour {
 
             // Handles enabling burning
             // Tmp moved up here so generator will burn
-            bool isFlameVisualWithinTolernace = Vector3.Distance(flameVisual.transform.position, GetPointPosition(currentIndex)) < tolerance;
-            if (currentIndex == GetPointLength() && isFlameVisualWithinTolernace)
-            {
+            if (currentIndex == GetPointLength() && (Vector3.Distance(flameVisual.transform.position, GetPointPosition(currentIndex)) < tolerance)) {
                 foreach (Burnable b in endGoals) {
-                    if (b.gameObject.activeSelf) {
+                    if (b != null && b.gameObject.activeSelf) {
                         b.enabled = true;
                         b.nIsBurning = true;
                     }
                 }
-                if (doesFireDisapper && fireZone.activeSelf && fireZoneFlamePrefab.activeSelf) {
+                if (doesFireDisapper && fireZone.activeSelf) {
                     Runner.Despawn(flameVisual);
                 }
             }
