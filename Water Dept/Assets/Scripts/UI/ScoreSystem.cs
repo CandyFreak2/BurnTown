@@ -1,6 +1,7 @@
 using Fusion;
 using TMPro;
 using UnityEngine;
+using static GameStateHandler;
 
 public class ScoreSystem : NetworkBehaviour {
     private const string SCORE_HEADER = "Financial Damage: ";
@@ -22,7 +23,7 @@ public class ScoreSystem : NetworkBehaviour {
             scoreText.text = SCORE_HEADER + overallScore.ToString("C0");
         }
 
-        if (!wasSaved && GameStateHandler.Instance.GetGameState == GameStateHandler.GameState.END && Runner.IsServer) {
+        if (!wasSaved && Instance.GetGameState == GameState.END && Runner.IsServer) {
             PlayerPrefs.SetInt("N_FinalScore", overallScore);
             wasSaved = true;    
         }

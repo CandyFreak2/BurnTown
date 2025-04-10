@@ -1,6 +1,7 @@
 using Fusion;
 using UnityEngine;
 using UnityEngine.Events;
+using static GameStateHandler;
 
 public enum EndConditions {
     RADIUS,
@@ -29,7 +30,7 @@ public class EndZone : NetworkBehaviour {
 
     public void FixedUpdate() {
         if (canStart) {
-            if (GameStateHandler.Instance.GetGameState == GameStateHandler.GameState.STARTED) {
+            if (Instance.GetGameState == GameState.STARTED) {
                 if (state == EndConditions.RADIUS && playersInRadius == ServerInfo.MaxPlayers) {
                     if (!Timer.IsRunning) {
                         Timer = TickTimer.CreateFromSeconds(Runner, timeToComplete);
@@ -44,7 +45,7 @@ public class EndZone : NetworkBehaviour {
                         Debug.LogWarning(gameObject.name + "needs Firetruck's Car Data");
                     } else {
                         if (firetruck.GetNumPassengers() == ServerInfo.MaxPlayers) {
-                            GameStateHandler.Instance.SetGameState(GameStateHandler.GameState.END);
+                            Instance.SetGameState(GameState.END);
                             EventManager.EndZoneTrigger(state);
                         }
                     } 
@@ -82,7 +83,7 @@ public class EndZone : NetworkBehaviour {
     void TriggerEnd()
     {
         TriggerEndZone?.Invoke();
-        GameStateHandler.Instance.SetGameState(GameStateHandler.GameState.END);
+        Instance.SetGameState(GameState.END);
         EventManager.EndZoneTrigger(state);
     }
 }

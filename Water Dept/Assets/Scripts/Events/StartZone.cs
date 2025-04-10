@@ -1,6 +1,7 @@
 using Fusion;
 using UnityEngine;
 using System.Collections.Generic;
+using static GameStateHandler;
 
 public class StartZone : NetworkBehaviour {
     private NetworkBool isSpawned { get; set; }
@@ -16,14 +17,13 @@ public class StartZone : NetworkBehaviour {
     }
 
     public void FixedUpdate() {
-        if (GameStateHandler.Instance.GetGameState == GameStateHandler.GameState.NOT_STARTED) {
+        if (Instance.GetGameState == GameState.NOT_STARTED) {
             if (players.Count >= ServerInfo.MaxPlayers && IsAllTrue(players)) {
-                GameStateHandler.Instance.SetGameState(GameStateHandler.GameState.STARTED);
-                EventManager.StartZoneTrigger(); //This just aint working right -James
+                Instance.SetGameState(GameState.STARTED);
+                EventManager.StartZoneTrigger();
             }
         }
 
-        //currently not working 
         if (isSpawned) {
             if (playersInRadius >= ServerInfo.MaxPlayers && !Timer.IsRunning) {
                 Timer = TickTimer.CreateFromSeconds(Runner, duration);
@@ -46,7 +46,7 @@ public class StartZone : NetworkBehaviour {
     }
 
     private void OnTriggerEnter(Collider other) {
-        if (isSpawned && other.CompareTag("Player")){
+        if (isSpawned && other.CompareTag("Player")) {
             RPC_PlayerEnterStart(Object.Id, other.transform.parent.GetComponent<PlayerMovement>().Object.Id);
         }
     }
@@ -58,19 +58,15 @@ public class StartZone : NetworkBehaviour {
     }
 
     [Rpc(RpcSources.All, RpcTargets.All)]
-    public void RPC_PlayerEnterStart(NetworkId _startZoneId, NetworkId _otherId)
-    {
+    public void RPC_PlayerEnterStart(NetworkId _startZoneId, NetworkId _otherId) {
         StartZone startZone = Runner.FindObject(_startZoneId).GetComponent<StartZone>();
         PlayerMovement playerMovement = Runner.FindObject(_otherId).GetComponent<PlayerMovement>();
 
-        if (startZone != null && playerMovement != null)
-        {
-            if (HasStateAuthority)
-            {
+        if (startZone != null && playerMovement != null) {
+            if (HasStateAuthority) {
                 startZone.playersInRadius++;
             }
-            if (!startZone.players.Contains(playerMovement.gameObject) && GameStateHandler.Instance.GetGameState == GameStateHandler.GameState.NOT_STARTED)
-            {
+            if (!startZone.players.Contains(playerMovement.gameObject) && Instance.GetGameState == GameState.NOT_STARTED) {
                 startZone.players.Add(playerMovement.gameObject);
                 playerMovement.IsReady = true;
                 EventManager.StartZoneEnter();
@@ -79,17 +75,17 @@ public class StartZone : NetworkBehaviour {
     }
 
     [Rpc(RpcSources.All, RpcTargets.All)]
-    public void RPC_PlayerExitStart(NetworkId _startZoneId)
-    {
-        StartZone startZone = Runner.FindObject(_startZoneId).GetComponent<StartZone>();
+    public void RPC_PlayerExitStart(NetworkId zoneID) {
+        if (isSpawned) {
+            StartZone startZone = Runner.FindObject(zoneID).GetComponent<StartZone>();
 
-        if (startZone != null && HasStateAuthority) 
-        {
-            startZone.playersInRadius--;
+            if (startZone != null && HasStateAuthority) {
+                startZone.playersInRadius--;
+            }
         }
     }
 
     public float GetTimeLeft => Timer.RemainingTime(Runner) ?? duration;
-    public int GetCurrentPlayers => playersInRadius; //does not sync for clients -James
-    public int GetMaxPlayers => ServerInfo.MaxPlayers; 
+    public int GetCurrentPlayers => playersInRadius;
+    public int GetMaxPlayers => ServerInfo.MaxPlayers;
 }
