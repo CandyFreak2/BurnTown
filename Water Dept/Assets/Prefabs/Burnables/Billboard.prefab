@@ -114,8 +114,8 @@ Transform:
   serializedVersion: 2
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
   m_LocalPosition: {x: 78.6, y: 0, z: 31.685463}
-  m_LocalScale: {x: 1, y: 1, z: 1}
-  m_ConstrainProportionsScale: 0
+  m_LocalScale: {x: 0.7, y: 0.7, z: 0.7}
+  m_ConstrainProportionsScale: 1
   m_Children:
   - {fileID: 8999148390465916275}
   - {fileID: 1002289275851737070}
@@ -176,6 +176,9 @@ MonoBehaviour:
   activeModelSubAnchor: {fileID: 0}
   destroyedModel: {fileID: 0}
   destructionVFX: {fileID: 0}
+  screenShake:
+    intensity: 0
+    duration: 0
 --- !u!114 &5011693737508282806
 MonoBehaviour:
   m_ObjectHideFlags: 0
