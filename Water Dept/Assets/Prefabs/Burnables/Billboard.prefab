@@ -64,7 +64,7 @@ MeshRenderer:
   m_RenderingLayerMask: 1
   m_RendererPriority: 0
   m_Materials:
-  - {fileID: -7791486788655378091, guid: 4fe5e01178576494ab0cecd2417bedb2, type: 3}
+  - {fileID: 2100000, guid: 17067a0b72e4cd143a00539faef53ce4, type: 2}
   m_StaticBatchInfo:
     firstSubMesh: 0
     subMeshCount: 0
@@ -176,6 +176,9 @@ MonoBehaviour:
   activeModelSubAnchor: {fileID: 0}
   destroyedModel: {fileID: 0}
   destructionVFX: {fileID: 0}
+  screenShake:
+    intensity: 0
+    duration: 0
 --- !u!114 &5011693737508282806
 MonoBehaviour:
   m_ObjectHideFlags: 0
