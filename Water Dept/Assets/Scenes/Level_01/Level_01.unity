@@ -87300,7 +87300,7 @@ PrefabInstance:
         type: 3}
       propertyPath: 'endGoals.Array.data[0]'
       value: 
-      objectReference: {fileID: 0}
+      objectReference: {fileID: 2071486257}
     - target: {fileID: 961710666475029248, guid: 9215399602fbdc944b426e22fde06315,
         type: 3}
       propertyPath: points.Array.data[0].speed
@@ -152729,8 +152729,18 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 6677790331880970603, guid: 5692ee8dfdfefa54bb38ed60c25caf96,
         type: 3}
+      propertyPath: startFuel
+      value: 18
+      objectReference: {fileID: 0}
+    - target: {fileID: 6677790331880970603, guid: 5692ee8dfdfefa54bb38ed60c25caf96,
+        type: 3}
       propertyPath: heatBuffer
-      value: 2
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 6677790331880970603, guid: 5692ee8dfdfefa54bb38ed60c25caf96,
+        type: 3}
+      propertyPath: finalHeatStrength
+      value: 4
       objectReference: {fileID: 0}
     - target: {fileID: 9024513864095165934, guid: 5692ee8dfdfefa54bb38ed60c25caf96,
         type: 3}
@@ -178133,6 +178143,18 @@ Transform:
     type: 3}
   m_PrefabInstance: {fileID: 2071486255}
   m_PrefabAsset: {fileID: 0}
+--- !u!114 &2071486257 stripped
+MonoBehaviour:
+  m_CorrespondingSourceObject: {fileID: 5303799172891313990, guid: b72387d848295dc4f99520d4ed3fef68,
+    type: 3}
+  m_PrefabInstance: {fileID: 2071486255}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 0
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: d687f89eee019c74e9f3e5c3d46719f7, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
 --- !u!1001 &2074278797
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -185922,20 +185944,6 @@ Transform:
     type: 3}
   m_PrefabInstance: {fileID: 180265047925651927}
   m_PrefabAsset: {fileID: 0}
---- !u!114 &747017258820799719
-MonoBehaviour:
-  m_ObjectHideFlags: 59
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 8542878302622945585}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 1541381998, guid: e725a070cec140c4caffb81624c8c787, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  Guid:
-    RawGuidValue: e6ca164699142df4e92285b0b4acbfac
 --- !u!1001 &998918617576225061
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -187755,7 +187763,6 @@ GameObject:
   - component: {fileID: 6380944933893695140}
   - component: {fileID: 1837996913612874525}
   - component: {fileID: 2378938399235140744}
-  - component: {fileID: 747017258820799719}
   m_Layer: 0
   m_Name: Fence_Factory
   m_TagString: Untagged
