@@ -59,7 +59,7 @@ public class Gasline : NetworkBehaviour {
         gaslinePoints = GetComponentsInChildren<GaslinePoint>();
     }
 
-    private void FixedUpdate() {
+    public override void FixedUpdateNetwork() {
         if (isSpawned) {
             if (!wasSpawned) {
                 StartFireSpread(startIndex);
@@ -83,6 +83,12 @@ public class Gasline : NetworkBehaviour {
     public void RPC_HandleGaslineMovement() {
         SpawnFlameVisual();
 
+        if (currentIndex == GetPointLength()) //Jake. sry for jank fix but flameVisual is null for client
+        {
+            fireZone.SetActive(true); //enables firezone gameObject that has collider, is located by the end point
+            fireZoneFlamePrefab.SetActive(true); //turns on vfx flame which has play on awake enabledb.nIsBurning = false;
+        }
+
         if (flameVisual != null) {
             if (canMove) {
                 float distance = Vector3.Distance(flameVisual.transform.position, points[currentIndex].location.transform.position);
@@ -100,13 +106,12 @@ public class Gasline : NetworkBehaviour {
 
             // Handles enabling burning
             // Tmp moved up here so generator will burn
+            
             if (currentIndex == GetPointLength() && (Vector3.Distance(flameVisual.transform.position, GetPointPosition(currentIndex)) < tolerance))
             {
                 foreach (Burnable b in endGoals) {
                     if (b.gameObject.activeSelf) {
-                        b.nIsBurning = true;
-                        fireZone.SetActive(true); //enables firezone gameObject that has collider, is located by the end point
-                        fireZoneFlamePrefab.SetActive(true); //turns on vfx flame which has play on awake enabledb.nIsBurning = false;
+                        b.nIsBurning = true;                        
                     }
                 }
                 if (doesFireDisapper && fireZone.activeSelf && fireZoneFlamePrefab.activeSelf) {
