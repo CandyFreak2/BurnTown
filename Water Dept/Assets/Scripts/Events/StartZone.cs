@@ -11,26 +11,32 @@ public class StartZone : NetworkBehaviour {
     [Networked] public TickTimer Timer { get; set; }
     [Tooltip("Duration (Seconds)"), SerializeField] private float duration;
     [Networked] private int playersInRadius { get; set; }
+    [Networked] private int maxPlayers { get; set; }
+    [Networked] private string lobbyCode { get; set; }
 
     public override void Spawned() {
         isSpawned = true;
+        if (HasStateAuthority)
+        {
+            maxPlayers = ServerInfo.MaxPlayers;
+            lobbyCode = ServerInfo.LobbyName;
+        }
     }
 
-    public void FixedUpdate() {
+    public override void FixedUpdateNetwork() {
         if (Instance.GetGameState == GameState.NOT_STARTED) {
-            if (players.Count >= ServerInfo.MaxPlayers && IsAllTrue(players)) {
-                Instance.SetGameState(GameState.STARTED);
-                EventManager.StartZoneTrigger();
+            if (players.Count >= maxPlayers && IsAllTrue(players)) {
+                RPC_StartGame();
             }
         }
 
         if (isSpawned) {
-            if (playersInRadius >= ServerInfo.MaxPlayers && !Timer.IsRunning) {
+            if (playersInRadius >= maxPlayers && !Timer.IsRunning) {
                 Timer = TickTimer.CreateFromSeconds(Runner, duration);
                 EventManager.StartZoneTimerStart();
             }
 
-            if (playersInRadius < ServerInfo.MaxPlayers && Timer.IsRunning) {
+            if (playersInRadius < maxPlayers && Timer.IsRunning) {
                 Timer = TickTimer.None;
                 EventManager.StartZoneTimerReset();
             }
@@ -85,7 +91,14 @@ public class StartZone : NetworkBehaviour {
         }
     }
 
+    [Rpc(RpcSources.All, RpcTargets.All)]
+    public void RPC_StartGame()
+    {
+        Instance.SetGameState(GameState.STARTED);
+        EventManager.StartZoneTrigger();
+    }
+
     public float GetTimeLeft => Timer.RemainingTime(Runner) ?? duration;
     public int GetCurrentPlayers => playersInRadius;
-    public int GetMaxPlayers => ServerInfo.MaxPlayers;
+    public int GetMaxPlayers => maxPlayers;
 }
