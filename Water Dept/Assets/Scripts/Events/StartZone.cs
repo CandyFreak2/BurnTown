@@ -25,7 +25,7 @@ public class StartZone : NetworkBehaviour {
 
     public override void FixedUpdateNetwork() {
         if (Instance.GetGameState == GameState.NOT_STARTED) {
-            if (players.Count >= maxPlayers && IsAllTrue(players)) {
+            if (playersInRadius >= maxPlayers && IsAllTrue(players)) {
                 RPC_StartGame();
             }
         }
