@@ -11,7 +11,7 @@ public class TriggerSoundClip : MonoBehaviour
     private void Awake()
     {
         if(target == null)
-            target = transform;
+            target = Camera.main.transform;
     }
 
     public void PlayRandomClip()

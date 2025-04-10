@@ -101,4 +101,5 @@ public class StartZone : NetworkBehaviour {
     public float GetTimeLeft => Timer.RemainingTime(Runner) ?? duration;
     public int GetCurrentPlayers => playersInRadius;
     public int GetMaxPlayers => maxPlayers;
+    public string GetLobbyCode => lobbyCode;
 }
