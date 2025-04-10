@@ -2,6 +2,8 @@ using Fusion;
 using UnityEngine;
 using System.Collections.Generic;
 using static GameStateHandler;
+using System.Collections;
+using UnityEngine.Playables;
 
 public class StartZone : NetworkBehaviour {
     private NetworkBool isSpawned { get; set; }
@@ -16,8 +18,7 @@ public class StartZone : NetworkBehaviour {
 
     public override void Spawned() {
         isSpawned = true;
-        if (HasStateAuthority)
-        {
+        if (HasStateAuthority) {
             maxPlayers = ServerInfo.MaxPlayers;
             lobbyCode = ServerInfo.LobbyName;
         }
@@ -92,10 +93,15 @@ public class StartZone : NetworkBehaviour {
     }
 
     [Rpc(RpcSources.All, RpcTargets.All)]
-    public void RPC_StartGame()
-    {
-        Instance.SetGameState(GameState.STARTED);
+    public void RPC_StartGame() {
+        Instance.SetGameState(GameState.CUTSCENE);
         EventManager.StartZoneTrigger();
+        StartCoroutine(DelayStartGameState(9.5f));
+    }
+
+    IEnumerator DelayStartGameState(float delay) {
+        yield return new WaitForSeconds(delay);
+        Instance.SetGameState(GameState.STARTED);
     }
 
     public float GetTimeLeft => Timer.RemainingTime(Runner) ?? duration;

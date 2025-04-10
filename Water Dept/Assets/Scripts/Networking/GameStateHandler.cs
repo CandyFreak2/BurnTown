@@ -3,6 +3,7 @@ using UnityEngine;
 public class GameStateHandler : MonoBehaviour {
     public enum GameState {
         NOT_STARTED,
+        CUTSCENE,
         STARTED,
         END
     }
