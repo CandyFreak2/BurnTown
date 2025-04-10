@@ -3,6 +3,7 @@ using TMPro;
 using UnityEngine;
 using UnityEngine.EventSystems;
 using UnityEngine.SceneManagement;
+using static GameStateHandler;
 
 public class PauseMenu : NetworkBehaviour {
     [SerializeField] private GameObject pauseUI;
@@ -70,12 +71,14 @@ public class PauseMenu : NetworkBehaviour {
         if (runner.IsClient) {
             SceneManager.LoadScene(0);
             runner.Shutdown();
+            Instance.SetGameState(GameState.NOT_STARTED);
         }
 
         if (runner.IsServer) {
             runner.UnloadScene(SceneRef.FromIndex(SceneManager.GetActiveScene().buildIndex));
             SceneManager.LoadScene(0);
             runner.Shutdown();
+            Instance.SetGameState(GameState.NOT_STARTED);
         }
     }
 
