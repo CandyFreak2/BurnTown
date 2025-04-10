@@ -9,7 +9,7 @@ public class StartZone : NetworkBehaviour {
     [Header("Timer")]
     [Networked] public TickTimer Timer { get; set; }
     [Tooltip("Duration (Seconds)"), SerializeField] private float duration;
-    [SerializeField] private int playersInRadius = 0;
+    [Networked] private int playersInRadius { get; set; }
 
     public override void Spawned() {
         isSpawned = true;
@@ -46,35 +46,48 @@ public class StartZone : NetworkBehaviour {
     }
 
     private void OnTriggerEnter(Collider other) {
-        if (isSpawned) {
-            if (other.CompareTag("Player")) {
-                playersInRadius++;
-                if (!players.Contains(other.gameObject) && GameStateHandler.Instance.GetGameState == GameStateHandler.GameState.NOT_STARTED) {
-                    players.Add(other.gameObject);
-                    other.GetComponentInParent<PlayerMovement>().IsReady = true;
-                    EventManager.StartZoneEnter();
-                }
-            }
+        if (isSpawned && other.CompareTag("Player")){
+            RPC_PlayerEnterStart(Object.Id, other.transform.parent.GetComponent<PlayerMovement>().Object.Id);
         }
     }
 
     private void OnTriggerExit(Collider other) {
         if (isSpawned && other.CompareTag("Player")) {
-            playersInRadius--;
+            RPC_PlayerExitStart(Object.Id);
         }
     }
 
-    //[Rpc(RpcSources.All, RpcTargets.All)]
-    //public void RPC_TriggerMarker(NetworkId _markerId, NetworkId _otherId) {
-    //    ObjectiveMarker objectiveMarker = Runner.FindObject(_markerId).GetComponent<ObjectiveMarker>();
-    //    NetworkObject inputAuth = Runner.FindObject(_otherId);
+    [Rpc(RpcSources.All, RpcTargets.All)]
+    public void RPC_PlayerEnterStart(NetworkId _startZoneId, NetworkId _otherId)
+    {
+        StartZone startZone = Runner.FindObject(_startZoneId).GetComponent<StartZone>();
+        PlayerMovement playerMovement = Runner.FindObject(_otherId).GetComponent<PlayerMovement>();
 
-    //    if (objectiveMarker != null && inputAuth != null && inputAuth.HasInputAuthority && Runner.IsClient) {
-    //        objectiveMarker.isTriggered = true;
-    //    } else if (objectiveMarker != null && inputAuth != null && inputAuth.HasStateAuthority && inputAuth.HasInputAuthority && !Runner.IsClient) {
-    //        objectiveMarker.isTriggered = true;
-    //    }
-    //}
+        if (startZone != null && playerMovement != null)
+        {
+            if (HasStateAuthority)
+            {
+                startZone.playersInRadius++;
+            }
+            if (!startZone.players.Contains(playerMovement.gameObject) && GameStateHandler.Instance.GetGameState == GameStateHandler.GameState.NOT_STARTED)
+            {
+                startZone.players.Add(playerMovement.gameObject);
+                playerMovement.IsReady = true;
+                EventManager.StartZoneEnter();
+            }
+        }
+    }
+
+    [Rpc(RpcSources.All, RpcTargets.All)]
+    public void RPC_PlayerExitStart(NetworkId _startZoneId)
+    {
+        StartZone startZone = Runner.FindObject(_startZoneId).GetComponent<StartZone>();
+
+        if (startZone != null && HasStateAuthority) 
+        {
+            startZone.playersInRadius--;
+        }
+    }
 
     public float GetTimeLeft => Timer.RemainingTime(Runner) ?? duration;
     public int GetCurrentPlayers => playersInRadius; //does not sync for clients -James
