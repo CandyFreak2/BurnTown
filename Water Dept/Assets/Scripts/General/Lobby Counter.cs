@@ -9,6 +9,7 @@ public class LobbyCounter : NetworkBehaviour
     [SerializeField] TextMeshPro playerCount;
     [SerializeField] TextMeshPro countdown;
     string defaultText;
+    private bool isSpawned = false;
 
     [SerializeField] UnityEvent triggerStart;
 
@@ -17,10 +18,18 @@ public class LobbyCounter : NetworkBehaviour
         defaultText = countdown.text;
     }
 
+    public override void Spawned()
+    {
+        isSpawned = true;
+    }
+
     private void FixedUpdate()
     {
-        playerCount.text = linkedZone.GetCurrentPlayers + "/" + linkedZone.GetMaxPlayers;
-        countdown.text = linkedZone.GetCurrentPlayers == linkedZone.GetMaxPlayers ? "Start in:\n" + (linkedZone.GetTimeLeft / 1000f) * 1000f : defaultText;
+        if (isSpawned)
+        {
+            playerCount.text = linkedZone.GetCurrentPlayers + "/" + linkedZone.GetMaxPlayers;
+            countdown.text = linkedZone.GetCurrentPlayers == linkedZone.GetMaxPlayers ? "Start in:\n" + (linkedZone.GetTimeLeft / 1000f) * 1000f : defaultText;
+        }
     }
 
     private void OnEnable()

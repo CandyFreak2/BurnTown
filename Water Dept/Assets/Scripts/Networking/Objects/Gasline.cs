@@ -111,7 +111,8 @@ public class Gasline : NetworkBehaviour {
             {
                 foreach (Burnable b in endGoals) {
                     if (b.gameObject.activeSelf) {
-                        b.nIsBurning = true;                        
+                        b.enabled = true;
+                        b.nIsBurning = true;
                     }
                 }
                 if (doesFireDisapper && fireZone.activeSelf && fireZoneFlamePrefab.activeSelf) {

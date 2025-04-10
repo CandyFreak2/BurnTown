@@ -58,7 +58,6 @@ public class Objective : NetworkBehaviour
 
         if (objective != null)
         {
-            objective.animator.Play("Base Layer.BridgeAnimation", 0, 0.0f);
             objective.animator.SetBool("isTriggered", true);
             objective.isComplete = true;
         }

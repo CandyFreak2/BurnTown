@@ -152,7 +152,7 @@ public class PlayerMovement : NetworkBehaviour
     {
         //get camera view direction
         Vector3 camDir = ToVector3(action.CameraDirection);
-        Debug.Log(camDir);
+        //Debug.Log(camDir);
         camDir.y = 0;
         float viewDir = Vector3.Angle(Vector3.forward, camDir);
 
