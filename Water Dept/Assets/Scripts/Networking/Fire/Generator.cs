@@ -6,6 +6,8 @@ public class Generator : NetworkBehaviour
     [SerializeField] private Objective PoweredObjective;
     [SerializeField] private Objective PoweredObjective_2;
     [SerializeField] private Objective PoweredObjective_3;
+    [SerializeField] private GameObject gateCameraZone;
+    [SerializeField] private GameObject areaCameraZone;
     [SerializeField] private Burnable genBurnable;
     [SerializeField] private float disabledPercent01; // value 0-1
 
@@ -28,10 +30,30 @@ public class Generator : NetworkBehaviour
         // When isDisabled switches update objective
         if (lastState != isDisabled)
         {
+            RPC_ChangeCameraZones(Object.Id);
             PoweredObjective.CheckAllDeactivated();
             PoweredObjective_2.CheckAllDeactivated();
             PoweredObjective_3.CheckAllDeactivated();
         }
         
+    }
+
+    private void ResetCamZones()
+    {
+        areaCameraZone.SetActive(true);
+        gateCameraZone.SetActive(false);
+    }
+
+    [Rpc(RpcSources.All, RpcTargets.All)] // Run by player with input auth
+    public void RPC_ChangeCameraZones(NetworkId _genId)
+    {
+        Generator generator = Runner.FindObject(_genId).GetComponent<Generator>();
+
+        if (generator != null && generator.areaCameraZone != null && generator.gateCameraZone != null)
+        {
+            generator.areaCameraZone.SetActive(false);
+            generator.gateCameraZone.SetActive(true);
+            generator.Invoke("ResetCamZones", 4.0f);
+        }
     }
 }
