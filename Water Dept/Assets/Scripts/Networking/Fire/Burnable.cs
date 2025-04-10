@@ -353,7 +353,8 @@ public class Burnable : NetworkBehaviour
     private IEnumerator RemoveHeat(Burnable source)
     {
         yield return new WaitForSeconds(heartBeat + 1);
-        RPC_RemoveHeat(Object.Id, source);
+        if(source != null)
+            RPC_RemoveHeat(Object.Id, source);
     }
     
     /// Tell everyone that the heat source has expired

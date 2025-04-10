@@ -48,7 +48,8 @@ public class EndScreen : NetworkBehaviour
 
     IEnumerator RunTally(float score, float time)
     {
-        WaitForSeconds tick = new WaitForSeconds(0.1f);
+        float delay = 0.02f;
+        WaitForSeconds tick = new WaitForSeconds(delay);
         float magnitude = Mathf.InverseLerp(tallyTimeMinScore, tallyTimeMaxScore, score);
         float duration = Mathf.Lerp(tallyTimeMin, tallyTimeMax, magnitude);
         float timer = 0;
@@ -61,13 +62,13 @@ public class EndScreen : NetworkBehaviour
             AudioPlayer.PlaySFX(tickSfx, Camera.main.transform.position, 0.2f, 1f);
 
             yield return tick;
-            timer += 0.1f;
+            timer += delay;
         }
 
         _Score.text = "$ " + score;
         _Time.text = time + " Sec";
 
-        AudioPlayer.PlaySFX(tallyFinishedSfx, Camera.main.transform.position, 0f, 0.2f);
+        AudioPlayer.PlaySFX(tallyFinishedSfx, Camera.main.transform.position, 0f, 0.5f);
 
         _Score.transform.DOShakeRotation(.5f, 60 * magnitude, 20);
         _Score.transform.DOShakePosition(.5f, .5f * magnitude, 20);
@@ -89,8 +90,8 @@ public class EndScreen : NetworkBehaviour
         scoreIcon[scoreIndex].SetActive(true);
         timeIcon[timeIndex].SetActive(true);
 
-        scoreIcon[scoreIndex].transform.DOPunchScale(Vector3.one * 0.2f, 0.3f, 1);
-        timeIcon[timeIndex].transform.DOPunchScale(Vector3.one * 0.2f, 0.3f, 1);
+        scoreIcon[scoreIndex].transform.DOPunchScale(Vector3.one * 0.8f, 0.3f, 1);
+        timeIcon[timeIndex].transform.DOPunchScale(Vector3.one * 0.8f, 0.3f, 1);
 
         EventSystem.current.SetSelectedGameObject(defaultButton);
         onTallyComplete?.Invoke();
