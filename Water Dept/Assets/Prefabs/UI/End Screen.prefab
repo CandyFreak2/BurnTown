@@ -1726,7 +1726,7 @@ MonoBehaviour:
   m_OnCullStateChanged:
     m_PersistentCalls:
       m_Calls: []
-  m_text: 0min 0sec
+  m_text: 
   m_isRightToLeft: 0
   m_fontAsset: {fileID: 11400000, guid: c80d259654cc12041bdaaba3569d0f4d, type: 2}
   m_sharedMaterial: {fileID: -6707909631620035562, guid: c80d259654cc12041bdaaba3569d0f4d,
@@ -1988,6 +1988,7 @@ MonoBehaviour:
   endTimeline: {fileID: 9178862744097892800}
   _Score: {fileID: 2439460445954939398}
   _Time: {fileID: 6821153902118573489}
+  defaultButton: {fileID: 0}
   scoreGrades:
   - 0
   - 15000
@@ -2006,6 +2007,8 @@ MonoBehaviour:
   - {fileID: 788635717978367545}
   tallyTimeMaxScore: 100000
   tallyTimeMinScore: 1000
+  tallyTimeMax: 0
+  tallyTimeMin: 0
   tickSfx:
   - {fileID: 8300000, guid: 65e1bfce2d6c5354bbcdb7f6b21dfc13, type: 3}
   tallyFinishedSfx:

@@ -57,7 +57,7 @@ public class EndScreen : NetworkBehaviour
         while (timer < duration)
         {
             _Score.text = "$ " + (score * (timer / duration));
-            _Time.text = (time * (timer / duration)) + " Sec";
+            _Time.text = FormatTime(time * (timer / duration));
 
             AudioPlayer.PlaySFX(tickSfx, Camera.main.transform.position, 0.2f, 1f);
 
@@ -66,7 +66,7 @@ public class EndScreen : NetworkBehaviour
         }
 
         _Score.text = "$ " + score;
-        _Time.text = time + " Sec";
+        _Time.text = FormatTime(time);
 
         AudioPlayer.PlaySFX(tallyFinishedSfx, Camera.main.transform.position, 0f, 0.5f);
 
@@ -122,6 +122,16 @@ public class EndScreen : NetworkBehaviour
             RPC_TallyScoreSignal(PlayerPrefs.GetInt("N_FinalScore"), PlayerPrefs.GetFloat("N_FinalTime")); //temp time
 
         //TallyScore(PlayerPrefs.GetInt("N_FinalScore"), 156f);
+    }
+
+    public string FormatTime(float time) {
+        if (time < 0) {
+            time = 0;
+        }
+        float minutes = Mathf.Floor(time / 60);
+        float seconds = Mathf.Floor(time % 60);
+
+        return string.Format("{0:00} min - {1:00} sec", minutes, seconds);
     }
 
     [Rpc(RpcSources.All, RpcTargets.StateAuthority, HostMode = RpcHostMode.SourceIsHostPlayer)]
