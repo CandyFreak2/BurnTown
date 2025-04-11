@@ -97,7 +97,7 @@ public class ObjectiveIndicatorList : MonoBehaviour
         }
         else
         {
-            return new Vector3(-102.72f, 1.0f, -10.97f); // Sry for magic number - Jake:(. this is world spawn for lvl 1
+            return new Vector3(-30.72f, 1.0f, -8.33f); // Sry for magic number - Jake:(. this is world spawn for lvl 1
         }
     }
 }
