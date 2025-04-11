@@ -29,4 +29,9 @@ public class ResourceManager : MonoBehaviour {
             Instance = null;
         }
     }
+
+    private void OnApplicationFocus(bool focus)
+    {
+        Cursor.visible = focus;
+    }
 }
