@@ -88,4 +88,16 @@ public class ObjectiveIndicatorList : MonoBehaviour
 
         return new Vector3(objPos.x -  indicatorPos.x, 0.0f, objPos.z - indicatorPos.z).normalized;
     }
+
+    public Vector3 GetLastObjectivePos()
+    {
+        if (currentIndex < objectives.Count && currentIndex >= 1)
+        {
+            return objectives[currentIndex - 1].transform.position;
+        }
+        else
+        {
+            return new Vector3(-102.72f, 1.0f, -10.97f); // Sry for magic number - Jake:(. this is world spawn for lvl 1
+        }
+    }
 }
