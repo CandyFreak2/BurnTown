@@ -29,7 +29,7 @@ public class StartScreenManager : MonoBehaviour {
     }
 
     public void UpdateCharLength() {
-        charLength.text = (charCount - codeInput.text.Length).ToString();
+        charLength.text = (codeInput.text.Length + "/" + charCount).ToString();
     }
 
     public void AddInput(string key) {
