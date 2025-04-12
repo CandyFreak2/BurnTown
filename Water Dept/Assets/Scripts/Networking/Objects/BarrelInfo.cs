@@ -3,6 +3,7 @@ using Fusion.Addons.Physics;
 using Fusion.Addons.SimpleKCC;
 using System.Collections;
 using UnityEngine;
+using UnityEngine.InputSystem;
 
 public class BarrelInfo : NetworkBehaviour
 {
@@ -25,6 +26,7 @@ public class BarrelInfo : NetworkBehaviour
     [SerializeField] public float explosionRadius = 3.0f;
     [SerializeField] public float explosionForce = 10.0f;
     [SerializeField] public float wallExplosiveForce = 0.0001f;
+    [SerializeField] public float rumbleMultiplier = 2.0f;
 
     //SFX
     [Header("SFX")]
@@ -132,6 +134,8 @@ public class BarrelInfo : NetworkBehaviour
         pixelBoom.Play();
         pixelBoom.transform.parent = null;
         isExploded = false;
+
+        StartCoroutine(RumbleController());
 
         //dereference components to prevent stack overf;pw
         if (gameObject.GetComponent<Rigidbody>() != null)
@@ -243,6 +247,15 @@ public class BarrelInfo : NetworkBehaviour
         if (other.tag == "Gas Flame") {
             StartCoroutine(DelayedChainExplode());
         }
+    }
+
+    private IEnumerator RumbleController()
+    {
+        Gamepad.current.SetMotorSpeeds(0.25f * rumbleMultiplier, 0.75f * rumbleMultiplier);
+
+        yield return new WaitForSeconds(0.75f);
+
+        Gamepad.current.SetMotorSpeeds(0.0f, 0.0f);
     }
 }
 
