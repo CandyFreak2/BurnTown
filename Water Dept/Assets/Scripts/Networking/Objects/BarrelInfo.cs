@@ -131,11 +131,8 @@ public class BarrelInfo : NetworkBehaviour
         AudioPlayer.PlaySFX(explodeSFX, transform.position, 0.1f);
 
         //play anim
-        pixelBoom.Play();
-        pixelBoom.transform.parent = null;
+        RPC_ExplosionFX(Object.Id);
         isExploded = false;
-
-        StartCoroutine(RumbleController());
 
         //dereference components to prevent stack overf;pw
         if (gameObject.GetComponent<Rigidbody>() != null)
@@ -246,6 +243,20 @@ public class BarrelInfo : NetworkBehaviour
 
         if (other.tag == "Gas Flame") {
             StartCoroutine(DelayedChainExplode());
+        }
+    }
+
+    [Rpc(RpcSources.All, RpcTargets.All)]
+    public void RPC_ExplosionFX(NetworkId _barrelId)
+    {
+        BarrelInfo barrelInfo = Runner.FindObject(_barrelId).GetComponent<BarrelInfo>();
+
+        if (barrelInfo != null)
+        {
+            barrelInfo.pixelBoom.Play();
+            barrelInfo.pixelBoom.transform.parent = null;
+
+            barrelInfo.StartCoroutine(RumbleController());
         }
     }
 
