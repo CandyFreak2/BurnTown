@@ -1,4 +1,5 @@
 using Fusion;
+using Fusion.Addons.SimpleKCC;
 using TMPro;
 using UnityEngine;
 using UnityEngine.EventSystems;
@@ -14,6 +15,7 @@ public class PauseMenu : NetworkBehaviour {
 
     private bool isPanelOn = false;
     private bool isSpawned = false;
+    private NetworkObject playerObject;
 
     private void OnEnable() {
         UIInputHandler.onActionPause += TogglePause;
@@ -62,9 +64,24 @@ public class PauseMenu : NetworkBehaviour {
         playerMovement.enabled = true;
     }
 
-    public void Reset() {
-        runner.LoadScene(SceneManager.GetActiveScene().name);
-        runner.Shutdown();
+    public void ResetPlayer() {
+        RPC_GetPlayer();
+        RPC_RespawnPlayer(playerObject.Id);
+    }
+
+    [Rpc(HostMode = RpcHostMode.SourceIsHostPlayer)]
+    public void RPC_GetPlayer(RpcInfo info = default) {
+        playerObject = runner.GetPlayerObject(info.Source).GetComponent<NetworkObject>();
+    }
+
+    [Rpc(RpcSources.All, RpcTargets.StateAuthority)]
+    public void RPC_RespawnPlayer(NetworkId _otherId) {
+        NetworkObject playerNetworkObj = Runner.FindObject(_otherId);
+
+        SimpleKCC playerKCC = playerNetworkObj.GetComponent<SimpleKCC>();
+        if (playerKCC != null) {
+            playerKCC.SetPosition(ObjectiveIndicatorList.Singleton.GetLastObjectivePos() + Vector3.up);
+        }
     }
 
     public void Disconnect() {
