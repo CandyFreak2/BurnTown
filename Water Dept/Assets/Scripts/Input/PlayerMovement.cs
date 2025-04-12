@@ -255,7 +255,7 @@ public class PlayerMovement : NetworkBehaviour
         }
 
         // Fire hose // throw barrel
-        if (action.Buttons.WasPressed(previousButtons, InputButton.Shoot) && IsHolding())
+        if (action.Buttons.WasPressed(previousButtons, InputButton.Shoot) && IsHolding() && !IsStunned)
         {
             if (carriedObject.interactableType == InteractableType.Flamethrower)
             {
@@ -620,6 +620,12 @@ public class PlayerMovement : NetworkBehaviour
         {
             explosionTimer += Time.fixedDeltaTime;
             isExploded = true; //duplicate to sync with clients
+        }
+
+        if (IsHolding() &&carriedObject.interactableType == InteractableType.Flamethrower)
+        {
+            carriedObject.gameObject.GetComponent<Flamethrower>().StopSpraying();
+            isFiring = false;
         }
 
     }
