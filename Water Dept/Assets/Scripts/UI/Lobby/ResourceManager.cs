@@ -33,5 +33,6 @@ public class ResourceManager : MonoBehaviour {
     private void OnApplicationFocus(bool focus)
     {
         Cursor.visible = focus;
+        Cursor.lockState = CursorLockMode.Locked;
     }
 }

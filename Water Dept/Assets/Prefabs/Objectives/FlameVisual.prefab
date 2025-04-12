@@ -154,6 +154,26 @@ PrefabInstance:
       propertyPath: playOnAwake
       value: 1
       objectReference: {fileID: 0}
+    - target: {fileID: 1230708284043352016, guid: 52f3156b7e845d94f9a6e5ac1c6fc363,
+        type: 3}
+      propertyPath: InitialModule.startSize.scalar
+      value: 0.6
+      objectReference: {fileID: 0}
+    - target: {fileID: 1230708284043352016, guid: 52f3156b7e845d94f9a6e5ac1c6fc363,
+        type: 3}
+      propertyPath: InitialModule.startSpeed.scalar
+      value: 6
+      objectReference: {fileID: 0}
+    - target: {fileID: 1230708284043352016, guid: 52f3156b7e845d94f9a6e5ac1c6fc363,
+        type: 3}
+      propertyPath: InitialModule.startSize.minScalar
+      value: 0.4
+      objectReference: {fileID: 0}
+    - target: {fileID: 1230708284043352016, guid: 52f3156b7e845d94f9a6e5ac1c6fc363,
+        type: 3}
+      propertyPath: InitialModule.startSpeed.minScalar
+      value: 4
+      objectReference: {fileID: 0}
     - target: {fileID: 1841356024306559160, guid: 52f3156b7e845d94f9a6e5ac1c6fc363,
         type: 3}
       propertyPath: playOnAwake

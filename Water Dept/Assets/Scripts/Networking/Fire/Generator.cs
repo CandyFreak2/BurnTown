@@ -1,14 +1,14 @@
 using UnityEngine;
 using Fusion;
+using Unity.Cinemachine;
 
 public class Generator : NetworkBehaviour
 {
     [SerializeField] private Objective PoweredObjective;
     [SerializeField] private Objective PoweredObjective_2;
     [SerializeField] private Objective PoweredObjective_3;
-    [SerializeField] private GameObject gateCameraZone;
+    [SerializeField] private CinemachineCamera gateCamera;
     [SerializeField] private GameObject areaCameraZone;
-    [SerializeField] private GameObject area2CameraZone;
     [SerializeField] private Burnable genBurnable;
     [SerializeField] private float disabledPercent01; // value 0-1
 
@@ -41,9 +41,8 @@ public class Generator : NetworkBehaviour
 
     private void ResetCamZones()
     {
-        areaCameraZone.SetActive(true);
-        area2CameraZone.SetActive(true);
-        gateCameraZone.SetActive(false);
+        //areaCameraZone.SetActive(true);
+        gateCamera.Priority = -1;
     }
 
     [Rpc(RpcSources.All, RpcTargets.All)] // Run by player with input auth
@@ -51,11 +50,10 @@ public class Generator : NetworkBehaviour
     {
         Generator generator = Runner.FindObject(_genId).GetComponent<Generator>();
 
-        if (generator != null && generator.areaCameraZone != null && generator.gateCameraZone != null)
+        if (generator != null && generator.areaCameraZone != null && generator.gateCamera != null)
         {
             generator.areaCameraZone.SetActive(false);
-            generator.area2CameraZone.SetActive(false);
-            generator.gateCameraZone.SetActive(true);
+            generator.gateCamera.Priority = 10;
             generator.Invoke("ResetCamZones", 4.0f);
         }
     }

@@ -4,9 +4,10 @@ public class TriggerCamShake : MonoBehaviour
 {
     public float strangth;
     public float duration;
+    public CinemachineShake cam;
 
     public void TriggerShake()
     {
-        CinemachineShake.ShakeAllCameras(strangth, duration);   
+        cam.ShakeCamera(strangth, duration);   
     }
 }
