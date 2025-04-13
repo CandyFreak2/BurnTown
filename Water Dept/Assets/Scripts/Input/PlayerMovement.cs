@@ -246,7 +246,10 @@ public class PlayerMovement : NetworkBehaviour
         {
             if(carriedObject.interactableType == InteractableType.Barrel)
             {
-                RPC_RequestDropBarrel(Object.Id);
+                if(barrelController.canPlace)
+                {
+                    RPC_RequestDropBarrel(Object.Id);
+                }
             }
             else
             {
@@ -585,7 +588,14 @@ public class PlayerMovement : NetworkBehaviour
     //Set variables from barrel and starts SimulateExplosion
     public void ExplosionHit(Vector3 direction, float distance)
     {
+        //cutoff so doesnt send player flying
+        if(distance < 2.8f)
+        {
+            distance = 2.8f;
+        }
+
         Vector3 totalForce = direction.normalized * ((4f / distance) * 10);
+        
         totalForce.y = 0;
 
         forceVec = totalForce;
