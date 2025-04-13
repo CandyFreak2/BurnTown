@@ -81,18 +81,7 @@ public class Flamethrower : NetworkBehaviour
         fuelBarElements.SetActive(true);
         RPC_ShootFire(Object.Id);
 
-        if(HasInputAuthority)
-        {
-            if (Gamepad.current != null) 
-            {
-                if(overcharge >= maxOvercharge)
-                    Gamepad.current.SetMotorSpeeds(0.25f * rumbleMultiplier, 0.75f * rumbleMultiplier);
-                else
-                    Gamepad.current.SetMotorSpeeds(0.15f * rumbleMultiplier, 0.5f * rumbleMultiplier);
-
-                InputSystem.ResumeHaptics();
-            }
-        }
+        
     }
 
     public void StopSpraying()
@@ -110,6 +99,19 @@ public class Flamethrower : NetworkBehaviour
 
         if (!isShooting)
             return;
+
+        if (HasInputAuthority)
+        {
+            if (Gamepad.current != null)
+            {
+                if (overcharge >= maxOvercharge)
+                    Gamepad.current.SetMotorSpeeds(0.25f * rumbleMultiplier, 0.75f * rumbleMultiplier);
+                else
+                    Gamepad.current.SetMotorSpeeds(0.15f * rumbleMultiplier, 0.5f * rumbleMultiplier);
+
+                InputSystem.ResumeHaptics();
+            }
+        }
 
         //fuelTimer += Time.fixedDeltaTime;
         decalTimer += Time.fixedDeltaTime;
