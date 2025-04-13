@@ -6,6 +6,8 @@ public class BarrelController : NetworkBehaviour
     [SerializeField] private NetworkObject barrelPrefab;
     [SerializeField] private NetworkObject barrelSchematicPrefab;
 
+    [Networked] public bool canPlace { get; set; }
+
     [Networked] private bool isSchematicOut { get; set; }
     [Networked] private Vector3 orientationForward { get; set; }
     [Networked] private NetworkObject barrelSchematic { get; set; }
@@ -34,24 +36,40 @@ public class BarrelController : NetworkBehaviour
 
         RaycastHit hit;
 
-        if (Physics.Raycast(obj.transform.position + new Vector3(0, 100f, 0), Vector3.down, out hit))
+        //horizontal ray
+        Debug.DrawRay(transform.position + new Vector3(0, 1, 0), orientationForward * 10, Color.red);
+        if (Physics.Raycast(transform.position + new Vector3(0, 1, 0), orientationForward, out hit))
+        {
+            if (hit.collider != null && Vector3.Distance(transform.position, hit.point) < placeDistance)
+            {
+                canPlace = false;
+            }
+            else
+            {
+                canPlace = true;
+            }
+        }
+
+        RaycastHit hitv;
+        //vert ray
+        if (Physics.Raycast(obj.transform.position + new Vector3(0, 100f, 0), Vector3.down, out hitv))
         {
             //snaps barrel to ground
-            if (hit.collider.GetComponent<BarrelInfo>() == null)
+            if (hitv.collider.GetComponent<BarrelInfo>() == null)
             {
-                float dist = Vector3.Distance(obj.transform.position, hit.point);
+                float dist = Vector3.Distance(obj.transform.position, hitv.point);
                 obj.transform.position -= Vector3.up * dist - new Vector3(0, 0.7f, 0);
             }
             //if its a barrel, snaps position to on top of the barrel
-            else if (hit.collider.GetComponent<BarrelInfo>() != null)
+            else if (hitv.collider.GetComponent<BarrelInfo>() != null)
             {
-                obj.transform.position = hit.collider.transform.position + new Vector3(0, 1.2f, 0);
+                obj.transform.position = hitv.collider.transform.position + new Vector3(0, 1.2f, 0);
 
                 //links head/tail chain components of barrelInfo on place
                 if (obj.GetComponent<BarrelInfo>() != null)
                 {
-                    obj.GetComponent<BarrelInfo>().tail = hit.collider.gameObject;
-                    hit.collider.gameObject.GetComponent<BarrelInfo>().head = obj.gameObject;
+                    obj.GetComponent<BarrelInfo>().tail = hitv.collider.gameObject;
+                    hitv.collider.gameObject.GetComponent<BarrelInfo>().head = obj.gameObject;
                 }
             }
         }
