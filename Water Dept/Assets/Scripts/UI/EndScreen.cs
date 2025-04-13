@@ -56,7 +56,7 @@ public class EndScreen : NetworkBehaviour
 
         while (timer < duration)
         {
-            _Score.text = "$ " + (score * (timer / duration));
+            _Score.text = "$ " + (score * (timer / duration)).ToString("n0");
             _Time.text = FormatTime(time * (timer / duration));
 
             AudioPlayer.PlaySFX(tickSfx, Camera.main.transform.position, 0.2f, 1f);
@@ -65,7 +65,7 @@ public class EndScreen : NetworkBehaviour
             timer += delay;
         }
 
-        _Score.text = "$ " + score;
+        _Score.text = "$ " + score.ToString("n0");
         _Time.text = FormatTime(time);
 
         AudioPlayer.PlaySFX(tallyFinishedSfx, Camera.main.transform.position, 0f, 0.5f);
