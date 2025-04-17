@@ -233,6 +233,21 @@ public class PlayerMovement : NetworkBehaviour
         // Get in truck
         if (action.Buttons.WasPressed(previousButtons, InputButton.Interact) && nearestInteractable != null && nearestInteractable.gameObject.tag == "FireTruck" && canEnter)
         {
+            if (IsHolding())
+            {
+                if (carriedObject.interactableType == InteractableType.Barrel)
+                {
+                    if (barrelController.canPlace)
+                    {
+                        RPC_RequestDropBarrel(Object.Id);
+                    }
+                }
+                else
+                {
+                    RPC_RequestDrop(Object.Id);
+                }
+            }
+
             GetInTruck(nearestInteractable);
             pickupText.text = "";
             if (HasInputAuthority)
@@ -309,28 +324,30 @@ public class PlayerMovement : NetworkBehaviour
     {
         GameObject nearestInteractable = null;
 
+        //Check for truck in proximity
+        if (HasInputAuthority && truckController.GetDistanceToNearestTruck() < 9.0f)
+        {
+            nearestInteractable = truckController.GetClosestTruck();
+            CarData truckData = nearestInteractable.GetComponent<CarData>();
+            if (truckData.GetNumPassengers() < truckData.GetMaxPassengers())
+            {
+                pickupIcon.enabled = true;
+                pickupFiretruckIcon.enabled = true;
+                return nearestInteractable;
+            }
+            else
+            {
+                pickupText.text = "Fire Truck Full";
+                return null;
+            }
+        }
+
         if (HasInputAuthority && !IsHolding())
         {
             Collider[] interactableObjects = Physics.OverlapSphere(kcc.transform.position, 3.5f);
             foreach (Collider collider in interactableObjects)
             {
-                if (truckController.GetDistanceToNearestTruck() < 9.0f)
-                {
-                    nearestInteractable = truckController.GetClosestTruck();
-                    CarData truckData = nearestInteractable.GetComponent<CarData>();
-                    if (truckData.GetNumPassengers() < truckData.GetMaxPassengers())
-                    {
-                        pickupIcon.enabled = true;
-                        pickupFiretruckIcon.enabled = true;
-                        return nearestInteractable;
-                    }
-                    else
-                    {
-                        pickupText.text = "Fire Truck Full";
-                        return null;
-                    }
-                }
-                else if (collider.gameObject.tag == "FireHoseHead")
+                if (collider.gameObject.tag == "FireHoseHead")
                 {
                     nearestInteractable = collider.gameObject;
                     pickupIcon.enabled = true;

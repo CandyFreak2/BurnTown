@@ -130,12 +130,8 @@ public class InteractableUI : NetworkBehaviour
     {
         RPC_SetPlayerState();
 
-        if (!playerMovement.enabled && carController.isActive) //Should prolly change this check with stun disabling playermovement too
-        {
-            firetruckUI.SetActive(true);
-            UpdateFiretruckUI();
-        }
-        else if (playerMovement.carriedObject == null)
+        
+        if (playerMovement.carriedObject == null)
         {
             DeactivateAllUI();
         }
@@ -152,6 +148,12 @@ public class InteractableUI : NetworkBehaviour
         else
         {
             DeactivateAllUI();
+        }
+
+        if (!playerMovement.enabled && carController.isActive) //Should prolly change this check with stun disabling playermovement too
+        {
+            firetruckUI.SetActive(true);
+            UpdateFiretruckUI();
         }
     }
 
