@@ -10,7 +10,6 @@ public class StartZone : NetworkBehaviour {
     [SerializeField] private List<GameObject> players = new();
 
     [Header("Timer")]
-    [Networked] public TickTimer Timer { get; set; }
     [Tooltip("Duration (Seconds)"), SerializeField] private float duration;
     [Networked] private int playersInRadius { get; set; }
     [Networked] private int maxPlayers { get; set; }
@@ -32,13 +31,11 @@ public class StartZone : NetworkBehaviour {
         }
 
         if (isSpawned) {
-            if (playersInRadius >= maxPlayers && !Timer.IsRunning) {
-                Timer = TickTimer.CreateFromSeconds(Runner, duration);
+            if (playersInRadius >= maxPlayers) {
                 EventManager.StartZoneTimerStart();
             }
 
-            if (playersInRadius < maxPlayers && Timer.IsRunning) {
-                Timer = TickTimer.None;
+            if (playersInRadius < maxPlayers) {
                 EventManager.StartZoneTimerReset();
             }
         }
@@ -104,7 +101,6 @@ public class StartZone : NetworkBehaviour {
         Instance.SetGameState(GameState.STARTED);
     }
 
-    public float GetTimeLeft => Timer.RemainingTime(Runner) ?? duration;
     public int GetCurrentPlayers => playersInRadius;
     public int GetMaxPlayers => maxPlayers;
     public string GetLobbyCode => lobbyCode;
