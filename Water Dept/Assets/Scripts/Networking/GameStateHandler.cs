@@ -28,6 +28,11 @@ public class GameStateHandler : MonoBehaviour {
     public void SetGameState(GameState nState) => state = nState;
 
     private void Awake() {
+        if (Instance != null) {
+            Destroy(gameObject);
+            return;
+        }
+
         Instance = this;
         DontDestroyOnLoad(gameObject);
     }

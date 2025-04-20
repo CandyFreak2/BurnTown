@@ -20,6 +20,11 @@ public class ResourceManager : MonoBehaviour {
     public LevelDefinitions[] levels;
 
     private void Awake() {
+        if (Instance != null) {
+            Destroy(gameObject);
+            return;
+        }
+
         Instance = this;
         DontDestroyOnLoad(gameObject);
     }
