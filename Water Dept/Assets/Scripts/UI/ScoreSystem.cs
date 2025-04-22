@@ -29,16 +29,22 @@ public class ScoreSystem : NetworkBehaviour {
         }
     }
 
-    public void UpdateScoreUI(int score) {
+    [Rpc(RpcSources.All, RpcTargets.StateAuthority)]
+    public void RPC_UpdateScore(int score) {
         overallScore += score;
+        RPC_UpdateScoreUI();
+    }
+
+    [Rpc(RpcSources.StateAuthority, RpcTargets.All)]
+    public void RPC_UpdateScoreUI() {
         scoreText.text = SCORE_HEADER + overallScore.ToString("C0");
     }
 
     private void OnEnable() {
-        EventManager.onBurnableDestroyed += UpdateScoreUI;
+        EventManager.onBurnableDestroyed += RPC_UpdateScore;
     }
 
     private void OnDisable() {
-        EventManager.onBurnableDestroyed -= UpdateScoreUI;
+        EventManager.onBurnableDestroyed -= RPC_UpdateScore;
     }
 }
