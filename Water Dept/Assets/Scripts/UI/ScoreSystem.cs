@@ -25,7 +25,7 @@ public class ScoreSystem : NetworkBehaviour {
 
         if (!wasSaved && Instance.GetGameState == GameState.END && Runner.IsServer) {
             PlayerPrefs.SetInt("N_FinalScore", overallScore);
-            wasSaved = true;    
+            wasSaved = true;
         }
     }
 
